@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DICOM Tag Viewer and Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 90; /* Lower z-index than the sidebar */
+            box-shadow: 0 4px 2px -2px gray;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;  /* Initially hidden */
+            background-color: #111;
+            padding-top: 60px;
+            padding-left: 15px;
+            transition: left 0.3s ease, visibility 0s 0.3s, opacity 0.3s ease;
+            color: white; /* Sidebar text color */
+            visibility: hidden; /* Hide when closed */
+            opacity: 0; /* Make sidebar transparent when closed */
+            z-index: 100; /* Higher z-index to appear in front of the title bar */
+        }
+
+        .sidebar.open {
+            visibility: visible; /* Show when opened */
+            left: 0;
+            opacity: 1;
+            transition: left 0.3s ease, visibility 0s, opacity 0.3s ease;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        /* Open Button for Sidebar */
+        .open-btn {
+            font-size: 30px;
+            color: white;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        /* Close Button for Sidebar (Hamburger icon) */
+        .close-btn {
+            font-size: 30px;
+            color: white;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+
+        /* Main content styles */
+        .content {
+            margin-top: 80px;  /* Give space for the fixed header */
+            margin-left: 0;
+            transition: margin-left 0.3s;
+            padding: 20px;
+            width: 100%;
+            flex-grow: 1; /* Allow the content to grow */
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            width: 100%;
+        }
+
+        /* File Selection Button */
+        #file-select-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        #file-select-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" id="close-btn">☰</span> <!-- Close button (hamburger icon) -->
+        <h2>Menu</h2>
+        <p>Options and Settings</p>
+    </div>
+
+    <!-- Open Button for Sidebar -->
+    <span class="open-btn" id="open-btn">☰</span> <!-- Open button (hamburger icon) -->
+
+    <!-- Main Content -->
+    <div class="content" id="main-content">
+        <!-- Header Title Bar -->
+        <header>
+            <h1>DICOM Tag Viewer and Editor</h1>
+        </header>
+
+        <!-- Drag-and-Drop and File Upload -->
+        <div id="upload-area" style="padding: 20px; text-align: center;">
+            <input type="file" id="dicom-file" accept=".dcm" style="display:none;" />
+            <button id="file-select-btn">Select File</button>
+            <div
+                id="drop-area"
+                style="border: 2px dashed #4CAF50; padding: 40px; cursor: pointer; margin-top: 20px; margin-right: 35px">
+                <p>Drag and drop your DICOM file here or click "Select File" to upload.</p>
+            </div>
+        </div>
+
+        <!-- DICOM Tags Table -->
+        <table id="dicom-tags" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="tags-body">
+                <!-- Tags will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 USASK CMPT 371 Team 2. <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2" target="_blank" style="color: white;">GitHub</a></p>
+    </footer>
+
+    <!-- Include dicom-parser library from reliable CDN -->
+    <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Sidebar toggle functions
+            const openBtn = document.getElementById("open-btn");
+            const closeBtn = document.getElementById("close-btn");
+            const sidebar = document.getElementById("mySidebar");
+            const mainContent = document.getElementById("main-content");
+
+            openBtn.addEventListener("click", function() {
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("open");
+                    mainContent.style.marginLeft = "0";
+                    openBtn.textContent = "☰"; // Set to "open" button icon
+                } else {
+                    sidebar.classList.add("open");
+                    mainContent.style.marginLeft = "250px";
+                    openBtn.textContent = "☰"; // Remains as hamburger icon
+                }
+            });
+
+            closeBtn.addEventListener("click", function() {
+                sidebar.classList.remove("open");
+                mainContent.style.marginLeft = "0";
+                openBtn.textContent = "☰"; // Reset open button icon when sidebar is closed
+            });
+
+            // Handle file upload
+            document.getElementById('dicom-file').addEventListener('change', handleFileUpload, false);
+            document.getElementById('drop-area').addEventListener('dragover', handleDragOver, false);
+            document.getElementById('drop-area').addEventListener('drop', handleFileDrop, false);
+
+            // File selection button
+            document.getElementById('file-select-btn').addEventListener('click', function() {
+                document.getElementById('dicom-file').click();  // Trigger file input click on button click
+            });
+
+            function handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (file && file.name.endsWith('.dcm')) {
+                    readFile(file);
+                } else {
+                    alert("Please upload a valid DICOM (.dcm) file.");
+                }
+            }
+
+            function handleDragOver(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.target.classList.add('dragover');
+            }
+
+            function handleFileDrop(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.target.classList.remove('dragover');
+
+                const file = event.dataTransfer.files[0];
+                if (file && file.name.endsWith('.dcm')) {
+                    readFile(file);
+                } else {
+                    alert("Please upload a valid DICOM (.dcm) file.");
+                }
+            }
+
+            function readFile(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    // Convert ArrayBuffer to Uint8Array
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    parseDicom(uint8Array);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+
+            // DICOM Tag Dictionary
+            const dicomTagDictionary = {
+                "X00080005": "Specific Character Set",
+                "X00080008": "Image Type",
+                "X00080012": "Instance Creation Date",
+                "X00080013": "Instance Creation Time",
+                "X00080018": "SOP Instance UID",
+                "X00080020": "Study Date",
+                "X00080030": "Study Time",
+                "X00080050": "Accession Number",
+                "X00080060": "Modality",
+                "X00080070": "Manufacturer",
+                "X00080090": "Referring Physician's Name",
+                "X00081010": "Station Name",
+                "X00081030": "Study Description",
+                "X0008103E": "Series Description",
+                "X00081190": "Private Creator",
+                "X00100010": "Patient's Name",
+                "X00100020": "Patient ID",
+                "X00100030": "Patient's Birth Date",
+                "X00100040": "Patient's Sex",
+                "X0020000D": "Study Instance UID",
+                "X0020000E": "Series Instance UID",
+                "X00200011": "Image Position (Patient)",
+                "X00200013": "Image Orientation (Patient)",
+                "X00200036": "Flip Angle",
+                "X00280010": "Rows",
+                "X00280011": "Columns",
+                "X00280030": "Pixel Spacing",
+                "X00280100": "Bits Allocated",
+                "X00280101": "Bits Stored",
+                "X00280102": "High Bit",
+                "X00281050": "Window Center",
+                "X00281051": "Window Width",
+                "X00401001": "Requested Procedure Description",
+                "X00402203": "Requested Procedure Priority",
+                "X00404000": "Reason for the Study",
+                "X00451000": "Device Serial Number",
+                "X00540013": "View Position",
+                "X00540022": "View Position ID",
+                "X00540030": "View Position Modifier",
+                "X00540040": "View Modifier",
+                "X00540080": "View Definition",
+                "X00600001": "Patient Position",
+                "X00601004": "View Position Sequence"
+            };
+
+            // Parse the DICOM file
+            function parseDicom(uint8Array) {
+                try {
+                    // Parsing the DICOM file using dicomParser
+                    console.log("Parsing DICOM file...");
+                    const dataSet = dicomParser.parseDicom(uint8Array);
+
+                    // Check if parsing succeeded
+                    if (!dataSet) {
+                        throw new Error("Failed to parse DICOM file: dataset is undefined.");
+                    }
+
+                    const tagsBody = document.getElementById('tags-body');
+                    tagsBody.innerHTML = ''; // Clear any previous data
+                    let table = document.getElementById('dicom-tags');
+                    table.style.display = 'table'; // Show the table
+
+                    // Iterate over the elements and display tags
+                    Object.keys(dataSet.elements).forEach(tag => {
+                        const element = dataSet.elements[tag];
+                        const tagName = dicomTagDictionary[`${tag.toString(17).toUpperCase()}`] // || `0x${tag.toString(16).toUpperCase()}`; // Look up the tag name
+                        const tagValue = dataSet.string(tag) || 'N/A'; // Get the tag value, or display 'N/A'
+
+                        const row = document.createElement('tr');
+
+                        const tagCell = document.createElement('td');
+                        tagCell.textContent = `${tag.toString(16).toUpperCase()}`; // Display the tag in hexadecimal
+                        row.appendChild(tagCell);
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = tagName; // Use the dictionary name or default to tag ID
+                        row.appendChild(nameCell);
+
+                        const valueCell = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = tagValue;
+                        input.addEventListener('input', function() {
+                            dataSet.elements[tag].data = dicomParser.stringToBytes(input.value);
+                        });
+                        valueCell.appendChild(input);
+                        row.appendChild(valueCell);
+
+                        tagsBody.appendChild(row);
+                    });
+                } catch (error) {
+                    // Log the error to the console with more details
+                    console.error("Error parsing DICOM file:", error);
+                    alert("Error parsing DICOM file. Check the console for details.");
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
