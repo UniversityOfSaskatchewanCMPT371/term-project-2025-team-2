@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: ./dist/
+          path: ./dist
 
   #Builds Docker image in ubuntu for nginx
   build_docker:
@@ -97,10 +97,15 @@ jobs:
         with:
           name: dist
 
-      - name: List the files in term-project-2025-team-2(for verification)
+      - name: List the files in root directory(for verification)
         run: |
           echo "Listing files in term-project-2025-team-2 directory"
           ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
+
+      - name: List contents of dist (for verification)
+        run: |
+          echo "Listing contents of dist"
+          ls -al ./dist
 
 
       - name: Deploy to github pages
