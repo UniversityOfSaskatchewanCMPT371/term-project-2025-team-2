@@ -36,7 +36,7 @@ jobs:
       
       #Install dependencies
       - name: Install dependencies
-        run: echo "no dependencies yet"
+        run: npm install 
 
       #Run tests
       - name: Run tests
@@ -51,11 +51,11 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: ./
+          publish_dir: ./dist
 
 
       # Place holder for more actions
       - name: Run a multi-line script
-        run: |
+        run: 
           echo Add other actions to build,
           echo test, and deploy your project.

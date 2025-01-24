@@ -5,9 +5,13 @@
   "main": "app.js",
   "scripts": {
     "test": "echo no tests yet",
-    "build": "node app.js"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  }
 }
