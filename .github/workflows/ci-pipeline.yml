@@ -74,11 +74,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List dist contents before Docker build (debug)
-        run: |
-          echo "Listing contents of dist before Docker build"
-          ls -al ./dist
-
       - name: Build docker image
         run: | 
           docker build -t dicom-app .
@@ -87,11 +82,6 @@ jobs:
       - name: Run Docker container
         run: | 
           docker run -d -p 80:80 dicom-app
-      
-      - name: List dist contents inside Docker container (debug)
-        run: |
-          docker exec dicom-app ls -al /path/to/dist/  # Adjust this path based on your Docker setup
-
 
   #Deploy to github pages
   deploy:
@@ -106,6 +96,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
+          path: ./dist
 
       - name: List the files in root directory(for verification)
         run: |
