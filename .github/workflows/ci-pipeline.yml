@@ -97,10 +97,10 @@ jobs:
         with:
           name: dist
 
-      - name: List the files in dist directory (for verification)
+      - name: List the files in term-project-2025-team-2(for verification)
         run: |
-          echo "Listing files in dist directory"
-          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2/dist  # This will show the contents of the downloaded artifact
+          echo "Listing files in term-project-2025-team-2 directory"
+          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
 
 
       - name: Deploy to github pages
