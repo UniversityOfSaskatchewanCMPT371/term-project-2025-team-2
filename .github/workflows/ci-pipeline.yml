@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: ./dist
+          path: ./dist/
 
   #Builds Docker image in ubuntu for nginx
   build_docker:
