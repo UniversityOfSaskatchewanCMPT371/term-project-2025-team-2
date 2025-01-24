@@ -82,11 +82,16 @@ jobs:
     needs: build_docker
 
     steps:
+      - name: List the files in dist directory (for verification)
+        run: |
+          echo "Listing files in dist directory"
+          dir ./dist 
+
       - name: Copy contents to a separate folder (for testing)
         run: |
           mkdir gh-pages-dir
           cp -r ./dist/* ./gh-pages-dir
-          
+
       - name: Deploy to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
