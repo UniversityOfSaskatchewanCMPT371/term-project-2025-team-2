@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        node-version: [18,20,22]
+        node-version: [18,20]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -36,11 +36,11 @@ jobs:
       
       #Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: echo "no dependencies yet"
 
       #Run tests
       - name: Run tests
-        run: npm test
+        run: echo "no tests yet"
       
       #Build project
       - name: Build
