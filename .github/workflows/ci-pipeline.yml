@@ -57,7 +57,16 @@ jobs:
         run: |
          echo > ./dist/.nojekyll
         shell: bash
-      
+
+  #Builds Docker image in ubuntu for nginx
+  build_docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Build docker image
         run: | 
           docker build -t dicom-app .
@@ -67,7 +76,12 @@ jobs:
         run: | 
           docker run -d -p 80:80 dicom-app
 
-      #Deploy to github pages
+  #Deploy to github pages
+  deploy:
+    runs-on: windows-latest
+    needs: build_docker
+
+    steps:
       - name: Deploy to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
