@@ -100,7 +100,8 @@ jobs:
       - name: List the files in dist directory (for verification)
         run: |
           echo "Listing files in dist directory"
-          dir ./dist 
+          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2/dist  # This will show the contents of the downloaded artifact
+
 
       - name: Deploy to github pages
         uses: peaceiris/actions-gh-pages@v3
