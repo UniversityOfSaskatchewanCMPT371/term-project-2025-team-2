@@ -48,16 +48,19 @@ jobs:
 
       #Check files in dist directory
       - name: List the files in dist
-        run: ls -Recurse ./dist
-      
+        run: |
+          echo "Listing files in dist directory"
+          dir ./dist  
+
       #Deploy to github pages
       - name: Deploy to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: ./dist
-
-
+          keep_files: false
+          allow_empty_commit: false
+          
       # Place holder for more actions
       - name: Run a multi-line script
         run: |
