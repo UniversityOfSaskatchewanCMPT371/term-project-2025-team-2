@@ -18,18 +18,105 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [18,20]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+      
+      #Install dependencies
+      - name: Install dependencies
+        run: npm install 
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      #Run tests
+      - name: Run tests
+        run: echo "no tests yet"
+      
+      #Build project
+      - name: Build
+        run: npm run build
 
-      # Runs a set of commands using the runners shell
+      #Check files in dist directory
+      - name: List the files in dist
+        run: |
+          echo "Listing files in dist directory"
+          dir ./dist
+
+      # Add a .nojekyll file to avoid issues with hidden files
+      - name: Add .nojekyll file
+        run: |
+         echo > ./dist/.nojekyll
+        shell: bash
+      
+      #Add the dist directory as an artifact to be used in deployment
+      - name: Upload dist as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+
+  #Builds Docker image in ubuntu for nginx
+  build_docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: | 
+          docker build -t dicom-app .
+      
+      #Run the container for testing
+      - name: Run Docker container
+        run: | 
+          docker run -d -p 80:80 dicom-app
+
+  #Deploy to github pages
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_docker
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+
+      - name: List the files in root directory(for verification)
+        run: |
+          echo "Listing files in term-project-2025-team-2 directory"
+          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
+
+      - name: List contents of dist (for verification)
+        run: |
+          echo "Listing contents of dist"
+          ls -al ./dist
+
+
+      - name: Deploy to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./dist
+          keep_files: false
+
+      # Place holder for more actions
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
