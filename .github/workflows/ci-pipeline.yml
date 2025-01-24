@@ -18,10 +18,9 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ${{matrix.os}}
+    runs-on: windows-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         node-version: [18,20,22]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -53,6 +52,7 @@ jobs:
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: ./
+
 
       # Place holder for more actions
       - name: Run a multi-line script
