@@ -4,7 +4,7 @@
   "description": "This project is a simple DICOM file tag editor that allows users to view and modify the metadata tags of DICOM files directly in the browser. DICOM (Digital Imaging and Communications in Medicine) files are commonly used in medical imaging systems, and this tool aims to provide a lightweight and user-friendly interface for interacting with these files' metadata.",
   "main": "app.js",
   "scripts": {
-    "test": "echo no tests yet",
+    "test": "qunit",
     "build": "webpack"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "globals": "^15.14.0",
     "html-webpack-plugin": "^5.6.3",
     "prettier": "3.4.2",
+    "qunit": "^2.24.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
   }
