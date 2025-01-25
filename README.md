@@ -22,7 +22,7 @@ The editor allows users to upload a DICOM file, view its tags (such as Patient N
 - **CSS**: Styling and layout for a responsive, clean user interface.
 - **JavaScript**: Handling of file uploads, parsing DICOM tags, and enabling tag editing functionality.
 - **PWAs (Progressive Web Apps)**: Enabling offline use and improved performance.
-- **[dicomParser.js](https://github.com/dcmjs-org/dicom-parser)**: A library used to parse DICOM files and extract metadata tags.
+- **[dicomParser.js](https://github.com/cornerstonejs/dicomParser)**: A library used to parse DICOM files and extract metadata tags.
 
 ## Installation
 
@@ -35,6 +35,10 @@ No installation is required for this application, as it runs entirely in your we
 1. Clone this repository:
 2. Open the `index.html` file in your web browser.
 3. Start using the DICOM tag editor by uploading a DICOM file.
+
+### Docker Container
+
+A Docker container is provided with Nginx used to sever the application.
 
 ## Usage
 
@@ -57,7 +61,7 @@ No installation is required for this application, as it runs entirely in your we
 
 ## License
 
-This project is licensed under TBD
+This project is licensed under MIT License
 
 ## Acknowledgements
 
