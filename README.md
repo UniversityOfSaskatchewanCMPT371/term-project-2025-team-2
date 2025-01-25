@@ -6,6 +6,8 @@ This project is a simple DICOM file tag editor that allows users to view and mod
 
 The editor allows users to upload a DICOM file, view its tags (such as Patient Name, Study Date, etc.), and modify the tag values. This application runs entirely in the browser, using HTML, JavaScript, and CSS.
 
+[GitHub Pages](https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/)
+
 ## Features
 
 - Upload a DICOM file to extract metadata.
