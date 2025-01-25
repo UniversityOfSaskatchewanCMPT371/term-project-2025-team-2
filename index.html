@@ -3,22 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DICOM Tag Editor</title>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="icons/favicon.ico">
 
     <link rel="manifest" href="manifest.json">
-    <title>DICOM Tag Editor</title>
 </head>
 <body>
-    <h1>DICOM TAG EDITOR APP</h1>
+    <header>
+        <h1>DICOM Tag Editor</h1>
+        <div class="header-buttons">
+            <button id="installBtn" class="installBtn" style="display: none;">Install</button>
+            <button class="open-sidebar-btn" onclick="toggleSidebar()">&#9776;</button>
+        </div>
+    </header>
 
-    <button id="installBtn" style="display: none;" >Install PWA</button>
+    <div id="sidebar">
+        <a href="#">Tags</a>
+        <a href="#">Edit</a>
+        <a href="#">Save</a>
+    </div>
 
-    <div id="text"></div>
+    <div class="main-content">
+        <h2>File Upload</h2>
+        <div id="text"></div>
+    </div>
 
-    <script src="app.js"></script>
+    <footer>
+        <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
+    </footer>
+
     <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
-
-
