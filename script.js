@@ -1,6 +1,10 @@
 
 // test function
-document.getElementById("text").textContent = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+//document.getElementById("text").textContent = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+
+function add (a, b) {
+    return a + b;
+}
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
@@ -11,3 +15,4 @@ function toggleSidebar() {
     }
 }
 
+export default { add };
