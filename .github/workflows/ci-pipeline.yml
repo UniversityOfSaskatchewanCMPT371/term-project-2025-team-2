@@ -38,6 +38,11 @@ jobs:
       - name: Install dependencies
         run: npm install 
 
+      # Run ESLint
+      - name: Lint with ESLint
+        run: npm run lint
+        continue-on-error: false
+
       #Run tests
       - name: Run tests
         run: echo "no tests yet"
@@ -87,6 +92,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build_docker
+    env: 
+      NODE_ENV: development
 
     steps:
       - name: Checkout code

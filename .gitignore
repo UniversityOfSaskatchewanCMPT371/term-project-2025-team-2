@@ -1,0 +1,19 @@
+#ignore node modules
+node_modules/
+
+# Editor-specific files
+*.log
+*.tmp
+
+.DS_Store
+
+#Temp files
+*.swp
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# Ignore local environment configs
+.env
+.env.local
