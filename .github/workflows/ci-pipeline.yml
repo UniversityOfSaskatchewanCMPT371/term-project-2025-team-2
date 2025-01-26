@@ -40,12 +40,7 @@ jobs:
 
       # Run ESLint
       - name: Lint with ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
-        continue-on-error: false
-
-      # Run Prettier
-      - name: Check code formatting using Prettier
-        run: npx prettier --check .
+        run: npm run lint
         continue-on-error: false
 
       #Run tests

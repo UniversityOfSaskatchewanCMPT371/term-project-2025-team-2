@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "qunit",
+    "lint": "eslint",
     "build": "webpack"
   },
   "keywords": [],
