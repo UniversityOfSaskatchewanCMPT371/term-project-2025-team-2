@@ -17,4 +17,4 @@ function toggleSidebar() {
     }
 }
 
-export default { add };
+export default { add, toggleSidebar };
