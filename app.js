@@ -1,3 +1,4 @@
+import { logMessage } from "./logger/logger.js";
 
 // Register the service worker - For PWA install
 if ('serviceWorker' in navigator) {
@@ -8,6 +9,7 @@ if ('serviceWorker' in navigator) {
             })
             .catch((error) => {
                 console.log('Service Worker registration failed:', error);
+                logMessage('error', 'Service Worker registration failed');
             });
     });
 }
@@ -48,5 +50,6 @@ window.addEventListener('beforeinstallprompt', (event) => {
 //Removed event to not trigger linter errors
 window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
+    logMessage('info', 'PWA was installed');
     installBtn.style.display = 'none'; // Hide install button after installation
 });
