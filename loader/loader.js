@@ -30,7 +30,6 @@ export function parseDicom(uint8Array) {
 
         // Iterate over the elements and display tags
         Object.keys(dataSet.elements).forEach(tag => {
-            const element = dataSet.elements[tag];
             const tagName = dicomTagDictionary[`${tag.toString(17).toUpperCase()}`] // || `0x${tag.toString(16).toUpperCase()}`; // Look up the tag name
             const tagValue = dataSet.string(tag) || 'N/A'; // Get the tag value, or display 'N/A'
 
