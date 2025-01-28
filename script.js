@@ -1,4 +1,5 @@
 import { logMessage } from './logger/logger.js';
+import {  readFile } from './loader/loader.js';
 
 // test fucntion to setup testing framework
 function add(a, b) {
@@ -53,6 +54,7 @@ function setupFileUpload() {
         const files = event.target.files;
         if (files.length > 0) {
             displayFileInfo(files[0]);
+            readFile(files[0]);
         }
     });
 

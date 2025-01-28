@@ -42,12 +42,28 @@
 
     </div>
 
+    <table id="dicom-tags" style="display:none;">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="tags-body">
+            <!-- Tags will be populated here -->
+        </tbody>
+    </table>
+
     <footer>
         <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
     </footer>
 
+    <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js" defer></script>
+    
     <script type="module" src="./script.js"></script>
     <script type="module" src="app.js"></script>
+
 </body>
 
 </html>
