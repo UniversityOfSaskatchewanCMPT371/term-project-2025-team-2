@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +11,13 @@
 
     <link rel="manifest" href="manifest.json">
 <script defer src="bundle.js"></script></head>
+
 <body>
     <header>
         <h1>DICOM Tag Editor</h1>
         <div class="header-buttons">
             <button id="installBtn" class="installBtn" style="display: none;">Install</button>
-            <button class="open-sidebar-btn" onclick="toggleSidebar()">&#9776;</button>
+            <button id="sidebarCollapse" class="open-sidebar-btn">&#9776;</button>
         </div>
     </header>
 
@@ -26,15 +28,26 @@
     </div>
 
     <div class="main-content">
+        
         <h2>File Upload</h2>
-        <div id="text"></div>
+
+        <div id="drop-area">
+            <span>Drag & Drop files here or click below to select</span>
+        </div>
+
+        <button id="open-file-btn">Open File</button>
+        <input type="file" id="file-input">
+
+        <div id="file-info"></div>
+
     </div>
 
     <footer>
         <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
     </footer>
 
-    <script type="module">import { toggleSidebar } from "./script.js"; module.toggleSidebar = toggleSidebar; </script>
+    <script type="module" src="./script.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
