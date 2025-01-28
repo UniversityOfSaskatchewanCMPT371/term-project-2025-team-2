@@ -7,10 +7,7 @@ const urlsToCache = [
     '/app.js',
     '/icons/icon-192.png',
     '/icons/icon-512.png',
-    '/script.js',
-    '/loader/loader.js',
-    '/tagDictionary/dictionary.js',
-    'logger/logger.js',
+    '/script.js'
 ];
 
 // Install service worker and cache the assets
