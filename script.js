@@ -1,3 +1,4 @@
+import { logMessage } from './logger/logger.js';
 
 // test fucntion to setup testing framework
 function add(a, b) {
@@ -57,9 +58,9 @@ function setupFileUpload() {
 
     function displayFileInfo(file) {
         fileInfo.textContent = `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`;
+        logMessage("info", `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`);
     }
 }
-
 
 
 if (typeof document != 'undefined') {
