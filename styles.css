@@ -85,3 +85,27 @@ footer {
   width: 100%;
 }
 
+#drop-area {
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+#drop-area.hover {
+  background-color: #f0f0f0;
+  border-color: #333;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+
+

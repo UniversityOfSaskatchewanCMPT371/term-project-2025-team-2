@@ -23,5 +23,8 @@
     "qunit": "^2.24.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "quint": "^1.2.0"
   }
 }
