@@ -1,6 +1,9 @@
 
+let dicomParser;
 if (typeof document != 'undefined') {
-    const dicomParser = window.dicomParser;
+    dicomParser = window.dicomParser;
+} else {
+    dicomParser = "undefined";
 }
 
 
