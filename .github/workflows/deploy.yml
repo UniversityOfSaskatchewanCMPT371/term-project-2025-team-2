@@ -1,14 +1,17 @@
 name: Deploy_Gh_pages
 
 on: 
-    push: 
-        branches: ["hotfix_workflow"]
+    workflow_run:
+        workflows: ["CI"]
+        types: 
+            - completed
 
     workflow_dispatch:
 
 jobs:
 #Deploy to github pages
   deploy:
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'hotfix_workflow'
     runs-on: ubuntu-latest
     env: 
       NODE_ENV: development
