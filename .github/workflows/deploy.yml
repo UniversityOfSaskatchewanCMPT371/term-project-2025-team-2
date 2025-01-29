@@ -1,0 +1,42 @@
+name: Deploy_Gh_pages
+
+on: 
+    push: 
+        branches: ["hotfix_workflow"]
+
+    workflow_dispatch:
+
+jobs:
+#Deploy to github pages
+  deploy:
+    runs-on: ubuntu-latest
+    env: 
+      NODE_ENV: development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+
+      - name: List the files in root directory(for verification)
+        run: |
+          echo "Listing files in term-project-2025-team-2 directory"
+          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
+
+      - name: List contents of dist (for verification)
+        run: |
+          echo "Listing contents of dist"
+          ls -al ./dist
+
+
+      - name: Deploy to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./dist
+          keep_files: false
