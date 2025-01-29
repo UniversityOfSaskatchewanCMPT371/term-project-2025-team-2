@@ -11,7 +11,7 @@ on:
 jobs:
 #Deploy to github pages
   deploy:
-    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'hotfix_workflow'
+    if: github.event.workflow_run.event == 'push' && github.ref == 'refs/heads/hotfix_workflow'
     runs-on: ubuntu-latest
     env: 
       NODE_ENV: development
