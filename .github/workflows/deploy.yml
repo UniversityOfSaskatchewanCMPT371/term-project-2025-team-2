@@ -5,13 +5,15 @@ on:
         workflows: ["CI"]
         types: 
             - completed
+    
+    push: 
+        branches: [hotfix_workflow]
 
     workflow_dispatch:
 
 jobs:
 #Deploy to github pages
   deploy:
-    if: github.event.workflow_run.event == 'push' && github.ref == 'refs/heads/hotfix_workflow'
     runs-on: ubuntu-latest
     env: 
       NODE_ENV: development
