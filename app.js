@@ -1,4 +1,4 @@
-import { logMessage } from "./logger/logger.js";
+
 
 // Register the service worker - For PWA install
 if ('serviceWorker' in navigator) {
@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
             })
             .catch((error) => {
                 console.log('Service Worker registration failed:', error);
-                logMessage('error', 'Service Worker registration failed');
+                //logMessage('error', 'Service Worker registration failed');
             });
     });
 }

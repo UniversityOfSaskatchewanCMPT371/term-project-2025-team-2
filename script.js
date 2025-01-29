@@ -1,5 +1,13 @@
-import { logMessage } from './logger/logger.js';
-import {  readFile } from './loader/loader.js';
+import { Logger } from './logger/logger.js';
+import { readFile } from './loader/loader.js';
+
+const logger = new Logger();
+document.getElementById("log-file-picker").addEventListener("click", () =>{
+    logger.pickHandle();
+})
+document.getElementById("log-file-close").addEventListener("click", () =>{
+    logger.closeFile()
+})
 
 // test fucntion to setup testing framework
 function add(a, b) {
@@ -60,7 +68,7 @@ function setupFileUpload() {
 
     function displayFileInfo(file) {
         fileInfo.textContent = `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`;
-        logMessage("info", `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`);
+        logger.localLog("INFO", fileInfo.textContent);
     }
 }
 
