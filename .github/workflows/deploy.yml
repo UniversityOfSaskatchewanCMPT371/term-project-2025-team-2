@@ -1,10 +1,9 @@
-name: Deploy_Gh_pages
+name: Deploy GHpages
 
 on: 
     workflow_run:
-        workflows: ["CI"]
-        types: 
-            - completed
+        workflows: [CI]
+        types: completed
     
     push: 
         branches: [hotfix_workflow]
