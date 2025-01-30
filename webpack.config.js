@@ -1,15 +1,15 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require("path")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, './app.js')
+        index: path.resolve(__dirname, "./app.js"),
     },
-    output:{
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "bundle.js",
     },
 
     // Module rules to deal with different type of files
@@ -18,7 +18,7 @@ module.exports = {
             // Handling CSS files
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                use: ["style-loader", "css-loader"],
             },
         ],
     },
@@ -28,19 +28,19 @@ module.exports = {
         new CleanWebpackPlugin(),
 
         new HtmlWebpackPlugin({
-            template: './index.html',
-            filename: 'index.html'
+            template: "./index.html",
+            filename: "index.html",
         }),
 
         new CopyWebpackPlugin({
-            patterns:[
-                {from: 'styles.css', to: 'styles.css'},
-                {from: 'manifest.json', to: 'manifest.json'},
-                {from: 'icons/', to: 'icons/'},
-                {from: 'service-worker.js', to: 'service-worker.js'},
-                {from: 'script.js', to: 'script.js'}
+            patterns: [
+                { from: "styles.css", to: "styles.css" },
+                { from: "manifest.json", to: "manifest.json" },
+                { from: "icons/", to: "icons/" },
+                { from: "service-worker.js", to: "service-worker.js" },
+                { from: "script.js", to: "script.js" },
             ],
         }),
     ],
-    mode: 'development',
-};
+    mode: "development",
+}

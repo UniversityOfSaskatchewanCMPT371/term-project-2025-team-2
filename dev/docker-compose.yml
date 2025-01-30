@@ -1,14 +1,13 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3535:80"
-    volumes:
-      - ..:/var/www/html
-    tty: true
-    stdin_open: true
-    
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "3535:80"
+        volumes:
+            - ..:/var/www/html
+        tty: true
+        stdin_open: true
