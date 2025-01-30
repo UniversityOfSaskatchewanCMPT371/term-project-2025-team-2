@@ -5,7 +5,7 @@ export const logger = new Logger();
 
 
 // Added a comment to bypass the no-unused-vars for now
-// eslint-disable-next-line no-unused-vars
+ 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar.style.right === "0px") {

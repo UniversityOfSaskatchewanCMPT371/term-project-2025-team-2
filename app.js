@@ -50,6 +50,6 @@ window.addEventListener('beforeinstallprompt', (event) => {
 //Removed event to not trigger linter errors
 window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
-    logMessage('info', 'PWA was installed');
+    // logMessage('info', 'PWA was installed');
     installBtn.style.display = 'none'; // Hide install button after installation
 });
