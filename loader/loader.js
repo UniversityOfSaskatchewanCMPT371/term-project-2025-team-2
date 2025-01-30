@@ -5,8 +5,10 @@ if (typeof document != "undefined") {
     dicomParser = "undefined"
 }
 
-import { dicomTagDictionary } from "../tagDictionary/dictionary.js"
+import { TagDictionary } from "../tagDictionary/dictionary.js"
 import { logger } from "../script.js"
+
+const tagDictionary = new TagDictionary()
 
 export function readFile(file) {
     const reader = new FileReader()
@@ -39,7 +41,7 @@ function parseDicom(uint8Array) {
         // Iterate over the elements and display tags
         Object.keys(dataSet.elements).forEach((tag) => {
             const tagName =
-                dicomTagDictionary[`${tag.toString(17).toUpperCase()}`] // || `0x${tag.toString(16).toUpperCase()}`; // Look up the tag name
+                tagDictionary.lookup(`${tag.toString(16).toUpperCase()}`)
             const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
 
             const row = document.createElement("tr")
