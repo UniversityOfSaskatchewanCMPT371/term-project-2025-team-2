@@ -9,6 +9,7 @@ const urlsToCache = [
     "/script.js",
     "/loader/loader.js",
     "/tagDictionary/dictionary.js",
+    "tagDictionary/standardDataElements.js",
     "/logger/logger.js",
 ]
 
