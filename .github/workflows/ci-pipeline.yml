@@ -51,7 +51,7 @@ jobs:
       - name: Verify test directory
         run: |
           echo "Listing files in root directory"
-          ls -al ./ 
+          Get-ChildItem -Force -Recurse .
 
 
       #Run browser test
