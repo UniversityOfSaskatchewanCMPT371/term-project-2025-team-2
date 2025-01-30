@@ -47,6 +47,10 @@ jobs:
       - name: Run tests
         run: echo "no tests yet"
 
+      #Validate contents of test directory
+      - name: Validate test directory
+        run: Get-ChildItem -Force -Recurse .\test
+
       #Run browser test
       - name: Run browser test
         run: npm run test:browser

@@ -6,7 +6,10 @@ const path = require("path");
     const page = await browser.newPage();
 
     const filePath = path.join(process.cwd(), 'test', 'test_runner.html');
+    console.log('File path:', filePath); 
+    
     const fileUrl = `file://${filePath}`;
+    console.log('File Url:', fileUrl); 
 
     await page.goto(fileUrl);
 
