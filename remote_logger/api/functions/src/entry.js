@@ -22,7 +22,7 @@ const addLog = async (req, res) => {
       message: "entry added successfully",
       data: logObject,
     });
-  } catch (error) {
+  } catch  {
     res.status(500).json("We found an error posting your request!");
   }
 };
