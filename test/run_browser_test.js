@@ -11,10 +11,10 @@ const path = require("path");
     const fileUrl = `file://${filePath}`;
     console.log('File Url:', fileUrl); 
 
-    await page.goto(fileUrl);
+    await page.goto(fileUrl, { waitUntil: 'domcontentloaded' });
 
     const result = await page.evaluate(() => {
-        console.log(QUnit.config.stats.bad);
+        console.log(QUnit.config.stats);
         return QUnit.config.stats.bad === 0;
       });
 
