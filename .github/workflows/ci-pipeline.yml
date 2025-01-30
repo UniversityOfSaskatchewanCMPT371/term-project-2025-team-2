@@ -46,13 +46,6 @@ jobs:
       #Run tests
       - name: Run tests
         run: echo "no tests yet"
-      
-      #Check for test directory (verification)
-      - name: Verify test directory
-        run: |
-          echo "Listing files in root directory"
-          Get-ChildItem -Force -Recurse .
-
 
       #Run browser test
       - name: Run browser test
