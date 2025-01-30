@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: [ "main","development" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main","development" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -51,24 +51,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      #Check files in dist directory
-      - name: List the files in dist
-        run: |
-          echo "Listing files in dist directory"
-          dir ./dist
-
-      # Add a .nojekyll file to avoid issues with hidden files
-      - name: Add .nojekyll file
-        run: |
-         echo > ./dist/.nojekyll
-        shell: bash
-      
-      #Add the dist directory as an artifact to be used in deployment
-      - name: Upload dist as an artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: ./dist
 
   #Builds Docker image in ubuntu for nginx
   build_docker:
@@ -87,42 +69,6 @@ jobs:
       - name: Run Docker container
         run: | 
           docker run -d -p 80:80 dicom-app
-
-  #Deploy to github pages
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build_docker
-    env: 
-      NODE_ENV: development
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download dist artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: ./dist
-
-      - name: List the files in root directory(for verification)
-        run: |
-          echo "Listing files in term-project-2025-team-2 directory"
-          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
-
-      - name: List contents of dist (for verification)
-        run: |
-          echo "Listing contents of dist"
-          ls -al ./dist
-
-
-      - name: Deploy to github pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: ./dist
-          keep_files: false
-
       # Place holder for more actions
       - name: Run a multi-line script
         run: |
