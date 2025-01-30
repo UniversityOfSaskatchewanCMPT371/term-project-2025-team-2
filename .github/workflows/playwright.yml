@@ -1,9 +1,9 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, development ]
+    branches: [ main, development, runner-qunit ]
   pull_request:
-    branches: [ main, development ]
+    branches: [ main, development, runner-qunit ]
 jobs:
   test:
     timeout-minutes: 60
