@@ -83,7 +83,7 @@ export class Logger {
       body: JSON.stringify({
         level: level,
         msg: message,
-        userAgent: userAgent
+        userAgent: userAgent || "unknown"
       })
     }).then(response => {
       if (response.ok) {
