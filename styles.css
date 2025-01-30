@@ -1,51 +1,51 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e0f7fa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e0f7fa;
 }
 header {
-    background-color: #0277bd;
-    color: white;
-    padding: 10px 20px;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    z-index: 1;
+  background-color: #0277bd;
+  color: white;
+  padding: 10px 20px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 header h1 {
     margin: 0;
     flex-grow: 1;
 }
 .header-buttons {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 .installBtn {
-    background-color: #0288d1;
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+  background-color: #0288d1;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
 }
 .installBtn:hover {
     background-color: #01579b;
 }
 #sidebar {
-    position: fixed;
-    top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100%;
-    background-color: #01579b;
-    overflow-x: hidden;
-    transition: 0.3s;
-    padding-top: 60px;
-    color: white;
-    z-index: 0;
+  position: fixed;
+  top: 10vh;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #01579b;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  color: white;
+  z-index: 0;
 }
 #sidebar a {
     padding: 8px 8px 8px 32px;
@@ -69,10 +69,19 @@ header h1 {
     color: #f1f1f1;
 }
 .main-content {
-    padding: 20px;
+  width: 400px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #333;
+  margin: auto;
+  padding: 20px;
 }
 .open {
-    right: 0;
+  right: 0;
 }
 footer {
     background-color: #0277bd;
@@ -85,16 +94,21 @@ footer {
 }
 
 #drop-area {
-    width: 300px;
-    height: 200px;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    color: #777;
-    margin-bottom: 20px;
+  width: 400px;
+  height: 250px;
+  border: 2px dashed #03a9f4;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #333;
+  margin: auto;
+  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #drop-area.hover {
@@ -122,3 +136,42 @@ th,
 td {
     background-color: #f2f2f2;
 }
+
+
+#open-file-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  padding: 15px;
+  background: linear-gradient(135deg, #0277bd, #01579b);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+  text-align: center;
+}
+
+button {
+  padding: 16px 32px;
+  border: none;
+  background: linear-gradient(135deg, #03a9f4, #0288d1);
+  color: white;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 15px;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0288d1, #01579b);
+  transform: scale(1.1);
+}
+
