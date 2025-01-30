@@ -7,7 +7,13 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="https://code.jquery.com/qunit/qunit-2.24.1.js"></script>
-  <script src="./test/test_test.js"></script>
-  <script src="./test/logger_test.js"></script>
+  <script>
+    // Log QUnit configuration or stats
+    QUnit.done(function(details) {
+      console.log('Tests completed: ', details);
+      console.log('Failed tests:', details.failed);
+    });
+  </script>
+  <script src='./test/logger_test.js'></script>
 </body>
 </html>
