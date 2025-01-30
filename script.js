@@ -42,6 +42,8 @@ function setupFileUpload() {
         const files = event.dataTransfer.files
         if (files.length > 0) {
             displayFileInfo(files[0])
+            // dicom tag parser function
+            readFile(files[0])
         }
     })
 
