@@ -1,11 +1,13 @@
-import { Logger } from './logger/logger.js';
-import { readFile } from './loader/loader.js';
+import { logMessage } from './logger/logger.js';
+import {  readFile } from './loader/loader.js';
 
-export const logger = new Logger();
-
+// test fucntion to setup testing framework
+function add(a, b) {
+    return a + b;
+}
 
 // Added a comment to bypass the no-unused-vars for now
- 
+// eslint-disable-next-line no-unused-vars
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar.style.right === "0px") {
@@ -52,14 +54,13 @@ function setupFileUpload() {
         const files = event.target.files;
         if (files.length > 0) {
             displayFileInfo(files[0]);
-            // dicom tag parser function
             readFile(files[0]);
         }
     });
 
     function displayFileInfo(file) {
         fileInfo.textContent = `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`;
-        logger.log("INFO", fileInfo.textContent);
+        logMessage("info", `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`);
     }
 }
 
@@ -70,12 +71,6 @@ if (typeof document != 'undefined') {
     document.addEventListener("DOMContentLoaded", () => {
         setupFileUpload();
     });
-
-    document.getElementById("log-file-picker").addEventListener("click", () =>{
-        logger.pickHandle();
-    })
-    document.getElementById("log-file-close").addEventListener("click", () =>{
-        logger.closeFile()
-    })
-    
 }
+
+export default { add };

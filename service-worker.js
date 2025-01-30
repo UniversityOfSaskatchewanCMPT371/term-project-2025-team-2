@@ -10,7 +10,7 @@ const urlsToCache = [
     '/script.js',
     '/loader/loader.js',
     '/tagDictionary/dictionary.js',
-    '/logger/logger.js',
+    'logger/logger.js',
 ];
 
 // Install service worker and cache the assets
