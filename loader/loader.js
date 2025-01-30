@@ -40,8 +40,9 @@ function parseDicom(uint8Array) {
 
         // Iterate over the elements and display tags
         Object.keys(dataSet.elements).forEach((tag) => {
-            const tagName =
-                tagDictionary.lookup(`${tag.toString(16).toUpperCase()}`)
+            const tagName = tagDictionary.lookup(
+                `${tag.toString(16).toUpperCase()}`
+            )
             const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
 
             const row = document.createElement("tr")

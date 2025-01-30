@@ -1,4 +1,4 @@
-import { standardDataElements } from "./standardDataElements.js";
+import { standardDataElements } from "./standardDataElements.js"
 
 /**
  * TagDictionary class
@@ -10,7 +10,7 @@ export class TagDictionary {
      * @constructor
      */
     constructor() {
-        this.dicomTagDictionary = standardDataElements;
+        this.dicomTagDictionary = standardDataElements
         // this.dicomTagDictionary = {
         //     X00080005: "Specific Character Set",
         //     X00080008: "Image Type",
@@ -64,11 +64,10 @@ export class TagDictionary {
      * @returns
      */
     lookup(tag) {
-
-        let tagName;
+        let tagName
         try {
             tagName = this.dicomTagDictionary[tag.slice(1)].name
-        } catch (error) {
+        } catch {
             tagName = "Unknown"
         }
 
