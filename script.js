@@ -59,7 +59,7 @@ function setupFileUpload() {
 
     function displayFileInfo(file) {
         fileInfo.textContent = `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`;
-        logger.logMessage("INFO", fileInfo.textContent);
+        logger.log("INFO", fileInfo.textContent);
     }
 }
 
