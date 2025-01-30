@@ -6,8 +6,9 @@ if (typeof document != 'undefined') {
     dicomParser = "undefined";
 }
 
-
 import { dicomTagDictionary } from '../tagDictionary/dictionary.js';
+import { logger } from "../script.js"
+
 
 export function readFile(file) {
     const reader = new FileReader();
@@ -20,10 +21,11 @@ export function readFile(file) {
     reader.readAsArrayBuffer(file);
 }
 
-export function parseDicom(uint8Array) {
+function parseDicom(uint8Array) {
     try {
         // Parsing the DICOM file using dicomParser
-        console.log("Parsing DICOM file...");
+        logger.log("INFO", "Parsing DICOM file");
+
         const dataSet = dicomParser.parseDicom(uint8Array);
 
         // Check if parsing succeeded

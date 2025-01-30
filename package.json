@@ -8,6 +8,7 @@
     "lint": "eslint",
     "build": "webpack"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
