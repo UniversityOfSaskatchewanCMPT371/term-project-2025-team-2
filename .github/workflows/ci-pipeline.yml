@@ -43,10 +43,6 @@ jobs:
         run: npm run lint
         continue-on-error: false
 
-      #Run tests
-      - name: Run tests
-        run: echo "no tests yet"
-
       #Validate contents of test directory
       - name: Validate test directory
         run: Get-ChildItem -Force -Recurse .\test
