@@ -38,7 +38,7 @@ jobs:
       - name: Add .nojekyll file
         run: echo > ./dist/.nojekyll
 
-        
+
       - name: List contents of dist (for verification)
         run: |
           echo "Listing contents of dist"

@@ -38,7 +38,11 @@ module.exports = {
                 {from: 'manifest.json', to: 'manifest.json'},
                 {from: 'icons/', to: 'icons/'},
                 {from: 'service-worker.js', to: 'service-worker.js'},
-                {from: 'script.js', to: 'script.js'}
+                {from: 'script.js', to: 'script.js'},
+                {from: 'loader/', to: 'loader/'},
+                {from: 'tagDictionary/', to: 'tagDictionary/'},
+                {from: 'logger/', to: 'logger/'}
+
             ],
         }),
     ],
