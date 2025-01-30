@@ -1,10 +1,8 @@
 name: Deploy GHpages
 
 on: 
-    workflow_run:
-        workflows: [CI]
-        types: 
-            - completed
+    push:
+        branches: ["hotfix_workflow"]
 
     workflow_dispatch:
 
@@ -12,7 +10,9 @@ jobs:
 #Deploy to github pages
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    strategy: 
+        matrix:
+            node-version: [18,20]
     env: 
       NODE_ENV: development
 
@@ -20,17 +20,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download dist artifact
-        uses: actions/download-artifact@v3
+        # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          name: dist
-          path: ./dist
+            node-version: ${{matrix.node-version}}
 
-      - name: List the files in root directory(for verification)
-        run: |
-          echo "Listing files in term-project-2025-team-2 directory"
-          ls -al /home/runner/work/term-project-2025-team-2/term-project-2025-team-2 # This will show the contents of the downloaded artifact
+        #Install dependencies
+      - name: Install dependencies
+        run: npm install 
 
+        #Build project
+      - name: Build
+        run: npm run build
+
+        # Add a .nojekyll file to avoid issues with hidden files
+      - name: Add .nojekyll file
+        run: echo > ./dist/.nojekyll
+
+        
       - name: List contents of dist (for verification)
         run: |
           echo "Listing contents of dist"
