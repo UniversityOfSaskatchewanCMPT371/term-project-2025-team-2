@@ -7,13 +7,14 @@ const path = require("path");
 
     const filePath = path.join(process.cwd(), 'test', 'test_runner.html');
     console.log('File path:', filePath); 
-    
+
     const fileUrl = `file://${filePath}`;
     console.log('File Url:', fileUrl); 
 
     await page.goto(fileUrl);
 
     const result = await page.evaluate(() => {
+        console.log(QUnit.config.stats.bad);
         return QUnit.config.stats.bad === 0;
       });
 
