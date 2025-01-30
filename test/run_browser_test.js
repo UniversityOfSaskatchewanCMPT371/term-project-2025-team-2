@@ -1,10 +1,14 @@
 const puppeteer = require("puppeteer");
+const path = require("path");
 
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto("./test/test_runner.html");
+    const filePath = path.join(process.cwd(), 'test', 'test_runner.html');
+    const fileUrl = `file://${filePath}`;
+
+    await page.goto(fileUrl);
 
     const result = await page.evaluate(() => {
         return QUnit.config.stats.bad === 0;
