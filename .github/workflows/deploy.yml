@@ -2,18 +2,18 @@ name: Deploy GHpages
 
 on: 
     push:
-        branches: [ "main", "development" ]
+        branches: ["main", "development"]
 
     workflow_dispatch:
 
 jobs:
-#Deploy to github pages
+  #Deploy to github pages
   deploy:
     runs-on: ubuntu-latest
-    strategy: 
-        matrix:
-            node-version: [18,20]
-    env: 
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    env:
       NODE_ENV: development
 
     steps:
@@ -24,11 +24,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-            node-version: ${{matrix.node-version}}
+          node-version: ${{matrix.node-version}}
 
         #Install dependencies
       - name: Install dependencies
-        run: npm install 
+        run: npm install
 
         #Build project
       - name: Build
@@ -38,12 +38,10 @@ jobs:
       - name: Add .nojekyll file
         run: echo > ./dist/.nojekyll
 
-
       - name: List contents of dist (for verification)
         run: |
           echo "Listing contents of dist"
           ls -al ./dist
-
 
       - name: Deploy to github pages
         uses: peaceiris/actions-gh-pages@v3
