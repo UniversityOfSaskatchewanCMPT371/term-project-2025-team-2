@@ -43,10 +43,12 @@ function parseDicom(uint8Array) {
             const tagName = tagDictionary.lookup(
                 `${tag.toString(16).toUpperCase()}`
             )
-            const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
-            if(tagValue === "Unknown"){
+            
+            if(tagName === "Unknown"){
                 logger.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`)
             }
+
+            const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
 
             const row = document.createElement("tr")
 
