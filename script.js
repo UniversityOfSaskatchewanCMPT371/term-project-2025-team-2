@@ -5,7 +5,7 @@ export const logger = new Logger();
 
 
 // Added a comment to bypass the no-unused-vars for now
- 
+
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar.style.right === "0px") {
@@ -64,6 +64,7 @@ function setupFileUpload() {
 }
 
 
+
 if (typeof document != 'undefined') {
     document.getElementById('sidebarCollapse').addEventListener('click', toggleSidebar);
 
@@ -71,11 +72,11 @@ if (typeof document != 'undefined') {
         setupFileUpload();
     });
 
-    document.getElementById("log-file-picker").addEventListener("click", () =>{
+    document.getElementById("log-file-picker").addEventListener("click", () => {
         logger.pickHandle();
     })
-    document.getElementById("log-file-close").addEventListener("click", () =>{
+    document.getElementById("log-file-close").addEventListener("click", () => {
         logger.closeFile()
     })
-    
+
 }
