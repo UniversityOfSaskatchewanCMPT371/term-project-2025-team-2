@@ -2,7 +2,7 @@ name: Deploy GHpages
 
 on: 
     push:
-        branches: ["hotfix_workflow"]
+        branches: ["main","development"]
 
     workflow_dispatch:
 
