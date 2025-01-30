@@ -1,12 +1,4 @@
-
-let dicomParser;
-if (typeof document != 'undefined') {
-    dicomParser = window.dicomParser;
-} else {
-    dicomParser = "undefined";
-}
-
-
+const dicomParser = window.dicomParser;
 import { dicomTagDictionary } from '../tagDictionary/dictionary.js';
 
 export function readFile(file) {
