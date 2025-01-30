@@ -8,7 +8,7 @@ if (typeof document != "undefined") {
 import { TagDictionary } from "../tagDictionary/dictionary.js"
 import { logger } from "../script.js"
 
-const tagDictionary = new TagDictionary()
+const tagDictionary = new TagDictionary();
 
 export function readFile(file) {
     const reader = new FileReader()
@@ -44,6 +44,9 @@ function parseDicom(uint8Array) {
                 `${tag.toString(16).toUpperCase()}`
             )
             const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
+            if(tagValue === "Unknown"){
+                logger.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`)
+            }
 
             const row = document.createElement("tr")
 

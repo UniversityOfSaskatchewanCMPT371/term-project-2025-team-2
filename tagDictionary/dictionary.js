@@ -10,6 +10,7 @@ export class TagDictionary {
      * @constructor
      */
     constructor() {
+
         this.dicomTagDictionary = standardDataElements
         // this.dicomTagDictionary = {
         //     X00080005: "Specific Character Set",
@@ -61,9 +62,10 @@ export class TagDictionary {
     /**
      * lookup - Look up the name of a DICOM tag from its tag number
      * @param {string} tag
-     * @returns
+     * @returns {string} The name of the DICOM tag or Unknown if not found
      */
     lookup(tag) {
+
         let tagName
         try {
             tagName = this.dicomTagDictionary[tag.slice(1)].name
