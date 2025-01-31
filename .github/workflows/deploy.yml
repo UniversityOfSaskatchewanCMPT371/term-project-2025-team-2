@@ -1,10 +1,10 @@
 name: Deploy GHpages
 
-on:
-  push:
-    branches: ["main", "development"]
+on: 
+    push:
+        branches: ["main", "development"]
 
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
   #Deploy to github pages

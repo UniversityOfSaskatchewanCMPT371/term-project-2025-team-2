@@ -6,15 +6,15 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: ["main", "development"]
+    branches: [ "main", "development" ]
   pull_request:
-    branches: ["main", "development"]
+    branches: [ "main", "development" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
+jobs:    
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -43,10 +43,18 @@ jobs:
         run: npm run lint
         continue-on-error: false
 
-      #Run tests
-      - name: Run tests
-        run: echo "no tests yet"
+      #Validate contents of test directory
+      - name: Validate test directory
+        run: Get-ChildItem -Force -Recurse .\test
 
+      #Installs playwright browsers with all its dependencies
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      #Run browser test
+      - name: Run browser test
+        run: npm run test:browser
+      
       #Build project
       - name: Build
         run: npm run build
