@@ -52,6 +52,12 @@
           <button id="load"
             class="w-36 bg-orange-500 text-white py-3 rounded-md hover:bg-orange-600 transition duration-200 m-4">Refresh
             Data</button>
+          <button id="next-button"
+            class="w-36 bg-orange-500 text-white py-3 rounded-md hover:bg-orange-600 transition duration-200 m-4">Next
+          </button>
+          <button id="download"
+            class="w-36 bg-orange-500 text-white py-3 rounded-md hover:bg-orange-600 transition duration-200 m-4">Download
+            Logs</button>
           <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Search all columns"
             class="w-48 p-3 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400" />
         </div>
@@ -89,28 +95,137 @@
           });
         });
 
+        let lastVisible = null; // Track the last document fetched
+        let loading = false; // Prevent multiple fetches at the same time
+
         function loadDatabase() {
-          document.getElementById('table-body').innerHTML = '';
-          firebase.firestore().collection('logs').orderBy('date', "desc").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              document.getElementById('table-body').innerHTML += `
-                <tr>
-                  <td class="border px-4 py-2 ${doc.data().level == "error" ? "text-red-600" : ""}">${doc.data().level}</td>
-                  <td class="border px-4 py-2">${doc.data().msg}</td>
-                  <td class="border px-4 py-2">${new Date(doc.data().date).toLocaleString() || ""}</td>
-                  <td class="border px-4 py-2">${doc.data().ip || ""}</td>
-                  <td class="border px-4 py-2">${doc.data().userAgent || ""}</td>
-                </tr>
-              `;
+          if (loading) return; // Avoid multiple requests simultaneously
+          loading = true;
+
+          const tableBody = document.getElementById('table-body');
+          tableBody.innerHTML = ''; // Clear the table before loading new data
+
+          firebase.firestore().collection('logs')
+            .orderBy('date', 'desc')
+            .limit(15) // Fetch the first 15 records
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                tableBody.innerHTML += `
+                  <tr>
+                    <td class="border px-4 py-2 ${doc.data().level == 'error' ? 'text-red-600' : ''}">${doc.data().level}</td>
+                    <td class="border px-4 py-2">${doc.data().msg}</td>
+                    <td class="border px-4 py-2">${new Date(doc.data().date).toLocaleString() || ''}</td>
+                    <td class="border px-4 py-2">${doc.data().ip || ''}</td>
+                    <td class="border px-4 py-2">${doc.data().userAgent || ''}</td>
+                  </tr>
+                `;
+              });
+
+              // Update the last visible document for pagination
+              lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+              // Enable the Next button (if you have one) after loading
+              document.getElementById('next-button').disabled = false;
+
+              loading = false; // Allow future requests
             });
-          });
         }
+
+        function loadNextPage() {
+          if (loading || !lastVisible) return; // Check if there's a next page and avoid multiple requests
+
+          loading = true;
+
+          const tableBody = document.getElementById('table-body');
+          tableBody.innerHTML = '';
+
+          // Load the next set of 15 items
+          firebase.firestore().collection('logs')
+            .orderBy('date', 'desc')
+            .startAfter(lastVisible) // Start after the last visible document
+            .limit(15)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                tableBody.innerHTML += `
+                  <tr>
+                    <td class="border px-4 py-2 ${doc.data().level == 'error' ? 'text-red-600' : ''}">${doc.data().level}</td>
+                    <td class="border px-4 py-2">${doc.data().msg}</td>
+                    <td class="border px-4 py-2">${new Date(doc.data().date).toLocaleString() || ''}</td>
+                    <td class="border px-4 py-2">${doc.data().ip || ''}</td>
+                    <td class="border px-4 py-2">${doc.data().userAgent || ''}</td>
+                  </tr>
+                `;
+              });
+
+              // Update the last visible document for future pagination
+              lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+              // Disable the Next button if there are no more documents
+              if (querySnapshot.docs.length < 15) {
+                document.getElementById('next-button').disabled = true;
+              }
+
+              loading = false; // Allow future requests
+            });
+        }
+
+        function downloadLogsAsJSON() {
+          // Fetch all logs from the Firestore collection
+          firebase.firestore().collection('logs')
+            .orderBy('date', 'desc')  // Sort by date descending
+            .get()
+            .then((querySnapshot) => {
+              // Create an array to store the data
+              const logsData = [];
+
+              querySnapshot.forEach((doc) => {
+                // Push each document's data into the logsData array
+                logsData.push({
+                  id: doc.id,
+                  ...doc.data(), // Spread the document data into the object
+                });
+              });
+
+              // Convert the data to a JSON string
+              const jsonString = JSON.stringify(logsData, null, 2);
+
+              // Create a Blob from the JSON string
+              const blob = new Blob([jsonString], { type: 'application/json' });
+
+              // Create a download link
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'logs_data.json'; // Specify the file name
+
+              // Trigger a click event on the download link to start the download
+              a.click();
+
+              // Clean up the object URL after the download
+              URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+              console.error('Error fetching logs:', error);
+            });
+        }
+
+
+        document.getElementById('next-button').addEventListener('click', () => {
+          loadNextPage();
+        });
 
         document.getElementById('load').addEventListener('click', () => {
           loadDatabase();
-          sortTable(2);
         });
+
+        document.getElementById('download').addEventListener('click', () => {
+          downloadLogsAsJSON();
+        });
+
       });
+
 
       let sortOrder = {
         0: true,

@@ -1,3 +1,4 @@
+
 let dicomParser
 if (typeof document != "undefined") {
     dicomParser = window.dicomParser
@@ -8,75 +9,92 @@ if (typeof document != "undefined") {
 import { TagDictionary } from "../tagDictionary/dictionary.js"
 import { logger } from "../script.js"
 
-const tagDictionary = new TagDictionary();
 
-export function readFile(file) {
-    const reader = new FileReader()
-    reader.onload = function (e) {
-        const arrayBuffer = e.target.result
-        // Convert ArrayBuffer to Uint8Array
-        const uint8Array = new Uint8Array(arrayBuffer)
-        parseDicom(uint8Array)
+export class LoadTags {
+    constructor() {
+        this.dataSet = null;
+        this.tagDictionary = new TagDictionary();
+        this.logger = logger;
+        this.table = "";
     }
-    reader.readAsArrayBuffer(file)
-}
 
-function parseDicom(uint8Array) {
-    try {
-        // Parsing the DICOM file using dicomParser
-        logger.log("INFO", "Parsing DICOM file")
+    // Parse the DICOM file and handle errors
+    parseDicom(uint8Array) {
+        try {
+            console.log("Parsing DICOM file...");
+            this.dataSet = dicomParser.parseDicom(uint8Array);
 
-        const dataSet = dicomParser.parseDicom(uint8Array)
-
-        // Check if parsing succeeded
-        if (!dataSet) {
-            throw new Error("Failed to parse DICOM file: dataset is undefined.")
-        }
-
-        const tagsBody = document.getElementById("tags-body")
-        tagsBody.innerHTML = "" // Clear any previous data
-        let table = document.getElementById("dicom-tags")
-        table.style.display = "table" // Show the table
-
-        // Iterate over the elements and display tags
-        Object.keys(dataSet.elements).forEach((tag) => {
-            const tagName = tagDictionary.lookup(
-                `${tag.toString(16).toUpperCase()}`
-            )
-            
-            if(tagName === "Unknown"){
-                logger.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`)
+            // Check if parsing succeeded
+            if (!this.dataSet) {
+                throw new Error("Failed to parse DICOM file: dataset is undefined.");
             }
 
-            const tagValue = dataSet.string(tag) || "N/A" // Get the tag value, or display 'N/A'
+        } catch (error) {
+            this.logger.log("ERROR", error.message);
+            throw error;  // Rethrow to be handled in the promise rejection
+        }
+    }
 
-            const row = document.createElement("tr")
+    // Create the table row HTML for each tag
+    createTagTableRow(tag, tagName, tagValue) {
+        return `
+        <tr>
+            <td>${tag.toString(16).toUpperCase()}</td>
+            <td>${tagName}</td>
+            <td>
+                <input type="text" value="${tagValue}" oninput="dataSet.elements['${tag}'].data = dicomParser.stringToBytes(this.value)" />
+            </td>
+        </tr>
+        `;
+    }
 
-            const tagCell = document.createElement("td")
-            tagCell.textContent = `${tag.toString(16).toUpperCase()}` // Display the tag in hexadecimal
-            row.appendChild(tagCell)
+    // Create the tag table from the dataset
+    createTagTable() {
+        this.table = ""; // Reset table contents before filling
 
-            const nameCell = document.createElement("td")
-            nameCell.textContent = tagName // Use the dictionary name or default to tag ID
-            row.appendChild(nameCell)
+        Object.keys(this.dataSet.elements).forEach((tag) => {
+            const tagName = this.tagDictionary.lookup(
+                `${tag.toString(16).toUpperCase()}`
+            );
 
-            const valueCell = document.createElement("td")
-            const input = document.createElement("input")
-            input.type = "text"
-            input.value = tagValue
-            input.addEventListener("input", function () {
-                dataSet.elements[tag].data = dicomParser.stringToBytes(
-                    input.value
-                )
-            })
-            valueCell.appendChild(input)
-            row.appendChild(valueCell)
+            if (tagName === "Unknown") {
+                this.logger.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`);
+            }
 
-            tagsBody.appendChild(row)
-        })
-    } catch (error) {
-        // Log the error to the console with more details
-        console.error("Error parsing DICOM file:", error)
-        alert("Error parsing DICOM file. Check the console for details.")
+            const tagValue = this.dataSet.string(tag) || "N/A"; // Default to 'N/A' if no value is found
+            this.table += this.createTagTableRow(tag, tagName, tagValue);
+        });
+    }
+
+    // Return the table HTML content
+    getTable() {
+        return this.table;
+    }
+
+    // Read the file and return a promise
+    readFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const uint8Array = new Uint8Array(arrayBuffer);
+
+                    this.parseDicom(uint8Array); // Parse the DICOM data
+                    this.createTagTable(); // Create the tag table
+
+                    resolve(this.getTable()); // Resolve the promise with the table HTML
+                } catch (error) {
+                    reject(error); // Reject the promise if there was an error
+                }
+            };
+
+            reader.onerror = (error) => {
+                reject(error); // Reject the promise if the file reading fails
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
     }
 }
