@@ -64,13 +64,19 @@ function setupFileUpload() {
     }
 
     function displayFileTags(file) {
-        
-        const tagsBody = document.getElementById("tags-body")
-        tagsBody.innerHTML = "" // Clear any previous data
-        let tableDiv = document.getElementById("dicom-tags")
-        tableDiv.style.display = "table" // Show the table
 
-        loadTags.readFile(file).then((table) => {tagsBody.innerHTML = table} )
+        const loading_text = document.getElementById("loading-text")
+        loading_text.innerHTML = "Loading . . ."
+
+        loadTags.readFile(file).then((table) => {
+            const tagsBody = document.getElementById("tags-body")
+            tagsBody.innerHTML = "" // Clear any previous data
+            let tableDiv = document.getElementById("dicom-tags")
+            tableDiv.style.display = "table" // Show the table
+            loading_text.innerHTML = ""
+            tagsBody.innerHTML = table
+
+        })
     }
 }
 
