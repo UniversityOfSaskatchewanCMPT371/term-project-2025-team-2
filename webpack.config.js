@@ -42,6 +42,7 @@ module.exports = {
                 { from: "loader/", to: "loader/" },
                 { from: "tagDictionary/", to: "tagDictionary/" },
                 { from: "logger/", to: "logger/" },
+                { from: "app.js", to: "app.js" },
             ],
         }),
     ],

@@ -7,35 +7,51 @@ if (typeof document != "undefined") {
 }
 
 import { TagDictionary } from "../tagDictionary/dictionary.js"
-import { logger } from "../script.js"
 
-
+/**
+ * LoadTags class to handle the loading and parsing of DICOM files.
+ * @class
+ */
 export class LoadTags {
+
+    /**
+     * Constructor for the LoadTags class.
+     * @constructor
+     * 
+     */
     constructor() {
         this.dataSet = null;
         this.tagDictionary = new TagDictionary();
-        this.logger = logger;
         this.table = "";
     }
 
-    // Parse the DICOM file and handle errors
+    /**
+     * Parse the DICOM file using dicomParser.
+     * @param {Uint8Array} uint8Array - The Uint8Array representation of the DICOM file.
+     * @returns {void}
+     */
     parseDicom(uint8Array) {
-        try {
-            console.log("Parsing DICOM file...");
-            this.dataSet = dicomParser.parseDicom(uint8Array);
 
-            // Check if parsing succeeded
-            if (!this.dataSet) {
-                throw new Error("Failed to parse DICOM file: dataset is undefined.");
-            }
+        console.log("Parsing DICOM file...");
+        this.dataSet = dicomParser.parseDicom(uint8Array);
 
-        } catch (error) {
-            this.logger.log("ERROR", error.message);
-            throw error;  // Rethrow to be handled in the promise rejection
+        // Check if parsing succeeded
+        if (!this.dataSet) {
+            throw new Error("Failed to parse DICOM file: dataset is undefined.");
         }
+
     }
 
-    // Create the table row HTML for each tag
+    /**
+     * Create a table row for a DICOM tag.
+     * @param {string} tag - The DICOM tag.
+     * @param {string} tagName - The name of the DICOM tag.
+     * @param {string} tagValue - The value of the DICOM tag.
+     * @returns {string} - The HTML string for the table row.
+     * @example
+     * createTagTableRow(0x00080008, "Image Type", "DERIVED\\PRIMARY\\AXIAL")
+     * // Returns: "<tr><td>0x00080008</td><td>Image Type</td><td><input type="text" value="DERIVED\\PRIMARY\\AXIAL" oninput="dataSet.elements['0x00080008'].data = dicomParser.stringToBytes(this.value)" /></td></tr>"
+     */
     createTagTableRow(tag, tagName, tagValue) {
         return `
         <tr>
@@ -48,7 +64,10 @@ export class LoadTags {
         `;
     }
 
-    // Create the tag table from the dataset
+    /**
+     * Create the table of DICOM tags.
+     * @returns {void}
+     */
     createTagTable() {
         this.table = ""; // Reset table contents before filling
 
@@ -58,7 +77,7 @@ export class LoadTags {
             );
 
             if (tagName === "Unknown") {
-                this.logger.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`);
+                console.log("ERROR", `Unknown tag: ${tag.toString(16).toUpperCase()}`);
             }
 
             const tagValue = this.dataSet.string(tag) || "N/A"; // Default to 'N/A' if no value is found
@@ -66,12 +85,19 @@ export class LoadTags {
         });
     }
 
-    // Return the table HTML content
+    /**
+     * Get the table of DICOM tags.
+     * @returns {string} - The HTML string of the table.
+     */
     getTable() {
         return this.table;
     }
 
-    // Read the file and return a promise
+    /**
+     * Load and parse a DICOM file.
+     * @param {File} file - The DICOM file to be loaded.
+     * @returns {Promise<string>} - The promise containing the table HTML.
+     */
     readFile(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();

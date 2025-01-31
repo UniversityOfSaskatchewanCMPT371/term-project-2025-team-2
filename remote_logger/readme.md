@@ -1,4 +1,7 @@
-#Remote Log Storage
+# Remote Log Storage
+
+* Not in scope for final deliverable
+* Used for debug during development
 
 ## Logging API
 

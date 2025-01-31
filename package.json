@@ -6,7 +6,8 @@
   "scripts": {
     "test:browser": "node tests/run_browser_test.js",
     "lint": "eslint",
-    "build": "webpack"
+    "build": "webpack",
+    "test": "qunit tests"
   },
   "keywords": [],
   "author": "",
