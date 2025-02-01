@@ -1,0 +1,497 @@
+[
+  {
+    "tag": "X00080008",
+    "name": "ImageType",
+    "value": "ORIGINAL\\PRIMARY\\SMALL PARTS"
+  },
+  {
+    "tag": "X00080012",
+    "name": "InstanceCreationDate",
+    "value": "20220603"
+  },
+  {
+    "tag": "X00080013",
+    "name": "InstanceCreationTime",
+    "value": "085452"
+  },
+  {
+    "tag": "X00080016",
+    "name": "SOPClassUID",
+    "value": "1.2.840.10008.5.1.4.1.1.6.1"
+  },
+  {
+    "tag": "X00080018",
+    "name": "SOPInstanceUID",
+    "value": "1.2.840.113663.1500.1.382585396.3.4.20220603.85452.620"
+  },
+  {
+    "tag": "X00080020",
+    "name": "StudyDate",
+    "value": "20220603"
+  },
+  {
+    "tag": "X00080021",
+    "name": "SeriesDate",
+    "value": "20220603"
+  },
+  {
+    "tag": "X00080023",
+    "name": "ContentDate",
+    "value": "20220603"
+  },
+  {
+    "tag": "X0008002A",
+    "name": "AcquisitionDateTime",
+    "value": "20220603085452"
+  },
+  {
+    "tag": "X00080030",
+    "name": "StudyTime",
+    "value": "085352"
+  },
+  {
+    "tag": "X00080031",
+    "name": "SeriesTime",
+    "value": "085352"
+  },
+  {
+    "tag": "X00080033",
+    "name": "ContentTime",
+    "value": "085452"
+  },
+  {
+    "tag": "X00080050",
+    "name": "AccessionNumber",
+    "value": "AC-1000001"
+  },
+  {
+    "tag": "X00080060",
+    "name": "Modality",
+    "value": "US"
+  },
+  {
+    "tag": "X00080068",
+    "name": "PresentationIntentType",
+    "value": "FOR PRESENTATION"
+  },
+  {
+    "tag": "X00080070",
+    "name": "Manufacturer",
+    "value": "Luxsonic Technologies, Inc."
+  },
+  {
+    "tag": "X00080080",
+    "name": "InstitutionName",
+    "value": "Luxsonic Technologies, Inc."
+  },
+  {
+    "tag": "X00080090",
+    "name": "ReferringPhysicianName",
+    "value": "Mack Power"
+  },
+  {
+    "tag": "X00080096",
+    "name": "ReferringPhysicianIdentificationSequence",
+    "value": "þÿ"
+  },
+  {
+    "tag": "X00081010",
+    "name": "StationName",
+    "value": "Nipawin U/S"
+  },
+  {
+    "tag": "X00081030",
+    "name": "StudyDescription",
+    "value": "ELBOW TO FINGERS - LEFT"
+  },
+  {
+    "tag": "X00081032",
+    "name": "ProcedureCodeSequence",
+    "value": "þÿ"
+  },
+  {
+    "tag": "X0008103E",
+    "name": "SeriesDescription",
+    "value": "ELBOW TO FINGERS - LEFT"
+  },
+  {
+    "tag": "X00081048",
+    "name": "PhysiciansOfRecord",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00081070",
+    "name": "OperatorsName",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00081090",
+    "name": "ManufacturerModelName",
+    "value": "EPIQ 7G"
+  },
+  {
+    "tag": "X00081111",
+    "name": "ReferencedPerformedProcedureStepSequence",
+    "value": "þÿ"
+  },
+  {
+    "tag": "X00082111",
+    "name": "DerivationDescription",
+    "value": "0"
+  },
+  {
+    "tag": "X00100010",
+    "name": "PatientName",
+    "value": "John Doe"
+  },
+  {
+    "tag": "X00100020",
+    "name": "PatientID",
+    "value": "MR-000001"
+  },
+  {
+    "tag": "X00100030",
+    "name": "PatientBirthDate",
+    "value": "19000101"
+  },
+  {
+    "tag": "X00100040",
+    "name": "PatientSex",
+    "value": "M"
+  },
+  {
+    "tag": "X00101010",
+    "name": "PatientAge",
+    "value": "023Y"
+  },
+  {
+    "tag": "X001021C0",
+    "name": "PregnancyStatus",
+    "value": ""
+  },
+  {
+    "tag": "X00181000",
+    "name": "DeviceSerialNumber",
+    "value": "00000000"
+  },
+  {
+    "tag": "X00181020",
+    "name": "SoftwareVersions",
+    "value": "EPIQ 7G_7.0.5.962"
+  },
+  {
+    "tag": "X00181030",
+    "name": "ProtocolName",
+    "value": "Free Form"
+  },
+  {
+    "tag": "X00181088",
+    "name": "HeartRate",
+    "value": "0"
+  },
+  {
+    "tag": "X00185010",
+    "name": "TransducerData",
+    "value": "L12_5\\56093\\"
+  },
+  {
+    "tag": "X00185020",
+    "name": "ProcessingFunction",
+    "value": "MSK_SUPERFICIAL"
+  },
+  {
+    "tag": "X00186011",
+    "name": "SequenceOfUltrasoundRegions",
+    "value": "þÿ"
+  },
+  {
+    "tag": "X0020000D",
+    "name": "StudyInstanceUID",
+    "value": "1.2.840.114202.4.3619746188.3977905718.3366838379.1496817347"
+  },
+  {
+    "tag": "X0020000E",
+    "name": "SeriesInstanceUID",
+    "value": "1.2.840.113663.1500.1.382585396.2.1.20220603.85352.682"
+  },
+  {
+    "tag": "X00200010",
+    "name": "StudyID",
+    "value": "1"
+  },
+  {
+    "tag": "X00200011",
+    "name": "SeriesNumber",
+    "value": "1"
+  },
+  {
+    "tag": "X00200013",
+    "name": "InstanceNumber",
+    "value": "4"
+  },
+  {
+    "tag": "X00280002",
+    "name": "SamplesPerPixel",
+    "value": ""
+  },
+  {
+    "tag": "X00280004",
+    "name": "PhotometricInterpretation",
+    "value": "MONOCHROME2"
+  },
+  {
+    "tag": "X00280010",
+    "name": "Rows",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00280011",
+    "name": "Columns",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00280014",
+    "name": "UltrasoundColorDataPresent",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00280100",
+    "name": "BitsAllocated",
+    "value": ""
+  },
+  {
+    "tag": "X00280101",
+    "name": "BitsStored",
+    "value": ""
+  },
+  {
+    "tag": "X00280102",
+    "name": "HighBit",
+    "value": ""
+  },
+  {
+    "tag": "X00280103",
+    "name": "PixelRepresentation",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00280106",
+    "name": "SmallestImagePixelValue",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00280107",
+    "name": "LargestImagePixelValue",
+    "value": "ÿ"
+  },
+  {
+    "tag": "X00280301",
+    "name": "BurnedInAnnotation",
+    "value": "NO"
+  },
+  {
+    "tag": "X00281050",
+    "name": "WindowCenter",
+    "value": "127.0"
+  },
+  {
+    "tag": "X00281051",
+    "name": "WindowWidth",
+    "value": "254.0"
+  },
+  {
+    "tag": "X00282110",
+    "name": "LossyImageCompression",
+    "value": "00"
+  },
+  {
+    "tag": "X00400009",
+    "name": "ScheduledProcedureStepID",
+    "value": "1"
+  },
+  {
+    "tag": "X00400244",
+    "name": "PerformedProcedureStepStartDate",
+    "value": "20220603"
+  },
+  {
+    "tag": "X00400245",
+    "name": "PerformedProcedureStepStartTime",
+    "value": "085352"
+  },
+  {
+    "tag": "X00400253",
+    "name": "PerformedProcedureStepID",
+    "value": "20220603.085352"
+  },
+  {
+    "tag": "X00400254",
+    "name": "PerformedProcedureStepDescription",
+    "value": "ELBOW TO FINGERS - LEFT"
+  },
+  {
+    "tag": "X00400275",
+    "name": "RequestAttributesSequence",
+    "value": "þÿ"
+  },
+  {
+    "tag": "X00400280",
+    "name": "CommentsOnThePerformedProcedureStep",
+    "value": "None"
+  },
+  {
+    "tag": "X20010010",
+    "name": "Unknown",
+    "value": "Philips Imaging DD 001"
+  },
+  {
+    "tag": "X20011063",
+    "name": "Unknown",
+    "value": "ELSEWHERE"
+  },
+  {
+    "tag": "X200D0020",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 017"
+  },
+  {
+    "tag": "X200D0024",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 021"
+  },
+  {
+    "tag": "X200D0026",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 023"
+  },
+  {
+    "tag": "X200D0030",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 033"
+  },
+  {
+    "tag": "X200D0039",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 042"
+  },
+  {
+    "tag": "X200D003A",
+    "name": "Unknown",
+    "value": "Philips US Imaging DD 043"
+  },
+  {
+    "tag": "X200D2005",
+    "name": "Unknown",
+    "value": "native_frame"
+  },
+  {
+    "tag": "X200D2407",
+    "name": "Unknown",
+    "value": "CUSTOM_SELECTION_13"
+  },
+  {
+    "tag": "X200D2637",
+    "name": "Unknown",
+    "value": "20220603"
+  },
+  {
+    "tag": "X200D2638",
+    "name": "Unknown",
+    "value": "085352"
+  },
+  {
+    "tag": "X200D2645",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D2659",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D265A",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D265B",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D265C",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D3014",
+    "name": "Unknown",
+    "value": "1"
+  },
+  {
+    "tag": "X200D3022",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D3915",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X200D3916",
+    "name": "Unknown",
+    "value": "N/A"
+  },
+  {
+    "tag": "X200D3A05",
+    "name": "Unknown",
+    "value": "ACCEPTED"
+  },
+  {
+    "tag": "X200D3A06",
+    "name": "Unknown",
+    "value": "0"
+  },
+  {
+    "tag": "X7FE00010",
+    "name": "PixelData",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00020000",
+    "name": "FileMetaInformationGroupLength",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00020001",
+    "name": "FileMetaInformationVersion",
+    "value": "N/A"
+  },
+  {
+    "tag": "X00020002",
+    "name": "MediaStorageSOPClassUID",
+    "value": "1.2.840.10008.5.1.4.1.1.6.1"
+  },
+  {
+    "tag": "X00020003",
+    "name": "MediaStorageSOPInstanceUID",
+    "value": "1.2.840.113663.1500.1.382585396.3.4.20220603.85452.620"
+  },
+  {
+    "tag": "X00020010",
+    "name": "TransferSyntaxUID",
+    "value": "1.2.840.10008.1.2.1"
+  },
+  {
+    "tag": "X00020012",
+    "name": "ImplementationClassUID",
+    "value": "1.2.276.0.7230010.3.0.3.6.5"
+  },
+  {
+    "tag": "X00020013",
+    "name": "ImplementationVersionName",
+    "value": "OFFIS_DCMTK_365"
+  }
+]
