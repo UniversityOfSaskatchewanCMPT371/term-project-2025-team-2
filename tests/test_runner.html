@@ -1,32 +1,52 @@
 <!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<title>QUnit</title>
-<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.24.1.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QUnit Test Runner</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.24.1.css">
+
+    <!-- Load dicomParser BEFORE anything else -->
+    <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js"></script>
+
+    <!-- Ensure correct paths (since this is inside /tests/) -->
+    <script type="module" src="../logger/logger.js"></script>
+    <script type="module" src="../loader/loader.js"></script>
+    <script type="module" src="../script.js"></script>
+
+    <!-- Load QUnit -->
+    <script src="https://code.jquery.com/qunit/qunit-2.24.1.js"></script>
+</head>
+
 <body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture"></div>
-  <script src="https://code.jquery.com/qunit/qunit-2.24.1.js"></script>
-  <script>
-    if (typeof QUnit === 'undefined') {
-      console.error('QUnit not loaded properly');
-    }
-  </script>
-  <script>
-    window.addEventListener('error', function (e) {
-      console.log('JavaScript Error:', e.message);
-    });
-  </script>
-  <script>
-    // Log QUnit stats
-    QUnit.done(function(details) {
-      console.log('Tests completed: ', details);
-      console.log('Failed tests:', details.failed);
-    });
-  </script>
-  <script src='browser_test.js'></script>
-  <script>
-  </script>
-  <!--<script src="./test/logger_test.js"></script> -->
+    <h1>QUnit Test Runner</h1>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <!-- Mock the necessary DOM elements to prevent errors -->
+        <input type="file" id="file-input" />
+        <div id="drop-area"></div>
+        <div id="file-info"></div>
+        <button id="open-file-btn"></button>
+        <div id="tags-body"></div>
+        <div id="dicom-tags" style="display: none;"></div>
+        <div id="loading-text"></div>
+        <button id="sidebarCollapse"></button>
+        <button id="log-file-picker"></button>
+        <button id="log-file-close"></button>
+    </div>
+
+    <script>
+        // Log any script loading issues
+        if (typeof QUnit === 'undefined') {
+            console.error(' QUnit not loaded properly');
+        }
+        window.addEventListener('error', function (e) {
+            console.error(' JavaScript Error:', e.message);
+        });
+    </script>
+
+    <!-- Load test scripts in order -->
+    <script type="module" src="../tests/tagDictionary_test.js"></script>
+    <script type="module" src="../tests/logger_test.js"></script>
+    <script type="module" src="../tests/integration_test.js"></script>
 </body>
 </html>
