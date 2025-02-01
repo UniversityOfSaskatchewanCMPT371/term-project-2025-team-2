@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { stat, readFileSync } from 'fs';
 const path = require("path");
 
 // TODO: Remove dummy tests. Maybe rename this file
@@ -20,6 +21,8 @@ test('get started link', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
 });
 
+
+// Service worker and UI testing
 test('Service worker registered, cached correct urls', async({ baseURL, page }) => {
 
   await page.goto('/');     // Need http for serviceworker
@@ -59,7 +62,7 @@ test('Service worker registered, cached correct urls', async({ baseURL, page }) 
 });
 
 
-test('Sidebar toggle', async({ page }) => {
+test('Sidebar open and close', async({ page }) => {
   await page.goto('/');  
   // Click sidebar button
   const sidebarButton = await page.locator("#sidebarCollapse");
@@ -77,3 +80,73 @@ test('Sidebar toggle', async({ page }) => {
   sidebarRightAfterOpen = await sidebar.evaluate(el => el.style.right);
   expect(sidebarRightAfterOpen).toBe('-250px');
 });
+
+
+test('File upload functions', async({ page }) => {
+  await page.goto('/');
+  const dropArea = await page.locator('#drop-area');
+
+  // Test drag motions
+  await dropArea.dispatchEvent('dragover');
+  const hashover = await dropArea.evaluate(el => el.classList.contains('hover'));
+  expect(hashover).toBe(true);
+
+  await dropArea.dispatchEvent('dragleave');
+  const hasNoHover = await dropArea.evaluate(el => el.classList.contains('hover'));
+  expect(hasNoHover).toBe(false);
+
+  // Test file drop
+  const validateTagsTable = async(filename, filepath) => {
+    var fsize = '';     // Find file size
+    await stat(filepath, (err, stats) => {
+      if (err) {
+        console.log(`File doesn't exist.`)
+      } else {
+        fsize = (stats.size/1024).toFixed(2);
+      }
+    });
+    await page.waitForTimeout(500);   // wait to see the parsed data
+    expect(page.locator('#file-info')).toHaveText('File selected: '+ filename +', Size: '+ fsize + ' KB');
+    expect(page.locator('#dicom-tags')).toBeVisible();
+    expect(page.locator('#tags-body')).not.toBeEmpty();   // Checks if the table of tags is empty or not. TODO: check if input boxes are editable?
+  }
+
+  const dragAndDropFile = async (page, selector, filePath, fileName, fileType = '' ) => {
+    const buffer = readFileSync(filePath).toString('base64');
+  
+    const dataTransfer = await page.evaluateHandle(
+      async ({ bufferData, localFileName, localFileType }) => {
+        const dt = new DataTransfer();
+        const blobData = await fetch(bufferData).then((res) => res.blob());
+        const file = new File([blobData], localFileName, { type: localFileType });
+        dt.items.add(file);
+        return dt;
+      },
+      {
+        bufferData: `data:application/octet-stream;base64,${buffer}`,
+        localFileName: fileName,
+        localFileType: fileType,
+      }
+    );
+    await dropArea.dispatchEvent('drop', { dataTransfer });
+  };
+  await dragAndDropFile(page, "#drop-area", "./tests/CR000001.dcm", "CR000001");
+  await validateTagsTable('CR000001', './tests/CR000001.dcm');
+
+  
+  // Test open file button
+  const fileChooserPromise = page.waitForEvent('filechooser');
+  await page.getByRole('button', { name: 'Open File' }).click();
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles(path.join(__dirname, './IM949'));
+  await validateTagsTable('IM949', './tests/IM949');
+});
+
+// TODO log button tests
+// test('Log buttons', async({ page })=> {
+//   await page.goto('/');
+//   const fileChooserPromise = page.waitForEvent('filechooser');
+//   await page.locator('#log-file-picker').click();
+//   const fileChooser = await fileChooserPromise;
+// });
+// await page.getByRole('button', { name: 'Save Log' }).click();
