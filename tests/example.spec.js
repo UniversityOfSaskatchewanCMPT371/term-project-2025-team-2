@@ -4,22 +4,22 @@ import { stat, readFileSync } from 'fs';
 const path = require("path");
 
 // TODO: Remove dummy tests. Maybe rename this file
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+// test('has title', async ({ page }) => {
+//   await page.goto('https://playwright.dev/');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+//   // Expect a title "to contain" a substring.
+//   await expect(page).toHaveTitle(/Playwright/);
+// });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+// test('get started link', async ({ page }) => {
+//   await page.goto('https://playwright.dev/');
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+//   // Click the get started link.
+//   await page.getByRole('link', { name: 'Get started' }).click();
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+//   // Expects page to have a heading with the name of Installation.
+//   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+// });
 
 
 // Service worker and UI testing
@@ -98,17 +98,17 @@ test('File upload functions', async({ page }) => {
   // Test file drop
   const validateTagsTable = async(filename, filepath) => {
     var fsize = '';     // Find file size
-    await stat(filepath, (err, stats) => {
+    stat(filepath, (err, stats) => {
       if (err) {
         console.log(`File doesn't exist.`)
       } else {
         fsize = (stats.size/1024).toFixed(2);
       }
     });
-    await page.waitForTimeout(500);   // wait to see the parsed data
+    await page.waitForTimeout(500);   // wait for table to get loaded
     expect(page.locator('#file-info')).toHaveText('File selected: '+ filename +', Size: '+ fsize + ' KB');
-    expect(page.locator('#dicom-tags')).toBeVisible();
-    expect(page.locator('#tags-body')).not.toBeEmpty();   // Checks if the table of tags is empty or not. TODO: check if input boxes are editable?
+    await expect(page.locator('#dicom-tags')).toBeVisible();
+    await expect(page.locator('#tags-body')).not.toBeEmpty();   // Checks if the table of tags is empty or not. TODO: check if input boxes are editable?
   }
 
   const dragAndDropFile = async (page, selector, filePath, fileName, fileType = '' ) => {
@@ -130,16 +130,16 @@ test('File upload functions', async({ page }) => {
     );
     await dropArea.dispatchEvent('drop', { dataTransfer });
   };
-  await dragAndDropFile(page, "#drop-area", "./tests/CR000001.dcm", "CR000001");
-  await validateTagsTable('CR000001', './tests/CR000001.dcm');
+  await dragAndDropFile(page, "#drop-area", "./system_test/test_files/CR000001.dcm", "CR000001");
+  await validateTagsTable('CR000001', './system_test/test_files/CR000001.dcm');
 
   
   // Test open file button
   const fileChooserPromise = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Open File' }).click();
   const fileChooser = await fileChooserPromise;
-  await fileChooser.setFiles(path.join(__dirname, './IM949'));
-  await validateTagsTable('IM949', './tests/IM949');
+  await fileChooser.setFiles(path.join(__dirname, '../system_test/test_files/IM0.dcm'));
+  await validateTagsTable('IM0.dcm', './system_test/test_files/IM0.dcm');
 });
 
 // TODO log button tests
