@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import { stat, readFileSync } from 'fs';
 const path = require("path");
 
-// TODO: Remove dummy tests. Maybe rename this file
+// TODO: Remove these sample tests. Leaving it for future tester's reference
 // test('has title', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
 
@@ -142,11 +142,14 @@ test('File upload functions', async({ page }) => {
   await validateTagsTable('IM0.dcm', './system_test/test_files/IM0.dcm');
 });
 
-// TODO log button tests
-// test('Log buttons', async({ page })=> {
-//   await page.goto('/');
-//   const fileChooserPromise = page.waitForEvent('filechooser');
-//   await page.locator('#log-file-picker').click();
-//   const fileChooser = await fileChooserPromise;
-// });
-// await page.getByRole('button', { name: 'Save Log' }).click();
+test('Log buttons mock test', async({ page })=> {
+  await page.goto('/');
+
+  // Test if the button is present and can be clicked
+  await expect(page.locator('#log-file-picker')).toBeVisible();
+  await page.locator('#log-file-picker').click();
+  await expect(page.locator('#log-file-close')).toBeVisible();
+  await page.locator('#log-file-close').click();
+
+  // TODO: test if filechooser is opened by the log button. Currently playwright doesn't support testing window.showSaveFilePicker()
+});
