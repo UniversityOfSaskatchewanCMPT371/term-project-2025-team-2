@@ -12,7 +12,17 @@ if (!dicomParser) {
 
 import { TagDictionary } from "../tagDictionary/dictionary.js";
 
+/**
+ * LoadTags class to handle the loading and parsing of DICOM files.
+ * @class
+ */
 export class LoadTags {
+
+    /**
+     * Constructor for the LoadTags class.
+     * @constructor
+     * 
+     */
     constructor() {
         this.dataSet = null;
         this.tagDictionary = new TagDictionary();
@@ -53,10 +63,21 @@ export class LoadTags {
             }
             console.error(" Error parsing DICOM file:", error);
             throw error;
+
         }
+
     }
 
-    // Create the table row HTML for each tag
+    /**
+     * Create a table row for a DICOM tag.
+     * @param {string} tag - The DICOM tag.
+     * @param {string} tagName - The name of the DICOM tag.
+     * @param {string} tagValue - The value of the DICOM tag.
+     * @returns {string} - The HTML string for the table row.
+     * @example
+     * createTagTableRow(0x00080008, "Image Type", "DERIVED\\PRIMARY\\AXIAL")
+     * // Returns: "<tr><td>0x00080008</td><td>Image Type</td><td><input type="text" value="DERIVED\\PRIMARY\\AXIAL" oninput="dataSet.elements['0x00080008'].data = dicomParser.stringToBytes(this.value)" /></td></tr>"
+     */
     createTagTableRow(tag, tagName, tagValue) {
         return `
         <tr>
@@ -69,7 +90,11 @@ export class LoadTags {
         `;
     }
 
-    // Generate the tag table from parsed dataset
+
+    /**
+     * Create the table of DICOM tags.
+     * @returns {void}
+     */
     createTagTable() {
         if (!this.dataSet || !this.dataSet.elements) {
             console.error(" No valid DICOM dataset found.");
@@ -93,14 +118,24 @@ export class LoadTags {
         console.log("DICOM Tag Table Generated Successfully!");
     }
 
-    // Get the table HTML content
+
+    /**
+     * Get the table of DICOM tags.
+     * @returns {string} - The HTML string of the table.
+     */
     getTable() {
         return this.table;
     }
 
+         /**
+     * Load and parse a DICOM file.
+     * @param {File} file - The DICOM file to be loaded.
+     * @returns {Promise<string>} - The promise containing the table HTML.
+     */
+
     async readFile(file) {
         await this.initLogger();
-
+      
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
