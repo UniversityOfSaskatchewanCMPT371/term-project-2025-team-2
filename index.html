@@ -1,71 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DICOM Tag Editor</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DICOM Tag Editor</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="icon" href="icons/favicon.ico" />
 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="icons/favicon.ico">
+        <link rel="manifest" href="manifest.json" />
+    </head>
 
-    <link rel="manifest" href="manifest.json">
-</head>
+    <body>
+        <header>
+            <h1>DICOM Tag Editor</h1>
+            <div class="header-buttons">
+                <button
+                    id="installBtn"
+                    class="installBtn"
+                    style="display: none"
+                >
+                    Install
+                </button>
+                <button id="sidebarCollapse" class="open-sidebar-btn">
+                    &#9776;
+                </button>
+            </div>
+        </header>
 
-<body>
-    <header>
-        <h1>DICOM Tag Editor</h1>
-        <div class="header-buttons">
-            <button id="installBtn" class="installBtn" style="display: none;">Install</button>
-            <button id="sidebarCollapse" class="open-sidebar-btn">&#9776;</button>
+        <div id="sidebar">
+            <a href="#">Tags</a>
+            <a href="#">Edit</a>
+            <a href="#">Save</a>
         </div>
-    </header>
 
-    <div id="sidebar">
-        <a href="#">Tags</a>
-        <a href="#">Edit</a>
-        <a href="#">Save</a>
-    </div>
+        <div class="main-content">
+            <h2>File Upload</h2>
 
-    <div class="main-content">
-        
-        <h2>File Upload</h2>
+            <div id="drop-area">
+                <span>Drag & Drop files here or click below to select</span>
+            </div>
 
-        <div id="drop-area">
-            <span>Drag & Drop files here or click below to select</span>
+            <button id="open-file-btn">Open File</button>
+            <input type="file" id="file-input" multiple />
+
+            <div id="file-info"></div>
         </div>
 
-        <button id="open-file-btn">Open File</button>
-        <input type="file" id="file-input">
+        <div id="loading-text"></div>
+        <table id="dicom-tags" style="display: none">
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="tags-body">
+                <!-- Tags will be populated here -->
+            </tbody>
+        </table>
 
-        <div id="file-info"></div>
+        <footer>
+            <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
+            <button id="log-file-picker">Log Location</button>
+            <button id="log-file-close">Save Log</button>
+        </footer>
 
-    </div>
+        <script
+            src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js"
+            defer
+        ></script>
 
-    <table id="dicom-tags" style="display:none;">
-        <thead>
-            <tr>
-                <th>Tag</th>
-                <th>Name</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody id="tags-body">
-            <!-- Tags will be populated here -->
-        </tbody>
-    </table>
-
-    <footer>
-        <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
-        <button id="log-file-picker">Log Location</button>
-        <button id="log-file-close">Save Log</button>
-    </footer>
-
-    <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js" defer></script>
-    
-    <script type="module" src="./script.js"></script>
-    <script type="module" src="./app.js"></script>
-
-</body>
-
+        <script type="module" src="./script.js"></script>
+        <script type="module" src="./app.js"></script>
+    </body>
 </html>
