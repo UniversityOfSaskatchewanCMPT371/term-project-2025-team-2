@@ -146,10 +146,8 @@ test('Log buttons mock test', async({ page })=> {
   await page.goto('/');
 
   // Test if the button is present and can be clicked
-  await expect(page.locator('#log-file-picker')).toBeVisible();
-  await page.locator('#log-file-picker').click();
-  await expect(page.locator('#log-file-close')).toBeVisible();
-  await page.locator('#log-file-close').click();
+  await expect(page.locator('#log-file-save')).toBeVisible();
+  await page.locator('#log-file-save').click();
 
   // TODO: test if filechooser is opened by the log button. Currently playwright doesn't support testing window.showSaveFilePicker()
 });

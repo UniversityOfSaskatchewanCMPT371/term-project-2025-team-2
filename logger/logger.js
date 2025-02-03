@@ -12,51 +12,31 @@ export class Logger {
     /**
      * Constructor for the Logger class
      * @constructor
-     * @param {string} handle - The file handle to write log messages to
      * @param {string} postUrl - The URL to post log messages to
      */
-    constructor(handle, postUrl) {
-        this.handle = handle || null
+    constructor(postUrl) {
+        this.logData = []
         this.postUrl =
             postUrl ||
             "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg"
     }
 
     /**
-     * Set the file handle to write log messages to
-     */
-    async pickHandle() {
-        this.handle = await window.showSaveFilePicker()
-        this.writableStream = await this.handle.createWritable()
-    }
-
-    /**
      * Write a log message to the local file
      * @param {string} level - The log level of the message
      * @param {string} message - The message to log
-     * @returns {Promise} - A promise that resolves when the message is written
+     * @returns {void} - No return value
      */
     async localLog(level, message) {
-        if (this.handle == null) {
-            console.log("No local log file set")
-        } else {
-            try {
-                await this.writableStream.write(
-                    JSON.stringify(`{${level}: ${message}}`) + ",\n"
-                )
-            } catch (err) {
-                console.error(err.name, err.message)
-            }
-        }
+        this.logData.push("\n" + JSON.stringify(`{ ${level}: ${message}, Date: ${new Date().toISOString()}, UserAgent: ${userAgent} }`)  ) 
     }
 
     /**
-     * Close the local log file
-     * @returns {Promise} - A promise that resolves when the file is closed
+     * Get the log data
+     * @returns {Array} - The log data
      */
-    async closeFile() {
-        await this.writableStream.close()
-        console.log("close log file")
+    getLog() {
+        return this.logData
     }
 
     /**
