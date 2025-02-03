@@ -104,4 +104,8 @@ if (typeof document != "undefined") {
         URL.revokeObjectURL(url);
     })
 
+    document.getElementById("update-dicom-tags").addEventListener("click", () => {
+        loadTags.downloadModifiedDicom()
+    })
+
 }

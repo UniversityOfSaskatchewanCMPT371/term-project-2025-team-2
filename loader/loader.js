@@ -28,6 +28,7 @@ export class LoadTags {
         this.tagDictionary = new TagDictionary();
         this.logger = null;
         this.table = "";
+        this.modifiedTags = new Map();
     }
 
     async initLogger() {
@@ -80,11 +81,11 @@ export class LoadTags {
      */
     createTagTableRow(tag, tagName, tagValue) {
         return `
-        <tr>
-            <td>${tag.toUpperCase()}</td>
-            <td>${tagName}</td>
+        <tr id="tag-row">
+            <td id="tag">${tag.toUpperCase()}</td>
+            <td id="tag-name">${tagName}</td>
             <td>
-                <input type="text" value="${tagValue}" oninput="this.dataset.value = this.value" />
+                <input id="tag-value" type="text" value="${tagValue}" />
             </td>
         </tr>
         `;
@@ -127,15 +128,14 @@ export class LoadTags {
         return this.table;
     }
 
-         /**
-     * Load and parse a DICOM file.
-     * @param {File} file - The DICOM file to be loaded.
-     * @returns {Promise<string>} - The promise containing the table HTML.
-     */
-
+    /**
+    * Load and parse a DICOM file.
+    * @param {File} file - The DICOM file to be loaded.
+    * @returns {Promise<string>} - The promise containing the table HTML.
+    */
     async readFile(file) {
         await this.initLogger();
-      
+
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
@@ -162,5 +162,62 @@ export class LoadTags {
             reader.readAsArrayBuffer(file);
         });
     }
+
+
+    // not a goog way to do this
+    updateTagValue() {
+        if (!this.dataSet) return;
+
+        const input = document.querySelectorAll("#tag-row");
+
+        input.forEach((item) => {
+            const tag = item.children[0].textContent;
+            const newValue = item.children[2].children[0].value;
+            this.modifiedTags.set(tag, newValue);
+        });
+    }
+
+
+    // doesn't work for all formats
+    downloadModifiedDicom() {
+        if (!this.dataSet) return;
+
+        this.updateTagValue();
+        console.log("Modified Tags", this.modifiedTags);
+
+        // Create a modified copy of the original DICOM data
+        const modifiedDataset = new Uint8Array(this.dataSet.byteArray);
+
+        // Apply modifications
+        this.modifiedTags.forEach((tag, newValue) => {
+            //console.log(newValue);
+            const element = this.dataSet.elements[newValue.toLowerCase()];
+            if (element) {
+                // This is a simplified approach - in practice, you'd need proper VR handling
+                const encoder = new TextEncoder();
+                const valueBytes = encoder.encode(tag);
+                
+                valueBytes.forEach((byte, index) => {
+                    if (index < element.length) {
+                        modifiedDataset[element.dataOffset + index] = byte;
+                    }
+                });
+            }
+        });
+       // console.log("Modified Dataset", modifiedDataset);
+
+        // Create and trigger download
+        const blob = new Blob([modifiedDataset], { type: 'application/dicom' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'modified.dcm';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+
 }
 
