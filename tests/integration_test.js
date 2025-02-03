@@ -25,12 +25,12 @@ QUnit.module("DICOM Tag Editor - Integration Test", function () {
         try {
             // Define datasets
             const datasets = [
-                { path: "../tests/2025-CMPT371-Demo-Datasets/CT/Demo-CT-Case1", files: Array.from({ length: 1 }, (_, i) => `IM${i}`) },
-                { path: "../tests/2025-CMPT371-Demo-Datasets/CT/Demo-CT-Case2", files: Array.from({ length: 1 }, (_, i) => `${i.toString().padStart(6, '0')}.dcm`) },
-                { path: "../tests/2025-CMPT371-Demo-Datasets/MRI/Demo-MR-Case1", files: Array.from({ length: 1 }, (_, i) => `IM${i}`) },
-                { path: "../tests/2025-CMPT371-Demo-Datasets/MRI/Demo-MR-Case2", files: Array.from({ length: 1 }, (_, i) => `IM${i}`) },
-                { path: "../tests/2025-CMPT371-Demo-Datasets/US/Demo-US-Case1", files: Array.from({ length: 1 }, (_, i) => `IM${(i + 1).toString().padStart(6, '0')}`) },
-                { path: "../tests/2025-CMPT371-Demo-Datasets/US/Demo-US-Case2", files: Array.from({ length: 1 }, (_, i) => `IM${(i + 1).toString().padStart(6, '0')}`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/CT/Demo-CT-Case1", files: Array.from({ length: 950 }, (_, i) => `IM${i}`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/CT/Demo-CT-Case2", files: Array.from({ length: 113 }, (_, i) => `${i.toString().padStart(6, '0')}.dcm`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/MRI/Demo-MR-Case1", files: Array.from({ length: 556 }, (_, i) => `IM${i}`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/MRI/Demo-MR-Case2", files: Array.from({ length: 821 }, (_, i) => `IM${i}`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/US/Demo-US-Case1", files: Array.from({ length: 71 }, (_, i) => `IM${(i + 1).toString().padStart(6, '0')}`) },
+                { path: "../tests/2025-CMPT371-Demo-Datasets/US/Demo-US-Case2", files: Array.from({ length: 10 }, (_, i) => `IM${(i + 1).toString().padStart(6, '0')}`) },
                 { path: "../tests/2025-CMPT371-Demo-Datasets/XRay/Demo-XR-Case1/new", files: ["1487.dcm", "1488.dcm", "1489.dcm", "14810.dcm", "14811.dcm"] },
                 { path: "../tests/2025-CMPT371-Demo-Datasets/XRay/Demo-XR-Case2", files: ["CR000000.dcm", "CR000001.dcm"] },
             ];
