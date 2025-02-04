@@ -14,6 +14,9 @@ export default [
             },
         },
     },
+    {
+        ignores: ["dicomParser/"],
+    },
     pluginJs.configs.recommended,
     eslintConfigPrettier,
 ]
