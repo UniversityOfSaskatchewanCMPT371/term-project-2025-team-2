@@ -11,6 +11,7 @@ const urlsToCache = [
     "/tagDictionary/dictionary.js",
     "tagDictionary/standardDataElements.js",
     "/logger/logger.js",
+    "/dicomParser/*",
 ]
 
 // Install service worker and cache the assets
