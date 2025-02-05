@@ -71,6 +71,28 @@
 
     <script type="module" src="./script.js"></script>
     <script type="module" src="./app.js"></script>
+
+    <script>
+
+        function toggleDetails(id) {
+            const detailsRow = document.querySelectorAll(`[id="details-${id}"]`);
+            const arrow = event.target;
+
+            console.log(detailsRow);
+
+            detailsRow.forEach(element => {
+                if (element.classList.contains('visible')) {
+                    element.classList.remove('visible');
+                    arrow.classList.remove('open');
+                } else {
+                    element.classList.add('visible');
+                    arrow.classList.add('open');
+                }
+            });
+
+        }
+
+    </script>
 </body>
 
 </html>

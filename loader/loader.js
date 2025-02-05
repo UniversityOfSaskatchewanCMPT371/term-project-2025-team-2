@@ -31,6 +31,7 @@ export class LoadTags {
         this.logger = null;
         this.table = "";
         this.modifiedTags = new Map();
+        this.accodionIndex = 0;
     }
 
     async initLogger() {
@@ -81,14 +82,28 @@ export class LoadTags {
      * createTagTableRow(0x00080008, "Image Type", "DERIVED\\PRIMARY\\AXIAL")
      * // Returns: "<tr><td>0x00080008</td><td>Image Type</td><td><input type="text" value="DERIVED\\PRIMARY\\AXIAL" oninput="dataSet.elements['0x00080008'].data = dicomParser.stringToBytes(this.value)" /></td></tr>"
      */
-    createTagTableRow(tag, tagName, tagValue) {
+    createTagTableRow(tag, tagName, tagValue, nest = false, nested = false) {
+        let toggleDetails = "";
+
+        if (nest) {
+            this.accodionIndex++;
+            toggleDetails = `toggleDetails(${this.accodionIndex})`;
+        }
+
+        if (nested) {
+            toggleDetails = `details-${this.accodionIndex}`;
+        }
+
+
+        const nestedString = nest ? `<span class="arrow" onclick=${toggleDetails}></span>` : "";
+
         return `
-        <tr id="tag-row">
-            <td id="tag">${tag.toUpperCase()}</td>
+        <tr id="${nested ? toggleDetails : "tag-row"}" ${nested ? `class="details-row"` : ""}>
+            <td ${nested ? `style="background-color: white"` : ""} id="tag">${nestedString} ${tag.toUpperCase()}</td>
             <td id="tag-name">${tagName}</td>
-            <td>
+            ${nest ? `<td></td>` : `<td>
                 <input id="tag-value" type="text" value="${tagValue}" />
-            </td>
+            </td>`}
         </tr>
         `;
     }
@@ -118,7 +133,7 @@ export class LoadTags {
                 this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
             }
 
-            this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+            this.table += this.createTagTableRow(formattedTag, tagName, tagValue, element.items ? true : false, false);
 
             if (element.items) {
                 element.items.forEach((item) => {
@@ -131,13 +146,13 @@ export class LoadTags {
                             this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
                         }
 
-                        this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+                        this.table += this.createTagTableRow(formattedTag, tagName, tagValue, false, true);
                     });
                 });
             }
         });
 
-        
+
 
         this.logger.log("INFO", "DICOM Tag Table Generated Successfully!");
     }

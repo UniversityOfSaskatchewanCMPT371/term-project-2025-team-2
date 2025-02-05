@@ -43,7 +43,7 @@ function setupFileUpload() {
 
         files = event.dataTransfer.files
 
-        if(files.length > 1) {
+        if (files.length > 1) {
             document.getElementById("next").style.display = "block"
         }
 
@@ -58,7 +58,7 @@ function setupFileUpload() {
     fileInput.addEventListener("change", (event) => {
         files = event.target.files
 
-        if(files.length > 1) {
+        if (files.length > 1) {
             document.getElementById("file-buttons").style.display = "block"
             document.getElementById("next").style.visibility = "visible"
         }
@@ -95,7 +95,7 @@ function setupFileUpload() {
     function next() {
         index++
 
-        if(index >= 1){
+        if (index >= 1) {
             document.getElementById("previous").style.visibility = "visible"
         }
 
@@ -112,9 +112,9 @@ function setupFileUpload() {
     function previous() {
         index--
 
-        if(index <= 0){
+        if (index <= 0) {
             document.getElementById("previous").style.visibility = "hidden"
-        } else if(index < files.length){
+        } else if (index < files.length) {
             document.getElementById("next").style.visibility = "visible"
         }
 
@@ -133,23 +133,23 @@ function setupFileUpload() {
         let rows = table.getElementsByTagName("tr");
 
         for (let i = 0; i < rows.length; i++) {
-          let cells = rows[i].getElementsByTagName("td");
-          let found = false;
+            let cells = rows[i].getElementsByTagName("td");
+            let found = false;
 
-          for (let j = 0; j < cells.length; j++) {
-            if (cells[j].innerText.toUpperCase().includes(filter)) {
-              found = true;
-              break;
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toUpperCase().includes(filter)) {
+                    found = true;
+                    break;
+                }
             }
-          }
 
-          if (found) {
-            rows[i].style.display = "";
-          } else {
-            rows[i].style.display = "none";
-          }
+            if (found) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
         }
-      }
+    }
 
     document.getElementById("filterInput").addEventListener("keyup", filterTable)
 
