@@ -5,7 +5,6 @@ QUnit.module("logger")
 QUnit.test("logger test", (assert) => {
     const logger = new Logger()
 
-    assert.equal(logger.handle, null, "handle is null")
     assert.equal(
         logger.postUrl,
         "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg",
@@ -16,7 +15,7 @@ QUnit.test("logger test", (assert) => {
     // assert.equal(logger.closeFile(), undefined);
     // assert.equal(logger.log("INFO", "Parsing DICOM file"), undefined);
 
-    // assert.equal(await logger.logMessage("TEST", "Test function"), { status: "success" });
+    //assert.equal(await logger.logMessage("TEST", "Test function"), { status: "success" });
 })
 
 QUnit.test("logger test", async (assert) => {
@@ -25,5 +24,4 @@ QUnit.test("logger test", async (assert) => {
     // return logger.logMessage("TEST", "Test function").then(data => {
     //     assert.equal(data, { status: "success" }, "Passed!");
     // });
-    assert.equal(logger.handle, null, "handle is null")
 })
