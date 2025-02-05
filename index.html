@@ -1,73 +1,106 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>DICOM Tag Editor</title>
 
-        <link rel="stylesheet" href="styles.css" />
-        <link rel="icon" href="icons/favicon.ico" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DICOM Tag Editor</title>
 
-        <link rel="manifest" href="manifest.json" />
-    <script defer src="bundle.js"></script></head>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="icons/favicon.ico" />
 
-    <body>
-        <header>
-            <h1>DICOM Tag Editor</h1>
-            <div class="header-buttons">
-                <button
-                    id="installBtn"
-                    class="installBtn"
-                    style="display: none"
-                >
-                    Install
-                </button>
-                <button id="sidebarCollapse" class="open-sidebar-btn">
-                    &#9776;
-                </button>
-            </div>
-        </header>
+    <link rel="manifest" href="manifest.json" />
+<script defer src="bundle.js"></script></head>
 
-        <div id="sidebar">
-            <a href="#">Tags</a>
-            <a href="#">Edit</a>
-            <a href="#">Save</a>
+<body>
+    <header>
+        <h1>DICOM Tag Editor</h1>
+        <div class="header-buttons">
+            <button id="installBtn" class="installBtn" style="display: none">
+                Install
+            </button>
+            <button id="sidebarCollapse" class="open-sidebar-btn">
+                &#9776;
+            </button>
         </div>
+    </header>
 
-        <div class="main-content">
-            <h2>File Upload</h2>
-
-            <div id="drop-area">
-                <span>Drag & Drop files here or click below to select</span>
-            </div>
-
-            <button id="open-file-btn">Open File</button>
-            <input type="file" id="file-input" multiple />
-
-            <div id="file-info"></div>
-        </div>
-
-        <div id="loading-text"></div>
-        <table id="dicom-tags" style="display: none">
+    <div id="sidebar">
+        <a href="#">Tags</a>
+        <a href="#">Edit</a>
+        <a id="update-dicom-tags">Download Updated DICOM</a>
+        <table id="file-list" style="display: none;">
             <thead>
                 <tr>
-                    <th>Tag</th>
-                    <th>Name</th>
-                    <th>Value</th>
+                    <th style="background-color: #01579b; width: 250px;">File Name</th>
                 </tr>
             </thead>
-            <tbody id="tags-body">
-                <!-- Tags will be populated here -->
+            <tbody id="file-list-body">
+                <!-- Files will be populated here -->
             </tbody>
         </table>
+    </div>
 
-        <footer>
-            <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
-            <button id="log-file-save">Save Log</button>
-        </footer>
+    <div class="main-content">
+        <h2>File Upload</h2>
+
+        <div id="drop-area">
+            <span>Drag & Drop files here or click below to select</span>
+        </div>
+
+        <button id="open-file-btn">Open File</button>
+        <input type="file" id="file-input" multiple />
+        <div id="file-buttons" style="display: none;">
+            <button id="next" style="visibility: hidden;">Next</button>
+            <button id="previous" style="visibility: hidden;">Previous</button>
+        </div>
+        <input type="text" id="filterInput" placeholder="Search for tags..."
+            class="w-48 p-3 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400" />
+        <div id="file-info"></div>
+    </div>
+
+    <div id="loading-text"></div>
+    <table id="dicom-tags" style="display: none;">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="tags-body">
+            <!-- Tags will be populated here -->
+        </tbody>
+    </table>
+
+    <footer>
+        <div>University of Saskatchewan - CMPT 371 Team 2 Project</div>
+        <button id="log-file-save">Save Log</button>
+    </footer>
 
 
-        <script type="module" src="./script.js"></script>
-        <script type="module" src="./app.js"></script>
-    </body>
+    <script type="module" src="./script.js"></script>
+    <script type="module" src="./app.js"></script>
+
+    <script>
+
+        function toggleDetails(id) {
+            const detailsRow = document.querySelectorAll(`[id="details-${id}"]`);
+            const arrow = event.target;
+
+            detailsRow.forEach(element => {
+                if (element.classList.contains('visible')) {
+                    element.classList.remove('visible');
+                    arrow.classList.remove('open');
+                } else {
+                    element.classList.add('visible');
+                    arrow.classList.add('open');
+                }
+            });
+
+        }
+
+    </script>
+</body>
+
 </html>
