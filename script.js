@@ -57,30 +57,79 @@ function setupFileUpload() {
     // Handle file input change
     fileInput.addEventListener("change", (event) => {
         files = event.target.files
-        let fileList = document.getElementById("file-list")
-        fileList.style.display = "block"
+        let fileList = document.getElementById("file-list-body")
+        document.getElementById("file-list").style.display = "block"
 
         if (files.length > 1) {
             document.getElementById("file-buttons").style.display = "block"
             document.getElementById("next").style.visibility = "visible"
             
         }
-        
-        
-        Array.from(files).forEach(element => {
+        files = Array.from(files)
+
+        for(let i = 0; i < files.length; i++) {
+
             let tr = document.createElement("tr")
             let td = document.createElement("td")
-            td.textContent = element.name
+            td.addEventListener("click", () => {
+                openFile(i)
+            })
+            td.textContent = files[i].name + (index === i ? " X" : "")
             td.style.backgroundColor = "#01579b"
             tr.appendChild(td)
             fileList.appendChild(tr)
-        });
+        };
 
         if (files.length > 0) {
             displayFileInfo(files[0])
             displayFileTags(files[0]);
         }
     })
+
+    function updateSidebar() {
+        let fileList = document.getElementById("file-list-body")
+        fileList.innerHTML = ""
+
+        for(let i = 0; i < files.length; i++) {
+
+            let tr = document.createElement("tr")
+            let td = document.createElement("td")
+
+            td.textContent = files[i].name + (index === i ? " X" : "")
+            td.style.backgroundColor = "#01579b"
+            td.addEventListener("click", () => {
+                openFile(i)
+            })
+            tr.appendChild(td)
+            fileList.appendChild(tr)
+        };
+    }
+
+    function openFile(i) {
+
+        index = i
+
+        displayFileInfo(files[i])
+        displayFileTags(files[i])
+
+        updateSidebar()
+
+        if (index <= 0) {
+            document.getElementById("previous").style.visibility = "hidden"
+        } else if (index < files.length) {
+            document.getElementById("next").style.visibility = "visible"
+        }
+
+        if (index >= 1) {
+            document.getElementById("previous").style.visibility = "visible"
+        }
+
+        if (index >= files.length-1) {
+            document.getElementById("next").style.visibility = "hidden"
+            return
+        }
+
+    }
 
     function displayFileInfo(file) {
         fileInfo.textContent = `File selected: ${file.name}, Size: ${(file.size / 1024).toFixed(2)} KB`
@@ -110,13 +159,15 @@ function setupFileUpload() {
             document.getElementById("previous").style.visibility = "visible"
         }
 
-        if (index >= files.length) {
+        if (index >= files.length-1) {
             document.getElementById("next").style.visibility = "hidden"
             return
         }
 
         displayFileInfo(files[index])
         displayFileTags(files[index])
+
+        updateSidebar()
 
     }
 
@@ -135,6 +186,8 @@ function setupFileUpload() {
 
         displayFileInfo(files[index])
         displayFileTags(files[index])
+
+        updateSidebar()
     }
 
     function filterTable() {
