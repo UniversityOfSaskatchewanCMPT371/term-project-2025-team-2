@@ -88,11 +88,20 @@ if (typeof document != "undefined") {
     document.addEventListener("DOMContentLoaded", () => {
         setupFileUpload()
     })
+ 
+    document.getElementById("log-file-save").addEventListener("click", () => {
+        let logData = logger.getLog()
 
-    document.getElementById("log-file-picker").addEventListener("click", () => {
-        logger.pickHandle()
+        const blob = new Blob([logData], { type: 'application/json' });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'log_' + new Date().toISOString() + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     })
-    document.getElementById("log-file-close").addEventListener("click", () => {
-        logger.closeFile()
-    })
+
 }
