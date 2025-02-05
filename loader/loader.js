@@ -1,15 +1,5 @@
-// Ensure dicomParser is loaded before use
-let dicomParser = window.dicomParser;
-if (!dicomParser) {
-    console.warn("⏳ Waiting for dicomParser to load...");
-    await import("https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js");
-    dicomParser = window.dicomParser;
 
-    if (!dicomParser) {
-        throw new Error(" Failed to load dicomParser. Ensure it's included in index.html.");
-    }
-}
-
+import { parseDicom as dicomParser } from "../dicomParser/src/parseDicom.js";
 import { TagDictionary } from "../tagDictionary/dictionary.js";
 
 /**
@@ -44,13 +34,13 @@ export class LoadTags {
     parseDicom(uint8Array) {
         this.initLogger();
 
-        if (!dicomParser || typeof dicomParser.parseDicom !== "function") {
+        if (!dicomParser || typeof dicomParser !== "function") {
             throw new Error(" dicomParser is not available. Ensure it's included in index.html.");
         }
 
         try {
             console.log("Parsing DICOM file...");
-            this.dataSet = dicomParser.parseDicom(uint8Array);
+            this.dataSet = dicomParser(uint8Array);
 
             if (!this.dataSet || !this.dataSet.elements) {
                 throw new Error(" Failed to parse DICOM file: dataset is undefined.");
