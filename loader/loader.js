@@ -94,7 +94,6 @@ export class LoadTags {
             toggleDetails = `details-${this.accodionIndex}`;
         }
 
-
         const nestedString = nest ? `<span class="arrow" onclick=${toggleDetails}></span>` : "";
 
         return `
@@ -151,8 +150,6 @@ export class LoadTags {
                 });
             }
         });
-
-
 
         this.logger.log("INFO", "DICOM Tag Table Generated Successfully!");
     }

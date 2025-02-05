@@ -29,6 +29,16 @@
         <a href="#">Tags</a>
         <a href="#">Edit</a>
         <a id="update-dicom-tags">Download Updated DICOM</a>
+        <table id="file-list" style="display: none;">
+            <thead>
+                <tr>
+                    <th style="background-color: #01579b; width: 250px;">File Name</th>
+                </tr>
+            </thead>
+            <tbody id="file-list-body">
+                <!-- Files will be populated here -->
+            </tbody>
+        </table>
     </div>
 
     <div class="main-content">
@@ -50,7 +60,7 @@
     </div>
 
     <div id="loading-text"></div>
-    <table id="dicom-tags" style="display: none">
+    <table id="dicom-tags" style="display: none;">
         <thead>
             <tr>
                 <th>Tag</th>
@@ -77,8 +87,6 @@
         function toggleDetails(id) {
             const detailsRow = document.querySelectorAll(`[id="details-${id}"]`);
             const arrow = event.target;
-
-            console.log(detailsRow);
 
             detailsRow.forEach(element => {
                 if (element.classList.contains('visible')) {

@@ -57,17 +57,28 @@ function setupFileUpload() {
     // Handle file input change
     fileInput.addEventListener("change", (event) => {
         files = event.target.files
+        let fileList = document.getElementById("file-list")
+        fileList.style.display = "block"
 
         if (files.length > 1) {
             document.getElementById("file-buttons").style.display = "block"
             document.getElementById("next").style.visibility = "visible"
+            
         }
+        
+        
+        Array.from(files).forEach(element => {
+            let tr = document.createElement("tr")
+            let td = document.createElement("td")
+            td.textContent = element.name
+            td.style.backgroundColor = "#01579b"
+            tr.appendChild(td)
+            fileList.appendChild(tr)
+        });
 
         if (files.length > 0) {
             displayFileInfo(files[0])
-
             displayFileTags(files[0]);
-
         }
     })
 
@@ -161,6 +172,7 @@ function setupFileUpload() {
         previous()
     })
 }
+
 
 if (typeof document != "undefined") {
     document
