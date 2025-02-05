@@ -15,7 +15,7 @@ export default [
         },
     },
     { 
-        ignores: ["dicomParser/*", "tagEditor/*"] 
+        ignores: ["dicomParser/*", "tagEditor/*", "tests/*"] 
     },
 
     pluginJs.configs.recommended,
