@@ -43,20 +43,11 @@ function setupFileUpload() {
 
         files = event.dataTransfer.files
 
-        if (files.length > 1) {
-            document.getElementById("next").style.display = "block"
-        }
+        handleFileOpen(files)
 
-        if (files.length > 0) {
-            displayFileInfo(files[0]);
-
-            displayFileTags(files[0]);
-        }
     })
 
-    // Handle file input change
-    fileInput.addEventListener("change", (event) => {
-        files = event.target.files
+    function handleFileOpen(files) {
         let fileList = document.getElementById("file-list-body")
         document.getElementById("file-list").style.display = "block"
 
@@ -84,6 +75,16 @@ function setupFileUpload() {
             displayFileInfo(files[0])
             displayFileTags(files[0]);
         }
+
+        updateSidebar()
+    }
+
+    // Handle file input change
+    fileInput.addEventListener("change", (event) => {
+        files = event.target.files
+
+        handleFileOpen(files)
+        
     })
 
     function updateSidebar() {
