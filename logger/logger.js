@@ -13,8 +13,11 @@ export class Logger {
      * Constructor for the Logger class
      * @constructor
      * @param {string} postUrl - The URL to post log messages to
+     * @param {boolean} verbose - Whether to log messages to the console
      */
-    constructor(postUrl) {
+    constructor(postUrl, verbose = false, sendRemote = true) {
+        this.verbose = verbose
+        this.sendRemote = sendRemote
         this.logData = []
         this.postUrl =
             postUrl ||
@@ -28,7 +31,7 @@ export class Logger {
      * @returns {void} - No return value
      */
     async localLog(level, message) {
-        this.logData.push("\n" + JSON.stringify(`{ ${level}: ${message}, Date: ${new Date().toISOString()}, UserAgent: ${userAgent} }`)  ) 
+        this.logData.push("\n" + JSON.stringify(`{ ${level}: ${message}, Date: ${new Date().toISOString()}, UserAgent: ${userAgent} }`))
     }
 
     /**
@@ -45,8 +48,63 @@ export class Logger {
      * @param {string} message - The message to log
      */
     log(level, message) {
+        if (this.verbose || level === "ERROR" || level === "CRITICAL") {
+            console.log(level, message)
+        }
         this.localLog(level, message)
-        this.logMessage(level, message)
+
+        if (this.sendRemote) {
+            this.remoteLog(level, message)
+        }
+    }
+
+    /**
+     * Log a message with the level "ERROR"
+     * @param {string} message - The message to log
+     * @returns {void} - No return value
+     * @description - Log a message with the level "ERROR"
+     */
+    logError(message) {
+        this.log("ERROR", message)
+    }
+
+    /**
+     * Log a message with the level "INFO"
+     * @param {string} message - The message to log
+     * @returns {void} - No return value
+     * @description - Log a message with the level "INFO"
+     */
+    logInfo(message) {
+        this.log("INFO", message)
+    }
+
+    /**
+     * Log a message with the level "WARN"
+     * @param {string} message - The message to log
+     * @returns {void} - No return value
+     * @description - Log a message with the level "WARNING"
+     */
+    logWarning(message) {
+        this.log("WARNING", message)
+    }
+
+    /**
+     * Log a message with the level "CRITICAL"
+     * @param {string} message - The message to log
+     * @returns {void} - No return value
+     * @description - Log a message with the level "CRITICAL"
+     */
+    logCritical(message) {
+        this.log("CRITICAL", message)
+    }
+
+    /**
+     * Turn on verbose logging
+     * @returns {void} - No return value
+     * @description - Toggle verbose logging, output all messages to the console
+     */
+    toggleVerbose() {
+        this.verbose = !this.verbose
     }
 
     /**
@@ -55,7 +113,7 @@ export class Logger {
      * @param {string} message - The message to log
      * @returns {Promise} - A promise that resolves when the message is posted
      */
-    async logMessage(level, message) {
+    async remoteLog(level, message) {
         await fetch(this.postUrl, {
             method: "POST",
             headers: {
