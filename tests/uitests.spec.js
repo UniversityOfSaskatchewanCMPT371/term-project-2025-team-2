@@ -57,7 +57,7 @@ const path = require("path");
 //       `${baseURL}/tagDictionary/dictionary.js`,
 //       `${baseURL}/tagDictionary/standardDataElements.js`,
 //       `${baseURL}/logger/logger.js`,
-//       `${baseURL}"/dicomParser/*`,
+//       `${baseURL}/dicomParser/*`,
 // 		].sort(),
 // 	});
 // });
