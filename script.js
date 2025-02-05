@@ -186,6 +186,15 @@ if (typeof document != "undefined") {
         URL.revokeObjectURL(url);
     })
 
+    document.getElementById("log-verbose").addEventListener("click", () => {
+        logger.toggleVerbose()
+        if(logger.verbose){
+            document.getElementById("log-verbose").style.color = "green"
+        } else {
+            document.getElementById("log-verbose").style.color = "red"
+        }
+    })
+
     document.getElementById("update-dicom-tags").addEventListener("click", () => {
         loadTags.downloadModifiedDicom()
     })
