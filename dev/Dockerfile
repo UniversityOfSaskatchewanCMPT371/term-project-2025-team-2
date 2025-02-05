@@ -8,6 +8,9 @@ RUN npm install package.json
 
 RUN apt-get update && apt-get install -y vim && \
     apt-get install -y nginx
+    
+RUN npx install playwright && \
+    npx playwright install-deps
 
 RUN /usr/sbin/nginx 
 
