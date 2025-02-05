@@ -110,6 +110,16 @@ export class LoadTags {
         Object.keys(this.dataSet.elements).forEach((tag) => {
             let element = this.dataSet.elements[tag];
 
+            const formattedTag = tag.toUpperCase();
+            const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
+            const tagValue = this.dataSet.string(tag) || "N/A";
+
+            if (tagName === "Unknown") {
+                this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
+            }
+
+            this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+
             if (element.items) {
                 element.items.forEach((item) => {
                     Object.keys(item.dataSet.elements).forEach((tag) => {
@@ -127,21 +137,9 @@ export class LoadTags {
             }
         });
 
-        Object.keys(this.dataSet.elements).forEach((tag) => {
+        
 
-            const formattedTag = tag.toUpperCase();
-            const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
-            const tagValue = this.dataSet.string(tag) || "N/A";
-
-            if (tagName === "Unknown") {
-                this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
-            }
-
-            this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
-
-        });
-
-        console.log("DICOM Tag Table Generated Successfully!");
+        this.logger.log("INFO", "DICOM Tag Table Generated Successfully!");
     }
 
 
