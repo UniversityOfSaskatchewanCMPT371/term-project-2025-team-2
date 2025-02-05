@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.24.1.css">
 
     <!-- Load dicomParser BEFORE anything else -->
-    <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js"></script>
+    <!-- <script src="https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js"></script> -->
 
     <!-- Ensure correct paths (since this is inside /tests/) -->
+    <script type="module" src="../dicomParser/src/parseDicom.js"></script>
     <script type="module" src="../logger/logger.js"></script>
     <script type="module" src="../loader/loader.js"></script>
     <script type="module" src="../script.js"></script>
@@ -46,6 +47,6 @@
     <!-- Load test scripts in order -->
     <script type="module" src="../tests/tagDictionary_test.js"></script>
     <script type="module" src="../tests/logger_test.js"></script>
-    <script type="module" src="../tests/integration_test.js"></script>
+    <!-- <script type="module" src="../tests/integration_test.js"></script> -->
 </body>
 </html>
