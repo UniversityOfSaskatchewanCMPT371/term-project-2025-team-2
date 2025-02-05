@@ -10,7 +10,7 @@
 //     }
 // }
 
-import  { parseDicom as dicomParser } from "../dicomParser/src/parseDicom.js";
+import { parseDicom as dicomParser } from "../dicomParser/src/parseDicom.js";
 import { TagDictionary } from "../tagDictionary/dictionary.js";
 
 
@@ -106,7 +106,29 @@ export class LoadTags {
 
         this.table = ""; // Reset table
 
+
         Object.keys(this.dataSet.elements).forEach((tag) => {
+            let element = this.dataSet.elements[tag];
+
+            if (element.items) {
+                element.items.forEach((item) => {
+                    Object.keys(item.dataSet.elements).forEach((tag) => {
+                        const formattedTag = tag.toUpperCase();
+                        const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
+                        const tagValue = this.dataSet.string(tag) || "N/A";
+
+                        if (tagName === "Unknown") {
+                            this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
+                        }
+
+                        this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+                    });
+                });
+            }
+        });
+
+        Object.keys(this.dataSet.elements).forEach((tag) => {
+
             const formattedTag = tag.toUpperCase();
             const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
             const tagValue = this.dataSet.string(tag) || "N/A";
@@ -116,6 +138,7 @@ export class LoadTags {
             }
 
             this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+
         });
 
         console.log("DICOM Tag Table Generated Successfully!");
@@ -198,7 +221,7 @@ export class LoadTags {
                 // This is a simplified approach - in practice, you'd need proper VR handling
                 const encoder = new TextEncoder();
                 const valueBytes = encoder.encode(tag);
-                
+
                 valueBytes.forEach((byte, index) => {
                     if (index < element.length) {
                         modifiedDataset[element.dataOffset + index] = byte;
@@ -206,7 +229,7 @@ export class LoadTags {
                 });
             }
         });
-       // console.log("Modified Dataset", modifiedDataset);
+        // console.log("Modified Dataset", modifiedDataset);
 
         // Create and trigger download
         const blob = new Blob([modifiedDataset], { type: 'application/dicom' });

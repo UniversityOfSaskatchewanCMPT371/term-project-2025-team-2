@@ -126,6 +126,33 @@ function setupFileUpload() {
         displayFileTags(files[index])
     }
 
+    function filterTable() {
+        let input = document.getElementById('filterInput');
+        let filter = input.value.toUpperCase();
+        let table = document.getElementById("tags-body");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            if (cells[j].innerText.toUpperCase().includes(filter)) {
+              found = true;
+              break;
+            }
+          }
+
+          if (found) {
+            rows[i].style.display = "";
+          } else {
+            rows[i].style.display = "none";
+          }
+        }
+      }
+
+    document.getElementById("filterInput").addEventListener("keyup", filterTable)
+
     document.getElementById("next").addEventListener("click", () => {
         next()
     })
