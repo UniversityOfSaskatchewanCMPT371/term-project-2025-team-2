@@ -14,9 +14,10 @@ export default [
             },
         },
     },
-    {
-        ignores: ["dicomParser/"],
+    { 
+        ignores: ["dicomParser/*", "tagEditor/*", "tests/*"] 
     },
+
     pluginJs.configs.recommended,
     eslintConfigPrettier,
 ]

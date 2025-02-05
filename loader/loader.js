@@ -1,6 +1,18 @@
+// Ensure dicomParser is loaded before use
+// let dicomParser = window.dicomParser;
+// if (!dicomParser) {
+//     console.warn("⏳ Waiting for dicomParser to load...");
+//     await import("https://unpkg.com/dicom-parser@1.8.3/dist/dicomParser.min.js");
+//     dicomParser = window.dicomParser;
+
+//     if (!dicomParser) {
+//         throw new Error(" Failed to load dicomParser. Ensure it's included in index.html.");
+//     }
+// }
 
 import { parseDicom as dicomParser } from "../dicomParser/src/parseDicom.js";
 import { TagDictionary } from "../tagDictionary/dictionary.js";
+
 
 /**
  * LoadTags class to handle the loading and parsing of DICOM files.
@@ -18,6 +30,8 @@ export class LoadTags {
         this.tagDictionary = new TagDictionary();
         this.logger = null;
         this.table = "";
+        this.modifiedTags = new Map();
+        this.accodionIndex = 0;
     }
 
     async initLogger() {
@@ -68,14 +82,27 @@ export class LoadTags {
      * createTagTableRow(0x00080008, "Image Type", "DERIVED\\PRIMARY\\AXIAL")
      * // Returns: "<tr><td>0x00080008</td><td>Image Type</td><td><input type="text" value="DERIVED\\PRIMARY\\AXIAL" oninput="dataSet.elements['0x00080008'].data = dicomParser.stringToBytes(this.value)" /></td></tr>"
      */
-    createTagTableRow(tag, tagName, tagValue) {
+    createTagTableRow(tag, tagName, tagValue, nest = false, nested = false) {
+        let toggleDetails = "";
+
+        if (nest) {
+            this.accodionIndex++;
+            toggleDetails = `toggleDetails(${this.accodionIndex})`;
+        }
+
+        if (nested) {
+            toggleDetails = `details-${this.accodionIndex}`;
+        }
+
+        const nestedString = nest ? `<span class="arrow" onclick=${toggleDetails}></span>` : "";
+
         return `
-        <tr>
-            <td>${tag.toUpperCase()}</td>
-            <td>${tagName}</td>
-            <td>
-                <input type="text" value="${tagValue}" oninput="this.dataset.value = this.value" />
-            </td>
+        <tr id="${nested ? toggleDetails : "tag-row"}" ${nested ? `class="details-row"` : ""}>
+            <td ${nested ? `style="background-color: white"` : ""} id="tag">${nestedString} ${tag.toUpperCase()}</td>
+            <td id="tag-name">${tagName}</td>
+            ${nest ? `<td></td>` : `<td>
+                <input id="tag-value" type="text" value="${tagValue}" />
+            </td>`}
         </tr>
         `;
     }
@@ -93,7 +120,10 @@ export class LoadTags {
 
         this.table = ""; // Reset table
 
+
         Object.keys(this.dataSet.elements).forEach((tag) => {
+            let element = this.dataSet.elements[tag];
+
             const formattedTag = tag.toUpperCase();
             const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
             const tagValue = this.dataSet.string(tag) || "N/A";
@@ -102,10 +132,26 @@ export class LoadTags {
                 this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
             }
 
-            this.table += this.createTagTableRow(formattedTag, tagName, tagValue);
+            this.table += this.createTagTableRow(formattedTag, tagName, tagValue, element.items ? true : false, false);
+
+            if (element.items) {
+                element.items.forEach((item) => {
+                    Object.keys(item.dataSet.elements).forEach((tag) => {
+                        const formattedTag = tag.toUpperCase();
+                        const tagName = this.tagDictionary.lookup(formattedTag) || "Unknown";
+                        const tagValue = this.dataSet.string(tag) || "N/A";
+
+                        if (tagName === "Unknown") {
+                            this.logger.log("WARNING", `Unknown DICOM tag: ${formattedTag}`);
+                        }
+
+                        this.table += this.createTagTableRow(formattedTag, tagName, tagValue, false, true);
+                    });
+                });
+            }
         });
 
-        console.log("DICOM Tag Table Generated Successfully!");
+        this.logger.log("INFO", "DICOM Tag Table Generated Successfully!");
     }
 
 
@@ -117,15 +163,14 @@ export class LoadTags {
         return this.table;
     }
 
-         /**
-     * Load and parse a DICOM file.
-     * @param {File} file - The DICOM file to be loaded.
-     * @returns {Promise<string>} - The promise containing the table HTML.
-     */
-
+    /**
+    * Load and parse a DICOM file.
+    * @param {File} file - The DICOM file to be loaded.
+    * @returns {Promise<string>} - The promise containing the table HTML.
+    */
     async readFile(file) {
         await this.initLogger();
-      
+
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
@@ -152,5 +197,62 @@ export class LoadTags {
             reader.readAsArrayBuffer(file);
         });
     }
+
+
+    // not a goog way to do this
+    updateTagValue() {
+        if (!this.dataSet) return;
+
+        const input = document.querySelectorAll("#tag-row");
+
+        input.forEach((item) => {
+            const tag = item.children[0].textContent;
+            const newValue = item.children[2].children[0].value;
+            this.modifiedTags.set(tag, newValue);
+        });
+    }
+
+
+    // doesn't work for all formats
+    downloadModifiedDicom() {
+        if (!this.dataSet) return;
+
+        this.updateTagValue();
+        console.log("Modified Tags", this.modifiedTags);
+
+        // Create a modified copy of the original DICOM data
+        const modifiedDataset = new Uint8Array(this.dataSet.byteArray);
+
+        // Apply modifications
+        this.modifiedTags.forEach((tag, newValue) => {
+            //console.log(newValue);
+            const element = this.dataSet.elements[newValue.toLowerCase()];
+            if (element) {
+                // This is a simplified approach - in practice, you'd need proper VR handling
+                const encoder = new TextEncoder();
+                const valueBytes = encoder.encode(tag);
+
+                valueBytes.forEach((byte, index) => {
+                    if (index < element.length) {
+                        modifiedDataset[element.dataOffset + index] = byte;
+                    }
+                });
+            }
+        });
+        // console.log("Modified Dataset", modifiedDataset);
+
+        // Create and trigger download
+        const blob = new Blob([modifiedDataset], { type: 'application/dicom' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'modified.dcm';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+
 }
 

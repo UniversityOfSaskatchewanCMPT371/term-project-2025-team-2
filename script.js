@@ -4,7 +4,6 @@ import { LoadTags } from "./loader/loader.js"
 export const logger = new Logger()
 export const loadTags = new LoadTags()
 
-
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar")
     if (sidebar.style.right === "0px") {
@@ -19,6 +18,9 @@ function setupFileUpload() {
     const fileInput = document.getElementById("file-input")
     const fileInfo = document.getElementById("file-info")
     const openFileBtn = document.getElementById("open-file-btn")
+
+    let files = []
+    let index = 0
 
     // Open file input dialog when button is clicked
     openFileBtn.addEventListener("click", () => {
@@ -39,7 +41,12 @@ function setupFileUpload() {
         event.preventDefault()
         dropArea.classList.remove("hover")
 
-        const files = event.dataTransfer.files
+        files = event.dataTransfer.files
+
+        if (files.length > 1) {
+            document.getElementById("next").style.display = "block"
+        }
+
         if (files.length > 0) {
             displayFileInfo(files[0]);
 
@@ -49,12 +56,29 @@ function setupFileUpload() {
 
     // Handle file input change
     fileInput.addEventListener("change", (event) => {
-        const files = event.target.files
+        files = event.target.files
+        let fileList = document.getElementById("file-list")
+        fileList.style.display = "block"
+
+        if (files.length > 1) {
+            document.getElementById("file-buttons").style.display = "block"
+            document.getElementById("next").style.visibility = "visible"
+            
+        }
+        
+        
+        Array.from(files).forEach(element => {
+            let tr = document.createElement("tr")
+            let td = document.createElement("td")
+            td.textContent = element.name
+            td.style.backgroundColor = "#01579b"
+            tr.appendChild(td)
+            fileList.appendChild(tr)
+        });
+
         if (files.length > 0) {
             displayFileInfo(files[0])
-
             displayFileTags(files[0]);
-
         }
     })
 
@@ -78,7 +102,77 @@ function setupFileUpload() {
 
         })
     }
+
+    function next() {
+        index++
+
+        if (index >= 1) {
+            document.getElementById("previous").style.visibility = "visible"
+        }
+
+        if (index >= files.length) {
+            document.getElementById("next").style.visibility = "hidden"
+            return
+        }
+
+        displayFileInfo(files[index])
+        displayFileTags(files[index])
+
+    }
+
+    function previous() {
+        index--
+
+        if (index <= 0) {
+            document.getElementById("previous").style.visibility = "hidden"
+        } else if (index < files.length) {
+            document.getElementById("next").style.visibility = "visible"
+        }
+
+        if (index < 0) {
+            return
+        }
+
+        displayFileInfo(files[index])
+        displayFileTags(files[index])
+    }
+
+    function filterTable() {
+        let input = document.getElementById('filterInput');
+        let filter = input.value.toUpperCase();
+        let table = document.getElementById("tags-body");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName("td");
+            let found = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toUpperCase().includes(filter)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+    document.getElementById("filterInput").addEventListener("keyup", filterTable)
+
+    document.getElementById("next").addEventListener("click", () => {
+        next()
+    })
+
+    document.getElementById("previous").addEventListener("click", () => {
+        previous()
+    })
 }
+
 
 if (typeof document != "undefined") {
     document
@@ -88,7 +182,7 @@ if (typeof document != "undefined") {
     document.addEventListener("DOMContentLoaded", () => {
         setupFileUpload()
     })
- 
+
     document.getElementById("log-file-save").addEventListener("click", () => {
         let logData = logger.getLog()
 
@@ -103,5 +197,10 @@ if (typeof document != "undefined") {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     })
+
+    document.getElementById("update-dicom-tags").addEventListener("click", () => {
+        loadTags.downloadModifiedDicom()
+    })
+
 
 }
