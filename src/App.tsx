@@ -1,8 +1,18 @@
 import React, { useState } from "react";
+
 import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import FileUploader from "./components/FileUploader";
 import DicomTable from "./components/DicomTable";
+
+import log from 'loglevel';
+import remote from 'loglevel-plugin-remote';
+
+log.enableAll();
+remote.apply(log, {
+  url: "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg",
+  format: 'json',
+});
 
 const App: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -18,6 +28,8 @@ const App: React.FC = () => {
     setFiles(newFiles);
     setDicomData(newDicomData);
     setCurrentFileIndex(0);
+
+    log.info("file-loaded");
   };
 
   const nextFile = () => {

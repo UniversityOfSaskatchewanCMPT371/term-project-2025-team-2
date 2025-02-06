@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sentry/react": "^8.54.0",
-    "@sentry/vite-plugin": "^3.1.2",
     "@tailwindcss/vite": "^4.0.3",
     "dicom-parser": "^1.8.21",
+    "loglevel": "^1.9.2",
+    "loglevel-plugin-remote": "^0.6.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5"
