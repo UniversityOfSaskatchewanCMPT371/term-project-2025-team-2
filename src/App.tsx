@@ -21,6 +21,7 @@ const App: React.FC = () => {
     setFiles(newFiles);
     setDicomData(newDicomData);
     setCurrentFileIndex(0);
+    
     log.info("file-loaded");
   };
 
