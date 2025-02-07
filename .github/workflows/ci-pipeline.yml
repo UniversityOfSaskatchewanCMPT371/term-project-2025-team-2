@@ -70,7 +70,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -t dicom-app .
+          docker build -f docker/dev/Dockerfile -t dicom-app .
 
       #Run the container for testing
       - name: Run Docker container
