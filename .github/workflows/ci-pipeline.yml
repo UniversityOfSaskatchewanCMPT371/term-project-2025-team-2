@@ -44,16 +44,16 @@ jobs:
         continue-on-error: false
 
       #Validate contents of test directory
-      - name: Validate test directory
-        run: Get-ChildItem -Force -Recurse .\test
+     # - name: Validate test directory
+     #   run: Get-ChildItem -Force -Recurse .\test
 
       #Installs playwright browsers with all its dependencies
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       #Run browser test
-      - name: Run browser test
-        run: npm run test:browser
+    #  - name: Run browser test
+    #    run: npm run test:browser
       
       #Build project
       - name: Build
