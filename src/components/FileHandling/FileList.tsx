@@ -1,5 +1,5 @@
 import React from "react";
-import { File } from "../types.ts";
+import { File } from "../../types/types.ts";
 
 interface FileListProps {
     files: File[];

@@ -1,11 +1,11 @@
 import log from "loglevel";
 // import remote from "loglevel-plugin-remote";
 
-const logMsgFormat = (log: any) => ({
-  level: log.level,
-  msg: log.message,
-  timestamp: new Date().toISOString(),
-});
+// const logMsgFormat = (log: any) => ({
+//   level: log.level,
+//   msg: log.message,
+//   timestamp: new Date().toISOString(),
+// });
 
 log.enableAll();
 

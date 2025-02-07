@@ -16,7 +16,8 @@
     "loglevel-plugin-remote": "^0.6.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.5"
+    "react-dropzone": "^14.3.5",
+    "vite-plugin-pwa": "^0.21.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

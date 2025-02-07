@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationLinks } from "./NavigationLinks.tsx";
 import { FileList } from "../FileHandling/FileList.tsx";
-import { SidebarProps } from "../types.ts";
+import { SidebarProps } from "../../types/types.ts";
 
 const Sidebar: React.FC<SidebarProps> = ({
     files,

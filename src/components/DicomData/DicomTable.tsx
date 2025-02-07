@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SearchInput } from "../utils/SearchInput.tsx";
 import { DicomTableRow } from "./DicomTableRow.tsx";
-import { DicomTableProps } from "../types.ts";
+import { DicomTableProps } from "../../types/types.ts";
 
 const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const [searchTerm, setSearchTerm] = useState("");

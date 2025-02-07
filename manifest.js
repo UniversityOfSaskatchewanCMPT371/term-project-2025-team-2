@@ -1,10 +1,7 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
-const manifestForPlugIn: Partial<VitePWAOptions> = {
+const manifestForPlugIn = {
     registerType: 'prompt',
-    includeAssets: ['favicon.ico', "apple-touch-icon.png", "maskable_icon.png", "android-chrome-192x192.png", "android-chrome-512x512.png"],
+    includeAssets: ['favicon.ico', "apple-touch-icon.png", "android-chrome-192x192.png", "android-chrome-512x512.png", "maskable_icon.png"],
     manifest: {
         name: "React-vite-app",
         short_name: "react-vite-app",
@@ -42,8 +39,3 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
         orientation: 'portrait'
     }
 }
-
-// https://vite.dev/config/
-export default defineConfig({
-    plugins: [react(), VitePWA(manifestForPlugIn)],
-});
