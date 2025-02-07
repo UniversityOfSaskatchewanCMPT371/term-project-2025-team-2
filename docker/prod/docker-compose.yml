@@ -1,14 +1,14 @@
-# use docker compose build to build the image, 
+# use docker compose build to build the image,
 # allows for the dockerfile to copy from parnet directories
 version: "3.7"
 
 services:
-  web:
-    build:
-      context: ../../
-      dockerfile: docker/prod/Dockerfile
-    volumes:
-      - .:/app
-    environment:
-      - NODE_ENV=production
-      - PORT=5173
+    web:
+        build:
+            context: ../../
+            dockerfile: docker/prod/Dockerfile
+        volumes:
+            - .:/app
+        environment:
+            - NODE_ENV=production
+            - PORT=5173

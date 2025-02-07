@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-
-import Sidebar from "./components/Sidebar";
-import Topbar from "./components/Topbar";
-import FileUploader from "./components/FileUploader";
-import DicomTable from "./components/DicomTable";
-
-import log from 'loglevel';
-import remote from 'loglevel-plugin-remote';
-
-log.enableAll();
-remote.apply(log, {
-  url: "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg",
-  format: 'json',
-});
+import Sidebar from "./components/Navingation/Sidebar";
+import Topbar from "./components/Navingation/Topbar";
+import FileUploader from "./components/FileHandling/FileUploader";
+import DicomTable from "./components/DicomData/DicomTable";
+import { FileNavigation } from "./components/Navingation/FileNavigation";
+import { FileHeader } from "./components/FileHandling/FIleHandler";
+import log from "./components/utils/Logger";
 
 const App: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -28,7 +21,6 @@ const App: React.FC = () => {
     setFiles(newFiles);
     setDicomData(newDicomData);
     setCurrentFileIndex(0);
-
     log.info("file-loaded");
   };
 
@@ -50,36 +42,27 @@ const App: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Topbar toggleSidebar={toggleSidebar} sidebarVisible={sidebarVisible} />
+      <Topbar
+        toggleSidebar={toggleSidebar}
+        sidebarVisible={sidebarVisible}
+      />
       <div className="flex flex-1">
         <div className="flex-grow p-8">
-          {files.length > 0 && dicomData.length > 0 && (
-            <h2 className="mb-4 mt-4 text-xl text-gray-700">
-              Currently Viewing: {files[currentFileIndex].name}
-            </h2>
-          )}
+          <FileHeader files={files} currentFileIndex={currentFileIndex} />
 
           <FileUploader onFileUpload={handleFileUpload} />
 
           {files.length > 0 && dicomData.length > 0 && (
             <div>
-              <div className="mt-4 flex justify-between">
-                <button
-                  onClick={prevFile}
-                  disabled={currentFileIndex === 0}
-                  className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-300"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={nextFile}
-                  disabled={currentFileIndex === files.length - 1}
-                  className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-300"
-                >
-                  Next
-                </button>
-              </div>
-              <DicomTable dicomData={dicomData[currentFileIndex]} />
+              <FileNavigation
+                currentFileIndex={currentFileIndex}
+                fileCount={files.length}
+                onPrevFile={prevFile}
+                onNextFile={nextFile}
+              />
+              <DicomTable
+                dicomData={dicomData[currentFileIndex]}
+              />
             </div>
           )}
         </div>
