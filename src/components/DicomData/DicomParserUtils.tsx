@@ -48,7 +48,24 @@ const extractDicomTags = (dataSet: any) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
         const tagName = tagDictionary.lookup(tagId) || "Unknown Tag";
-        const value = dataSet.string(tag) || "N/A";
+        const vr = element.vr;
+
+        let value: any;
+
+        switch (vr) {
+            case "UL":
+                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset);
+                break;
+            case "OB":
+                value = dataSet.byteArray.slice(
+                    element.dataOffset,
+                    element.dataOffset + element.length
+                );
+                break;
+            default:
+                value = dataSet.string(tag) || "N/A";
+                break;
+        }
 
         if (element.items && element.items.length > 0) {
             const valueNested: any = [];
