@@ -591,10 +591,11 @@ export class DicomUpdater {
      */
     private findOffsetForNewTag(entries: any[], newTag: any) {
         const newTagAttribute = newTag.tagGroup.concat(newTag.tagElement);
+        let i = 0;
         entries.sort(function (element1: any, element2: any) {
             return element1.offset - element2.offset;
         });
-        for (let i = 0; i < entries.length; i++) {
+        for (i = 0; i < entries.length; i++) {
             const tagAttribute = entries[i].tagGroup.concat(
                 entries[i].tagElement
             );
