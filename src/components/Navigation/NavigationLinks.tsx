@@ -9,7 +9,7 @@ export const NavigationLinks: React.FC = () => {
         <ul className="space-y-4">
             <li>
                 <a href="#" className="ml-3 hover:text-accent">
-                    Download
+                    {`Download (PlaceHolder)`}
                 </a>
             </li>
         </ul>

@@ -1,5 +1,5 @@
 import React from "react";
-import { FileList } from "../FileHandling/FileList.tsx";
+import { FileTableBody } from "./FileTableBody.tsx";
 
 /**
  * interface FileTableProps
@@ -30,7 +30,7 @@ const FileTable: React.FC<FileTableProps> = ({
                         <td>Uploaded Files</td>
                     </tr>
                 </thead>
-                <FileList
+                <FileTableBody
                     files={files}
                     currentFileIndex={currentFileIndex}
                     onFileSelect={onFileSelect}

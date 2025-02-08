@@ -1,656 +1,90 @@
-<!doctype html>
-<html class="default" lang="en" data-base=".">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="x-ua-compatible" content="IE=edge" />
-        <title>dicom-tag-editor</title>
-        <meta name="description" content="Documentation for dicom-tag-editor" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="assets/style.css" />
-        <link rel="stylesheet" href="assets/highlight.css" />
-        <script defer src="assets/main.js"></script>
-        <script async src="assets/icons.js" id="tsd-icons-script"></script>
-        <script async src="assets/search.js" id="tsd-search-script"></script>
-        <script async src="assets/navigation.js" id="tsd-nav-script"></script>
-        <script
-            async
-            src="assets/hierarchy.js"
-            id="tsd-hierarchy-script"
-        ></script>
-    </head>
-    <body>
-        <script>
-            document.documentElement.dataset.theme =
-                localStorage.getItem("tsd-theme") || "os";
-            document.body.style.display = "none";
-            setTimeout(
-                () =>
-                    app
-                        ? app.showPage()
-                        : document.body.style.removeProperty("display"),
-                500
-            );
-        </script>
-        <header class="tsd-page-toolbar">
-            <div class="tsd-toolbar-contents container">
-                <div class="table-cell" id="tsd-search">
-                    <div class="field">
-                        <label
-                            for="tsd-search-field"
-                            class="tsd-widget tsd-toolbar-icon search no-caption"
-                            ><svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                            >
-                                <use
-                                    href="assets/icons.svg#icon-search"
-                                ></use></svg></label
-                        ><input
-                            type="text"
-                            id="tsd-search-field"
-                            aria-label="Search"
-                        />
-                    </div>
-                    <div class="field"><div id="tsd-toolbar-links"></div></div>
-                    <ul class="results">
-                        <li class="state loading">Preparing search index...</li>
-                        <li class="state failure">
-                            The search index is not available
-                        </li>
-                    </ul>
-                    <a href="index.html" class="title">dicom-tag-editor</a>
-                </div>
-                <div class="table-cell" id="tsd-widgets">
-                    <a
-                        href="#"
-                        class="tsd-widget tsd-toolbar-icon no-caption menu"
-                        data-toggle="menu"
-                        aria-label="Menu"
-                        ><svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                        >
-                            <use href="assets/icons.svg#icon-menu"></use></svg
-                    ></a>
-                </div>
-            </div>
-        </header>
-        <div class="container-main container">
-            <div class="col-content">
-                <div class="tsd-page-title"><h1>dicom-tag-editor</h1></div>
-                <div class="tsd-panel tsd-typography">
-                    <a id="dicom-file-tag-editor" class="tsd-anchor"></a>
-                    <h1 class="tsd-anchor-link">
-                        DICOM File Tag Editor<a
-                            href="#dicom-file-tag-editor"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h1>
-                    <a id="overview" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Overview<a
-                            href="#overview"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <p>
-                        This project is a simple DICOM file tag editor that
-                        allows users to view and modify the metadata tags of
-                        DICOM files directly in the browser. DICOM (Digital
-                        Imaging and Communications in Medicine) files are
-                        commonly used in medical imaging systems, and this tool
-                        aims to provide a lightweight and user-friendly
-                        interface for interacting with these files' metadata.
-                    </p>
-                    <p>
-                        The editor allows users to upload a DICOM file, view its
-                        tags (such as Patient Name, Study Date, etc.), and
-                        modify the tag values. This application runs entirely in
-                        the browser, using <strong>React</strong>,
-                        <strong>Vite</strong>, <strong>TailwindCSS</strong>, and
-                        <strong>DaisyUI</strong> for a modern and responsive
-                        user interface.
-                    </p>
-                    <p>
-                        <a
-                            href="https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/"
-                            >GitHub Pages</a
-                        >
-                    </p>
-                    <a id="features" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Features<a
-                            href="#features"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <ul>
-                        <li>Upload a DICOM file to extract metadata.</li>
-                        <li>View and edit DICOM file tags.</li>
-                        <li>
-                            Save the modified metadata (though actual file
-                            modification is not supported in this version).
-                        </li>
-                        <li>A clean and simple UI for easier navigation.</li>
-                        <li>
-                            PWA (Progressive Web App) support for offline use.
-                        </li>
-                    </ul>
-                    <a id="technologies-used" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Technologies Used<a
-                            href="#technologies-used"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <ul>
-                        <li>
-                            <strong>React</strong>: JavaScript library for
-                            building user interfaces.
-                        </li>
-                        <li>
-                            <strong>Vite</strong>: A modern, fast build tool for
-                            React that offers fast hot module replacement (HMR)
-                            and optimal production builds.
-                        </li>
-                        <li>
-                            <strong>TailwindCSS</strong>: Utility-first CSS
-                            framework for styling the app with ease and
-                            flexibility.
-                        </li>
-                        <li>
-                            <strong>DaisyUI</strong>: A TailwindCSS component
-                            library to speed up UI development with pre-designed
-                            components.
-                        </li>
-                        <li>
-                            <strong>TypeScript</strong>: Used for handling file
-                            uploads, parsing DICOM tags, and enabling tag
-                            editing functionality.
-                        </li>
-                        <li>
-                            <strong>dicomParser.js</strong>: A library used to
-                            parse DICOM files and extract metadata tags.
-                        </li>
-                        <li>
-                            <strong>PWAs (Progressive Web Apps)</strong>:
-                            Enabling offline use and improved performance.
-                        </li>
-                    </ul>
-                    <a id="installation" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Installation<a
-                            href="#installation"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <a id="prerequisites" class="tsd-anchor"></a>
-                    <h3 class="tsd-anchor-link">
-                        Prerequisites<a
-                            href="#prerequisites"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h3>
-                    <p>
-                        No installation is required for this application, as it
-                        runs entirely in your web browser. You only need a
-                        modern web browser (such as Chrome, Firefox, or Edge) to
-                        use the editor.
-                    </p>
-                    <a id="steps-to-run-locally" class="tsd-anchor"></a>
-                    <h3 class="tsd-anchor-link">
-                        Steps to Run Locally<a
-                            href="#steps-to-run-locally"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h3>
-                    <ol>
-                        <li>
-                            Clone this repository:
-                            <pre><code class="bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">clone</span><span class="hl-1"> </span><span class="hl-2">https://github.com/yourusername/dicom-tag-editor.git</span>
+<!DOCTYPE html><html class="default" lang="en" data-base="."><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>dicom-tag-editor</title><meta name="description" content="Documentation for dicom-tag-editor"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search"><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">dicom-tag-editor</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>dicom-tag-editor</h1></div><div class="tsd-panel tsd-typography"><a id="dicom-file-tag-editor" class="tsd-anchor"></a><h1 class="tsd-anchor-link">DICOM File Tag Editor<a href="#dicom-file-tag-editor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><a id="overview" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Overview<a href="#overview" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This project is a simple DICOM file tag editor that allows users to view and
+modify the metadata tags of DICOM files directly in the browser. DICOM (Digital
+Imaging and Communications in Medicine) files are commonly used in medical
+imaging systems, and this tool aims to provide a lightweight and user-friendly
+interface for interacting with these files' metadata.</p>
+<p>The editor allows users to upload a DICOM file, view its tags (such as Patient
+Name, Study Date, etc.), and modify the tag values. This application runs
+entirely in the browser, using <strong>React</strong>, <strong>Vite</strong>, <strong>TailwindCSS</strong>, and
+<strong>DaisyUI</strong> for a modern and responsive user interface.</p>
+<p><a href="https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/">GitHub Pages</a></p>
+<a id="features" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Upload a DICOM file to extract metadata.</li>
+<li>View and edit DICOM file tags.</li>
+<li>Save the modified metadata (though actual file modification is not supported
+in this version).</li>
+<li>A clean and simple UI for easier navigation.</li>
+<li>PWA (Progressive Web App) support for offline use.</li>
+</ul>
+<a id="technologies-used" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Technologies Used<a href="#technologies-used" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li><strong>React</strong>: JavaScript library for building user interfaces.</li>
+<li><strong>Vite</strong>: A modern, fast build tool for React that offers fast hot module
+replacement (HMR) and optimal production builds.</li>
+<li><strong>TailwindCSS</strong>: Utility-first CSS framework for styling the app with ease and
+flexibility.</li>
+<li><strong>DaisyUI</strong>: A TailwindCSS component library to speed up UI development with
+pre-designed components.</li>
+<li><strong>TypeScript</strong>: Used for handling file uploads, parsing DICOM tags, and
+enabling tag editing functionality.</li>
+<li><strong>dicomParser.js</strong>: A library used to parse DICOM files and extract metadata
+tags.</li>
+<li><strong>PWAs (Progressive Web Apps)</strong>: Enabling offline use and improved
+performance.</li>
+</ul>
+<a id="installation" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="prerequisites" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Prerequisites<a href="#prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>No installation is required for this application, as it runs entirely in your
+web browser. You only need a modern web browser (such as Chrome, Firefox, or
+Edge) to use the editor.</p>
+<a id="steps-to-run-locally" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Steps to Run Locally<a href="#steps-to-run-locally" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ol>
+<li>Clone this repository:<pre><code class="bash"><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">clone</span><span class="hl-1"> </span><span class="hl-2">https://github.com/yourusername/dicom-tag-editor.git</span>
 </code><button type="button">Copy</button></pre>
-                        </li>
-                        <li>
-                            Navigate into the project directory:
-                            <pre><code class="bash"><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">dicom-tag-editor</span>
+
+</li>
+<li>Navigate into the project directory:<pre><code class="bash"><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">dicom-tag-editor</span>
 </code><button type="button">Copy</button></pre>
-                        </li>
-                        <li>
-                            Install the dependencies:
-                            <pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span>
+
+</li>
+<li>Install the dependencies:<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span>
 </code><button type="button">Copy</button></pre>
-                        </li>
-                        <li>
-                            Run the development server:
-                            <pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev</span>
+
+</li>
+<li>Run the development server:<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev</span>
 </code><button type="button">Copy</button></pre>
-                        </li>
-                        <li>
-                            Open your browser and go to
-                            <code>http://localhost:5173</code> to start using
-                            the DICOM tag editor.
-                        </li>
-                    </ol>
-                    <a id="docker-container" class="tsd-anchor"></a>
-                    <h3 class="tsd-anchor-link">
-                        Docker Container<a
-                            href="#docker-container"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h3>
-                    <p>
-                        A Docker container is provided with nginx used to serve
-                        the application.
-                    </p>
-                    <p>
-                        A development Docker container is also provided with
-                        Vite's development server running.
-                    </p>
-                    <a id="usage" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Usage<a
-                            href="#usage"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <ol>
-                        <li>
-                            <strong>Upload a DICOM file</strong>: Click the
-                            &quot;Upload&quot; button to select a DICOM file
-                            from your computer.
-                        </li>
-                        <li>
-                            <strong>View tags</strong>: Once the file is
-                            uploaded, the tags from the DICOM file will be
-                            listed.
-                        </li>
-                        <li>
-                            <strong>Edit tags</strong>: Modify the value of any
-                            editable tags in the provided input fields.
-                        </li>
-                        <li>
-                            <strong>Automatically remove PII</strong>:
-                            Optionally, click the &quot;Remove PII&quot; button
-                            to automatically remove any personally identifiable
-                            information (PII) from the DICOM file.
-                        </li>
-                        <li>
-                            <strong>Save changes</strong>: While the current
-                            version only allows you to edit and display tags,
-                            saving and updating the file’s actual metadata will
-                            be possible in future releases.
-                        </li>
-                        <li>
-                            <strong>Download updated DICOM file</strong>: Click
-                            the &quot;Download&quot; button to save the updated
-                            DICOM file with the new metadata.
-                        </li>
-                    </ol>
-                    <a id="example-workflow" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Example Workflow<a
-                            href="#example-workflow"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <ol>
-                        <li>
-                            Click on the &quot;Choose File&quot; button to
-                            select a DICOM file or drag and drop the file onto
-                            the page.
-                        </li>
-                        <li>
-                            The DICOM file's tags will automatically be
-                            displayed on the page.
-                        </li>
-                        <li>
-                            Modify the tags by typing into the input fields next
-                            to each tag.
-                        </li>
-                        <li>
-                            The page will display the updated tags in real-time.
-                        </li>
-                        <li>Save the modified metadata to a new DICOM file.</li>
-                        <li>
-                            Download the updated DICOM file with the new
-                            metadata.
-                        </li>
-                        <li>
-                            Option to automatically remove any personally
-                            identifiable information (PII) from the DICOM file.
-                        </li>
-                    </ol>
-                    <a id="license" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        License<a
-                            href="#license"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <p>This project is licensed under MIT License.</p>
-                    <a id="acknowledgements" class="tsd-anchor"></a>
-                    <h2 class="tsd-anchor-link">
-                        Acknowledgements<a
-                            href="#acknowledgements"
-                            aria-label="Permalink"
-                            class="tsd-anchor-icon"
-                            ><svg viewBox="0 0 24 24">
-                                <use
-                                    href="assets/icons.svg#icon-anchor"
-                                ></use></svg
-                        ></a>
-                    </h2>
-                    <p>
-                        University of Saskatchewan CMPT 371 - Software
-                        Engineering Project, 2025 Winter Term - Team 2
-                    </p>
-                </div>
-            </div>
-            <div class="col-sidebar">
-                <div class="page-menu">
-                    <div class="tsd-navigation settings">
-                        <details class="tsd-accordion">
-                            <summary class="tsd-accordion-summary">
-                                <h3>
-                                    <svg
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                    >
-                                        <use
-                                            href="assets/icons.svg#icon-chevronDown"
-                                        ></use></svg
-                                    >Settings
-                                </h3>
-                            </summary>
-                            <div class="tsd-accordion-details">
-                                <div class="tsd-filter-visibility">
-                                    <span class="settings-label"
-                                        >Member Visibility</span
-                                    >
-                                    <ul id="tsd-filter-options">
-                                        <li class="tsd-filter-item">
-                                            <label class="tsd-filter-input"
-                                                ><input
-                                                    type="checkbox"
-                                                    id="tsd-filter-protected"
-                                                    name="protected"
-                                                /><svg
-                                                    width="32"
-                                                    height="32"
-                                                    viewBox="0 0 32 32"
-                                                    aria-hidden="true"
-                                                >
-                                                    <rect
-                                                        class="tsd-checkbox-background"
-                                                        width="30"
-                                                        height="30"
-                                                        x="1"
-                                                        y="1"
-                                                        rx="6"
-                                                        fill="none"
-                                                    ></rect>
-                                                    <path
-                                                        class="tsd-checkbox-checkmark"
-                                                        d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                                                        stroke="none"
-                                                        stroke-width="3.5"
-                                                        stroke-linejoin="round"
-                                                        fill="none"
-                                                    ></path></svg
-                                                ><span>Protected</span></label
-                                            >
-                                        </li>
-                                        <li class="tsd-filter-item">
-                                            <label class="tsd-filter-input"
-                                                ><input
-                                                    type="checkbox"
-                                                    id="tsd-filter-inherited"
-                                                    name="inherited"
-                                                    checked
-                                                /><svg
-                                                    width="32"
-                                                    height="32"
-                                                    viewBox="0 0 32 32"
-                                                    aria-hidden="true"
-                                                >
-                                                    <rect
-                                                        class="tsd-checkbox-background"
-                                                        width="30"
-                                                        height="30"
-                                                        x="1"
-                                                        y="1"
-                                                        rx="6"
-                                                        fill="none"
-                                                    ></rect>
-                                                    <path
-                                                        class="tsd-checkbox-checkmark"
-                                                        d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                                                        stroke="none"
-                                                        stroke-width="3.5"
-                                                        stroke-linejoin="round"
-                                                        fill="none"
-                                                    ></path></svg
-                                                ><span>Inherited</span></label
-                                            >
-                                        </li>
-                                        <li class="tsd-filter-item">
-                                            <label class="tsd-filter-input"
-                                                ><input
-                                                    type="checkbox"
-                                                    id="tsd-filter-external"
-                                                    name="external"
-                                                /><svg
-                                                    width="32"
-                                                    height="32"
-                                                    viewBox="0 0 32 32"
-                                                    aria-hidden="true"
-                                                >
-                                                    <rect
-                                                        class="tsd-checkbox-background"
-                                                        width="30"
-                                                        height="30"
-                                                        x="1"
-                                                        y="1"
-                                                        rx="6"
-                                                        fill="none"
-                                                    ></rect>
-                                                    <path
-                                                        class="tsd-checkbox-checkmark"
-                                                        d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                                                        stroke="none"
-                                                        stroke-width="3.5"
-                                                        stroke-linejoin="round"
-                                                        fill="none"
-                                                    ></path></svg
-                                                ><span>External</span></label
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="tsd-theme-toggle">
-                                    <label
-                                        class="settings-label"
-                                        for="tsd-theme"
-                                        >Theme</label
-                                    ><select id="tsd-theme">
-                                        <option value="os">OS</option>
-                                        <option value="light">Light</option>
-                                        <option value="dark">Dark</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-                    <details open class="tsd-accordion tsd-page-navigation">
-                        <summary class="tsd-accordion-summary">
-                            <h3>
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                >
-                                    <use
-                                        href="assets/icons.svg#icon-chevronDown"
-                                    ></use></svg
-                                >On This Page
-                            </h3>
-                        </summary>
-                        <div class="tsd-accordion-details">
-                            <a href="#dicom-file-tag-editor"
-                                ><span
-                                    >DICOM <wbr />File <wbr />Tag
-                                    <wbr />Editor</span
-                                ></a
-                            >
-                            <ul>
-                                <li>
-                                    <a href="#overview"
-                                        ><span>Overview</span></a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#features"
-                                        ><span>Features</span></a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#technologies-used"
-                                        ><span
-                                            >Technologies <wbr />Used</span
-                                        ></a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#installation"
-                                        ><span>Installation</span></a
-                                    >
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a href="#prerequisites"
-                                                ><span>Prerequisites</span></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#steps-to-run-locally"
-                                                ><span
-                                                    >Steps to <wbr />Run
-                                                    <wbr />Locally</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#docker-container"
-                                                ><span
-                                                    >Docker
-                                                    <wbr />Container</span
-                                                ></a
-                                            >
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#usage"><span>Usage</span></a>
-                                </li>
-                                <li>
-                                    <a href="#example-workflow"
-                                        ><span>Example <wbr />Workflow</span></a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#license"><span>License</span></a>
-                                </li>
-                                <li>
-                                    <a href="#acknowledgements"
-                                        ><span>Acknowledgements</span></a
-                                    >
-                                </li>
-                            </ul>
-                        </div>
-                    </details>
-                </div>
-                <div class="site-menu">
-                    <nav class="tsd-navigation">
-                        <a href="modules.html">dicom-tag-editor</a>
-                        <ul
-                            class="tsd-small-nested-navigation"
-                            id="tsd-nav-container"
-                        >
-                            <li>Loading...</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <footer>
-            <p class="tsd-generator">
-                Generated using
-                <a href="https://typedoc.org/" target="_blank">TypeDoc</a>
-            </p>
-        </footer>
-        <div class="overlay"></div>
-    </body>
-</html>
+
+</li>
+<li>Open your browser and go to <code>http://localhost:5173</code> to start using the DICOM
+tag editor.</li>
+</ol>
+<a id="docker-container" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Docker Container<a href="#docker-container" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>A Docker container is provided with nginx used to serve the application.</p>
+<p>A development Docker container is also provided with Vite's development server
+running.</p>
+<a id="usage" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Usage<a href="#usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ol>
+<li><strong>Upload a DICOM file</strong>: Click the &quot;Upload&quot; button to select a DICOM file
+from your computer.</li>
+<li><strong>View tags</strong>: Once the file is uploaded, the tags from the DICOM file will
+be listed.</li>
+<li><strong>Edit tags</strong>: Modify the value of any editable tags in the provided input
+fields.</li>
+<li><strong>Automatically remove PII</strong>: Optionally, click the &quot;Remove PII&quot; button to
+automatically remove any personally identifiable information (PII) from the
+DICOM file.</li>
+<li><strong>Save changes</strong>: While the current version only allows you to edit and
+display tags, saving and updating the file’s actual metadata will be possible
+in future releases.</li>
+<li><strong>Download updated DICOM file</strong>: Click the &quot;Download&quot; button to save the
+updated DICOM file with the new metadata.</li>
+</ol>
+<a id="example-workflow" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Example Workflow<a href="#example-workflow" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ol>
+<li>Click on the &quot;Choose File&quot; button to select a DICOM file or drag and drop the
+file onto the page.</li>
+<li>The DICOM file's tags will automatically be displayed on the page.</li>
+<li>Modify the tags by typing into the input fields next to each tag.</li>
+<li>The page will display the updated tags in real-time.</li>
+<li>Save the modified metadata to a new DICOM file.</li>
+<li>Download the updated DICOM file with the new metadata.</li>
+<li>Option to automatically remove any personally identifiable information (PII)
+from the DICOM file.</li>
+</ol>
+<a id="license" class="tsd-anchor"></a><h2 class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This project is licensed under MIT License.</p>
+<a id="acknowledgements" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Acknowledgements<a href="#acknowledgements" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>University of Saskatchewan CMPT 371 - Software Engineering Project, 2025 Winter
+Term - Team 2</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#dicom-file-tag-editor"><span>DICOM <wbr/>File <wbr/>Tag <wbr/>Editor</span></a><ul><li><a href="#overview"><span>Overview</span></a></li><li><a href="#features"><span>Features</span></a></li><li><a href="#technologies-used"><span>Technologies <wbr/>Used</span></a></li><li><a href="#installation"><span>Installation</span></a></li><li><ul><li><a href="#prerequisites"><span>Prerequisites</span></a></li><li><a href="#steps-to-run-locally"><span>Steps to <wbr/>Run <wbr/>Locally</span></a></li><li><a href="#docker-container"><span>Docker <wbr/>Container</span></a></li></ul></li><li><a href="#usage"><span>Usage</span></a></li><li><a href="#example-workflow"><span>Example <wbr/>Workflow</span></a></li><li><a href="#license"><span>License</span></a></li><li><a href="#acknowledgements"><span>Acknowledgements</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">dicom-tag-editor</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

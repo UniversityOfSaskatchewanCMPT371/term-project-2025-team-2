@@ -17,7 +17,7 @@ interface FileListProps {
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileList component
  */
-export const FileList: React.FC<FileListProps> = ({
+export const FileTableBody: React.FC<FileListProps> = ({
     files,
     currentFileIndex,
     onFileSelect,

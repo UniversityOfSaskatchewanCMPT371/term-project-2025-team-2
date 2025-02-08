@@ -19,7 +19,7 @@ interface NavButtonProps {
  * @param label - Button label
  * @returns rendered NavButton component
  */
-export const NavButton: React.FC<NavButtonProps> = ({
+export const GenButton: React.FC<NavButtonProps> = ({
     onClick,
     disabled,
     label,
