@@ -18,9 +18,9 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({ row, index }) => {
     return (
         <>
             <tr key={index + row.tagId}>
-                <td className="border px-4 py-2">{row.tagId}</td>
-                <td className="border px-4 py-2">{row.tagName}</td>
-                <td className="border px-4 py-2">
+                <td className="break-all border px-4 py-2">{row.tagId}</td>
+                <td className="break-all border px-4 py-2">{row.tagName}</td>
+                <td className="break-all border px-4 py-2">
                     {Array.isArray(row.value) ? (
                         ""
                     ) : (

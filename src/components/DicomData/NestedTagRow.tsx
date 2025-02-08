@@ -15,11 +15,13 @@ export const NestedTagRow: React.FC<NestedTagRowProps> = ({
 }) => {
     return (
         <tr key={nestedRow.tagId + index}>
-            <td className="border bg-secondary px-4 py-2">{nestedRow.tagId}</td>
-            <td className="border px-4 py-2">{nestedRow.tagName}</td>
-            <td className="border px-4 py-2">
+            <td className="break-all border bg-secondary px-4 py-2">
+                {nestedRow.tagId}
+            </td>
+            <td className="break-all border px-4 py-2">{nestedRow.tagName}</td>
+            <td className="break-all border px-4 py-2">
                 <div className="flex">
-                    <div className="flex-1">{nestedRow.value}</div>
+                    <div className="flex-1 break-all">{nestedRow.value}</div>
                     <div
                         className="flex cursor-pointer justify-end hover:text-accent"
                         onClick={handleClick}
