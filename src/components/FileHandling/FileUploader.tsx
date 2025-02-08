@@ -43,7 +43,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: { "application/dicom": [".dcm"] },
+       
         multiple: true,
     });
 
@@ -68,7 +68,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
             </div>
             <input
                 type="file"
-                accept=".dcm"
+               
                 multiple
                 onChange={handleFileChange}
                 className="hidden"
