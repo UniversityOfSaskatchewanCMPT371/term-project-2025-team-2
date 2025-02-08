@@ -10,7 +10,8 @@ interface for interacting with these files' metadata.
 
 The editor allows users to upload a DICOM file, view its tags (such as Patient
 Name, Study Date, etc.), and modify the tag values. This application runs
-entirely in the browser, using HTML, JavaScript, and CSS.
+entirely in the browser, using **React**, **Vite**, **TailwindCSS**, and
+**DaisyUI** for a modern and responsive user interface.
 
 [GitHub Pages](https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/)
 
@@ -25,14 +26,19 @@ entirely in the browser, using HTML, JavaScript, and CSS.
 
 ## Technologies Used
 
-- **HTML**: Structure and layout of the application.
-- **CSS**: Styling and layout for a responsive, clean user interface.
-- **JavaScript**: Handling of file uploads, parsing DICOM tags, and enabling tag
-  editing functionality.
+- **React**: JavaScript library for building user interfaces.
+- **Vite**: A modern, fast build tool for React that offers fast hot module
+  replacement (HMR) and optimal production builds.
+- **TailwindCSS**: Utility-first CSS framework for styling the app with ease and
+  flexibility.
+- **DaisyUI**: A TailwindCSS component library to speed up UI development with
+  pre-designed components.
+- **TypeScript**: Used for handling file uploads, parsing DICOM tags, and
+  enabling tag editing functionality.
+- **dicomParser.js**: A library used to parse DICOM files and extract metadata
+  tags.
 - **PWAs (Progressive Web Apps)**: Enabling offline use and improved
   performance.
-- **[dicomParser.js](https://github.com/cornerstonejs/dicomParser)**: A library
-  used to parse DICOM files and extract metadata tags.
 
 ## Installation
 
@@ -45,12 +51,30 @@ Edge) to use the editor.
 ### Steps to Run Locally
 
 1. Clone this repository:
-2. Open the `index.html` file in your web browser.
-3. Start using the DICOM tag editor by uploading a DICOM file.
+    ```bash
+    git clone https://github.com/yourusername/dicom-tag-editor.git
+    ```
+2. Navigate into the project directory:
+    ```bash
+    cd dicom-tag-editor
+    ```
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
+4. Run the development server:
+    ```bash
+    npm run dev
+    ```
+5. Open your browser and go to `http://localhost:5173` to start using the DICOM
+   tag editor.
 
 ### Docker Container
 
-A Docker container is provided with Nginx used to sever the application.
+A Docker container is provided with nginx used to serve the application.
+
+A development Docker container is also provided with Vite's development server
+running.
 
 ## Usage
 
@@ -83,9 +107,9 @@ A Docker container is provided with Nginx used to sever the application.
 
 ## License
 
-This project is licensed under MIT License
+This project is licensed under MIT License.
 
 ## Acknowledgements
 
 University of Saskatchewan CMPT 371 - Software Engineering Project, 2025 Winter
-Term
+Term - Team 2
