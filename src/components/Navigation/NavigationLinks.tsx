@@ -4,7 +4,7 @@ export const NavigationLinks: React.FC = () => {
     return (
         <ul className="space-y-4">
             <li>
-                <a href="#" className="hover:text-blue-400">
+                <a href="#" className="ml-3 hover:text-accent">
                     Download
                 </a>
             </li>

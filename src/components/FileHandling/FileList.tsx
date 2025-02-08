@@ -19,10 +19,11 @@ export const FileList: React.FC<FileListProps> = ({
                     <tr key={index}>
                         <td
                             key={index}
-                            className={`py-1 pl-2 cursor-pointer text-gray-300 hover:bg-blue-400 ${index === currentFileIndex
-                                ? "bg-black-500 text-white bg-blue-600"
-                                : ""
-                                }`}
+                            className={`cursor-pointer py-1 pl-4 text-secondary-content hover:text-accent hover:outline ${
+                                index === currentFileIndex
+                                    ? "font-semibold text-accent"
+                                    : ""
+                            }`}
                             onClick={() => onFileSelect(index)}
                         >
                             {file.name}
@@ -30,10 +31,8 @@ export const FileList: React.FC<FileListProps> = ({
                     </tr>
                 ))
             ) : (
-                <tr className="text-gray-400">
-                    <td>
-                        No files uploaded
-                    </td>
+                <tr className="py-1 pl-4 text-neutral-content">
+                    <td>No files uploaded</td>
                 </tr>
             )}
         </tbody>

@@ -13,16 +13,37 @@ const App: React.FC = () => {
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
 
+    const [theme, setTheme] = useState(
+        localStorage.getItem("theme") ?? "corporate"
+    );
+
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+    const handleToggle = (e: any) => {
+        if (e.target.checked) {
+            setTheme("corporate");
+        } else {
+            setTheme("night");
+        }
+    };
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
     useEffect(() => {
+        localStorage.setItem("theme", theme!);
+        const localTheme = localStorage.getItem("theme");
+        document.querySelector("html")?.setAttribute("data-theme", localTheme!);
+    }, [theme]);
+
+    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-                setSidebarVisible(false); // Close sidebar
+            if (
+                sidebarRef.current &&
+                !sidebarRef.current.contains(event.target as Node)
+            ) {
+                setSidebarVisible(false);
             }
         };
 
@@ -62,6 +83,7 @@ const App: React.FC = () => {
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
+                toggleTheme={handleToggle}
             />
 
             <div className="flex flex-1">
@@ -100,10 +122,12 @@ const App: React.FC = () => {
             </div>
 
             {/* Footer Section */}
-            <footer className="bg-blue-600 text-white p-4 text-center mt-4">
-                <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2">&copy; 2025 University of Saskatchewan - CMPT 371 Team 2 - All rights reserved.</a>
+            <footer className="z-10 mt-4 bg-primary p-4 text-center text-white">
+                <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2">
+                    &copy; 2025 University of Saskatchewan - CMPT 371 Team 2 -
+                    All rights reserved.
+                </a>
             </footer>
-
         </div>
     );
 };

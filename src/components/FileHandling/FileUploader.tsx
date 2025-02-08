@@ -51,17 +51,17 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
         <div>
             <div
                 {...getRootProps()}
-                className="relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-blue-500 px-5 py-10 text-center"
+                className="relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center"
             >
                 <input {...getInputProps()} />
-                <p>
+                <p className="text-base-content">
                     Drag and drop DICOM files here, or click the button below to
                     select files
                 </p>
 
                 <button
                     onClick={(e) => e.preventDefault()}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded border-0 bg-blue-500 px-5 py-2 text-white"
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded border-0 bg-secondary px-5 py-2 text-base-content hover:bg-accent"
                 >
                     Select Files
                 </button>

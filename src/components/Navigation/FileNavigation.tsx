@@ -18,14 +18,14 @@ export const FileNavigation: React.FC<FileNavigationProps> = ({
             <button
                 onClick={onPrevFile}
                 disabled={currentFileIndex === 0}
-                className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-300"
+                className="rounded bg-secondary px-4 py-2 text-base-content hover:bg-accent disabled:bg-base-300"
             >
                 Previous
             </button>
             <button
                 onClick={onNextFile}
                 disabled={currentFileIndex === fileCount - 1}
-                className="rounded bg-blue-500 px-4 py-2 text-white disabled:bg-gray-300"
+                className="rounded bg-secondary px-4 py-2 text-base-content hover:bg-accent disabled:bg-base-300"
             >
                 Next
             </button>

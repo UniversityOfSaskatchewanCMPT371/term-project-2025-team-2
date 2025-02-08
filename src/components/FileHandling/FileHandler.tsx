@@ -12,7 +12,7 @@ export const FileHeader: React.FC<FileHeaderProps> = ({
     if (files.length === 0) return null;
 
     return (
-        <h2 className="mb-4 mt-4 text-xl text-gray-700">
+        <h2 className="mb-4 mt-4 text-xl text-base-content">
             Currently Viewing: {files[currentFileIndex].name}
         </h2>
     );

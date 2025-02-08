@@ -13,7 +13,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         <input
             type="text"
             placeholder="Search tags..."
-            className="mt-4 rounded border border-gray-300 p-2"
+            className="mt-4 rounded border border-secondary p-2"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
         />

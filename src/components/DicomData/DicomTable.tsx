@@ -42,10 +42,16 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
             />
             <table className="mt-4 min-w-full table-auto border-collapse">
                 <thead>
-                    <tr className="bg-gray-100 text-wrap">
-                        <th className="border px-4 py-2 text-wrap">Tag</th>
-                        <th className="border px-4 py-2 text-wrap">Tag Name</th>
-                        <th className="border px-4 py-2 text-wrap">Value</th>
+                    <tr className="text-wrap bg-primary">
+                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                            Tag
+                        </th>
+                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                            Tag Name
+                        </th>
+                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                            Value
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +65,10 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={3} className="px-4 py-2 text-center">
+                            <td
+                                colSpan={3}
+                                className="border px-4 py-2 text-center"
+                            >
                                 No matching tags found
                             </td>
                         </tr>
