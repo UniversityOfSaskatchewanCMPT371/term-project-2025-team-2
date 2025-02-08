@@ -1,4 +1,5 @@
 import React from "react";
+import { NavButton } from "./NavButton";
 
 interface FileNavigationProps {
     currentFileIndex: number;
@@ -15,20 +16,16 @@ export const FileNavigation: React.FC<FileNavigationProps> = ({
 }) => {
     return (
         <div className="mt-4 flex justify-between">
-            <button
+            <NavButton
                 onClick={onPrevFile}
                 disabled={currentFileIndex === 0}
-                className="rounded bg-secondary px-4 py-2 text-base-content hover:bg-accent disabled:bg-base-300"
-            >
-                Previous
-            </button>
-            <button
+                label="Previous"
+            />
+            <NavButton
                 onClick={onNextFile}
                 disabled={currentFileIndex === fileCount - 1}
-                className="rounded bg-secondary px-4 py-2 text-base-content hover:bg-accent disabled:bg-base-300"
-            >
-                Next
-            </button>
+                label="Next"
+            />
         </div>
     );
 };
