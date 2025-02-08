@@ -1,5 +1,5 @@
 import React from "react";
-import { NavButton } from "../Navigation/NavButton.tsx";
+import { NavButton } from "../Navigation/Button.tsx";
 
 /**
  * interface ModalProps

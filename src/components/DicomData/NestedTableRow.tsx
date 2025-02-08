@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-
-/**
- * interface DicomTableRowProps
- */
-export interface DicomTableRowProps {
-    row: {
-        tagId: string;
-        tagName: string;
-        value: string | any[];
-    };
-    index: number;
-    onUpdateValue: (tagId: string, newValue: string) => void;
-    nested?: boolean;
-}
+import { DicomTableRowProps } from "./DicomTableRow.tsx";
 
 /**
  * handleClick function
@@ -21,7 +8,7 @@ export interface DicomTableRowProps {
 const handleClick = (
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-    setIsEditing(true); // Set editing mode to true when the edit button is clicked
+    setIsEditing(true);
 };
 
 /**
@@ -29,15 +16,13 @@ const handleClick = (
  * @param row - DICOM tag row, containing tag ID, tag name, and value
  * @returns rendered DicomTableRow component
  */
-export const DicomTableRow: React.FC<DicomTableRowProps> = ({
+export const NestedTableRow: React.FC<DicomTableRowProps> = ({
     row,
     index,
     onUpdateValue,
-    nested,
 }) => {
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isExpanded, setIsExpanded] = useState<boolean>(false); // Added state for collapsible rows
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -48,23 +33,10 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         setIsEditing(false);
     };
 
-    // Toggle the expansion of nested rows
-    const toggleExpand = () => {
-        setIsExpanded(!isExpanded);
-    };
-
     return (
         <>
             <tr key={index + row.tagId}>
-                <td
-                    className={`break-all border px-4 py-2 ${nested ? "bg-blue-400" : ""}`}
-                >
-                    <span
-                        className="cursor-pointer text-blue-500 hover:text-blue-700"
-                        onClick={toggleExpand}
-                    >
-                        {Array.isArray(row.value) && (isExpanded ? "▼" : "▶")}
-                    </span>
+                <td className="break-all border bg-blue-400 px-4 py-2">
                     {row.tagId}
                 </td>
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
@@ -109,17 +81,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                     )}
                 </td>
             </tr>
-            {Array.isArray(row.value) && isExpanded
-                ? row.value.map((nestedRow: any, nestedIndex: number) => (
-                      <DicomTableRow
-                          key={nestedRow.tagId + nestedIndex}
-                          row={nestedRow}
-                          index={nestedIndex}
-                          onUpdateValue={onUpdateValue}
-                          nested={true}
-                      />
-                  ))
-                : null}
         </>
     );
 };

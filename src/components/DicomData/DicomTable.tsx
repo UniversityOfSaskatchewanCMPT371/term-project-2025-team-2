@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SearchInput } from "../utils/SearchInput.tsx";
 import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/types.ts";
+import { NavButton } from "../Navigation/Button.tsx";
 
 /**
  *
@@ -10,6 +11,7 @@ import { DicomTableProps } from "../../types/types.ts";
  */
 const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [values, setValues] = useState<{ [key: string]: string }>({});
 
     if (!dicomData) {
         return <div>No data available</div>;
@@ -38,13 +40,34 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                 : row.value.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    const handleUpdateValue = (tagId: string, newValue: string) => {
+        setValues((prevValues) => ({
+            ...prevValues,
+            [tagId]: newValue,
+        }));
+    };
+
+    // placeholder for updating the file
+    const updateFile = () => {
+        console.log(values);
+    };
+
     return (
         <div className="mt-8">
             <h2 className="text-2xl font-semibold">DICOM Tags</h2>
-            <SearchInput
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-            />
+            <div className="flex-col-2 flex">
+                <SearchInput
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                />
+                <div className="ml-4 mt-4">
+                    <NavButton
+                        label="Save Edits"
+                        disabled={false}
+                        onClick={updateFile}
+                    />
+                </div>
+            </div>
             <table className="mt-4 min-w-full table-auto border-collapse">
                 <thead>
                     <tr className="text-wrap bg-primary">
@@ -66,6 +89,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                                 key={index + row.tagId}
                                 row={row}
                                 index={index}
+                                onUpdateValue={handleUpdateValue}
                             />
                         ))
                     ) : (

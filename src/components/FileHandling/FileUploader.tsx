@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { parseDicomFile } from "../DicomData/dicomParserUtils.tsx";
+import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
 import Modal from "../utils/Modal.tsx";
 
 /**
