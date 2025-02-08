@@ -1,13 +1,24 @@
-// Topbar Component
 import React from "react";
 import { ThemeSelector } from "./ThemeSelector"; // Import the ThemeSelector component
 
+/**
+ * interface TopbarProps
+ * @param toggleSidebar - Function to toggle sidebar visibility
+ * @param sidebarVisible - Boolean to determine if sidebar is visible
+ * @param toggleTheme - Function to toggle theme
+ */
 interface TopbarProps {
     toggleSidebar: () => void;
     sidebarVisible: boolean;
     toggleTheme: (e: any) => void;
 }
 
+/**
+ *
+ * @param toggleSidebar - Function to toggle sidebar visibility
+ * @param toggleTheme - Function to toggle theme
+ * @returns rendered Topbar component
+ */
 const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, toggleTheme }) => {
     return (
         <div className="relative z-10 flex items-center justify-between bg-primary p-4 text-white">

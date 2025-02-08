@@ -3,6 +3,11 @@ import { TagDictionary } from "../../tagDictionary/dictionary";
 
 const tagDictionary = new TagDictionary();
 
+/**
+ *
+ * @param dataSet - DICOM data set, parsed using dicom-parser
+ * @returns dicomTags - Object containing the extracted DICOM tags
+ */
 export const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
 
@@ -39,6 +44,12 @@ export const extractDicomTags = (dataSet: any) => {
     return dicomTags;
 };
 
+/**
+ *
+ * @param file - DICOM file
+ * @returns - Promise that resolves with the parsed DICOM data
+ * @description - Parses a DICOM file and extracts the DICOM tags
+ */
 export const parseDicomFile = (file: File): Promise<any> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

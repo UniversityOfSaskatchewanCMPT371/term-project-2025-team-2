@@ -1,12 +1,22 @@
 import React from "react";
 import { FileList } from "../FileHandling/FileList.tsx";
 
+/**
+ * interface FileTableProps
+ */
 interface FileTableProps {
     files: any[];
     currentFileIndex: number;
     onFileSelect: (index: number) => void;
 }
 
+/**
+ *
+ * @param files - Array of files
+ * @param currentFileIndex - Index of the currently viewed file
+ * @param onFileSelect - Function to handle file selection
+ * @returns rendered FileTable component
+ */
 const FileTable: React.FC<FileTableProps> = ({
     files,
     currentFileIndex,

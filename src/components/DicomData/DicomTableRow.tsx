@@ -1,6 +1,9 @@
 import React from "react";
 import { NestedTagRow } from "./NestedTagRow.tsx";
 
+/**
+ * interface DicomTableRowProps
+ */
 interface DicomTableRowProps {
     row: {
         tagId: string;
@@ -10,10 +13,19 @@ interface DicomTableRowProps {
     index: number;
 }
 
+/**
+ * handleClick function
+ * @description - Place holder for future functionality
+ */
 const handleClick = () => {
     console.log("Edit clicked!");
 };
 
+/**
+ *
+ * @param row - DICOM tag row, containing tag ID, tag name, and value
+ * @returns rendered DicomTableRow component
+ */
 export const DicomTableRow: React.FC<DicomTableRowProps> = ({ row, index }) => {
     return (
         <>

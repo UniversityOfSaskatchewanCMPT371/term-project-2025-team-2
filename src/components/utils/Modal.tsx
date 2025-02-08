@@ -1,6 +1,13 @@
 import React from "react";
 import { NavButton } from "../Navigation/NavButton.tsx";
 
+/**
+ * interface ModalProps
+ * @param isOpen - Boolean to determine if modal is open
+ * @param onClose - Function to handle modal close
+ * @param title - Modal title
+ * @param text - Modal text
+ */
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -8,6 +15,14 @@ interface ModalProps {
     text: string;
 }
 
+/**
+ *
+ * @param isOpen - Boolean to determine if modal is open
+ * @param onClose - Function to handle modal close
+ * @param title - Modal title
+ * @param text - Modal text
+ * @returns rendered Modal component
+ */
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
     if (!isOpen) return null;
 

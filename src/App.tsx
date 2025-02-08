@@ -6,7 +6,12 @@ import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import { FileHeader } from "./components/FileHandling/FileHandler";
 import log from "./components/utils/Logger";
+import Footer from "./components/Navigation/Footer";
 
+/**
+ *
+ * @returns rendered App component
+ */
 const App: React.FC = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [files, setFiles] = useState<File[]>([]);
@@ -120,14 +125,7 @@ const App: React.FC = () => {
                     </div>
                 )}
             </div>
-
-            {/* Footer Section */}
-            <footer className="z-10 mt-4 bg-primary p-4 text-center text-white">
-                <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2">
-                    &copy; 2025 University of Saskatchewan - CMPT 371 Team 2 -
-                    All rights reserved.
-                </a>
-            </footer>
+            <Footer />
         </div>
     );
 };

@@ -1,10 +1,19 @@
 // ThemeSelector Component
 import React from "react";
 
+/**
+ * interface ThemeSelectorProps
+ * @param toggleTheme - Function to toggle theme
+ */
 interface ThemeSelectorProps {
     toggleTheme: (e: any) => void;
 }
 
+/**
+ *
+ * @param toggleTheme - Function to toggle theme
+ * @returns rendered ThemeSelector component
+ */
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     toggleTheme,
 }) => {

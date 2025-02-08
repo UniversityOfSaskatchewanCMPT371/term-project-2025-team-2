@@ -3,6 +3,11 @@ import { SearchInput } from "../utils/SearchInput.tsx";
 import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/types.ts";
 
+/**
+ *
+ * @param dicomData - DICOM data, extracted from a DICOM file
+ * @returns rendered DicomTable component
+ */
 const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const [searchTerm, setSearchTerm] = useState("");
 

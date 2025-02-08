@@ -1,9 +1,18 @@
 import React from "react";
 
+/**
+ * interface HelpIconProps
+ * @param onClick - Function to handle help icon click
+ */
 interface HelpIconProps {
     onClick: () => void;
 }
 
+/**
+ *
+ * @param onClick - Function to handle help icon click
+ * @returns rendered HelpIcon component
+ */
 const HelpIcon: React.FC<HelpIconProps> = ({ onClick }) => {
     return (
         <div

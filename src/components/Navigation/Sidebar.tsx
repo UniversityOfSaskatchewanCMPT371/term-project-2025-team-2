@@ -5,6 +5,13 @@ import FileTable from "../FileHandling/FileTable.tsx";
 import HelpIcon from "../utils/HelpIcon.tsx";
 import Modal from "../utils/Modal.tsx";
 
+/**
+ *
+ * @param files - Array of files
+ * @param onFileSelect - Function to handle file selection
+ * @param currentFileIndex - Index of the currently viewed file
+ * @returns rendered Sidebar component
+ */
 const Sidebar: React.FC<SidebarProps> = ({
     files,
     onFileSelect,

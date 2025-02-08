@@ -3,16 +3,29 @@ import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/dicomParserUtils.tsx";
 import Modal from "../utils/Modal.tsx";
 
+/**
+ * interface FileUploaderProps
+ */
 interface FileUploaderProps {
     onFileUpload: (files: File[], dicomData: any[]) => void;
 }
 
+/**
+ *
+ * @param onFileUpload - Function to handle file upload
+ * @returns rendered FileUploader component
+ */
 const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     const [files, setFiles] = useState<File[]>([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
+    /**
+     *
+     * @param e - Change event
+     * Handles file change event
+     */
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
@@ -23,6 +36,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
         }
     };
 
+    /**
+     *
+     * @param fileArray - Array of files
+     * Processes files
+     */
     const processFiles = (fileArray: File[]) => {
         const dicomDataArray: any[] = [];
 
@@ -42,11 +60,19 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
         });
     };
 
+    /**
+     *
+     * @param acceptedFiles - Array of accepted files
+     * Handles file drop event
+     */
     const onDrop = (acceptedFiles: File[]) => {
         setFiles(acceptedFiles);
         processFiles(acceptedFiles);
     };
 
+    /**
+     * dropzone hook
+     */
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         multiple: true,

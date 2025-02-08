@@ -1,12 +1,24 @@
-// NavButton Component
 import React from "react";
 
+/**
+ * interface NavButtonProps
+ * @param onClick - Function to handle button click
+ * @param disabled - Boolean to determine if button is disabled
+ * @param label - Button label
+ */
 interface NavButtonProps {
     onClick: () => void;
     disabled: boolean;
     label: string;
 }
 
+/**
+ *
+ * @param onClick - Function to handle button click
+ * @param disabled - Boolean to determine if button is disabled
+ * @param label - Button label
+ * @returns rendered NavButton component
+ */
 export const NavButton: React.FC<NavButtonProps> = ({
     onClick,
     disabled,

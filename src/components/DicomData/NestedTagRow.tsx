@@ -1,14 +1,26 @@
 import React from "react";
 
+/**
+ * interface NestedTagRowProps
+ */
 interface NestedTagRowProps {
     nestedRow: { tagId: string; tagName: string; value: string };
     index: number;
 }
 
+/**
+ * handleClick function
+ * @description - Place holder for future functionality
+ */
 const handleClick = () => {
     console.log("Edit clicked!");
 };
 
+/**
+ *
+ * @param nestedRow - DICOM nested tag row, containing tag ID, tag name, and value
+ * @returns rendered NestedTagRow component
+ */
 export const NestedTagRow: React.FC<NestedTagRowProps> = ({
     nestedRow,
     index,
