@@ -1,5 +1,5 @@
 import React from "react";
-import { NavButton } from "../Navigation/Button.tsx";
+import { GenButton } from "../Navigation/Button.tsx";
 
 /**
  * interface ModalProps
@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
             >
                 <h4 className="text-xl font-semibold">{title}</h4>
                 <p className="my-4">{text}</p>
-                <NavButton onClick={onClose} disabled={false} label="Close" />
+                <GenButton onClick={onClose} disabled={false} label="Close" />
             </div>
         </div>
     );

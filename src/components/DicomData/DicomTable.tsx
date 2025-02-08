@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { SearchInput } from "../utils/SearchInput.tsx";
+import Search from "../utils/Search";
 import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/types.ts";
-import { NavButton } from "../Navigation/Button.tsx";
+import { GenButton } from "../Navigation/Button.tsx";
+import log from "../utils/Logger";
 
 /**
  *
@@ -14,6 +15,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const [values, setValues] = useState<{ [key: string]: string }>({});
 
     if (!dicomData) {
+        log.error("No DICOM data available");
         return <div>No data available</div>;
     }
 
@@ -49,6 +51,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
 
     // placeholder for updating the file
     const updateFile = () => {
+        console.log(dicomData);
         console.log(values);
     };
 
@@ -56,12 +59,12 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
         <div className="mt-8">
             <h2 className="text-2xl font-semibold">DICOM Tags</h2>
             <div className="flex-col-2 flex">
-                <SearchInput
+                <Search
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                 />
-                <div className="ml-4 mt-4">
-                    <NavButton
+                <div className="ml-4">
+                    <GenButton
                         label="Save Edits"
                         disabled={false}
                         onClick={updateFile}

@@ -22,7 +22,6 @@ interface TopbarProps {
 const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, toggleTheme }) => {
     return (
         <div className="relative z-10 flex items-center justify-between bg-primary p-4 text-white">
-            {/* Theme Selector Component */}
             <ThemeSelector toggleTheme={toggleTheme} />
 
             <h1 className="text-2xl">DICOM Tag Editor</h1>

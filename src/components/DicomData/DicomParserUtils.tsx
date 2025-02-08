@@ -8,7 +8,7 @@ const tagDictionary = new TagDictionary();
  * @param dataSet - DICOM data set, parsed using dicom-parser
  * @returns dicomTags - Object containing the extracted DICOM tags
  */
-export const extractDicomTags = (dataSet: any) => {
+const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
 
     Object.keys(dataSet.elements).forEach((tag: any) => {

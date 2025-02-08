@@ -4,7 +4,7 @@ import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
-import { FileHeader } from "./components/FileHandling/FileHandler";
+import { FileHeader } from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
 import Footer from "./components/Navigation/Footer";
 

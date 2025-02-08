@@ -1,5 +1,5 @@
 import React from "react";
-import { NavButton } from "./Button";
+import { GenButton } from "./Button";
 
 /**
  * interface FileNavigationProps
@@ -27,12 +27,12 @@ export const FileNavigation: React.FC<FileNavigationProps> = ({
 }) => {
     return (
         <div className="mt-4 flex justify-between">
-            <NavButton
+            <GenButton
                 onClick={onPrevFile}
                 disabled={currentFileIndex === 0}
                 label="Previous"
             />
-            <NavButton
+            <GenButton
                 onClick={onNextFile}
                 disabled={currentFileIndex === fileCount - 1}
                 label="Next"

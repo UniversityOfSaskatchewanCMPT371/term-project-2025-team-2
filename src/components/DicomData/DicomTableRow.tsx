@@ -21,7 +21,7 @@ export interface DicomTableRowProps {
 const handleClick = (
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-    setIsEditing(true); // Set editing mode to true when the edit button is clicked
+    setIsEditing(true);
 };
 
 /**
@@ -37,7 +37,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 }) => {
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isExpanded, setIsExpanded] = useState<boolean>(false); // Added state for collapsible rows
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -48,7 +48,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         setIsEditing(false);
     };
 
-    // Toggle the expansion of nested rows
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
