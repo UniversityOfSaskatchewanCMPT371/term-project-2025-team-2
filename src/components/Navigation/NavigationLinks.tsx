@@ -5,12 +5,7 @@ export const NavigationLinks: React.FC = () => {
         <ul className="space-y-4">
             <li>
                 <a href="#" className="hover:text-blue-400">
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="#" className="hover:text-blue-400">
-                    About
+                    Download
                 </a>
             </li>
         </ul>

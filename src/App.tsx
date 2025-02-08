@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Sidebar from "./components/Navingation/Sidebar";
-import Topbar from "./components/Navingation/Topbar";
+import React, { useState, useEffect, useRef } from "react";
+import Sidebar from "./components/Navigation/Sidebar";
+import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
-import { FileNavigation } from "./components/Navingation/FileNavigation";
-import { FileHeader } from "./components/FileHandling/FIleHandler";
+import { FileNavigation } from "./components/Navigation/FileNavigation";
+import { FileHeader } from "./components/FileHandling/FileHandler";
 import log from "./components/utils/Logger";
 
 const App: React.FC = () => {
@@ -13,9 +13,25 @@ const App: React.FC = () => {
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
 
+    const sidebarRef = useRef<HTMLDivElement | null>(null);
+
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+                setSidebarVisible(false); // Close sidebar
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleFileUpload = (newFiles: File[], newDicomData: any[]) => {
         setFiles(newFiles);
@@ -47,14 +63,15 @@ const App: React.FC = () => {
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
             />
+
             <div className="flex flex-1">
                 <div className="flex-grow p-8">
+                    <FileUploader onFileUpload={handleFileUpload} />
+
                     <FileHeader
                         files={files}
                         currentFileIndex={currentFileIndex}
                     />
-
-                    <FileUploader onFileUpload={handleFileUpload} />
 
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>
@@ -72,13 +89,21 @@ const App: React.FC = () => {
                 </div>
 
                 {sidebarVisible && (
-                    <Sidebar
-                        files={files}
-                        onFileSelect={handleFileSelect}
-                        currentFileIndex={currentFileIndex}
-                    />
+                    <div ref={sidebarRef}>
+                        <Sidebar
+                            files={files}
+                            onFileSelect={handleFileSelect}
+                            currentFileIndex={currentFileIndex}
+                        />
+                    </div>
                 )}
             </div>
+
+            {/* Footer Section */}
+            <footer className="bg-blue-600 text-white p-4 text-center mt-4">
+                <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2">&copy; 2025 University of Saskatchewan - CMPT 371 Team 2 - All rights reserved.</a>
+            </footer>
+
         </div>
     );
 };

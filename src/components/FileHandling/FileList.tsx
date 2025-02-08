@@ -13,24 +13,29 @@ export const FileList: React.FC<FileListProps> = ({
     onFileSelect,
 }) => {
     return (
-        <ul className="mt-4">
+        <tbody className="pt-8">
             {files.length > 0 ? (
                 files.map((file, index) => (
-                    <li
-                        key={index}
-                        className={`cursor-pointer text-gray-300 hover:text-blue-400 ${
-                            index === currentFileIndex
-                                ? "bg-black-500 text-white"
+                    <tr key={index}>
+                        <td
+                            key={index}
+                            className={`py-1 pl-2 cursor-pointer text-gray-300 hover:bg-blue-400 ${index === currentFileIndex
+                                ? "bg-black-500 text-white bg-blue-600"
                                 : ""
-                        }`}
-                        onClick={() => onFileSelect(index)}
-                    >
-                        {file.name}
-                    </li>
+                                }`}
+                            onClick={() => onFileSelect(index)}
+                        >
+                            {file.name}
+                        </td>
+                    </tr>
                 ))
             ) : (
-                <li className="text-gray-400">No files uploaded</li>
+                <tr className="text-gray-400">
+                    <td>
+                        No files uploaded
+                    </td>
+                </tr>
             )}
-        </ul>
+        </tbody>
     );
 };

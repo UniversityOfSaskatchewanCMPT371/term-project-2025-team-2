@@ -42,10 +42,10 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
             />
             <table className="mt-4 min-w-full table-auto border-collapse">
                 <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border px-4 py-2">Tag</th>
-                        <th className="border px-4 py-2">Tag Name</th>
-                        <th className="border px-4 py-2">Value</th>
+                    <tr className="bg-gray-100 text-wrap">
+                        <th className="border px-4 py-2 text-wrap">Tag</th>
+                        <th className="border px-4 py-2 text-wrap">Tag Name</th>
+                        <th className="border px-4 py-2 text-wrap">Value</th>
                     </tr>
                 </thead>
                 <tbody>
