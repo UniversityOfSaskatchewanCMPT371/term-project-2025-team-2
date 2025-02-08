@@ -1,12 +1,22 @@
 import React from "react";
 import { File } from "../../types/types.ts";
 
+/**
+ * interface FileListProps
+ */
 interface FileListProps {
     files: File[];
     currentFileIndex: number;
     onFileSelect: (index: number) => void;
 }
 
+/**
+ *
+ * @param files - Array of files
+ * @param currentFileIndex - Index of the currently viewed file
+ * @param onFileSelect - Function to handle file selection
+ * @returns rendered FileList component
+ */
 export const FileList: React.FC<FileListProps> = ({
     files,
     currentFileIndex,

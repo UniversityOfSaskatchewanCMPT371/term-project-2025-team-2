@@ -1,6 +1,9 @@
 import React from "react";
-import { NavButton } from "./NavButton";
+import { NavButton } from "./Button";
 
+/**
+ * interface FileNavigationProps
+ */
 interface FileNavigationProps {
     currentFileIndex: number;
     fileCount: number;
@@ -8,6 +11,14 @@ interface FileNavigationProps {
     onNextFile: () => void;
 }
 
+/**
+ *
+ * @param currentFileIndex - Index of the currently viewed file
+ * @param fileCount - Total number of files
+ * @param onPrevFile - Function to handle previous file navigation
+ * @param onNextFile - Function to handle next file navigation
+ * @returns rendered FileNavigation component
+ */
 export const FileNavigation: React.FC<FileNavigationProps> = ({
     currentFileIndex,
     fileCount,

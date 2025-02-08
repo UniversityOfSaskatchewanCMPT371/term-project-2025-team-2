@@ -3,6 +3,9 @@
 /**
  * Loaded from external library
  * https://github.com/OHIF/dicom-data-dictionary
+ *
+ * @description - Standard DICOM data elements
+ * @returns - Object containing standard DICOM data elements
  */
 const standardDataElements: { [key: string]: { vr: string; name: string } } = {
     "00000000": { vr: "UL", name: "CommandGroupLength" },
