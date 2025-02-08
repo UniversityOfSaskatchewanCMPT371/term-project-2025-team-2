@@ -1,10 +1,11 @@
 import React from "react";
+import { NavButton } from "../Navigation/NavButton.tsx";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    title: string; // Accept title as a prop
-    text: string; // Accept text as a prop
+    title: string;
+    text: string;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
@@ -20,13 +21,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <h4 className="text-xl font-semibold">{title}</h4>
-                <p className="mt-4">{text}</p>
-                <button
-                    className="mt-4 rounded bg-secondary px-4 py-2 text-secondary-content hover:bg-accent"
-                    onClick={onClose}
-                >
-                    Close
-                </button>
+                <p className="my-4">{text}</p>
+                <NavButton onClick={onClose} disabled={false} label="Close" />
             </div>
         </div>
     );
