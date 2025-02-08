@@ -41,23 +41,13 @@ export const extractDicomTags = (dataSet: any) => {
 
 export const parseDicomFile = (file: File): Promise<any> => {
     return new Promise((resolve, reject) => {
-
         const reader = new FileReader();
         reader.onload = (e) => {
             if (e.target?.result instanceof ArrayBuffer) {
-                const arrayBuffer = e.target.result;
-                const uint8Array = new Uint8Array(arrayBuffer);
-
-                //Check if the file contains "DICM" at byte 128-131
-                const dicmHeader = new TextDecoder().decode(uint8Array.slice(128, 132));
-                if (dicmHeader !== "DICM") {
-                    reject("Error: File does not contain a valid DICOM magic number (DICM).");
-                    return;
-                }
-
                 try {
-                    //Parse the DICOM file
-                    const dataSet = dicomParser.parseDicom(uint8Array);
+                    const dataSet = dicomParser.parseDicom(
+                        new Uint8Array(e.target.result)
+                    );
                     const dicomData = extractDicomTags(dataSet);
                     resolve(dicomData);
                 } catch (error) {
@@ -65,11 +55,6 @@ export const parseDicomFile = (file: File): Promise<any> => {
                 }
             }
         };
-
-        reader.onerror = () => {
-            reject("Error reading file.");
-        };
-
         reader.readAsArrayBuffer(file);
     });
 };
