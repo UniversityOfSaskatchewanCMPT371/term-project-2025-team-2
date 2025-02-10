@@ -62,13 +62,15 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                         className="cursor-pointer text-blue-500 hover:text-blue-700"
                         onClick={toggleExpand}
                     >
-                        {typeof row.value !== 'string' && (isExpanded ? "▼" : "▶")}
+                        {typeof row.value !== "string" &&
+                            (isExpanded ? "▼" : "▶")}
                     </span>
                     {row.tagId}
                 </td>
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
                 <td className="break-all border px-4 py-2">
-                    {typeof row.value === 'string' || row.value instanceof String ?  (
+                    {typeof row.value === "string" ||
+                    row.value instanceof String ? (
                         <div className="flex">
                             <div className="flex-1">
                                 {isEditing ? (
@@ -103,19 +105,21 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 </svg>
                             </div>
                         </div>
-                    ):("")}
+                    ) : (
+                        ""
+                    )}
                 </td>
             </tr>
-            {typeof row.value !== 'string' && isExpanded
+            {typeof row.value !== "string" && isExpanded
                 ? Object.values(row.value).map((nested: any) => (
-                        <DicomTableRow
-                            key={nested.tagId}
-                            row={nested}
-                            index={index}
-                            onUpdateValue={onUpdateValue}
-                            nested
-                        />
-                    ))
+                      <DicomTableRow
+                          key={nested.tagId}
+                          row={nested}
+                          index={index}
+                          onUpdateValue={onUpdateValue}
+                          nested
+                      />
+                  ))
                 : null}
         </>
     );

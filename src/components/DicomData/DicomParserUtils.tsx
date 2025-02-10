@@ -23,9 +23,10 @@ export const parseDicomFile = (file: File): Promise<any> => {
                 } catch (error) {
                     reject("Error parsing DICOM file: " + error);
                 }
-            }
-            else {
-                reject("Invalid file format: Could not read file as ArrayBuffer.");
+            } else {
+                reject(
+                    "Invalid file format: Could not read file as ArrayBuffer."
+                );
             }
         };
         reader.onerror = () => reject("File reading error occurred.");
@@ -55,13 +56,20 @@ const extractDicomTags = (dataSet: any) => {
 
         switch (vr) {
             case "UL":
-                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset).toString();
+                value = dataSet.elements[tag].parser
+                    .readUint32(
+                        dataSet.byteArray,
+                        dataSet.elements[tag].dataOffset
+                    )
+                    .toString();
                 break;
             case "OB":
-                value = dataSet.byteArray.slice(
-                    element.dataOffset,
-                    element.dataOffset + element.length
-                ).toString();
+                value = dataSet.byteArray
+                    .slice(
+                        element.dataOffset,
+                        element.dataOffset + element.length
+                    )
+                    .toString();
                 break;
             default:
                 value = dataSet.string(tag) || "N/A";
@@ -69,17 +77,13 @@ const extractDicomTags = (dataSet: any) => {
         }
 
         if (element.items && element.items.length > 0) {
+            const nestedTags = extractDicomTags(element.items[0].dataSet);
 
-            let nestedTags = extractDicomTags(element.items[0].dataSet);
-            
             dicomTags[tagId] = { tagId, tagName, value: nestedTags };
-
         } else {
-
             dicomTags[tagId] = { tagId, tagName, value };
         }
     });
 
     return dicomTags;
 };
-
