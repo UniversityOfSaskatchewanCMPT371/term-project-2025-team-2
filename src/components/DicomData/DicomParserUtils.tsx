@@ -42,8 +42,9 @@ const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
         console.warn("Invalid DICOM dataset: No elements found.");
-        return dicomTags; 
+        return dicomTags;
     }
+
     Object.keys(dataSet.elements).forEach((tag: any) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
@@ -54,13 +55,13 @@ const extractDicomTags = (dataSet: any) => {
 
         switch (vr) {
             case "UL":
-                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset);
+                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset).toString();
                 break;
             case "OB":
                 value = dataSet.byteArray.slice(
                     element.dataOffset,
                     element.dataOffset + element.length
-                );
+                ).toString();
                 break;
             default:
                 value = dataSet.string(tag) || "N/A";
@@ -68,25 +69,13 @@ const extractDicomTags = (dataSet: any) => {
         }
 
         if (element.items && element.items.length > 0) {
-            const valueNested: any = [];
 
-            Object.keys(element.items[0].dataSet.elements).forEach(
-                (nestedTag: any) => {
-                    const nestedTagId = nestedTag.toUpperCase();
-                    const nestedTagName =
-                        tagDictionary.lookup(nestedTagId) || "Unknown Tag";
-                    const nestedValue =
-                        element.items[0].dataSet.string(nestedTag) || "N/A";
+            let nestedTags = extractDicomTags(element.items[0].dataSet);
+            
+            dicomTags[tagId] = { tagId, tagName, value: nestedTags };
 
-                    valueNested.push({
-                        tagId: nestedTagId,
-                        tagName: nestedTagName,
-                        value: nestedValue,
-                    });
-                }
-            );
-            dicomTags[tagId] = { tagId, tagName, value: valueNested };
         } else {
+
             dicomTags[tagId] = { tagId, tagName, value };
         }
     });
