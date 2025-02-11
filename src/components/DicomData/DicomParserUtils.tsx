@@ -54,7 +54,11 @@ const extractDicomTags = (dataSet: any) => {
 
         switch (vr) {
             case "UL":
-                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset);
+                if (dataSet.elements[tag]) {
+                    value = dataSet.uint32(tag); 
+                } else {
+                    value = "N/A"; 
+                }
                 break;
             case "OB":
                 value = dataSet.byteArray.slice(
@@ -66,6 +70,7 @@ const extractDicomTags = (dataSet: any) => {
                 value = dataSet.string(tag) || "N/A";
                 break;
         }
+        
 
         if (element.items && element.items.length > 0) {
             const valueNested: any = [];
