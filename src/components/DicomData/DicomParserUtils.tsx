@@ -23,9 +23,10 @@ export const parseDicomFile = (file: File): Promise<any> => {
                 } catch (error) {
                     reject("Error parsing DICOM file: " + error);
                 }
-            }
-            else {
-                reject("Invalid file format: Could not read file as ArrayBuffer.");
+            } else {
+                reject(
+                    "Invalid file format: Could not read file as ArrayBuffer."
+                );
             }
         };
         reader.onerror = () => reject("File reading error occurred.");
@@ -42,8 +43,9 @@ const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
         console.warn("Invalid DICOM dataset: No elements found.");
-        return dicomTags; 
+        return dicomTags;
     }
+
     Object.keys(dataSet.elements).forEach((tag: any) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
@@ -54,13 +56,20 @@ const extractDicomTags = (dataSet: any) => {
 
         switch (vr) {
             case "UL":
-                value = dataSet.elements[tag].parser.readUint32(dataSet.byteArray, dataSet.elements[tag].dataOffset);
+                value = dataSet.elements[tag].parser
+                    .readUint32(
+                        dataSet.byteArray,
+                        dataSet.elements[tag].dataOffset
+                    )
+                    .toString();
                 break;
             case "OB":
-                value = dataSet.byteArray.slice(
-                    element.dataOffset,
-                    element.dataOffset + element.length
-                );
+                value = dataSet.byteArray
+                    .slice(
+                        element.dataOffset,
+                        element.dataOffset + element.length
+                    )
+                    .toString();
                 break;
             default:
                 value = dataSet.string(tag) || "N/A";
@@ -68,24 +77,9 @@ const extractDicomTags = (dataSet: any) => {
         }
 
         if (element.items && element.items.length > 0) {
-            const valueNested: any = [];
+            const nestedTags = extractDicomTags(element.items[0].dataSet);
 
-            Object.keys(element.items[0].dataSet.elements).forEach(
-                (nestedTag: any) => {
-                    const nestedTagId = nestedTag.toUpperCase();
-                    const nestedTagName =
-                        tagDictionary.lookup(nestedTagId) || "Unknown Tag";
-                    const nestedValue =
-                        element.items[0].dataSet.string(nestedTag) || "N/A";
-
-                    valueNested.push({
-                        tagId: nestedTagId,
-                        tagName: nestedTagName,
-                        value: nestedValue,
-                    });
-                }
-            );
-            dicomTags[tagId] = { tagId, tagName, value: valueNested };
+            dicomTags[tagId] = { tagId, tagName, value: nestedTags };
         } else {
             dicomTags[tagId] = { tagId, tagName, value };
         }
@@ -93,4 +87,3 @@ const extractDicomTags = (dataSet: any) => {
 
     return dicomTags;
 };
-
