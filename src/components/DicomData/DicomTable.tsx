@@ -39,7 +39,10 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                               .toLowerCase()
                               .includes(searchTerm.toLowerCase())
                   )
-                :  row.value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+                : row.value
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()))
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
