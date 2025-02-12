@@ -8,7 +8,7 @@ import { FileHeader } from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
 import Footer from "./components/Navigation/Footer";
 import ErrorBoundary from "./components/ErrorHandling/ErrorBoundary";
-import GenErrorPage from "./components/ErrorHandling/GenErrorPage"; // Import the fallback UI
+import GenErrorPage from "./components/ErrorHandling/GenErrorPage"; 
 
 /**
  *
