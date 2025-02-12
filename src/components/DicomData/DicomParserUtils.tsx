@@ -3,6 +3,8 @@ import { TagDictionary } from "../../tagDictionary/dictionary";
 
 const tagDictionary = new TagDictionary();
 
+const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
+
 /**
  *
  * @param file - DICOM file
@@ -58,9 +60,9 @@ const extractDicomTags = (dataSet: any) => {
             case "UL":
 
                 if (dataSet.elements[tag]) {
-                    value = dataSet.uint32(tag); 
+                    value = dataSet.uint32(tag);
                 } else {
-                    value = "N/A"; 
+                    value = "N/A";
                 }
 
                 break;
@@ -76,12 +78,14 @@ const extractDicomTags = (dataSet: any) => {
                 value = dataSet.string(tag) || "N/A";
                 break;
         }
-        
+
 
         if (element.items && element.items.length > 0) {
             const nestedTags = extractDicomTags(element.items[0].dataSet);
 
             dicomTags[tagId] = { tagId, tagName, value: nestedTags };
+        } else if (hiddenTags.includes(tagId)) {
+            dicomTags[tagId] = { tagId, tagName, value: value, hidden: true };
         } else {
             dicomTags[tagId] = { tagId, tagName, value };
         }
