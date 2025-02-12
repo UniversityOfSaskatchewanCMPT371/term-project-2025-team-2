@@ -22,7 +22,7 @@
         "noUncheckedSideEffectImports": true,
 
         /* Jest Types */
-        "types": ["jest", "node"]
+        "types": ["jest", "node", "@testing-library/jest-dom"]
     },
     "include": ["vite.config.ts", "tests"]
 }
