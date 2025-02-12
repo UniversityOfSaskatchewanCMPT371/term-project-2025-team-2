@@ -10,7 +10,10 @@
     "pretty": "prettier --write .",
     "style": "npm run lint -- --fix && prettier --write .",
     "preview": "vite preview",
-    "docs": "typedoc --entryPointStrategy Expand src"
+    "docs": "typedoc --entryPointStrategy Expand src",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
