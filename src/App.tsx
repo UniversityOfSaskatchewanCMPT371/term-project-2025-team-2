@@ -116,6 +116,7 @@ const App: React.FC = () => {
                 </div>
 
                 {sidebarVisible && (
+
                     <div ref={sidebarRef}>
                         <Sidebar
                             files={files}
@@ -123,6 +124,7 @@ const App: React.FC = () => {
                             currentFileIndex={currentFileIndex}
                         />
                     </div>
+
                 )}
             </div>
             <Footer />
