@@ -65,6 +65,9 @@
     ],
     "moduleNameMapper": {
       "\\.(css|scss|less)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
     }
   }
 }
