@@ -1,0 +1,48 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import Sidebar from "../../src/components/Navigation/Sidebar"
+import { SidebarProps } from "../../src/types/types";
+import React from "react";
+
+// Mock components
+jest.mock("../NavigationLinks.tsx", () => () => <div data-testid="nav-links">Navigation Links</div>);
+jest.mock("../FileHandling/FileTable.tsx", () => () => <div data-testid="file-table">File Table</div>);
+jest.mock("../utils/HelpIcon.tsx", () => (props: { onClick: () => void }) => (
+  <button data-testid="help-icon" onClick={props.onClick}>?</button>
+));
+jest.mock("../utils/Modal.tsx", () => (props: { isOpen: boolean; onClose: () => void }) => (
+  props.isOpen ? <div data-testid="modal"><button onClick={props.onClose}>Close</button></div> : null
+));
+
+describe("Sidebar Component", () => {
+  let props: SidebarProps;
+
+  beforeEach(() => {
+    props = {
+      files: [new File(["content"], "test.dcm"), new File(["content"], "sample.dcm")],
+      onFileSelect: jest.fn(),
+      currentFileIndex: 0,
+    };
+  });
+
+  test("renders sidebar correctly", () => {
+    render(<Sidebar {...props} />);
+    expect(screen.getByText("Sidebar")).toBeInTheDocument();
+    expect(screen.getByTestId("nav-links")).toBeInTheDocument();
+    expect(screen.getByTestId("file-table")).toBeInTheDocument();
+  });
+
+  test("calls onFileSelect when a file is clicked", () => {
+    render(<Sidebar {...props} />);
+    fireEvent.click(screen.getByTestId("file-table"));
+    expect(props.onFileSelect).toHaveBeenCalled();
+  });
+
+  test("opens and closes the help modal", () => {
+    render(<Sidebar {...props} />);
+    fireEvent.click(screen.getByTestId("help-icon"));
+    expect(screen.getByTestId("modal")).toBeInTheDocument();
+    
+    fireEvent.click(screen.getByText("Close"));
+    expect(screen.queryByTestId("modal")).not.toBeInTheDocument();
+  });
+});
