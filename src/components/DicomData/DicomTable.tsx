@@ -54,9 +54,6 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
         }));
     };
 
-    console.log(dicomData);
-    console.log(values);
-
     const toggleHiddenTags = () => {
         setShowHidden(!showHidden);
     };

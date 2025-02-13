@@ -7,6 +7,7 @@ import { FileNavigation } from "./components/Navigation/FileNavigation";
 import { FileHeader } from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
 import Footer from "./components/Navigation/Footer";
+import { GenButton } from "./components/Navigation/Button";
 
 /**
  *
@@ -17,6 +18,9 @@ const App: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [series, setSeries] = useState(false);
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
@@ -31,6 +35,24 @@ const App: React.FC = () => {
             setTheme("night");
         }
     };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+
+    const openModal = () => {
+        setIsOpen(true);
+    };
+
+    const isSeries = () => {
+        setSeries(true);
+        closeModal();
+    };
+
+    const notSeries = () => {
+        setSeries(false);
+        closeModal();
+    }
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
@@ -65,6 +87,9 @@ const App: React.FC = () => {
         setCurrentFileIndex(0);
 
         log.info("file-loaded");
+        if (newFiles.length > 1) {
+            openModal();
+        }
     };
 
     const nextFile = () => {
@@ -99,15 +124,18 @@ const App: React.FC = () => {
                         files={files}
                         currentFileIndex={currentFileIndex}
                     />
+                    {files.length > 0 && !series ? (
+                        <FileNavigation
+                            currentFileIndex={currentFileIndex}
+                            fileCount={files.length}
+                            onPrevFile={prevFile}
+                            onNextFile={nextFile}
+                        />
+                    ) : null}
+
 
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>
-                            <FileNavigation
-                                currentFileIndex={currentFileIndex}
-                                fileCount={files.length}
-                                onPrevFile={prevFile}
-                                onNextFile={nextFile}
-                            />
                             <DicomTable
                                 dicomData={dicomData[currentFileIndex]}
                                 fileName={files[currentFileIndex].name}
@@ -115,6 +143,38 @@ const App: React.FC = () => {
                         </div>
                     )}
                 </div>
+
+                {isOpen ? (
+                    <div
+                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+
+                    >
+                        <div
+                            className="w-full max-w-sm rounded bg-white p-6 text-black shadow-lg"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h4 className="text-xl font-semibold">Editing Option</h4>
+                            <p className="my-4">Edit files as a series?</p>
+                            <div className="flex justify-between">
+
+                                <button
+                                    onClick={isSeries}
+                                    disabled={false}
+                                    className="rounded bg-success px-4 py-2 text-info-content hover:bg-green-400 disabled:bg-base-300"
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    onClick={notSeries}
+                                    disabled={false}
+                                    className="rounded bg-error px-4 py-2 text-info-content hover:bg-red-400 disabled:bg-base-300"
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    </div>) : null
+                }
 
                 {sidebarVisible && (
                     <div ref={sidebarRef}>
