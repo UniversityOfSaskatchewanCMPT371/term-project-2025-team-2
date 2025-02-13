@@ -22,6 +22,14 @@ const App: React.FC = () => {
         localStorage.getItem("theme") ?? "corporate"
     );
 
+    const [newTableData, setNewTableData] = useState<any[]>([]);
+
+    const updateTableData = (newData: any) => {
+        setNewTableData((prevData) =>
+            [...prevData, newData]
+        );
+    }
+
     const sidebarRef = useRef<HTMLDivElement | null>(null);
 
     const handleToggle = (e: any) => {
@@ -111,6 +119,8 @@ const App: React.FC = () => {
                             <DicomTable
                                 dicomData={dicomData[currentFileIndex]}
                                 fileName={files[currentFileIndex].name}
+                                updateTableData={updateTableData}
+                                newTableData={newTableData}
                             />
                         </div>
                     )}

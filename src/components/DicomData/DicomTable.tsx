@@ -10,9 +10,8 @@ import log from "../utils/Logger";
  * @param dicomData - DICOM data, extracted from a DICOM file
  * @returns rendered DicomTable component
  */
-const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
+const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTableData, newTableData }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [values, setValues] = useState<{ [key: string]: any }>({});
     const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
@@ -23,8 +22,9 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
     const rows = Object.entries(dicomData).map(([tagId, tagData]) => ({
         tagId,
         tagName: tagData.tagName,
-        value: tagData.value,
+        value: newTableData.find((row: any) => row.fileName === fileName && row.tagId === tagId)?.newValue || tagData.value,
         hidden: tagData.hidden || false,
+        updated: newTableData.find((row: any) => row.fileName === fileName && row.tagId === tagId)?.newValue ? true : false,
     }));
 
     const filteredRows = rows.filter(
@@ -48,14 +48,11 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
-        setValues((preValues) => ({
-            ...preValues,
-            [tagId]: newValue,
-        }));
+        updateTableData({ fileName: fileName, tagId: tagId, newValue: newValue });
     };
 
     console.log(dicomData);
-    console.log(values);
+    console.log(newTableData);
 
     const toggleHiddenTags = () => {
         setShowHidden(!showHidden);
@@ -64,7 +61,6 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
     // placeholder for updating the file
     const updateFile = () => {
         console.log(dicomData);
-        console.log(values);
     };
 
     return (
@@ -109,6 +105,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
                                     row={row}
                                     index={index}
                                     onUpdateValue={handleUpdateValue}
+                                    updated={row.updated}
                                 />
                             )
                         )

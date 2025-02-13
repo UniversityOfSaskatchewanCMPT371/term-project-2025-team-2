@@ -1,18 +1,6 @@
 import React, { useState } from "react";
+import { DicomTableRowProps } from "../../types/types";
 
-/**
- * interface DicomTableRowProps
- */
-export interface DicomTableRowProps {
-    row: {
-        tagId: string;
-        tagName: string;
-        value: string | any[];
-    };
-    index: number;
-    onUpdateValue: (tagId: string, newValue: string) => void;
-    nested?: boolean;
-}
 
 /**
  * handleClick function
@@ -34,11 +22,12 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     index,
     onUpdateValue,
     nested,
+    updated,
 }) => {
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [edited, setEdited] = useState<boolean>(false);
+    const [edited, setEdited] = useState<boolean>(updated || false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
