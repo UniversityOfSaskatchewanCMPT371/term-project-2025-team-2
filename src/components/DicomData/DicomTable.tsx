@@ -27,32 +27,30 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
         hidden: tagData.hidden || false,
     }));
 
-
     const filteredRows = rows.filter(
         (row) =>
             row.tagId.toLowerCase().includes(searchTerm.toLowerCase()) ||
             row.tagName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (Array.isArray(row.value)
                 ? row.value.some(
-                    (nestedRow: any) =>
-                        nestedRow.tagId
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase()) ||
-                        nestedRow.tagName
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                )
+                      (nestedRow: any) =>
+                          nestedRow.tagId
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase()) ||
+                          nestedRow.tagName
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase())
+                  )
                 : row.value
-                    .toString()
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()))
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()))
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
         setValues((preValues) => ({
             ...preValues,
-            [tagId]:  newValue,
-            
+            [tagId]: newValue,
         }));
     };
 
@@ -61,7 +59,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
 
     const toggleHiddenTags = () => {
         setShowHidden(!showHidden);
-    }
+    };
 
     // placeholder for updating the file
     const updateFile = () => {
@@ -86,7 +84,9 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
                 </div>
                 <div className="ml-4">
                     <GenButton
-                        label={showHidden ? "Hide Hidden Tags" : "Show Hidden Tags"}
+                        label={
+                            showHidden ? "Hide Hidden Tags" : "Show Hidden Tags"
+                        }
                         disabled={false}
                         onClick={toggleHiddenTags}
                     />
@@ -108,7 +108,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
                 </thead>
                 <tbody>
                     {filteredRows.length > 0 ? (
-                        filteredRows.map((row, index) => (
+                        filteredRows.map((row, index) =>
                             row.hidden && !showHidden ? null : (
                                 <DicomTableRow
                                     key={index + row.tagId}
@@ -116,7 +116,8 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
                                     index={index}
                                     onUpdateValue={handleUpdateValue}
                                 />
-                            )))
+                            )
+                        )
                     ) : (
                         <tr>
                             <td

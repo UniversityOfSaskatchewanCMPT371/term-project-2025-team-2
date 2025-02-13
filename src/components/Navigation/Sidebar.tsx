@@ -22,9 +22,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     return (
-        <div className="fixed right-0 top-0 w-64 py-20 h-full bg-secondary p-6 z-1 text-secondary-content overflow-y-auto">
+        <div className="z-1 fixed right-0 top-0 h-full w-64 overflow-y-auto bg-secondary p-6 py-20 text-secondary-content">
             <h3 className="mb-2 mt-2 text-xl font-semibold">Sidebar</h3>
-            
+
             <HelpIcon onClick={toggleModal} />
 
             <NavigationLinks />

@@ -56,7 +56,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
     const toggleEditing = () => {
         setIsEditing(!isEditing);
-    }
+    };
 
     return (
         <>
@@ -87,12 +87,12 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         onBlur={handleBlur}
                                         className="rounded border p-1"
                                     />
+                                ) : edited ? (
+                                    <span className="font-semibold text-red-600">
+                                        {newValue}
+                                    </span>
                                 ) : (
-                                    edited ? (
-                                        <span className="text-red-600 font-semibold">{newValue}</span>
-                                    ) : (
-                                        <span>{newValue}</span>
-                                    )
+                                    <span>{newValue}</span>
                                 )}
                             </div>
                             <div

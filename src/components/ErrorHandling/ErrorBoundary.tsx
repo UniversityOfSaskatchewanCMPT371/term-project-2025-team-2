@@ -32,7 +32,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
 
     render() {
         if (this.state.hasError) {
-            return <GenErrorPage error={new Error("An error occurred in the application.")} />;
+            return (
+                <GenErrorPage
+                    error={new Error("An error occurred in the application.")}
+                />
+            );
         }
 
         return this.props.children;
