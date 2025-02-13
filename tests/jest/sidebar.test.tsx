@@ -4,12 +4,12 @@ import { SidebarProps } from "../../src/types/types";
 import React from "react";
 
 // Mock components
-jest.mock("../NavigationLinks.tsx", () => () => <div data-testid="nav-links">Navigation Links</div>);
-jest.mock("../FileHandling/FileTable.tsx", () => () => <div data-testid="file-table">File Table</div>);
-jest.mock("../utils/HelpIcon.tsx", () => (props: { onClick: () => void }) => (
+jest.mock("../../src/components/Navigation/NavigationLinks.tsx", () => () => <div data-testid="nav-links">Navigation Links</div>);
+jest.mock("../../src/components/FileHandling/FileTable.tsx", () => () => <div data-testid="file-table">File Table</div>);
+jest.mock("../../src/components/utils/HelpIcon.tsx", () => (props: { onClick: () => void }) => (
   <button data-testid="help-icon" onClick={props.onClick}>?</button>
 ));
-jest.mock("../utils/Modal.tsx", () => (props: { isOpen: boolean; onClose: () => void }) => (
+jest.mock("../../src/components/utils/Modal.tsx", () => (props: { isOpen: boolean; onClose: () => void }) => (
   props.isOpen ? <div data-testid="modal"><button onClick={props.onClose}>Close</button></div> : null
 ));
 
