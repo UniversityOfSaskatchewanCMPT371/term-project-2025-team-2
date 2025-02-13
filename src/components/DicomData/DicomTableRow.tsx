@@ -65,7 +65,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
                 <td className="break-all border px-4 py-2">
                     {typeof row.value === "string" ||
-                        row.value instanceof String ? (
+                    row.value instanceof String ? (
                         <div className="flex">
                             <div className="flex-1">
                                 {isEditing ? (
@@ -86,7 +86,8 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => handleClick(toggleEditing)}>
+                                onClick={() => handleClick(toggleEditing)}
+                            >
                                 <PencilSquareIcon className="h-6 w-6" />
                             </div>
                         </div>
@@ -97,14 +98,14 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
             </tr>
             {typeof row.value !== "string" && isExpanded
                 ? Object.values(row.value).map((nested: any) => (
-                    <DicomTableRow
-                        key={nested.tagId}
-                        row={nested}
-                        index={index}
-                        onUpdateValue={onUpdateValue}
-                        nested
-                    />
-                ))
+                      <DicomTableRow
+                          key={nested.tagId}
+                          row={nested}
+                          index={index}
+                          onUpdateValue={onUpdateValue}
+                          nested
+                      />
+                  ))
                 : null}
         </>
     );

@@ -2,7 +2,6 @@ import React from "react";
 import { GenButton } from "../utils/GenButton";
 import { FileNavigationProps } from "../../types/types";
 
-
 /**
  *
  * @param currentFileIndex - Index of the currently viewed file

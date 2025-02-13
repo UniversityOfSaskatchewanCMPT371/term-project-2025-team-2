@@ -20,7 +20,6 @@ const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, toggleTheme }) => {
                 className="size-8 transition-all duration-500 hover:text-accent"
                 onClick={toggleSidebar}
             />
-
         </div>
     );
 };

@@ -27,7 +27,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="z-1 fixed right-0 top-0 h-full w-64 overflow-y-auto bg-secondary p-6 py-20 text-secondary-content">
             <h3 className="mb-2 mt-2 text-xl font-semibold">Sidebar</h3>
 
-            <QuestionMarkCircleIcon className="absolute left-3/4 top-7 mt-14 -translate-x-1/2 size-8 transform cursor-pointer hover:text-accent" onClick={() => setIsModalOpen(true)} />
+            <QuestionMarkCircleIcon
+                className="absolute left-3/4 top-7 mt-14 size-8 -translate-x-1/2 transform cursor-pointer hover:text-accent"
+                onClick={() => setIsModalOpen(true)}
+            />
 
             <NavigationLinks />
 

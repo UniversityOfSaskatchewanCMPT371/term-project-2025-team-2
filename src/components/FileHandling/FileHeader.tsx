@@ -8,10 +8,7 @@ import { FileHeaderProps } from "../../types/types";
  * @param currentFileIndex - Index of the currently viewed file
  * @returns rendered FileHeader component
  */
-const FileHeader: React.FC<FileHeaderProps> = ({
-    files,
-    currentFileIndex,
-}) => {
+const FileHeader: React.FC<FileHeaderProps> = ({ files, currentFileIndex }) => {
     if (files.length === 0) return null;
 
     return (
