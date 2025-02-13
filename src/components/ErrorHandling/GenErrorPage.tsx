@@ -1,6 +1,5 @@
-
 /**
- * interface GenErrorPageProps 
+ * interface GenErrorPageProps
  * error: Error
  */
 interface GenErrorPageProps {
@@ -14,7 +13,7 @@ interface GenErrorPageProps {
  */
 function GenErrorPage({ error }: GenErrorPageProps) {
     return (
-        <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <div className="flex h-screen flex-col items-center justify-center space-y-4">
             <h1>Something went wrong.</h1>
             <p>{error.message}</p>
             <button onClick={() => window.location.reload()}>Reload</button>
