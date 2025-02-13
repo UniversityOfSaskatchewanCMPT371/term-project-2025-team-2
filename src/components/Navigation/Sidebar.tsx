@@ -16,6 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     files,
     onFileSelect,
     currentFileIndex,
+    series,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,6 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 files={files}
                 currentFileIndex={currentFileIndex}
                 onFileSelect={onFileSelect}
+                series={series}
             />
 
             <Modal

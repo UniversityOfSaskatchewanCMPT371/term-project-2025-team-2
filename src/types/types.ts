@@ -66,6 +66,36 @@ export interface SidebarProps {
     files: File[];
     onFileSelect: (index: number) => void;
     currentFileIndex: number;
+    series: boolean;
+}
+
+/**
+ * interface FileListProps
+ * @property files - Array of files
+ * @property currentFileIndex - Index of the currently viewed file
+ * @property onFileSelect - Function to handle file selection
+ * @property series - Boolean to check if the files are being edited as a series
+ */
+export interface FileListProps {
+    files: File[];
+    currentFileIndex: number;
+    onFileSelect: (index: number) => void;
+    openModal: (value: boolean) => void;
+    series: boolean;
+}
+
+/**
+ * interface FileTableProps
+ * @property files - Array of files
+ * @property currentFileIndex - Index of the currently viewed file
+ * @property onFileSelect - Function to handle file selection
+ * @property series - Boolean to check if the files are being edited as a series
+ */
+export interface FileTableProps {
+    files: any[];
+    currentFileIndex: number;
+    onFileSelect: (index: number) => void;
+    series: boolean;
 }
 
 /**

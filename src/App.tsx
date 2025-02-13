@@ -7,7 +7,6 @@ import { FileNavigation } from "./components/Navigation/FileNavigation";
 import { FileHeader } from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
 import Footer from "./components/Navigation/Footer";
-import { GenButton } from "./components/Navigation/Button";
 
 /**
  *
@@ -58,7 +57,7 @@ const App: React.FC = () => {
     const notSeries = () => {
         setSeries(false);
         closeModal();
-    }
+    };
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
@@ -139,7 +138,6 @@ const App: React.FC = () => {
                         />
                     ) : null}
 
-
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>
                             <DicomTable
@@ -153,18 +151,16 @@ const App: React.FC = () => {
                 </div>
 
                 {isOpen ? (
-                    <div
-                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-
-                    >
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div
                             className="w-full max-w-sm rounded bg-white p-6 text-black shadow-lg"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h4 className="text-xl font-semibold">Editing Option</h4>
+                            <h4 className="text-xl font-semibold">
+                                Editing Option
+                            </h4>
                             <p className="my-4">Edit files as a series?</p>
                             <div className="flex justify-between">
-
                                 <button
                                     onClick={isSeries}
                                     disabled={false}
@@ -181,8 +177,8 @@ const App: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                    </div>) : null
-                }
+                    </div>
+                ) : null}
 
                 {sidebarVisible && (
                     <div ref={sidebarRef}>
@@ -190,6 +186,7 @@ const App: React.FC = () => {
                             files={files}
                             onFileSelect={handleFileSelect}
                             currentFileIndex={currentFileIndex}
+                            series={series}
                         />
                     </div>
                 )}
