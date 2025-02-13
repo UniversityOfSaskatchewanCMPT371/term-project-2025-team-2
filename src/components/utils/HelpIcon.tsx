@@ -16,7 +16,7 @@ interface HelpIconProps {
 const HelpIcon: React.FC<HelpIconProps> = ({ onClick }) => {
     return (
         <div
-            className="absolute bottom-16 left-1/2 -translate-x-1/2 transform cursor-pointer hover:text-accent"
+            className="absolute top-7 left-3/4 mt-14 -translate-x-1/2 transform cursor-pointer hover:text-accent"
             onClick={onClick}
         >
             <svg
