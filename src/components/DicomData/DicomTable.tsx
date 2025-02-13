@@ -7,7 +7,7 @@ import log from "../utils/Logger";
 
 /**
  *
- * @param dicomData - DICOM data, extracted from a DICOM file
+ * @param DicomTableProps - props for DicomTable component
  * @returns rendered DicomTable component
  */
 const DicomTable: React.FC<DicomTableProps> = ({

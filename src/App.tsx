@@ -4,19 +4,22 @@ import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
-import { FileHeader } from "./components/FileHandling/FileHeader";
+import FileHeader from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
+import { CustomFile as CustomFile } from "./types/types";
 import Footer from "./components/Navigation/Footer";
+import QuestionModal from "./components/utils/QuestionModal";
 
 /**
  *
  * @returns rendered App component
  */
 const App: React.FC = () => {
-    const [sidebarVisible, setSidebarVisible] = useState(false);
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<CustomFile[]>([]);
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
+
+    const [sidebarVisible, setSidebarVisible] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false);
     const [series, setSeries] = useState(false);
@@ -68,7 +71,7 @@ const App: React.FC = () => {
         };
     }, []);
 
-    const handleFileUpload = (newFiles: File[], newDicomData: any[]) => {
+    const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
@@ -133,39 +136,10 @@ const App: React.FC = () => {
                 </div>
 
                 {isOpen ? (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div
-                            className="w-full max-w-sm rounded bg-white p-6 text-black shadow-lg"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <h4 className="text-xl font-semibold">
-                                Editing Option
-                            </h4>
-                            <p className="my-4">Edit files as a series?</p>
-                            <div className="flex justify-between">
-                                <button
-                                    onClick={() => {
-                                        setSeries(true);
-                                        setIsOpen(false);
-                                    }}
-                                    disabled={false}
-                                    className="rounded bg-success px-4 py-2 text-info-content hover:bg-green-400 disabled:bg-base-300"
-                                >
-                                    Yes
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setSeries(false);
-                                        setIsOpen(false);
-                                    }}
-                                    disabled={false}
-                                    className="rounded bg-error px-4 py-2 text-info-content hover:bg-red-400 disabled:bg-base-300"
-                                >
-                                    No
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <QuestionModal
+                        setSeries={setSeries}
+                        setIsOpen={setIsOpen}
+                    />
                 ) : null}
 
                 {sidebarVisible && (

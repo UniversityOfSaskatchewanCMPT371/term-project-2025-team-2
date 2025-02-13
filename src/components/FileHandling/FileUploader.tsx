@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
 import Modal from "../utils/Modal.tsx";
-
-/**
- * interface FileUploaderProps
- */
-interface FileUploaderProps {
-    onFileUpload: (files: File[], dicomData: any[]) => void;
-}
+import { FileUploaderProps } from "../../types/types.ts";
 
 /**
  *

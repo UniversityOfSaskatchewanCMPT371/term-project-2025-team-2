@@ -1,16 +1,7 @@
 import React from "react";
 import Logger from "../utils/Logger";
 import GenErrorPage from "./GenErrorPage";
-
-/**
- * interface ErrorBoundaryProps
- * children: React.ReactNode
- * fallback: React.ReactNode
- */
-interface ErrorBoundaryProps {
-    children: React.ReactNode;
-    fallback: React.ReactNode;
-}
+import { ErrorBoundaryProps } from "../../types/types";
 
 /**
  * ErrorBoundary
