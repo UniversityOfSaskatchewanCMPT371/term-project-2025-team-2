@@ -92,18 +92,12 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
                     />
                 </div>
             </div>
-            <table className="mt-4 min-w-full table-auto border-collapse">
+            <table className="mt-4 min-w-full table-auto border-collapse" style={{ tableLayout: "fixed", width: "100%" }}>
                 <thead>
                     <tr className="text-wrap bg-primary">
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
-                            Tag
-                        </th>
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
-                            Tag Name
-                        </th>
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
-                            Value
-                        </th>
+                        <th className="border px-4 py-2 text-primary-content w-1/7">Tag</th>
+                        <th className="border px-4 py-2 text-primary-content w-1/4">Tag Name</th>
+                        <th className="border px-4 py-2 text-primary-content w-7/12">Value</th>
                     </tr>
                 </thead>
                 <tbody>
