@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Sidebar from "../../src/components/Navigation/Sidebar"
 import { SidebarProps } from "../../src/types/types";
-import React from "react";
 
 // Mock components
 jest.mock("../../src/components/Navigation/NavigationLinks.tsx", () => () => <div data-testid="nav-links">Navigation Links</div>);
