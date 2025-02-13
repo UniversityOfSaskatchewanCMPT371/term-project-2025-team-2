@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FileTableBody } from "./FileTableBody.tsx";
+import FileTableBody from "./FileTableBody.tsx";
 import Modal from "../utils/Modal.tsx";
 import { FileTableProps } from "../../types/types.ts";
 

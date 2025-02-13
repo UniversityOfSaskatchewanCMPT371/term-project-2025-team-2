@@ -1,11 +1,4 @@
-/**
- * interface GenErrorPageProps
- * error: Error
- */
-interface GenErrorPageProps {
-    error: Error;
-}
-
+import { GenErrorPageProps } from "../../types/types";
 /**
  * GenErrorPage
  * @param {GenErrorPageProps} { error }

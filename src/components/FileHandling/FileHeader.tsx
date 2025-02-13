@@ -1,12 +1,6 @@
 import React from "react";
 
-/**
- * interface FileHeaderProps
- */
-interface FileHeaderProps {
-    files: File[];
-    currentFileIndex: number;
-}
+import { FileHeaderProps } from "../../types/types";
 
 /**
  *
@@ -14,7 +8,7 @@ interface FileHeaderProps {
  * @param currentFileIndex - Index of the currently viewed file
  * @returns rendered FileHeader component
  */
-export const FileHeader: React.FC<FileHeaderProps> = ({
+const FileHeader: React.FC<FileHeaderProps> = ({
     files,
     currentFileIndex,
 }) => {
@@ -26,3 +20,5 @@ export const FileHeader: React.FC<FileHeaderProps> = ({
         </h2>
     );
 };
+
+export default FileHeader;

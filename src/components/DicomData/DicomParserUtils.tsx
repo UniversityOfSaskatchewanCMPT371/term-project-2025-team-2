@@ -59,7 +59,7 @@ const extractDicomTags = (dataSet: any) => {
         switch (vr) {
             case "UL":
                 if (dataSet.elements[tag]) {
-                    value = dataSet.uint32(tag);
+                    value = dataSet.uint32(tag).toString();
                 } else {
                     value = "N/A";
                 }

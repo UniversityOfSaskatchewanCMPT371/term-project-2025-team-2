@@ -1,16 +1,5 @@
 import React from "react";
-
-/**
- * interface NavButtonProps
- * @param onClick - Function to handle button click
- * @param disabled - Boolean to determine if button is disabled
- * @param label - Button label
- */
-interface NavButtonProps {
-    onClick: () => void;
-    disabled: boolean;
-    label: string;
-}
+import { GenButtonProps } from "../../types/types";
 
 /**
  *
@@ -19,7 +8,7 @@ interface NavButtonProps {
  * @param label - Button label
  * @returns rendered NavButton component
  */
-export const GenButton: React.FC<NavButtonProps> = ({
+export const GenButton: React.FC<GenButtonProps> = ({
     onClick,
     disabled,
     label,

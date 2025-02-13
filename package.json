@@ -13,6 +13,7 @@
     "docs": "typedoc --entryPointStrategy Expand src"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.0.3",
     "dicom-parser": "^1.8.21",
     "loglevel": "^1.9.2",

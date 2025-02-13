@@ -1,14 +1,5 @@
 import React from "react";
-
-/**
- * interface SearchProps
- * @param searchTerm - Current search term
- * @param onSearchChange - Function to handle search term change
- */
-interface SearchProps {
-    searchTerm: string;
-    onSearchChange: (newSearchTerm: string) => void;
-}
+import { SearchProps } from "../../types/types";
 
 /**
  *

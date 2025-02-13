@@ -8,7 +8,7 @@ import { FileListProps } from "../../types/types.ts";
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileList component
  */
-export const FileTableBody: React.FC<FileListProps> = ({
+const FileTableBody: React.FC<FileListProps> = ({
     files,
     currentFileIndex,
     onFileSelect,
@@ -47,3 +47,5 @@ export const FileTableBody: React.FC<FileListProps> = ({
         </>
     );
 };
+
+export default FileTableBody;
