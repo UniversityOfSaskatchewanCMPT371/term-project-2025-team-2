@@ -19,6 +19,28 @@ export interface DicomTag {
 export interface DicomTableProps {
     dicomData: { [key: string]: DicomTag };
     fileName: string;
+    updateTableData: (data: any) => void;
+    newTableData: any[];
+}
+
+/**
+ * interface DicomTableRowProps
+ * @property row - DICOM tag row
+ * @property index - Index of the row
+ * @property onUpdateValue - Function to update the value of the row
+ * @property nested - Boolean to check if the row is nested
+ * @property updated - Boolean to check if the row has been updated
+ */
+export interface DicomTableRowProps {
+    row: {
+        tagId: string;
+        tagName: string;
+        value: string | any[];
+    };
+    index: number;
+    onUpdateValue: (tagId: string, newValue: string) => void;
+    nested?: boolean;
+    updated?: boolean;
 }
 
 /**
