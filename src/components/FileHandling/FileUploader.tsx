@@ -29,7 +29,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
-            console.log(files);
+            console.log(files); // here just to use the files variable
             const fileArray = Array.from(selectedFiles);
             setFiles(fileArray);
             processFiles(fileArray);

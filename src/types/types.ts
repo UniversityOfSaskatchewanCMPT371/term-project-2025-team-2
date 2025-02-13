@@ -18,6 +18,7 @@ export interface DicomTag {
  */
 export interface DicomTableProps {
     dicomData: { [key: string]: DicomTag };
+    fileName: string;
 }
 
 /**

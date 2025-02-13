@@ -10,9 +10,9 @@ import log from "../utils/Logger";
  * @param dicomData - DICOM data, extracted from a DICOM file
  * @returns rendered DicomTable component
  */
-const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
+const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [values, setValues] = useState<{ [key: string]: string }>({});
+    const [values, setValues] = useState<{ [key: string]: any }>({});
     const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
@@ -26,6 +26,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
         value: tagData.value,
         hidden: tagData.hidden || false,
     }));
+
 
     const filteredRows = rows.filter(
         (row) =>
@@ -48,11 +49,15 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
-        setValues((prevValues) => ({
-            ...prevValues,
-            [tagId]: newValue,
+        setValues((preValues) => ({
+            ...preValues,
+            [tagId]:  newValue,
+            
         }));
     };
+
+    console.log(dicomData);
+    console.log(values);
 
     const toggleHiddenTags = () => {
         setShowHidden(!showHidden);
@@ -65,7 +70,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     };
 
     return (
-        <div className="mt-8">
+        <div key={fileName} className="mt-8">
             <h2 className="text-2xl font-semibold">DICOM Tags</h2>
             <div className="flex-col-2 flex">
                 <Search
