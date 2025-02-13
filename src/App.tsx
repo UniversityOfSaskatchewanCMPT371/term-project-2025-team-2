@@ -25,10 +25,8 @@ const App: React.FC = () => {
     const [newTableData, setNewTableData] = useState<any[]>([]);
 
     const updateTableData = (newData: any) => {
-        setNewTableData((prevData) =>
-            [...prevData, newData]
-        );
-    }
+        setNewTableData((prevData) => [...prevData, newData]);
+    };
 
     const sidebarRef = useRef<HTMLDivElement | null>(null);
 

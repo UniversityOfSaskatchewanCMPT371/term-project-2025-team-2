@@ -10,7 +10,12 @@ import log from "../utils/Logger";
  * @param dicomData - DICOM data, extracted from a DICOM file
  * @returns rendered DicomTable component
  */
-const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTableData, newTableData }) => {
+const DicomTable: React.FC<DicomTableProps> = ({
+    dicomData,
+    fileName,
+    updateTableData,
+    newTableData,
+}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showHidden, setShowHidden] = useState(false);
 
@@ -22,9 +27,16 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTabl
     const rows = Object.entries(dicomData).map(([tagId, tagData]) => ({
         tagId,
         tagName: tagData.tagName,
-        value: newTableData.find((row: any) => row.fileName === fileName && row.tagId === tagId)?.newValue || tagData.value,
+        value:
+            newTableData.find(
+                (row: any) => row.fileName === fileName && row.tagId === tagId
+            )?.newValue || tagData.value,
         hidden: tagData.hidden || false,
-        updated: newTableData.find((row: any) => row.fileName === fileName && row.tagId === tagId)?.newValue ? true : false,
+        updated: newTableData.find(
+            (row: any) => row.fileName === fileName && row.tagId === tagId
+        )?.newValue
+            ? true
+            : false,
     }));
 
     const filteredRows = rows.filter(
@@ -48,11 +60,12 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTabl
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
-        updateTableData({ fileName: fileName, tagId: tagId, newValue: newValue });
+        updateTableData({
+            fileName: fileName,
+            tagId: tagId,
+            newValue: newValue,
+        });
     };
-
-    console.log(dicomData);
-    console.log(newTableData);
 
     const toggleHiddenTags = () => {
         setShowHidden(!showHidden);
@@ -61,6 +74,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTabl
     // placeholder for updating the file
     const updateFile = () => {
         console.log(dicomData);
+        console.log(newTableData);
     };
 
     return (
@@ -88,12 +102,21 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData, fileName, updateTabl
                     />
                 </div>
             </div>
-            <table className="mt-4 min-w-full table-auto border-collapse" style={{ tableLayout: "fixed", width: "100%" }}>
+            <table
+                className="mt-4 min-w-full table-auto border-collapse"
+                style={{ tableLayout: "fixed", width: "100%" }}
+            >
                 <thead>
                     <tr className="text-wrap bg-primary">
-                        <th className="border px-4 py-2 text-primary-content w-1/7">Tag</th>
-                        <th className="border px-4 py-2 text-primary-content w-1/4">Tag Name</th>
-                        <th className="border px-4 py-2 text-primary-content w-7/12">Value</th>
+                        <th className="w-1/7 border px-4 py-2 text-primary-content">
+                            Tag
+                        </th>
+                        <th className="w-1/4 border px-4 py-2 text-primary-content">
+                            Tag Name
+                        </th>
+                        <th className="w-7/12 border px-4 py-2 text-primary-content">
+                            Value
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { DicomTableRowProps } from "../../types/types";
 
-
 /**
  * handleClick function
  * @description - Allows user to input new value for the row
