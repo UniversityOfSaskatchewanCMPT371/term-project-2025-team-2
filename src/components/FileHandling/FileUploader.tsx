@@ -73,7 +73,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     /**
      * dropzone hook
      */
-    const { getRootProps, getInputProps } = useDropzone({
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: true,
     });
@@ -82,18 +82,20 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
         <div>
             <div
                 {...getRootProps()}
-                className="relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center"
+                className={`relative h-64 w-full cursor-pointer rounded-xl border-2 border-solid ${
+                    isDragActive ? 'border-primary bg-primary/5' : 'border-blue-800 [data-theme="night"]:bg-blue-950/30 [data-theme="corporate"]:bg-base-200'
+                }`}
             >
                 <input {...getInputProps()} />
-                <p className="text-base-content">
-                    Drag and drop DICOM files here, or click the button below to
-                    select files
+                <p className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 transform text-center text-base-content">
+                    Drag and drop DICOM files here, or click the button below to select files
                 </p>
 
                 <button
                     onClick={(e) => e.preventDefault()}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded border-0 bg-secondary px-5 py-2 text-base-content hover:bg-accent"
-                >
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-xl bg-primary text-white px-8 py-2 text-lg transition duration-300 ease-in-out hover:bg-secondary hover:scale-110 disabled:bg-gray-400"
+
+                >   
                     Select Files
                 </button>
             </div>

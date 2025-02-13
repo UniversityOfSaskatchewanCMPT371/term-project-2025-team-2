@@ -21,7 +21,7 @@ const FileTable: React.FC<FileTableProps> = ({
     return (
         <div className="mt-2">
             <table className="w-full table-auto overflow-y-auto">
-                <thead className="mb-1 text-lg font-semibold text-secondary-content">
+                <thead className="mb-1 text-lg font-semibold text-secondary-content text-white">
                     <tr>
                         <td>Uploaded Files</td>
                     </tr>
