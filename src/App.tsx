@@ -41,24 +41,6 @@ const App: React.FC = () => {
         }
     };
 
-    const closeModal = () => {
-        setIsOpen(false);
-    };
-
-    const openModal = () => {
-        setIsOpen(true);
-    };
-
-    const isSeries = () => {
-        setSeries(true);
-        closeModal();
-    };
-
-    const notSeries = () => {
-        setSeries(false);
-        closeModal();
-    };
-
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
@@ -93,7 +75,7 @@ const App: React.FC = () => {
 
         log.info("file-loaded");
         if (newFiles.length > 1) {
-            openModal();
+            setIsOpen(true);
         }
     };
 
@@ -129,7 +111,7 @@ const App: React.FC = () => {
                         files={files}
                         currentFileIndex={currentFileIndex}
                     />
-                    {files.length > 0 && !series ? (
+                    {files.length > 1 && !series ? (
                         <FileNavigation
                             currentFileIndex={currentFileIndex}
                             fileCount={files.length}
@@ -162,14 +144,20 @@ const App: React.FC = () => {
                             <p className="my-4">Edit files as a series?</p>
                             <div className="flex justify-between">
                                 <button
-                                    onClick={isSeries}
+                                    onClick={() => {
+                                        setSeries(true);
+                                        setIsOpen(false);
+                                    }}
                                     disabled={false}
                                     className="rounded bg-success px-4 py-2 text-info-content hover:bg-green-400 disabled:bg-base-300"
                                 >
                                     Yes
                                 </button>
                                 <button
-                                    onClick={notSeries}
+                                    onClick={() => {
+                                        setSeries(false);
+                                        setIsOpen(false);
+                                    }}
                                     disabled={false}
                                     className="rounded bg-error px-4 py-2 text-info-content hover:bg-red-400 disabled:bg-base-300"
                                 >
@@ -187,6 +175,7 @@ const App: React.FC = () => {
                             onFileSelect={handleFileSelect}
                             currentFileIndex={currentFileIndex}
                             series={series}
+                            seriesToggle={() => setSeries(!series)}
                         />
                     </div>
                 )}

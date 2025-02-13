@@ -17,6 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     onFileSelect,
     currentFileIndex,
     series,
+    seriesToggle,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,6 +30,19 @@ const Sidebar: React.FC<SidebarProps> = ({
             <HelpIcon onClick={toggleModal} />
 
             <NavigationLinks />
+
+            {files.length <= 1 ? (
+                ""
+            ) : (
+                <div className="mt-6">
+                    <div
+                        onClick={seriesToggle}
+                        className="mb-2 cursor-pointer text-secondary-content hover:text-accent hover:outline"
+                    >
+                        {series ? "Editing as seires" : "Editing individually"}
+                    </div>
+                </div>
+            )}
 
             <FileTable
                 files={files}

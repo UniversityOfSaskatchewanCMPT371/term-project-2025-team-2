@@ -19,7 +19,7 @@ const FileTable: React.FC<FileTableProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <div className="mt-8">
+        <div className="mt-2">
             <table className="w-full table-auto overflow-y-auto">
                 <thead className="mb-1 text-lg font-semibold text-secondary-content">
                     <tr>

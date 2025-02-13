@@ -67,6 +67,7 @@ export interface SidebarProps {
     onFileSelect: (index: number) => void;
     currentFileIndex: number;
     series: boolean;
+    seriesToggle: () => void;
 }
 
 /**
