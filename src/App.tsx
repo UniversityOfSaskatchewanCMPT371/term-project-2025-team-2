@@ -110,6 +110,7 @@ const App: React.FC = () => {
                             />
                             <DicomTable
                                 dicomData={dicomData[currentFileIndex]}
+                                fileName={files[currentFileIndex].name}
                             />
                         </div>
                     )}
