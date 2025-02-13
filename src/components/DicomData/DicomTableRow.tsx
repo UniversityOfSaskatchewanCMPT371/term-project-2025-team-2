@@ -38,9 +38,11 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [edited, setEdited] = useState<boolean>(false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
+        setEdited(true);
     };
 
     const handleBlur = () => {
@@ -51,6 +53,10 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+
+    const toggleEditing = () => {
+        setIsEditing(!isEditing);
+    }
 
     return (
         <>
@@ -82,12 +88,16 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         className="rounded border p-1"
                                     />
                                 ) : (
-                                    <span>{newValue}</span>
+                                    edited ? (
+                                        <span className="text-red-600 font-semibold">{newValue}</span>
+                                    ) : (
+                                        <span>{newValue}</span>
+                                    )
                                 )}
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => handleClick(setIsEditing)}
+                                onClick={() => handleClick(toggleEditing)}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
