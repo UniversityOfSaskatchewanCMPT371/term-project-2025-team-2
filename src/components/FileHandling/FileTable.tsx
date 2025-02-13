@@ -1,14 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { FileTableBody } from "./FileTableBody.tsx";
-
-/**
- * interface FileTableProps
- */
-interface FileTableProps {
-    files: any[];
-    currentFileIndex: number;
-    onFileSelect: (index: number) => void;
-}
+import Modal from "../utils/Modal.tsx";
+import { FileTableProps } from "../../types/types.ts";
 
 /**
  *
@@ -21,9 +14,12 @@ const FileTable: React.FC<FileTableProps> = ({
     files,
     currentFileIndex,
     onFileSelect,
+    series,
 }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
-        <div className="mt-8">
+        <div className="mt-2">
             <table className="w-full table-auto overflow-y-auto">
                 <thead className="mb-1 text-lg font-semibold text-secondary-content">
                     <tr>
@@ -34,8 +30,16 @@ const FileTable: React.FC<FileTableProps> = ({
                     files={files}
                     currentFileIndex={currentFileIndex}
                     onFileSelect={onFileSelect}
+                    series={series}
+                    openModal={setIsModalOpen}
                 />
             </table>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Can't select file"
+                text="Editing as series, only one file is editable"
+            />
         </div>
     );
 };
