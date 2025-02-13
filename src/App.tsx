@@ -53,6 +53,12 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            // Don't close if clicking the toggle button (it has its own handler)
+            if (target.closest('[data-sidebar-toggle]')) {
+                return;
+            }
+            
             if (
                 sidebarRef.current &&
                 !sidebarRef.current.contains(event.target as Node)
@@ -96,7 +102,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col bg-base-100">
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
@@ -104,52 +110,61 @@ const App: React.FC = () => {
             />
 
             <div className="flex flex-1">
-                <div className="flex-grow p-8">
-                    <FileUploader onFileUpload={handleFileUpload} />
+                <div className="flex-grow p-4 md:p-8">
+                    <div className="container mx-auto max-w-7xl space-y-6">
+                        <FileUploader onFileUpload={handleFileUpload} />
 
-                    <FileHeader
-                        files={files}
-                        currentFileIndex={currentFileIndex}
-                    />
-                    {files.length > 1 && !series ? (
-                        <FileNavigation
-                            currentFileIndex={currentFileIndex}
-                            fileCount={files.length}
-                            onPrevFile={prevFile}
-                            onNextFile={nextFile}
-                        />
-                    ) : null}
+                        {files.length > 0 && (
+                            <div className="rounded-xl bg-base-200 p-6 shadow-lg border [data-theme='night']:border-blue-500 [data-theme='corporate']:border-base-300">
+                                <FileHeader
+                                    files={files}
+                                    currentFileIndex={currentFileIndex}
+                                />
+                                {files.length > 1 && !series && (
+                                    <div className="mt-4">
+                                        <FileNavigation
+                                            currentFileIndex={currentFileIndex}
+                                            fileCount={files.length}
+                                            onPrevFile={prevFile}
+                                            onNextFile={nextFile}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                    {files.length > 0 && dicomData.length > 0 && (
-                        <div>
-                            <DicomTable
-                                dicomData={dicomData[currentFileIndex]}
-                                fileName={files[currentFileIndex].name}
-                                updateTableData={updateTableData}
-                                newTableData={newTableData}
-                            />
-                        </div>
-                    )}
+                        {files.length > 0 && dicomData.length > 0 && (
+                            <div className="rounded-xl bg-base-200 p-6 shadow-lg border [data-theme='night']:border-blue-500 [data-theme='corporate']:border-base-300">
+                                <DicomTable
+                                    dicomData={dicomData[currentFileIndex]}
+                                    fileName={files[currentFileIndex].name}
+                                    updateTableData={updateTableData}
+                                    newTableData={newTableData}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {isOpen ? (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                {isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                         <div
-                            className="w-full max-w-sm rounded bg-white p-6 text-black shadow-lg"
+                            className="w-full max-w-sm rounded-xl bg-base-100 p-8 shadow-xl"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h4 className="text-xl font-semibold">
+                            <h4 className="text-2xl font-semibold text-base-content">
                                 Editing Option
                             </h4>
-                            <p className="my-4">Edit files as a series?</p>
-                            <div className="flex justify-between">
+                            <p className="my-6 text-base-content/80">
+                                Would you like to edit these files as a series?
+                            </p>
+                            <div className="flex justify-end space-x-4">
                                 <button
                                     onClick={() => {
                                         setSeries(true);
                                         setIsOpen(false);
                                     }}
-                                    disabled={false}
-                                    className="rounded bg-success px-4 py-2 text-info-content hover:bg-green-400 disabled:bg-base-300"
+                                    className="rounded-lg bg-primary px-6 py-2 text-primary-content transition hover:bg-primary-focus"
                                 >
                                     Yes
                                 </button>
@@ -158,18 +173,17 @@ const App: React.FC = () => {
                                         setSeries(false);
                                         setIsOpen(false);
                                     }}
-                                    disabled={false}
-                                    className="rounded bg-error px-4 py-2 text-info-content hover:bg-red-400 disabled:bg-base-300"
+                                    className="rounded-lg bg-error px-6 py-2 text-error-content transition hover:bg-error-focus"
                                 >
                                     No
                                 </button>
                             </div>
                         </div>
                     </div>
-                ) : null}
+                )}
 
                 {sidebarVisible && (
-                    <div ref={sidebarRef}>
+                    <div ref={sidebarRef} className="shadow-2xl">
                         <Sidebar
                             files={files}
                             onFileSelect={handleFileSelect}
