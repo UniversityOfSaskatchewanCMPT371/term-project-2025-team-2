@@ -13,6 +13,7 @@ import log from "../utils/Logger";
 const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [values, setValues] = useState<{ [key: string]: string }>({});
+    const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
         log.error("No DICOM data available");
@@ -23,6 +24,7 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
         tagId,
         tagName: tagData.tagName,
         value: tagData.value,
+        hidden: tagData.hidden || false,
     }));
 
     const filteredRows = rows.filter(
@@ -31,18 +33,18 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
             row.tagName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (Array.isArray(row.value)
                 ? row.value.some(
-                      (nestedRow: any) =>
-                          nestedRow.tagId
-                              .toLowerCase()
-                              .includes(searchTerm.toLowerCase()) ||
-                          nestedRow.tagName
-                              .toLowerCase()
-                              .includes(searchTerm.toLowerCase())
-                  )
+                    (nestedRow: any) =>
+                        nestedRow.tagId
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase()) ||
+                        nestedRow.tagName
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                )
                 : row.value
-                      .toString()
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase()))
+                    .toString()
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()))
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
@@ -51,6 +53,10 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
             [tagId]: newValue,
         }));
     };
+
+    const toggleHiddenTags = () => {
+        setShowHidden(!showHidden);
+    }
 
     // placeholder for updating the file
     const updateFile = () => {
@@ -73,6 +79,13 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                         onClick={updateFile}
                     />
                 </div>
+                <div className="ml-4">
+                    <GenButton
+                        label={showHidden ? "Hide Hidden Tags" : "Show Hidden Tags"}
+                        disabled={false}
+                        onClick={toggleHiddenTags}
+                    />
+                </div>
             </div>
             <table className="mt-4 min-w-full table-auto border-collapse">
                 <thead>
@@ -91,13 +104,14 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                 <tbody>
                     {filteredRows.length > 0 ? (
                         filteredRows.map((row, index) => (
-                            <DicomTableRow
-                                key={index + row.tagId}
-                                row={row}
-                                index={index}
-                                onUpdateValue={handleUpdateValue}
-                            />
-                        ))
+                            row.hidden && !showHidden ? null : (
+                                <DicomTableRow
+                                    key={index + row.tagId}
+                                    row={row}
+                                    index={index}
+                                    onUpdateValue={handleUpdateValue}
+                                />
+                            )))
                     ) : (
                         <tr>
                             <td

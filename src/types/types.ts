@@ -7,6 +7,7 @@
 export interface DicomTag {
     tagName: string;
     value: string | DicomTag[];
+    hidden?: boolean;
 }
 
 /**
