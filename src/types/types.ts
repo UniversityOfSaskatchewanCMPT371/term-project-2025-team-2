@@ -59,3 +59,14 @@ export interface AppState {
     dicomData: any[];
     currentFileIndex: number;
 }
+
+/**
+ * interface HelpIconProps
+ * @param onClick - Function to handle help icon click
+ * @param icon - Icon to render
+ * @returns rendered Icon Button component
+ */
+export interface IconButtonProps {
+    onClick: () => void;
+    icon: string;
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Search from "../utils/Search";
 import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/types.ts";
-import { GenButton } from "../Navigation/Button.tsx";
+import { GenButton } from "../utils/GenButton.tsx";
 import log from "../utils/Logger";
 
 /**

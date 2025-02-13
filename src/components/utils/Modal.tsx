@@ -1,5 +1,5 @@
 import React from "react";
-import { GenButton } from "../Navigation/Button.tsx";
+import { GenButton } from "./GenButton.tsx";
 
 /**
  * interface ModalProps
