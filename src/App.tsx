@@ -35,7 +35,7 @@ const App: React.FC = () => {
     };
 
     const sidebarRef = useRef<HTMLDivElement>(null);
-    const sidebarButtonRef = useRef<HTMLButtonElement>(null);
+    const sidebarButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const handleToggle = (e: any) => {
         if (e.target.checked) {

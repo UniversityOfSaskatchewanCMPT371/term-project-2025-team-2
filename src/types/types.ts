@@ -181,7 +181,7 @@ export interface TopbarProps {
     toggleSidebar: () => void;
     sidebarVisible: boolean;
     toggleTheme: (e: any) => void;
-    sidebarButtonRef: React.RefObject<HTMLButtonElement>;
+    sidebarButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 /**
