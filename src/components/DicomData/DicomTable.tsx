@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import Search from "../utils/Search";
 import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/types.ts";
-import { GenButton } from "../Navigation/Button.tsx";
+import { GenButton } from "../utils/GenButton.tsx";
 import log from "../utils/Logger";
 
 /**
  *
- * @param dicomData - DICOM data, extracted from a DICOM file
+ * @param DicomTableProps - props for DicomTable component
  * @returns rendered DicomTable component
  */
-const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
+const DicomTable: React.FC<DicomTableProps> = ({
+    dicomData,
+    fileName,
+    updateTableData,
+    newTableData,
+}) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [values, setValues] = useState<{ [key: string]: string }>({});
+    const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
         log.error("No DICOM data available");
@@ -22,7 +27,16 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     const rows = Object.entries(dicomData).map(([tagId, tagData]) => ({
         tagId,
         tagName: tagData.tagName,
-        value: tagData.value,
+        value:
+            newTableData.find(
+                (row: any) => row.fileName === fileName && row.tagId === tagId
+            )?.newValue || tagData.value,
+        hidden: tagData.hidden || false,
+        updated: newTableData.find(
+            (row: any) => row.fileName === fileName && row.tagId === tagId
+        )?.newValue
+            ? true
+            : false,
     }));
 
     const filteredRows = rows.filter(
@@ -46,20 +60,25 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
-        setValues((prevValues) => ({
-            ...prevValues,
-            [tagId]: newValue,
-        }));
+        updateTableData({
+            fileName: fileName,
+            tagId: tagId,
+            newValue: newValue,
+        });
+    };
+
+    const toggleHiddenTags = () => {
+        setShowHidden(!showHidden);
     };
 
     // placeholder for updating the file
     const updateFile = () => {
         console.log(dicomData);
-        console.log(values);
+        console.log(newTableData);
     };
 
     return (
-        <div className="mt-8">
+        <div key={fileName} className="mt-8">
             <h2 className="text-2xl font-semibold">DICOM Tags</h2>
             <div className="flex-col-2 flex">
                 <Search
@@ -73,31 +92,46 @@ const DicomTable: React.FC<DicomTableProps> = ({ dicomData }) => {
                         onClick={updateFile}
                     />
                 </div>
+                <div className="ml-4">
+                    <GenButton
+                        label={
+                            showHidden ? "Hide Hidden Tags" : "Show Hidden Tags"
+                        }
+                        disabled={false}
+                        onClick={toggleHiddenTags}
+                    />
+                </div>
             </div>
-            <table className="mt-4 min-w-full table-auto border-collapse">
+            <table
+                className="mt-4 min-w-full table-auto border-collapse"
+                style={{ tableLayout: "fixed", width: "100%" }}
+            >
                 <thead>
                     <tr className="text-wrap bg-primary">
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                        <th className="w-1/7 border px-4 py-2 text-primary-content">
                             Tag
                         </th>
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                        <th className="w-1/4 border px-4 py-2 text-primary-content">
                             Tag Name
                         </th>
-                        <th className="text-wrap border px-4 py-2 text-primary-content">
+                        <th className="w-7/12 border px-4 py-2 text-primary-content">
                             Value
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredRows.length > 0 ? (
-                        filteredRows.map((row, index) => (
-                            <DicomTableRow
-                                key={index + row.tagId}
-                                row={row}
-                                index={index}
-                                onUpdateValue={handleUpdateValue}
-                            />
-                        ))
+                        filteredRows.map((row, index) =>
+                            row.hidden && !showHidden ? null : (
+                                <DicomTableRow
+                                    key={index + row.tagId}
+                                    row={row}
+                                    index={index}
+                                    onUpdateValue={handleUpdateValue}
+                                    updated={row.updated}
+                                />
+                            )
+                        )
                     ) : (
                         <tr>
                             <td

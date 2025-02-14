@@ -1,15 +1,6 @@
 import React from "react";
-import { GenButton } from "./Button";
-
-/**
- * interface FileNavigationProps
- */
-interface FileNavigationProps {
-    currentFileIndex: number;
-    fileCount: number;
-    onPrevFile: () => void;
-    onNextFile: () => void;
-}
+import { GenButton } from "../utils/GenButton";
+import { FileNavigationProps } from "../../types/types";
 
 /**
  *

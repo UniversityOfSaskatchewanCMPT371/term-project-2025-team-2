@@ -1,18 +1,6 @@
 import React, { useState } from "react";
-
-/**
- * interface DicomTableRowProps
- */
-export interface DicomTableRowProps {
-    row: {
-        tagId: string;
-        tagName: string;
-        value: string | any[];
-    };
-    index: number;
-    onUpdateValue: (tagId: string, newValue: string) => void;
-    nested?: boolean;
-}
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { DicomTableRowProps } from "../../types/types";
 
 /**
  * handleClick function
@@ -25,8 +13,8 @@ const handleClick = (
 };
 
 /**
- *
- * @param row - DICOM tag row, containing tag ID, tag name, and value
+ * DicomTableRow component
+ * @param DicomTableRowProps - row, index, onUpdateValue, nested, updated
  * @returns rendered DicomTableRow component
  */
 export const DicomTableRow: React.FC<DicomTableRowProps> = ({
@@ -34,13 +22,16 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     index,
     onUpdateValue,
     nested,
+    updated,
 }) => {
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [edited, setEdited] = useState<boolean>(updated || false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
+        setEdited(true);
     };
 
     const handleBlur = () => {
@@ -50,6 +41,10 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
+    };
+
+    const toggleEditing = () => {
+        setIsEditing(!isEditing);
     };
 
     return (
@@ -81,28 +76,19 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         onBlur={handleBlur}
                                         className="rounded border p-1"
                                     />
+                                ) : edited ? (
+                                    <span className="font-semibold text-red-600">
+                                        {newValue}
+                                    </span>
                                 ) : (
                                     <span>{newValue}</span>
                                 )}
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => handleClick(setIsEditing)}
+                                onClick={() => handleClick(toggleEditing)}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="size-6"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                                    />
-                                </svg>
+                                <PencilSquareIcon className="h-6 w-6" />
                             </div>
                         </div>
                     ) : (

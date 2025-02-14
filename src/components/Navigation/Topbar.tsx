@@ -1,50 +1,38 @@
 import React from "react";
-import { ThemeSelector } from "./ThemeSelector"; // Import the ThemeSelector component
-
-/**
- * interface TopbarProps
- * @param toggleSidebar - Function to toggle sidebar visibility
- * @param sidebarVisible - Boolean to determine if sidebar is visible
- * @param toggleTheme - Function to toggle theme
- */
-interface TopbarProps {
-    toggleSidebar: () => void;
-    sidebarVisible: boolean;
-    toggleTheme: (e: any) => void;
-}
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import { ThemeSelector } from "./ThemeSelector";
+import { TopbarProps } from "../../types/types";
 
 /**
  *
  * @param toggleSidebar - Function to toggle sidebar visibility
  * @param toggleTheme - Function to toggle theme
+ * @param sidebarButtonRef - Ref for the sidebar button
  * @returns rendered Topbar component
  */
-const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, toggleTheme }) => {
+const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, sidebarVisible, toggleTheme, sidebarButtonRef }) => {
     return (
-        <div className="relative z-10 flex items-center justify-between bg-primary p-4 text-white">
-            <ThemeSelector toggleTheme={toggleTheme} />
-
-            <h1 className="text-2xl">DICOM Tag Editor</h1>
-
-            <button
-                onClick={toggleSidebar}
-                className={`text-3xl text-white transition-all duration-500 hover:text-secondary`}
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-8"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                    />
-                </svg>
-            </button>
+        <div className="sticky top-0 z-20 w-full backdrop-blur-sm bg-base-100/80 shadow-md">
+            <div className="relative flex items-center justify-between px-6 py-4">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    DICOM Tag Editor
+                </h1>
+                
+                <div className="flex items-center gap-4">
+                    <ThemeSelector toggleTheme={toggleTheme} />
+                    <button
+                        ref={sidebarButtonRef}
+                        onClick={toggleSidebar}
+                        className="p-1"
+                    >
+                        <Bars3Icon
+                            className={`size-8 cursor-pointer transition-all duration-300 hover:text-primary ${
+                                sidebarVisible ? 'rotate-180' : ''
+                            }`}
+                        />
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,19 +1,6 @@
 import React from "react";
-import { GenButton } from "../Navigation/Button.tsx";
-
-/**
- * interface ModalProps
- * @param isOpen - Boolean to determine if modal is open
- * @param onClose - Function to handle modal close
- * @param title - Modal title
- * @param text - Modal text
- */
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title: string;
-    text: string;
-}
+import { GenButton } from "./GenButton.tsx";
+import { ModalProps } from "../../types/types.ts";
 
 /**
  *

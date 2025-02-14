@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
 import Modal from "../utils/Modal.tsx";
-
-/**
- * interface FileUploaderProps
- */
-interface FileUploaderProps {
-    onFileUpload: (files: File[], dicomData: any[]) => void;
-}
+import { FileUploaderProps } from "../../types/types.ts";
 
 /**
  *
@@ -29,7 +23,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
-            console.log(files);
+            console.log(files); // here just to use the files variable
             const fileArray = Array.from(selectedFiles);
             setFiles(fileArray);
             processFiles(fileArray);
@@ -92,7 +86,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
 
                 <button
                     onClick={(e) => e.preventDefault()}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded border-0 bg-secondary px-5 py-2 text-base-content hover:bg-accent"
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary bg-primary text-white px-7 py-3 text-lg transition duration-300 ease-in-out hover:bg-secondary hover:scale-110 disabled:bg-gray-400"
+
                 >
                     Select Files
                 </button>
