@@ -68,6 +68,7 @@ export interface SidebarProps {
     currentFileIndex: number;
     series: boolean;
     seriesToggle: () => void;
+    isVisible: boolean;
 }
 
 /**

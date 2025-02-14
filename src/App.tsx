@@ -143,15 +143,14 @@ const App: React.FC = () => {
                 ) : null}
 
                 {sidebarVisible && (
-                    <div ref={sidebarRef}>
-                        <Sidebar
-                            files={files}
-                            onFileSelect={handleFileSelect}
-                            currentFileIndex={currentFileIndex}
-                            series={series}
-                            seriesToggle={() => setSeries(!series)}
-                        />
-                    </div>
+                    <Sidebar
+                        files={files}
+                        onFileSelect={handleFileSelect}
+                        currentFileIndex={currentFileIndex}
+                        series={series}
+                        seriesToggle={() => setSeries(!series)}
+                        isVisible={sidebarVisible}
+                    />
                 )}
             </div>
             <Footer />

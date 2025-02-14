@@ -18,13 +18,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     currentFileIndex,
     series,
     seriesToggle,
+    isVisible,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     return (
-        <div className="z-1 fixed right-0 top-0 h-full w-64 overflow-y-auto bg-secondary p-6 py-20 text-secondary-content">
+        <div className={`z-1 fixed right-0 top-0 h-full w-64 overflow-y-auto bg-secondary p-6 py-20 text-secondary-content transform transition-transform duration-300 ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}>
             <h3 className="mb-2 mt-2 text-xl font-semibold">Sidebar</h3>
 
             <QuestionMarkCircleIcon
