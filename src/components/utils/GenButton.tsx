@@ -17,7 +17,7 @@ export const GenButton: React.FC<GenButtonProps> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className="rounded bg-secondary px-4 py-2 text-base-content hover:bg-accent disabled:bg-base-300"
+            className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
         >
             {label}
         </button>

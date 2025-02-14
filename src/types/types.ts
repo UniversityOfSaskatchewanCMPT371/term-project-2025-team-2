@@ -175,11 +175,13 @@ export interface GenButtonProps {
  * @param toggleSidebar - Function to toggle sidebar visibility
  * @param sidebarVisible - Boolean to determine if sidebar is visible
  * @param toggleTheme - Function to toggle theme
+ * @param sidebarButtonRef - Ref for the sidebar toggle button
  */
 export interface TopbarProps {
     toggleSidebar: () => void;
     sidebarVisible: boolean;
     toggleTheme: (e: any) => void;
+    sidebarButtonRef: React.RefObject<HTMLButtonElement>;
 }
 
 /**
