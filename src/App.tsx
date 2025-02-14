@@ -34,7 +34,8 @@ const App: React.FC = () => {
         setNewTableData((prevData) => [...prevData, newData]);
     };
 
-    const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
+    const sidebarButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const handleToggle = (e: any) => {
         if (e.target.checked) {
@@ -58,16 +59,17 @@ const App: React.FC = () => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 sidebarRef.current &&
-                !sidebarRef.current.contains(event.target as Node)
+                !sidebarRef.current.contains(event.target as Node) &&
+                sidebarButtonRef.current &&
+                !sidebarButtonRef.current.contains(event.target as Node)
             ) {
                 setSidebarVisible(false);
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
-
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -104,6 +106,7 @@ const App: React.FC = () => {
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
                 toggleTheme={handleToggle}
+                sidebarButtonRef={sidebarButtonRef}
             />
 
             <div className="flex flex-1">
@@ -150,6 +153,7 @@ const App: React.FC = () => {
                             currentFileIndex={currentFileIndex}
                             series={series}
                             seriesToggle={() => setSeries(!series)}
+                            isVisible={sidebarVisible}
                         />
                     </div>
                 )}

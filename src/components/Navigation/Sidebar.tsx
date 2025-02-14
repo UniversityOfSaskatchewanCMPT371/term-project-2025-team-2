@@ -18,41 +18,49 @@ const Sidebar: React.FC<SidebarProps> = ({
     currentFileIndex,
     series,
     seriesToggle,
+    isVisible,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     return (
-        <div className="z-1 fixed right-0 top-0 h-full w-64 overflow-y-auto bg-secondary p-6 py-20 text-secondary-content">
-            <h3 className="mb-2 mt-2 text-xl font-semibold">Sidebar</h3>
-
-            <QuestionMarkCircleIcon
-                className="absolute left-3/4 top-7 mt-14 size-8 -translate-x-1/2 transform cursor-pointer hover:text-accent"
-                onClick={() => setIsModalOpen(true)}
-            />
-
-            <NavigationLinks />
-
-            {files.length <= 1 ? (
-                ""
-            ) : (
-                <div className="mt-6">
-                    <div
-                        onClick={seriesToggle}
-                        className="mb-2 cursor-pointer text-secondary-content hover:text-accent hover:outline"
-                    >
-                        {series ? "Editing as seires" : "Editing individually"}
-                    </div>
+        <div
+            className={`fixed right-0 top-0 h-full w-72 overflow-y-auto bg-base-200/95 backdrop-blur-sm shadow-lg transform transition-all duration-300 ease-in-out ${
+                isVisible ? 'translate-x-0' : 'translate-x-full'
+            }`}
+        >
+            <div className="flex flex-col p-6 pt-20">
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-primary">Files</h3>
+                    <QuestionMarkCircleIcon
+                        className="size-6 cursor-pointer text-base-content/70 hover:text-primary transition-colors"
+                        onClick={toggleModal}
+                    />
                 </div>
-            )}
 
-            <FileTable
-                files={files}
-                currentFileIndex={currentFileIndex}
-                onFileSelect={onFileSelect}
-                series={series}
-            />
+                <NavigationLinks />
+
+                {files.length > 1 && (
+                    <div className="mt-4 p-3 rounded-lg bg-base-300/50 backdrop-blur-sm">
+                        <button
+                            onClick={seriesToggle}
+                            className="w-full text-sm font-medium px-3 py-2 rounded-md transition-all hover:bg-primary/10 hover:text-primary"
+                        >
+                            {series ? "✨ Editing as Series" : "🔄 Edit Individually"}
+                        </button>
+                    </div>
+                )}
+
+                <div className="mt-6">
+                    <FileTable
+                        files={files}
+                        currentFileIndex={currentFileIndex}
+                        onFileSelect={onFileSelect}
+                        series={series}
+                    />
+                </div>
+            </div>
 
             <Modal
                 isOpen={isModalOpen}
