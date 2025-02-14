@@ -6,6 +6,7 @@ export default {
       tsconfig: "<rootDir>/tsconfig.app.json",
     }],
   },
+  setupFilesAfterEnv:["<rootDir>/jest.setup.ts"],
   //ignore playwright tests
   testPathIgnorePatterns: [
     '/node_modules/',

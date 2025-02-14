@@ -3,8 +3,12 @@ import Sidebar from "../../src/components/Navigation/Sidebar"
 import { SidebarProps } from "../../src/types/types";
 
 // Mock components
-jest.mock("../../src/components/Navigation/NavigationLinks.tsx", () => () => <div data-testid="nav-links">Navigation Links</div>);
-jest.mock("../../src/components/FileHandling/FileTable.tsx", () => () => <div data-testid="file-table">File Table</div>);
+jest.mock("../../src/components/Navigation/NavigationLinks.tsx", () => ({
+    NavigationLinks:()=><div data-testid="nav-links">Navigation Links</div>
+}));
+jest.mock("../../src/components/FileHandling/FileTable.tsx", () => (props:{onFileSelect:() => void}) => (
+    <div data-testid="file-table" onClick={props.onFileSelect}>File Table</div>
+));
 jest.mock("../../src/components/utils/HelpIcon.tsx", () => (props: { onClick: () => void }) => (
   <button data-testid="help-icon" onClick={props.onClick}>?</button>
 ));
