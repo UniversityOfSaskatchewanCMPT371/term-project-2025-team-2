@@ -9,6 +9,7 @@
 
         /* Bundler mode */
         "moduleResolution": "bundler",
+        "esModuleInterop": true,
         "allowImportingTsExtensions": true,
         "isolatedModules": true,
         "moduleDetection": "force",
@@ -20,7 +21,10 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true
+        "noUncheckedSideEffectImports": true,
+
+        /* types */
+        "types": ["jest", "node", "@testing-library/jest-dom"]
     },
     "include": ["src", "types"]
 }
