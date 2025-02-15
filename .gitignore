@@ -47,3 +47,7 @@ dist-ssr
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# PWA development files
+dev-dist/
+*.map
