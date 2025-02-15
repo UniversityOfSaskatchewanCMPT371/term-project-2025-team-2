@@ -17,25 +17,25 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
         description: "A Progressive Web App for viewing and editing DICOM files",
         icons: [
             {
-                src: "/android-chrome-192x192.png",
+                src: "./android-chrome-192x192.png",
                 sizes: "192x192",
                 type: "image/png",
                 purpose: "any",
             },
             {
-                src: "/android-chrome-512x512.png",
+                src: "./android-chrome-512x512.png",
                 sizes: "512x512",
                 type: "image/png",
                 purpose: "any",
             },
             {
-                src: "/apple-touch-icon.png",
+                src: "./apple-touch-icon.png",
                 sizes: "180x180",
                 type: "image/png",
                 purpose: "any",
             },
             {
-                src: "/maskable_icon.png",
+                src: "./maskable_icon.png",
                 sizes: "512x512",
                 type: "image/png",
                 purpose: "maskable",
@@ -44,8 +44,8 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
         theme_color: "#171717",
         background_color: "#f0e7db",
         display: "standalone",
-        scope: "/",
-        start_url: "/",
+        scope: "./",
+        start_url: "./index.html",
         orientation: "portrait",
     },
     devOptions: {
@@ -98,6 +98,7 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
 
 // https://vite.dev/config/
 export default defineConfig({
+    base: './', // This is important for GitHub Pages
     plugins: [react(), VitePWA(manifestForPlugIn)],
     server: {
         port: 5173,
