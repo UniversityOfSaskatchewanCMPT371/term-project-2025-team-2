@@ -6,7 +6,18 @@ import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
-    { ignores: ["dist"] },
+    {
+        ignores: [
+            'dist/*',
+            'dev-dist/*',
+            'node_modules/*',
+            '.git/*',
+            '*.config.js',
+            '*.config.ts',
+            'coverage/*',
+            'build/*'
+        ]
+    },
     {
         extends: [
             js.configs.recommended,

@@ -8,9 +8,9 @@ const manifestForPlugIn = {
         "maskable_icon.png",
     ],
     manifest: {
-        name: "React-vite-app",
-        short_name: "react-vite-app",
-        description: "I am a simple vite app",
+        name: "DICOM Viewer",
+        short_name: "DICOM Viewer",
+        description: "A Progressive Web App for viewing DICOM files",
         icons: [
             {
                 src: "/android-chrome-192x192.png",
@@ -43,5 +43,6 @@ const manifestForPlugIn = {
         scope: "/",
         start_url: "/",
         orientation: "portrait",
+        prefer_related_applications: false,
     },
 };

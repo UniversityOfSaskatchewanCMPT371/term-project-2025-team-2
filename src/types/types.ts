@@ -178,12 +178,16 @@ export interface GenButtonProps {
  * @param sidebarVisible - Boolean to determine if sidebar is visible
  * @param toggleTheme - Function to toggle theme
  * @param sidebarButtonRef - Ref for the sidebar toggle button
+ * @param onInstallClick - Function to handle install click
+ * @param showInstallButton - Boolean to determine if install button is shown
  */
 export interface TopbarProps {
     toggleSidebar: () => void;
     sidebarVisible: boolean;
     toggleTheme: (e: any) => void;
     sidebarButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
+    onInstallClick: () => void;
+    showInstallButton: boolean;
 }
 
 /**
