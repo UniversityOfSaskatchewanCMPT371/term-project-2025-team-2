@@ -30,6 +30,8 @@ const App: React.FC = () => {
 
     const [newTableData, setNewTableData] = useState<any[]>([]);
 
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
     const updateTableData = (newData: any) => {
         setNewTableData((prevData) => [...prevData, newData]);
     };
@@ -73,6 +75,56 @@ const App: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const handleBeforeInstallPrompt = (e: Event) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            setDeferredPrompt(e);
+            console.log('PWA: Install prompt captured and ready');
+        };
+
+        // Add the event listener
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+        // Check if running in development mode
+        if (import.meta.env.DEV) {
+            console.log('PWA: Running in development mode');
+        }
+
+        window.addEventListener('appinstalled', () => {
+            // Clear the deferredPrompt so it can be garbage collected
+            setDeferredPrompt(null);
+            console.log('PWA: Application was installed');
+        });
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
+    }, []);
+
+    const handleInstallClick = async () => {
+        if (!deferredPrompt) {
+            console.log('PWA: No installation prompt available');
+            return;
+        }
+
+        try {
+            // Show the install prompt
+            const promptEvent = deferredPrompt as any;
+            promptEvent.prompt();
+            
+            // Wait for the user to respond to the prompt
+            const { outcome } = await promptEvent.userChoice;
+            console.log(`PWA: User response to the install prompt: ${outcome}`);
+            
+            // Clear the prompt regardless of outcome
+            setDeferredPrompt(null);
+        } catch (err) {
+            console.error('PWA: Error during installation:', err);
+        }
+    };
+
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
@@ -107,6 +159,8 @@ const App: React.FC = () => {
                 sidebarVisible={sidebarVisible}
                 toggleTheme={handleToggle}
                 sidebarButtonRef={sidebarButtonRef}
+                onInstallClick={handleInstallClick}
+                showInstallButton={!!deferredPrompt}
             />
 
             <div className="flex flex-1">

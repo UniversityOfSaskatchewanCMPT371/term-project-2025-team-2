@@ -8,9 +8,18 @@ import { TopbarProps } from "../../types/types";
  * @param toggleSidebar - Function to toggle sidebar visibility
  * @param toggleTheme - Function to toggle theme
  * @param sidebarButtonRef - Ref for the sidebar button
+ * @param onInstallClick - Function to handle install click
+ * @param showInstallButton - Boolean to determine if install button is shown
  * @returns rendered Topbar component
  */
-const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, sidebarVisible, toggleTheme, sidebarButtonRef }) => {
+const Topbar: React.FC<TopbarProps> = ({ 
+    toggleSidebar, 
+    sidebarVisible, 
+    toggleTheme, 
+    sidebarButtonRef,
+    onInstallClick,
+    showInstallButton 
+}) => {
     return (
         <div className="sticky top-0 z-20 w-full backdrop-blur-sm bg-base-100/80 shadow-md">
             <div className="relative flex items-center justify-between px-6 py-4">
@@ -19,6 +28,14 @@ const Topbar: React.FC<TopbarProps> = ({ toggleSidebar, sidebarVisible, toggleTh
                 </h1>
                 
                 <div className="flex items-center gap-4">
+                    {showInstallButton && (
+                        <button
+                            onClick={onInstallClick}
+                            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/80 transition-colors"
+                        >
+                            Install App
+                        </button>
+                    )}
                     <ThemeSelector toggleTheme={toggleTheme} />
                     <button
                         ref={sidebarButtonRef}
