@@ -30,6 +30,7 @@ export interface DicomTableProps {
  * @property onUpdateValue - Function to update the value of the row
  * @property nested - Boolean to check if the row is nested
  * @property updated - Boolean to check if the row has been updated
+ * @property level - Nesting level of the row
  */
 export interface DicomTableRowProps {
     row: {
@@ -41,6 +42,7 @@ export interface DicomTableRowProps {
     onUpdateValue: (tagId: string, newValue: string) => void;
     nested?: boolean;
     updated?: boolean;
+    level?: number;
 }
 
 /**

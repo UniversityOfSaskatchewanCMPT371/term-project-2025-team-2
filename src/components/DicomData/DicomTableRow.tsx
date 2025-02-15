@@ -14,7 +14,7 @@ const handleClick = (
 
 /**
  * DicomTableRow component
- * @param DicomTableRowProps - row, index, onUpdateValue, nested, updated
+ * @param DicomTableRowProps - row, index, onUpdateValue, nested, updated, level
  * @returns rendered DicomTableRow component
  */
 export const DicomTableRow: React.FC<DicomTableRowProps> = ({
@@ -23,6 +23,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     onUpdateValue,
     nested,
     updated,
+    level = 0,
 }) => {
     const [newValue, setNewValue] = useState<string>(row.value as string);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -49,17 +50,25 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
     return (
         <>
-            <tr key={index + row.tagId}>
+            <tr key={index + row.tagId} className={'hover:bg-blue-600'}>
                 <td
-                    className={`break-all border px-4 py-2 ${nested ? "bg-blue-400" : ""}`}
+                    className={`break-all border px-4 py-2 ${
+                        nested ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500` : ''
+                    }`}
+                    style={{ paddingLeft: `${nested ? 40 + level * 20 : 16}px` }}
                 >
-                    <span
-                        className="cursor-pointer text-blue-500 hover:text-blue-700"
-                        onClick={toggleExpand}
-                    >
-                        {typeof row.value !== "string" &&
-                            (isExpanded ? "▼" : "▶")}
-                    </span>
+                    {typeof row.value !== "string" && (
+                        <span
+                            className="mr-2 inline-block cursor-pointer text-white hover:text-blue-200 transition-colors"
+                            onClick={toggleExpand}
+                            style={{ width: '20px' }}
+                        >
+                            {isExpanded ? "▼" : "▶"}
+                        </span>
+                    )}
+                    {nested && (
+                        <span className="inline-block w-2 h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mr-2"></span>
+                    )}
                     {row.tagId}
                 </td>
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
@@ -104,6 +113,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                           index={index}
                           onUpdateValue={onUpdateValue}
                           nested
+                          level={(level || 0) + 1}
                       />
                   ))
                 : null}
