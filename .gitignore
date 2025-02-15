@@ -49,5 +49,6 @@ dist-ssr
 /playwright/.cache/
 
 # PWA development files
-dev-dist/
-*.map
+dev-dist/*.map
+dev-dist/*.js
+
