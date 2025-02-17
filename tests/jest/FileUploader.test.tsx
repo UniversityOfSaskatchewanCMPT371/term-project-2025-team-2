@@ -1,12 +1,14 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import FileUploader from "../../src/components/FileHandling/FileUploader";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { jest } from "@jest/globals";
 
-// Mock the `parseDicomFile` function
+// Mock parseDicomFile before importing FileUploader
 jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
-    parseDicomFile: jest.fn(),
+    parseDicomFile: jest.fn(() => Promise.resolve({ mockMetadata: "mocked DICOM data" })),
 }));
+
+import FileUploader from "../../src/components/FileHandling/FileUploader";
+
 
 describe("FileUploader Component Tests", () => {
     let mockOnFileUpload: jest.Mock;
@@ -24,6 +26,20 @@ describe("FileUploader Component Tests", () => {
         ).toBeInTheDocument();
 
         expect(screen.getByRole("button", { name: /select files/i })).toBeInTheDocument();
+    });
+
+     /***** UNIT-INTEGRATION TEST: to handle file selection *****/
+     test("calls onFileUpload when files are selected", async () => {
+        render(<FileUploader onFileUpload={mockOnFileUpload} />);
+
+        const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+        expect(input).not.toBeNull(); // Ensure input exists before interacting
+    
+        // Simulate file selection by input file change
+        const file = new File(["mockDICOM"], "file1.dcm", { type: "application/dicom" });
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => expect(mockOnFileUpload).toHaveBeenCalled());
     });
 
 });
