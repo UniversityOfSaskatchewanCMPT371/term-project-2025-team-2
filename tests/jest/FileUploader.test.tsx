@@ -84,4 +84,29 @@ describe("FileUploader Component Tests", () => {
         await waitFor(() => expect(screen.getByText("File isn't a valid DICOM file.")).toBeInTheDocument());
     });
 
+    /***** UNIT-INTEGRATION TEST: Should process files correctly *****/
+    test("processes DICOM files and calls onFileUpload with parsed metadata", async () => {
+        const dicomMetadata = {
+            Tag: "(0002,0000)",
+            TagDescription: "File Meta Information Group Length",
+            Value: "198"
+        }
+    
+        mockedParseDicomFile.mockResolvedValue(dicomMetadata);
+    
+        render(<FileUploader onFileUpload={mockOnFileUpload} />);
+    
+        const file = new File(["DICOM"], "file1.dcm", { type: "application/dicom" });
+        const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+        expect(input).not.toBeNull(); // Ensure input exists before interacting
+    
+        fireEvent.change(input, { target: { files: [file] } });
+    
+        // Ensure parseDicomFile is called with the file
+        await waitFor(() => expect(parseDicomFile).toHaveBeenCalledWith(file));
+    
+        // Ensure onFileUpload is called with processed DICOM metadata
+        await waitFor(() => expect(mockOnFileUpload).toHaveBeenCalledWith([file], [dicomMetadata]));
+    });
+
 });
