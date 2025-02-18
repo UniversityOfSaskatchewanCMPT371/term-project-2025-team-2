@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { jest } from "@jest/globals";
+import { parseDicomFile } from "../../src/components/DicomData/DicomParserUtils";
+import { act } from "react";
 
 // Mock parseDicomFile before importing FileUploader
 jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
@@ -8,14 +10,14 @@ jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
 }));
 
 import FileUploader from "../../src/components/FileHandling/FileUploader";
-import { act } from "react";
-
 
 describe("FileUploader Component Tests", () => {
     let mockOnFileUpload: jest.Mock;
+    let mockedParseDicomFile: jest.MockedFunction<typeof parseDicomFile>;
 
     beforeEach(() => {
         mockOnFileUpload = jest.fn();
+        mockedParseDicomFile = parseDicomFile as jest.MockedFunction<typeof parseDicomFile>;
     });
 
     //***** UNIT TEST: correctly render UI elements *****/
@@ -66,6 +68,20 @@ describe("FileUploader Component Tests", () => {
 
         await waitFor(() => expect(mockOnFileUpload).toHaveBeenCalled());
     });
-    
+
+     /***** UNIT TEST: display error modal when file is invalid *****/
+     test("displays error modal when parsing fails", async () => {
+        mockedParseDicomFile.mockRejectedValue(new Error("Invalid DICOM"));
+
+        render(<FileUploader onFileUpload={mockOnFileUpload} />);
+
+        const file = new File(["mockDICOM"], "invalid.dcm", { type: "application/dicom" });
+        const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+        expect(input).not.toBeNull(); // Ensure input exists before interacting
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => expect(screen.getByText("File isn't a valid DICOM file.")).toBeInTheDocument());
+    });
 
 });
