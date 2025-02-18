@@ -8,6 +8,7 @@ jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
 }));
 
 import FileUploader from "../../src/components/FileHandling/FileUploader";
+import { act } from "react";
 
 
 describe("FileUploader Component Tests", () => {
@@ -41,5 +42,30 @@ describe("FileUploader Component Tests", () => {
 
         await waitFor(() => expect(mockOnFileUpload).toHaveBeenCalled());
     });
+
+     /***** UNIT-INTEGRATION TEST: to handle drag-and-drop *****/
+     test("calls onFileUpload when a file is dropped", async () => {
+        render(<FileUploader onFileUpload={mockOnFileUpload} />);
+    
+        const dropZone = screen.getByText(/drag and drop/i);
+        const file = new File(["mockDICOM"], "file1.dcm", { type: "application/dicom" });
+    
+        // Create a drop event with proper dataTransfer
+        const dropEvent = new Event("drop", { bubbles: true, cancelable: true });
+        Object.defineProperty(dropEvent, "dataTransfer", {
+            value: {
+                files: [file],
+                types: ["Files"],
+                items: [{ kind: "file", type: file.type, getAsFile: () => file }],
+            },
+        });
+    
+        act(() => {
+            dropZone.dispatchEvent(dropEvent);
+        });
+
+        await waitFor(() => expect(mockOnFileUpload).toHaveBeenCalled());
+    });
+    
 
 });
