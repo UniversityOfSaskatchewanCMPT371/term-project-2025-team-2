@@ -155,9 +155,11 @@ export interface IconButtonProps {
 /**
  * interface ThemeSelectorProps
  * @param toggleTheme - Function to toggle theme
+ * @param currTheme - Current theme
  */
 export interface ThemeSelectorProps {
     toggleTheme: (e: any) => void;
+    currTheme: string;
 }
 
 /**
@@ -180,6 +182,7 @@ export interface GenButtonProps {
  * @param sidebarButtonRef - Ref for the sidebar toggle button
  * @param onInstallClick - Function to handle install click
  * @param showInstallButton - Boolean to determine if install button is shown
+ * @param currTheme - Current theme
  */
 export interface TopbarProps {
     toggleSidebar: () => void;
@@ -188,6 +191,7 @@ export interface TopbarProps {
     sidebarButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
     onInstallClick: () => void;
     showInstallButton: boolean;
+    currTheme: string;
 }
 
 /**

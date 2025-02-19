@@ -161,6 +161,7 @@ const App: React.FC = () => {
                 sidebarButtonRef={sidebarButtonRef}
                 onInstallClick={handleInstallClick}
                 showInstallButton={!!deferredPrompt}
+                currTheme={theme}
             />
 
             <div className="flex flex-1">
