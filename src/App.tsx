@@ -166,6 +166,27 @@ const App: React.FC = () => {
         setSeries(false);
     };
 
+    const toggleSeries = () => {
+        setSeries(!series);
+
+        let toRemove: any = []
+
+        if (series) {
+            newTableData.forEach((entry) => {
+                if (entry.fileName !== files[currentFileIndex].name) {
+                    toRemove.push(entry)
+                }
+            })
+
+            toRemove.forEach((entry: any)=>{
+                const index = newTableData.indexOf(entry);
+                if(index > -1){
+                    newTableData.splice(index, 1)
+                }
+            })
+        }
+    }
+
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
@@ -222,7 +243,7 @@ const App: React.FC = () => {
                             onFileSelect={handleFileSelect}
                             currentFileIndex={currentFileIndex}
                             series={series}
-                            seriesToggle={() => setSeries(!series)}
+                            seriesToggle={toggleSeries}
                             isVisible={sidebarVisible}
                         />
                     </div>
