@@ -48,18 +48,18 @@ const DicomTable: React.FC<DicomTableProps> = ({
             row.tagName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (Array.isArray(row.value)
                 ? row.value.some(
-                    (nestedRow: any) =>
-                        nestedRow.tagId
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase()) ||
-                        nestedRow.tagName
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                )
+                      (nestedRow: any) =>
+                          nestedRow.tagId
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase()) ||
+                          nestedRow.tagName
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase())
+                  )
                 : row.value
-                    .toString()
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()))
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()))
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
@@ -74,13 +74,14 @@ const DicomTable: React.FC<DicomTableProps> = ({
         setShowHidden(!showHidden);
     };
 
-    
     /**
      * update tag values in the DICOM file, and download new file
      */
     const updateFile = () => {
-
-        const updatedDicomData = tagUpdater(dicomData.DicomDataSet, newTableData);
+        const updatedDicomData = tagUpdater(
+            dicomData.DicomDataSet,
+            newTableData
+        );
 
         const blob = new Blob([updatedDicomData], {
             type: "application/dicom",
@@ -89,15 +90,15 @@ const DicomTable: React.FC<DicomTableProps> = ({
         downloadDicomFile(blob, fileName);
 
         clearData();
-
     };
 
     function downloadDicomFile(blobData: any, fileName: string) {
-
-        const newFileName = fileName.includes(".dcm") ? fileName.slice(0, -4) : fileName;
+        const newFileName = fileName.includes(".dcm")
+            ? fileName.slice(0, -4)
+            : fileName;
 
         const url = URL.createObjectURL(blobData);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
         a.download = newFileName + "_edited.dcm";
         a.click();

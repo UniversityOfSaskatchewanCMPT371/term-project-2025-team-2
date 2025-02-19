@@ -86,8 +86,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
 
                 <button
                     onClick={(e) => e.preventDefault()}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary bg-primary text-white px-7 py-3 text-lg transition duration-300 ease-in-out hover:bg-secondary hover:scale-110 disabled:bg-gray-400"
-
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary px-7 py-3 text-lg text-white transition duration-300 ease-in-out hover:scale-110 hover:bg-secondary disabled:bg-gray-400"
                 >
                     Select Files
                 </button>

@@ -14,7 +14,8 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
     manifest: {
         name: "DICOM Tag Editor",
         short_name: "DICOM Editor",
-        description: "A Progressive Web App for viewing and editing DICOM files",
+        description:
+            "A Progressive Web App for viewing and editing DICOM files",
         icons: [
             {
                 src: "./android-chrome-192x192.png",
@@ -50,14 +51,14 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
     },
     devOptions: {
         enabled: true,
-        type: 'module',
-        navigateFallback: 'index.html'
+        type: "module",
+        navigateFallback: "index.html",
     },
-    strategies: 'generateSW',
-    injectRegister: 'auto',
+    strategies: "generateSW",
+    injectRegister: "auto",
     minify: false,
     workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"],
         cleanupOutdatedCaches: true,
         sourcemap: true,
         navigationPreload: true,
@@ -66,42 +67,42 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
         runtimeCaching: [
             {
                 urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-                handler: 'CacheFirst',
+                handler: "CacheFirst",
                 options: {
-                    cacheName: 'google-fonts-cache',
+                    cacheName: "google-fonts-cache",
                     expiration: {
                         maxEntries: 10,
-                        maxAgeSeconds: 60 * 60 * 24 * 365
+                        maxAgeSeconds: 60 * 60 * 24 * 365,
                     },
                     cacheableResponse: {
-                        statuses: [0, 200]
-                    }
-                }
+                        statuses: [0, 200],
+                    },
+                },
             },
             {
                 urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-                handler: 'CacheFirst',
+                handler: "CacheFirst",
                 options: {
-                    cacheName: 'gstatic-fonts-cache',
+                    cacheName: "gstatic-fonts-cache",
                     expiration: {
                         maxEntries: 10,
-                        maxAgeSeconds: 60 * 60 * 24 * 365
+                        maxAgeSeconds: 60 * 60 * 24 * 365,
                     },
                     cacheableResponse: {
-                        statuses: [0, 200]
+                        statuses: [0, 200],
                     },
-                }
-            }
-        ]
-    }
+                },
+            },
+        ],
+    },
 };
 
 // https://vite.dev/config/
 export default defineConfig({
-    base: './', // This is important for GitHub Pages
+    base: "./", // This is important for GitHub Pages
     plugins: [react(), VitePWA(manifestForPlugIn)],
     server: {
         port: 5173,
-        strictPort: true
-    }
+        strictPort: true,
+    },
 });

@@ -1,10 +1,10 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-    testDir: './tests/playwright',
+    testDir: "./tests/playwright",
     timeout: 3000,
-    use:{
+    use: {
         headless: true,
-        browserName:'firefox'
-    }
+        browserName: "firefox",
+    },
 });

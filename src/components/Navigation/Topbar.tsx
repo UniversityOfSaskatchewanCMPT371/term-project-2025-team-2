@@ -12,32 +12,35 @@ import { TopbarProps } from "../../types/types";
  * @param showInstallButton - Boolean to determine if install button is shown
  * @returns rendered Topbar component
  */
-const Topbar: React.FC<TopbarProps> = ({ 
-    toggleSidebar, 
-    sidebarVisible, 
-    toggleTheme, 
+const Topbar: React.FC<TopbarProps> = ({
+    toggleSidebar,
+    sidebarVisible,
+    toggleTheme,
     sidebarButtonRef,
     onInstallClick,
     showInstallButton,
-    currTheme
+    currTheme,
 }) => {
     return (
-        <div className="sticky top-0 z-20 w-full backdrop-blur-sm bg-base-100/80 shadow-md">
+        <div className="sticky top-0 z-20 w-full bg-base-100/80 shadow-md backdrop-blur-sm">
             <div className="relative flex items-center justify-between px-6 py-4">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-2xl font-bold text-transparent">
                     DICOM Tag Editor
                 </h1>
-                
+
                 <div className="flex items-center gap-4">
                     {showInstallButton && (
                         <button
                             onClick={onInstallClick}
-                            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/80 transition-colors"
+                            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/80"
                         >
                             Install App
                         </button>
                     )}
-                    <ThemeSelector toggleTheme={toggleTheme} currTheme={currTheme}/>
+                    <ThemeSelector
+                        toggleTheme={toggleTheme}
+                        currTheme={currTheme}
+                    />
                     <button
                         ref={sidebarButtonRef}
                         onClick={toggleSidebar}
@@ -45,7 +48,7 @@ const Topbar: React.FC<TopbarProps> = ({
                     >
                         <Bars3Icon
                             className={`size-8 cursor-pointer transition-all duration-300 hover:text-primary ${
-                                sidebarVisible ? 'rotate-180' : ''
+                                sidebarVisible ? "rotate-180" : ""
                             }`}
                         />
                     </button>
