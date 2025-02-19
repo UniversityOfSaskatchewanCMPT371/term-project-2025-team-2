@@ -18,7 +18,8 @@ const Topbar: React.FC<TopbarProps> = ({
     toggleTheme, 
     sidebarButtonRef,
     onInstallClick,
-    showInstallButton 
+    showInstallButton,
+    currTheme
 }) => {
     return (
         <div className="sticky top-0 z-20 w-full backdrop-blur-sm bg-base-100/80 shadow-md">
@@ -36,7 +37,7 @@ const Topbar: React.FC<TopbarProps> = ({
                             Install App
                         </button>
                     )}
-                    <ThemeSelector toggleTheme={toggleTheme} />
+                    <ThemeSelector toggleTheme={toggleTheme} currTheme={currTheme}/>
                     <button
                         ref={sidebarButtonRef}
                         onClick={toggleSidebar}

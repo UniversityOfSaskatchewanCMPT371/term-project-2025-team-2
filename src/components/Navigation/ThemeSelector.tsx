@@ -9,12 +9,16 @@ import { ThemeSelectorProps } from "../../types/types";
  */
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     toggleTheme,
+    currTheme
 }) => {
     return (
         <label className="swap swap-rotate transition-all duration-500 hover:text-accent">
             <input type="checkbox" onChange={toggleTheme} />
-            <SunIcon className="swap-off size-6" />
-            <MoonIcon className="swap-on size-6" />
+            {currTheme === "night" ? (
+                <SunIcon className="size-6" />
+            ) : (
+                <MoonIcon className="size-6" />
+            )}
         </label>
     );
 };
