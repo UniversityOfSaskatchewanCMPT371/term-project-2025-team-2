@@ -21,6 +21,7 @@ export interface DicomTableProps {
     fileName: string;
     updateTableData: (data: any) => void;
     newTableData: any[];
+    clearData: () => void;
 }
 
 /**
