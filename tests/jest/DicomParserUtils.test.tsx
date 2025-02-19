@@ -63,6 +63,24 @@ describe("DicomParserUtils", () => {
             .rejects.toEqual("File reading error occurred.");
     
         mockFileReader.mockRestore();
-    });    
+    });
+    
+    /***** UNIT-INTEGRATION TEST: extract hidden DICOM tags *****/
+    test("extracts hidden DICOM tags correctly", async () => {
+        const mockDataset = {
+            elements: {
+                X0025101B: { vr: "UI" }, // Hidden Tag
+                X00100010: { vr: "PN" }, // Not a hidden Tag
+            },
+            string: jest.fn((tag) => (tag === "X00100010" ? "John Doe" : "Hidden Value")),
+        };
+
+        (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
+
+        const result = await parseDicomFile(mockFile);
+
+        expect(result["X0025101B"].hidden).toBe(true);
+        expect(result["X00100010"].value).toBe("John Doe");
+    });
 
 });
