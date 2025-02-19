@@ -9,7 +9,7 @@ import { ThemeSelectorProps } from "../../types/types";
  */
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     toggleTheme,
-    currTheme
+    currTheme,
 }) => {
     return (
         <label className="swap swap-rotate transition-all duration-500 hover:text-accent">

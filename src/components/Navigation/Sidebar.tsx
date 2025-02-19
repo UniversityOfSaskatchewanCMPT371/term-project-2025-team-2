@@ -26,15 +26,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-72 overflow-y-auto bg-base-200/95 backdrop-blur-sm shadow-lg transform transition-all duration-300 ease-in-out ${
-                isVisible ? 'translate-x-0' : 'translate-x-full'
+            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
+                isVisible ? "translate-x-0" : "translate-x-full"
             }`}
         >
             <div className="flex flex-col p-6 pt-20">
-                <div className="flex items-center justify-between mb-6">
+                <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-xl font-bold text-primary">Files</h3>
                     <QuestionMarkCircleIcon
-                        className="size-6 cursor-pointer text-base-content/70 hover:text-primary transition-colors"
+                        className="size-6 cursor-pointer text-base-content/70 transition-colors hover:text-primary"
                         onClick={toggleModal}
                     />
                 </div>
@@ -42,12 +42,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <NavigationLinks />
 
                 {files.length > 1 && (
-                    <div className="mt-4 p-3 rounded-lg bg-base-300/50 backdrop-blur-sm">
+                    <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
                         <button
                             onClick={seriesToggle}
-                            className="w-full text-sm font-medium px-3 py-2 rounded-md transition-all hover:bg-primary/10 hover:text-primary"
+                            className="w-full rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-primary/10 hover:text-primary"
                         >
-                            {series ? "✨ Editing as Series" : "🔄 Edit Individually"}
+                            {series
+                                ? "✨ Editing as Series"
+                                : "🔄 Edit Individually"}
                         </button>
                     </div>
                 )}

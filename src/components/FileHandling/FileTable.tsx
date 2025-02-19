@@ -37,7 +37,7 @@ const FileTable: React.FC<FileTableProps> = ({
                     Uploaded Files ({files.length})
                 </h4>
             </div>
-            
+
             <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
                 <table className="w-full table-auto">
                     <FileTableBody

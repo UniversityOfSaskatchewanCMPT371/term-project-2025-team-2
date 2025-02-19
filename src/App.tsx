@@ -69,9 +69,9 @@ const App: React.FC = () => {
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
@@ -81,31 +81,37 @@ const App: React.FC = () => {
             e.preventDefault();
             // Stash the event so it can be triggered later.
             setDeferredPrompt(e);
-            console.log('PWA: Install prompt captured and ready');
+            console.log("PWA: Install prompt captured and ready");
         };
 
         // Add the event listener
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        window.addEventListener(
+            "beforeinstallprompt",
+            handleBeforeInstallPrompt
+        );
 
         // Check if running in development mode
         if (import.meta.env.DEV) {
-            console.log('PWA: Running in development mode');
+            console.log("PWA: Running in development mode");
         }
 
-        window.addEventListener('appinstalled', () => {
+        window.addEventListener("appinstalled", () => {
             // Clear the deferredPrompt so it can be garbage collected
             setDeferredPrompt(null);
-            console.log('PWA: Application was installed');
+            console.log("PWA: Application was installed");
         });
 
         return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+            window.removeEventListener(
+                "beforeinstallprompt",
+                handleBeforeInstallPrompt
+            );
         };
     }, []);
 
     const handleInstallClick = async () => {
         if (!deferredPrompt) {
-            console.log('PWA: No installation prompt available');
+            console.log("PWA: No installation prompt available");
             return;
         }
 
@@ -113,15 +119,15 @@ const App: React.FC = () => {
             // Show the install prompt
             const promptEvent = deferredPrompt as any;
             promptEvent.prompt();
-            
+
             // Wait for the user to respond to the prompt
             const { outcome } = await promptEvent.userChoice;
             console.log(`PWA: User response to the install prompt: ${outcome}`);
-            
+
             // Clear the prompt regardless of outcome
             setDeferredPrompt(null);
         } catch (err) {
-            console.error('PWA: Error during installation:', err);
+            console.error("PWA: Error during installation:", err);
         }
     };
 
@@ -150,6 +156,14 @@ const App: React.FC = () => {
 
     const handleFileSelect = (index: number) => {
         setCurrentFileIndex(index);
+    };
+
+    const clearData = () => {
+        setFiles([]);
+        setDicomData([]);
+        setCurrentFileIndex(0);
+        setNewTableData([]);
+        setSeries(false);
     };
 
     return (
@@ -188,6 +202,7 @@ const App: React.FC = () => {
                                 fileName={files[currentFileIndex].name}
                                 updateTableData={updateTableData}
                                 newTableData={newTableData}
+                                clearData={clearData}
                             />
                         </div>
                     )}

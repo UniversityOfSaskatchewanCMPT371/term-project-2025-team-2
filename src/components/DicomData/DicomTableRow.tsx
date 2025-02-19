@@ -49,25 +49,29 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     return (
-        <>
-            <tr key={index + row.tagId} className={'hover:bg-blue-600'}>
+        <React.Fragment key={index + row.tagId + row.value}>
+            <tr key={index + row.tagId} className={"hover:bg-blue-600"}>
                 <td
                     className={`break-all border px-4 py-2 ${
-                        nested ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500` : ''
+                        nested
+                            ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
+                            : ""
                     }`}
-                    style={{ paddingLeft: `${nested ? 40 + level * 20 : 16}px` }}
+                    style={{
+                        paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
+                    }}
                 >
                     {typeof row.value !== "string" && (
                         <span
-                            className="mr-2 inline-block cursor-pointer text-white hover:text-blue-200 transition-colors"
+                            className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
                             onClick={toggleExpand}
-                            style={{ width: '20px' }}
+                            style={{ width: "20px" }}
                         >
                             {isExpanded ? "▼" : "▶"}
                         </span>
                     )}
                     {nested && (
-                        <span className="inline-block w-2 h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mr-2"></span>
+                        <span className="mr-2 inline-block h-2 w-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></span>
                     )}
                     {row.tagId}
                 </td>
@@ -106,7 +110,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 </td>
             </tr>
             {typeof row.value !== "string" && isExpanded
-                ? Object.values(row.value).map((nested: any) => (
+                ? Object.values(row.value.tags).map((nested: any) => (
                       <DicomTableRow
                           key={nested.tagId}
                           row={nested}
@@ -117,6 +121,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                       />
                   ))
                 : null}
-        </>
+        </React.Fragment>
     );
 };
