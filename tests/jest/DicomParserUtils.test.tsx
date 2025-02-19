@@ -109,7 +109,7 @@ describe("DicomParserUtils", () => {
         expect(result["X00100010"].value).toBe("John Doe");
     });
 
-    /***** UNIT-INTEGRATION TEST: Should handle nested sequence items *****/
+    /***** UNIT-INTEGRATION TEST: Should extract nested sequence items correctly *****/
     test("extracts nested DICOM sequence (SQ) items", async () => {
         const mockDataset = {
             elements: {
@@ -149,6 +149,31 @@ describe("DicomParserUtils", () => {
         // Ensure sequence (0040A730) extracts nested tag Id's correctly
         expect(result["0040A730"].value["00080100"].tagId).toBe("00080100");
         expect(result["0040A730"].value["00080102"].tagId).toBe("00080102");
+    });
+
+    /***** UNIT-INTEGRATION TEST: extract values from multiple DICOM tags *****/
+    test("extracts values from multiple DICOM tags", async () => {
+        const mockDataset = {
+            elements: {
+                X00100010: { vr: "PN" }, // Patient Name
+                X00100020: { vr: "LO" }, // Patient ID
+                X00100030: { vr: "DA" }, // Patient Birth Date
+            },
+            string: jest.fn((tag) => {
+                if (tag === "X00100010") return "Aladin Alihodzic";
+                if (tag === "X00100020") return "101010";
+                if (tag === "X00100030") return "19960309";
+                return "N/A";
+            }),
+        };
+
+        (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
+
+        const result = await parseDicomFile(mockFile);
+
+        expect(result["X00100010"].value).toBe("Aladin Alihodzic");
+        expect(result["X00100020"].value).toBe("101010");
+        expect(result["X00100030"].value).toBe("19960309");
     });
 
 });
