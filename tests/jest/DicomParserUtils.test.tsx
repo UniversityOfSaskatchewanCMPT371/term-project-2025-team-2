@@ -34,4 +34,14 @@ describe("DicomParserUtils", () => {
         expect(result["X00100010"].value).toBe("John Doe");
     });
 
+     /***** UNIT TEST: Should reject on parsing errors *****/
+     test("rejects if dicomParser throws an error", async () => {
+        (dicomParser.parseDicom as jest.Mock).mockImplementation(() => {
+            throw new Error("Parsing Error");
+        });
+
+        await expect(parseDicomFile(mockFile))
+            .rejects.toEqual("Error parsing DICOM file: Error: Parsing Error");
+    });
+
 });
