@@ -37,7 +37,7 @@ export interface DicomTableRowProps {
     row: {
         tagId: string;
         tagName: string;
-        value: string | any[];
+        value: string | { [tags: string]: DicomTag };
     };
     index: number;
     onUpdateValue: (tagId: string, newValue: string) => void;
