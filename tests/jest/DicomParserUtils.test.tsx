@@ -7,6 +7,19 @@ jest.mock("dicom-parser", () => ({
     parseDicom: jest.fn(),
 }));
 
+// Mock TagDictionary
+jest.mock("../../src/tagDictionary/dictionary", () => ({
+    TagDictionary: class {
+        lookup(tag: string) {
+            return {
+                "0040A730": "Content Sequence",
+                "00080100": "Code Value",
+                "00080102": "Coding Scheme Designator",
+            }[tag] || "Unknown";
+        }
+    }
+}));
+
 describe("DicomParserUtils", () => {
     let mockFile: File;
 
@@ -86,7 +99,7 @@ describe("DicomParserUtils", () => {
         // Check all extracted tags against the hiddenTags list
         Object.keys(mockDataset.elements).forEach((tag) => {
             if (hiddenTags.includes(tag)) {
-                expect(result[tag].hidden).toBe(true); // Hidden tag should be marked hidden
+                expect(result[tag].hidden).toBe(true);
             } else {
                 expect(result[tag].hidden).toBeUndefined();
             }
@@ -96,5 +109,46 @@ describe("DicomParserUtils", () => {
         expect(result["X00100010"].value).toBe("John Doe");
     });
 
+    /***** UNIT-INTEGRATION TEST: Should handle nested sequence items *****/
+    test("extracts nested DICOM sequence (SQ) items", async () => {
+        const mockDataset = {
+            elements: {
+                "0040A730": {  // Content Sequence (SQ)
+                    vr: "SQ",
+                    items: [{
+                        dataSet: {
+                            elements: {
+                                "00080100": { vr: "SH", dataOffset: 0, length: 10 }, // CodeValue
+                                "00080102": { vr: "SH", dataOffset: 10, length: 10 }, // CodingSchemeDesignator
+                            },
+                            string: jest.fn((tag) => {
+                                if (tag === "00080100") return "12345";
+                                if (tag === "00080102") return "LOINC";
+                                return null;
+                            }),
+                        }
+                    }]
+                },
+            },
+            byteArray: new Uint8Array(128), // raw binary data
+            string: jest.fn(() => null),
+        };
+        
+        (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
+
+        const result = await parseDicomFile(mockFile);  // invokes extractDicomTags & mocked TagDictionary
+
+        // Ensure sequence (0040A730) extracts nested values correctly
+        expect(result["0040A730"].value["00080100"].value).toBe("12345");
+        expect(result["0040A730"].value["00080102"].value).toBe("LOINC");
+
+        // Ensure sequence (0040A730) extracts nested tag names correctly
+        expect(result["0040A730"].value["00080100"].tagName).toBe("Code Value");
+        expect(result["0040A730"].value["00080102"].tagName).toBe("Coding Scheme Designator");
+
+        // Ensure sequence (0040A730) extracts nested tag Id's correctly
+        expect(result["0040A730"].value["00080100"].tagId).toBe("00080100");
+        expect(result["0040A730"].value["00080102"].tagId).toBe("00080102");
+    });
 
 });
