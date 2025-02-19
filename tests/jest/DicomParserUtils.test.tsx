@@ -65,22 +65,36 @@ describe("DicomParserUtils", () => {
         mockFileReader.mockRestore();
     });
     
-    /***** UNIT-INTEGRATION TEST: extract hidden DICOM tags *****/
+    /***** UNIT-INTEGRATION TEST: extract hidden DICOM tags correctly *****/
     test("extracts hidden DICOM tags correctly", async () => {
+        const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
+
         const mockDataset = {
             elements: {
-                X0025101B: { vr: "UI" }, // Hidden Tag
-                X00100010: { vr: "PN" }, // Not a hidden Tag
+                X0025101B: { vr: "UI" }, // Hidden Tag (should be hidden)
+                X00431029: { vr: "UI" }, // Hidden Tag (should be hidden)
+                X00100010: { vr: "PN" }, // Visible Tag (should NOT be hidden)
+                X12345678: { vr: "LO" }, // Some random tag (should NOT be hidden)
             },
-            string: jest.fn((tag) => (tag === "X00100010" ? "John Doe" : "Hidden Value")),
+            string: jest.fn((tag) => (tag === "X00100010" ? "John Doe" : "Some Value")),
         };
 
         (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
 
-        const result = await parseDicomFile(mockFile);
+        const result = await parseDicomFile(mockFile); // invokes extractDicomTags
 
-        expect(result["X0025101B"].hidden).toBe(true);
+        // Check all extracted tags against the hiddenTags list
+        Object.keys(mockDataset.elements).forEach((tag) => {
+            if (hiddenTags.includes(tag)) {
+                expect(result[tag].hidden).toBe(true); // Hidden tag should be marked hidden
+            } else {
+                expect(result[tag].hidden).toBeUndefined();
+            }
+        });
+
+        // Ensure normal tags still have correct values
         expect(result["X00100010"].value).toBe("John Doe");
     });
+
 
 });
