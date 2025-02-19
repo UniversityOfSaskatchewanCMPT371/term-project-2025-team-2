@@ -17,6 +17,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
     fileName,
     updateTableData,
     newTableData,
+    clearData,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showHidden, setShowHidden] = useState(false);
@@ -73,10 +74,11 @@ const DicomTable: React.FC<DicomTableProps> = ({
         setShowHidden(!showHidden);
     };
 
-    // placeholder for updating the file
+    
+    /**
+     * update tag values in the DICOM file, and download new file
+     */
     const updateFile = () => {
-        console.log(dicomData);
-        console.log(newTableData);
 
         const updatedDicomData = tagUpdater(dicomData.DicomDataSet, newTableData);
 
@@ -85,6 +87,8 @@ const DicomTable: React.FC<DicomTableProps> = ({
         });
 
         downloadDicomFile(blob, fileName);
+
+        clearData();
 
     };
 

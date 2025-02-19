@@ -152,6 +152,14 @@ const App: React.FC = () => {
         setCurrentFileIndex(index);
     };
 
+    const clearData = () => {
+        setFiles([]);
+        setDicomData([]);
+        setCurrentFileIndex(0);
+        setNewTableData([]);
+        setSeries(false);
+    };
+
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
@@ -188,6 +196,7 @@ const App: React.FC = () => {
                                 fileName={files[currentFileIndex].name}
                                 updateTableData={updateTableData}
                                 newTableData={newTableData}
+                                clearData={clearData}
                             />
                         </div>
                     )}
