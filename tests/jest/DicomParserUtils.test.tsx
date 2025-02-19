@@ -44,4 +44,25 @@ describe("DicomParserUtils", () => {
             .rejects.toEqual("Error parsing DICOM file: Error: Parsing Error");
     });
 
+    /***** UNIT TEST: Should reject on file reading error *****/
+    test("rejects if FileReader encounters an error", async () => {
+        const mockFileReader = jest.spyOn(global, "FileReader").mockImplementation(() => {
+            // Simulates FileReader API calls with error event
+            const fileReaderInstance = {
+                onerror: null as ((event: Event) => void) | null, // Ensure correct typing
+                readAsArrayBuffer: jest.fn(() => {
+                    if (fileReaderInstance.onerror) {
+                        fileReaderInstance.onerror(new Event("error")); // Trigger error event
+                    }
+                }),
+            };
+            return fileReaderInstance as unknown as FileReader;
+        });
+    
+        await expect(parseDicomFile(mockFile))
+            .rejects.toEqual("File reading error occurred.");
+    
+        mockFileReader.mockRestore();
+    });    
+
 });
