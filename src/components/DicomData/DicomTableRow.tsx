@@ -49,7 +49,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     return (
-        <>
+        <React.Fragment key={index + row.tagId + row.value}>
             <tr key={index + row.tagId} className={'hover:bg-blue-600'}>
                 <td
                     className={`break-all border px-4 py-2 ${
@@ -106,7 +106,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 </td>
             </tr>
             {typeof row.value !== "string" && isExpanded
-                ? Object.values(row.value).map((nested: any) => (
+                ? Object.values(row.value.tags).map((nested: any) => (
                       <DicomTableRow
                           key={nested.tagId}
                           row={nested}
@@ -117,6 +117,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                       />
                   ))
                 : null}
-        </>
+        </React.Fragment>
     );
 };
