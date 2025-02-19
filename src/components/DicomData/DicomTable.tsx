@@ -5,6 +5,8 @@ import { DicomTableProps } from "../../types/types.ts";
 import { GenButton } from "../utils/GenButton.tsx";
 import log from "../utils/Logger";
 
+import { tagUpdater } from "./TagUpdater.tsx";
+
 /**
  *
  * @param DicomTableProps - props for DicomTable component
@@ -24,7 +26,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
         return <div>No data available</div>;
     }
 
-    const rows = Object.entries(dicomData).map(([tagId, tagData]) => ({
+    const rows = Object.entries(dicomData.tags).map(([tagId, tagData]) => ({
         tagId,
         tagName: tagData.tagName,
         value:
@@ -45,18 +47,18 @@ const DicomTable: React.FC<DicomTableProps> = ({
             row.tagName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (Array.isArray(row.value)
                 ? row.value.some(
-                      (nestedRow: any) =>
-                          nestedRow.tagId
-                              .toLowerCase()
-                              .includes(searchTerm.toLowerCase()) ||
-                          nestedRow.tagName
-                              .toLowerCase()
-                              .includes(searchTerm.toLowerCase())
-                  )
+                    (nestedRow: any) =>
+                        nestedRow.tagId
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase()) ||
+                        nestedRow.tagName
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                )
                 : row.value
-                      .toString()
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase()))
+                    .toString()
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()))
     );
 
     const handleUpdateValue = (tagId: string, newValue: string) => {
@@ -75,7 +77,28 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const updateFile = () => {
         console.log(dicomData);
         console.log(newTableData);
+
+        const updatedDicomData = tagUpdater(dicomData.DicomDataSet, newTableData);
+
+        const blob = new Blob([updatedDicomData], {
+            type: "application/dicom",
+        });
+
+        downloadDicomFile(blob, fileName);
+
     };
+
+    function downloadDicomFile(blobData: any, fileName: string) {
+
+        const newFileName = fileName.includes(".dcm") ? fileName.slice(0, -4) : fileName;
+
+        const url = URL.createObjectURL(blobData);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = newFileName + "_edited.dcm";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
     return (
         <div key={fileName} className="mt-8">

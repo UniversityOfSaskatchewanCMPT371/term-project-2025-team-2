@@ -89,5 +89,7 @@ const extractDicomTags = (dataSet: any) => {
         }
     });
 
-    return dicomTags;
+
+
+    return {"tags": dicomTags, "DicomDataSet": dataSet};
 };
