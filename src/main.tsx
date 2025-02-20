@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import ErrorBoundary from "./components/ErrorHandling/ErrorBoundary.tsx";
 import { registerSW } from "virtual:pwa-register";
+import logger from "./components/utils/Logger.tsx"
 
 // Register service worker with auto-update
 const updateSW = registerSW({
@@ -15,13 +16,13 @@ const updateSW = registerSW({
         }
     },
     onOfflineReady() {
-        console.log("App ready to work offline");
+        logger.debug("App ready to work offline");
     },
     onRegistered() {
-        console.log("Service Worker has been registered");
+        logger.debug("Service Worker has been registered");
     },
     onRegisterError(error: any) {
-        console.error("Service Worker registration failed:", error);
+        logger.debug("Service Worker registration failed:", error);
     },
 });
 

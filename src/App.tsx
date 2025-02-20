@@ -7,7 +7,6 @@ import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
-import log from "./components/utils/Logger";
 import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
@@ -97,7 +96,7 @@ const App: React.FC = () => {
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
-            logger.info("PWA: Install prompt captured and ready");
+            logger.debug("PWA: Install prompt captured and ready");
         };
 
         window.addEventListener(
@@ -106,12 +105,12 @@ const App: React.FC = () => {
         );
 
         if (import.meta.env.DEV) {
-            logger.info("PWA: Running in development mode");
+            logger.debug("PWA: Running in development mode");
         }
 
         window.addEventListener("appinstalled", () => {
             setDeferredPrompt(null);
-            logger.info("PWA: Application was installed");
+            logger.debug("PWA: Application was installed");
         });
 
         return () => {
@@ -150,7 +149,7 @@ const App: React.FC = () => {
         setCurrentFileIndex(0);
         setNewTableData([]);
 
-        log.info("file-loaded");
+        logger.debug("file-loaded");
         setLoading(false);
 
         if (newFiles.length > 1) {
@@ -283,7 +282,7 @@ const App: React.FC = () => {
                         setIsOpen={setShowSeiresModal}
                         title={"Edit Files"}
                         text={
-                            "Multiple files have been uploaded. Do you want to edit individually?"
+                            "Multiple files have been uploaded. Do you want to edit as a series?"
                         }
                     />
                 ) : null}

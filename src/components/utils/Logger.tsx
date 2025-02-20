@@ -14,7 +14,8 @@ const logMsgFormat = (log: any) => ({
     timestamp: new Date().toISOString(),
 });
 
-log.enableAll();
+// log.enableAll(); // this puts all messages to console, off only warn or higher gets printed
+log.setLevel("warn")
 
 /**
  *
