@@ -34,7 +34,7 @@ describe("DicomParserUtils", () => {
     test("calls dicomParser.parseDicom when file is valid", async () => {
         const mockDataset = {
             elements: {
-                X00100010: { vr: "PN" }, // Patient Name
+                "00100010": { vr: "PN" }, // Patient Name
             },
             string: jest.fn(() => "John Doe"),
         };
@@ -81,8 +81,8 @@ describe("DicomParserUtils", () => {
     test("extracts hidden DICOM tags correctly", async () => {
         const mockDataset = {
             elements: {
-                X0025101B: { vr: "UI" }, // Hidden Tag (should be hidden)
-                X00431029: { vr: "UI" }, // Hidden Tag (should be hidden)
+                "X0025101B": { vr: "UI" }, // Hidden Tag (should be hidden)
+                "X00431029": { vr: "UI" }, // Hidden Tag (should be hidden)
             },
             string: jest.fn((tag) => (tag === "00100010" ? "John Doe" : "Some Value")),
         };
@@ -91,8 +91,14 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile); // invokes extractDicomTags
 
+        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract hidden DICOM tags correctly *****");
+        console.log("result ");
+        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+
         // Check extracted tags
         Object.keys(mockDataset.elements).forEach((tag) => {
+            console.log("result[tag]");
+            console.log(JSON.stringify(result[tag], null, 2)); // Pretty-print JSON in CI logs
             expect(result[tag]).toEqual({
                 tagId: tag,
                 tagName: "Unknown",
@@ -131,6 +137,14 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile);  // invokes extractDicomTags & mocked TagDictionary
 
+        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: Should extract nested sequence items correctly *****");
+        console.log("result ");
+        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+        console.log("result[\"0040A730\"]");
+        console.log(JSON.stringify(result["0040A730"], null, 2)); // Pretty-print JSON in CI logs
+        console.log("result[\"0040A730\"].value[\"00080100\"]");
+        console.log(JSON.stringify(result["0040A730"].value["00080100"], null, 2)); // Pretty-print JSON in CI logs
+
         // Ensure nested sequence extraction works
         expect(result["0040A730"].value["00080100"]).toEqual({
             tagId: "00080100",
@@ -149,14 +163,14 @@ describe("DicomParserUtils", () => {
     test("extracts values from multiple DICOM tags", async () => {
         const mockDataset = {
             elements: {
-                X00100010: { vr: "PN" }, // Patient Name
-                X00100020: { vr: "LO" }, // Patient ID
-                X00100030: { vr: "DA" }, // Patient Birth Date
+                "00100010": { vr: "PN" }, // Patient Name
+                "00100020": { vr: "LO" }, // Patient ID
+                "00100030": { vr: "DA" }, // Patient Birth Date
             },
             string: jest.fn((tag) => {
-                if (tag === "X00100010") return "Aladin Alihodzic";
-                if (tag === "X00100020") return "101010";
-                if (tag === "X00100030") return "19960309";
+                if (tag === "00100010") return "Aladin Alihodzic";
+                if (tag === "00100020") return "101010";
+                if (tag === "00100030") return "19960309";
                 return "N/A";
             }),
         };
@@ -165,9 +179,15 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile);
 
-        expect(result["X00100010"].value).toBe("Aladin Alihodzic");
-        expect(result["X00100020"].value).toBe("101010");
-        expect(result["X00100030"].value).toBe("19960309");
+        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract values from multiple DICOM tags *****");
+        console.log("result ");
+        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+        console.log("result[\"00100010\"]");
+        console.log(JSON.stringify(result["00100010"], null, 2)); // Pretty-print JSON in CI logs
+
+        expect(result["00100010"].value).toBe("Aladin Alihodzic");
+        expect(result["00100020"].value).toBe("101010");
+        expect(result["00100030"].value).toBe("19960309");
     });
 
 });
