@@ -54,7 +54,7 @@ const FileTable: React.FC<FileTableProps> = ({
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title="Cannot Select File"
-                text="When editing as a series, only one file can be edited at a time."
+                text="When editing individually, only one file can be edited at a time."
             />
         </div>
     );

@@ -74,7 +74,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 isOpen={isModalOpen}
                 onClose={toggleModal}
                 title="Help"
-                text="Select a file to view and edit its DICOM tags. If multiple files are uploaded, you can choose to edit them individually or as a series."
+
+                text="Here, you can view all your uploaded DICOM files. Switch between editing them as a series or individually, and save all edited files at once."
             />
         </div>
     );

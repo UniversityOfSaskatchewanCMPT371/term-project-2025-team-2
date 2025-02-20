@@ -261,7 +261,7 @@ const App: React.FC = () => {
                         setIsOpen={setShowSeiresModal}
                         title={"Edit Files"}
                         text={
-                            "Multiple files have been uploaded. Do you want to edit them as a series?"
+                            "Multiple files have been uploaded. Do you want to edit individually?"
                         }
                     />
                 ) : null}
