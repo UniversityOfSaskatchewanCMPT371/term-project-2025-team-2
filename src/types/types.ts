@@ -72,6 +72,7 @@ export interface SidebarProps {
     series: boolean;
     seriesToggle: () => void;
     isVisible: boolean;
+    updateAllFiles: () => void;
 }
 
 /**

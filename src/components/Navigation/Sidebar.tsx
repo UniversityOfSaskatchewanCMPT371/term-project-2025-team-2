@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { NavigationLinks } from "./NavigationLinks.tsx";
 import { SidebarProps } from "../../types/types.ts";
 import FileTable from "../FileHandling/FileTable.tsx";
 import Modal from "../utils/Modal.tsx";
+import { GenButton } from "../utils/GenButton.tsx";
 
 /**
  *
@@ -19,6 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     series,
     seriesToggle,
     isVisible,
+    updateAllFiles,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,11 +27,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
-                isVisible ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"
+                }`}
         >
-            <div className="flex flex-col p-6 pt-20">
+            <div className="flex flex-col p-6 mt-4 pt-20">
                 <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-xl font-bold text-primary">Files</h3>
                     <QuestionMarkCircleIcon
@@ -39,22 +39,27 @@ const Sidebar: React.FC<SidebarProps> = ({
                     />
                 </div>
 
-                <NavigationLinks />
-
                 {files.length > 1 && (
-                    <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
-                        <button
-                            onClick={seriesToggle}
-                            className="w-full rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-primary/10 hover:text-primary"
-                        >
-                            {series
-                                ? "✨ Editing as Series"
-                                : "🔄 Edit Individually"}
-                        </button>
-                    </div>
+                    <>
+                        <GenButton
+                            label="Save All Files"
+                            disabled={false}
+                            onClick={updateAllFiles}
+                        />
+                        <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
+                            <button
+                                onClick={seriesToggle}
+                                className="w-full rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-primary/10 hover:text-primary"
+                            >
+                                {series
+                                    ? "✨ Editing as Series"
+                                    : "🔄 Edit Individually"}
+                            </button>
+                        </div>
+                    </>
                 )}
 
-                <div className="mt-6">
+                <div className="mt-2">
                     <FileTable
                         files={files}
                         currentFileIndex={currentFileIndex}
