@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
-import Modal from "../utils/Modal.tsx";
 import { FileUploaderProps } from "../../types/FileTypes.ts";
 import logger from "../utils/Logger.tsx";
 
@@ -10,11 +9,8 @@ import logger from "../utils/Logger.tsx";
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */
-const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
+const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, loading, clearData, toggleModal }) => {
     const [files, setFiles] = useState<File[]>([]);
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     /**
      *
@@ -61,6 +57,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
      * Handles file drop event
      */
     const onDrop = (acceptedFiles: File[]) => {
+        clearData();
+        loading(true);
+
         setFiles(acceptedFiles);
         processFiles(acceptedFiles);
     };
@@ -97,12 +96,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
                 multiple
                 onChange={handleFileChange}
                 className="hidden"
-            />
-            <Modal
-                isOpen={isModalOpen}
-                onClose={toggleModal}
-                title="Error"
-                text="File isn't a valid DICOM file."
             />
         </div>
     );
