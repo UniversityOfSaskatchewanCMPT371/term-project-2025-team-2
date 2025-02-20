@@ -1,5 +1,9 @@
 # DICOM File Tag Editor
 
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1jIk5wzWlDpzqyio9LwB-J7vy9-hjx8zN" />
+</p>
+
 ## Overview
 
 This project is a simple DICOM file tag editor that allows users to view and
