@@ -4,6 +4,7 @@
  * @param newTableData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
  */
+
 export function tagUpdater(dicomData: any, newTableData: any) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;

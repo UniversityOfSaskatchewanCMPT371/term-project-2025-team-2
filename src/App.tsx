@@ -213,7 +213,6 @@ const App: React.FC = () => {
                 downloadDicomFile(updatedFile, files[index].name);
             });
         }
-
         setSidebarVisible(false);
         clearData();
     };
