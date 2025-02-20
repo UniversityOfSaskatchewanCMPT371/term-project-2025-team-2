@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import FileTableBody from "./FileTableBody.tsx";
 import Modal from "../utils/Modal.tsx";
-import { FileTableProps } from "../../types/types.ts";
+import { FileTableProps } from "../../types/FileTypes.ts";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 
 /**
- *
+ * @description FileTable component - renders a table of files
  * @param files - Array of files
  * @param currentFileIndex - Index of the currently viewed file
  * @param onFileSelect - Function to handle file selection

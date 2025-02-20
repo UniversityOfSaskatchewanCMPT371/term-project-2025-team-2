@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { DicomTableRowProps } from "../../types/types";
+import { DicomTableRowProps } from "../../types/DicomTypes";
 
 /**
  * handleClick function
