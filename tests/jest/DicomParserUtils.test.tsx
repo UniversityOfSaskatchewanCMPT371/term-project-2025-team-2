@@ -20,6 +20,13 @@ jest.mock("../../src/tagDictionary/dictionary", () => ({
         lookupTagName(tag: string) {
             return this.lookup(tag);
         }
+        lookupTagVR(tag: string) {
+            return {
+                "00100010": "PN", // Patient Name VR
+                "00100020": "LO", // Patient ID VR
+                "00100030": "DA", // Patient Birth Date VR
+            }[tag] || "Unknown"; // Default to Unknown VR if not found
+        }
     }
 }));
 
