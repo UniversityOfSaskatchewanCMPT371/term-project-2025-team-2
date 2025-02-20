@@ -16,6 +16,7 @@ export default tseslint.config(
             "*.config.ts",
             "coverage/*",
             "build/*",
+            "docs/*",
         ],
     },
     {
