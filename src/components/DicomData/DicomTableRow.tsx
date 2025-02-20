@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../../types/DicomTypes";
 
@@ -11,6 +11,7 @@ const handleClick = (
 ) => {
     setIsEditing(true);
 };
+
 
 /**
  * DicomTableRow component
@@ -41,12 +42,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         setIsEditing(false);
     };
 
-    useEffect(() => {
-        if(deleteTag){
-            onUpdateValue(row.tagId, newValue, deleteTag)
-        }
-    }, [deleteTag]);
-
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
@@ -54,6 +49,14 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const toggleEditing = () => {
         setIsEditing(!isEditing);
     };
+
+    const toggleDelete = () => {
+
+        setDeleteTag(preValue => !preValue)
+        const tempDeletetag = !deleteTag
+
+        onUpdateValue(row.tagId, newValue, tempDeletetag)
+    }
 
     return (
         <React.Fragment key={index + row.tagId + row.value}>
@@ -111,7 +114,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => { setDeleteTag(true); }}
+                                onClick={()=> toggleDelete()}
                             >
                                 <XCircleIcon className={`ml-4 h-6 w-6 ${deleteTag && ("text-red-600")}`} />
                             </div>

@@ -9,6 +9,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
     let data;
+    console.log(newTagData)
 
     if (filteredTags.length === 0) {
         return newDicomData;
