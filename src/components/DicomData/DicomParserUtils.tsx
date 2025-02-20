@@ -84,7 +84,9 @@ const extractDicomTags = (dataSet: any) => {
                 break;
             case "FD":
                 value = dataSet.double(tag).toString() || "N/A";
-                console.log("FD: ", value);
+                break;
+            case "US":
+                value = dataSet.uint16(tag).toString() || "N/A";
                 break;
             default:
                 value = dataSet.string(tag) || "N/A";
