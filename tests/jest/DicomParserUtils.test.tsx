@@ -17,6 +17,9 @@ jest.mock("../../src/tagDictionary/dictionary", () => ({
                 "00080102": "Coding Scheme Designator",
             }[tag] || "Unknown";
         }
+        lookupTagName(tag: string) {
+            return this.lookup(tag);
+        }
     }
 }));
 
