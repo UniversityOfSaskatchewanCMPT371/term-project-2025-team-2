@@ -43,6 +43,10 @@ jobs:
         run: npm run lint
         continue-on-error: false
 
+      - name: Format with prettier
+        run: npm run pretty
+        continue-on-error: false
+
       #Installs playwright browsers with all its dependencies
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
