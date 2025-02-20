@@ -245,4 +245,6 @@ export interface GenErrorPageProps {
 export interface QuestionModalProps {
     setSeries: (value: boolean) => void;
     setIsOpen: (value: boolean) => void;
+    title: string;
+    text: string;
 }

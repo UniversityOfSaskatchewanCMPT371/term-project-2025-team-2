@@ -9,6 +9,7 @@ import log from "./components/utils/Logger";
 import { CustomFile as CustomFile } from "./types/types";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
+import Modal from "./components/utils/Modal";
 
 /**
  *
@@ -23,6 +24,8 @@ const App: React.FC = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [series, setSeries] = useState(false);
+
+    const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
@@ -135,6 +138,7 @@ const App: React.FC = () => {
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
+        setNewTableData([]);
 
         log.info("file-loaded");
         if (newFiles.length > 1) {
@@ -164,6 +168,18 @@ const App: React.FC = () => {
         setCurrentFileIndex(0);
         setNewTableData([]);
         setSeries(false);
+    };
+
+    const toggleSeries = () => {
+        setSeries(!series);
+
+        if (!series) {
+            newTableData.forEach((entry) => {
+                if (entry.fileName !== files[currentFileIndex].name) {
+                    setSeriesSwitchModel(true);
+                }
+            });
+        }
     };
 
     return (
@@ -212,8 +228,21 @@ const App: React.FC = () => {
                     <QuestionModal
                         setSeries={setSeries}
                         setIsOpen={setIsOpen}
+                        title={"Edit Files"}
+                        text={
+                            "Multiple files have been uploaded. Do you want to edit them as a series?"
+                        }
                     />
                 ) : null}
+
+                <Modal
+                    isOpen={seriesSwitchModel}
+                    onClose={() => setSeriesSwitchModel(false)}
+                    title={"Switch to Series"}
+                    text={
+                        "Multiple files have been edited. Displayed files edited tags will be applied to all files"
+                    }
+                />
 
                 {sidebarVisible && (
                     <div ref={sidebarRef}>
@@ -222,7 +251,7 @@ const App: React.FC = () => {
                             onFileSelect={handleFileSelect}
                             currentFileIndex={currentFileIndex}
                             series={series}
-                            seriesToggle={() => setSeries(!series)}
+                            seriesToggle={toggleSeries}
                             isVisible={sidebarVisible}
                         />
                     </div>
