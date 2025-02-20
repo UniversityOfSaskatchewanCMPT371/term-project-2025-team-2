@@ -6,7 +6,7 @@
  */
 export function tagUpdater(dicomData: any, newTableData: any) {
     const newTags: any = [];
-    let newDicomData = dicomData.byteArray;
+    const newDicomData = dicomData.byteArray;
     const filteredTags = newTableData;
     let data;
 
@@ -27,19 +27,17 @@ export function tagUpdater(dicomData: any, newTableData: any) {
     });
 
     newTags.forEach((tag: any) => {
-
-        let tagIdByte = new Uint8Array(groupLen + elementLen);
-        let group = parseInt(tag.tagId.slice(1, 5), 16);
-        let element = parseInt(tag.tagId.slice(5), 16);
+        const tagIdByte = new Uint8Array(groupLen + elementLen);
+        const group = parseInt(tag.tagId.slice(1, 5), 16);
+        const element = parseInt(tag.tagId.slice(5), 16);
 
         tagIdByte.set(
-            new Uint8Array([group, group >> 8, element, element >> 8]),
+            new Uint8Array([group, group >> 8, element, element >> 8])
         );
 
         const newTag = createTag(tagIdByte, tag, true);
 
-        data = insertTag(dicomData, tag, newTag)
-
+        data = insertTag(dicomData, tag, newTag);
     });
 
     return data;
@@ -53,15 +51,16 @@ export function tagUpdater(dicomData: any, newTableData: any) {
  * @returns byte array with tag inserted
  */
 function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
-
     const dicomByteArray = dicomData.byteArray;
-    let newArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
-    const last = dicomByteArray.slice(tagToAdd.dataOffSet + dicomData.elements[tagToAdd.tagId.toLowerCase()].length);
+    const last = dicomByteArray.slice(
+        tagToAdd.dataOffSet +
+            dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+    );
 
-    let buf1 = concatBuffers(first, newtag);
-    newArray = concatBuffers(buf1, last)
+    const buf1 = concatBuffers(first, newtag);
+    const newArray = concatBuffers(buf1, last);
 
     return newArray;
 }
@@ -72,34 +71,54 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
  * @param tagToRemove - tag to be removed
  * @returns byte array with tag removed
  */
-function removeTag(dicomData: any, tagToRemove: any) {
-
+export function removeTag(dicomData: any, tagToRemove: any) {
     const dicomByteArray = dicomData.byteArray;
-    let newArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
-    const last = dicomByteArray.slice(tagToRemove.dataOffSet + dicomData.elements[tagToRemove.tagId.toLowerCase()].length);
+    const last = dicomByteArray.slice(
+        tagToRemove.dataOffSet +
+            dicomData.elements[tagToRemove.tagId.toLowerCase()].length
+    );
 
-    newArray = concatBuffers(first, last);
+    const newArray = concatBuffers(first, last);
 
     return newArray;
 }
 
 /**
- * 
- * @param bufffer1 
- * @param buffer2 
- * @returns 
+ *
+ * @param bufffer1
+ * @param buffer2
+ * @returns
  */
 function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
-    let concatedBuffer = new Uint8Array(bufffer1.length + buffer2.length);
+    const concatedBuffer = new Uint8Array(bufffer1.length + buffer2.length);
     concatedBuffer.set(bufffer1);
     concatedBuffer.set(buffer2, bufffer1.length);
     return concatedBuffer;
 }
 
-enum NUMBERS { 'FD', 'FL', 'UL', 'US', 'SL', 'SS' }
-enum VR_with_12_bytes_header { 'VR', 'OB', 'OD', 'OF', 'OL', 'OW', 'SQ', 'UC', 'UR', 'UT', 'UN' }
+enum NUMBERS {
+    "FD",
+    "FL",
+    "UL",
+    "US",
+    "SL",
+    "SS",
+}
+enum VR_with_12_bytes_header {
+    "VR",
+    "OB",
+    "OD",
+    "OF",
+    "OL",
+    "OW",
+    "SQ",
+    "UC",
+    "UR",
+    "UT",
+    "UN",
+}
 const groupLen = 2;
 const elementLen = 2;
 const vrLen = 2;
@@ -111,64 +130,107 @@ const vrOffset = 4;
 const lengthOffset = 6;
 
 /**
-* @param tagName tag's group and element in bytearray
-* @param tag dicom entry to be written to bytearray
-* @description creates a bytearray representing the tag
-* @return tag's bytearray
-*/
+ * @param tagName tag's group and element in bytearray
+ * @param tag dicom entry to be written to bytearray
+ * @description creates a bytearray representing the tag
+ * @return tag's bytearray
+ */
 function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
-    let valueOffset = tag.tagVR in VR_with_12_bytes_header ? longHeaderLen : headerLen;
-    let valueLength = getValueLength(tag);
+    const valueOffset =
+        tag.tagVR in VR_with_12_bytes_header ? longHeaderLen : headerLen;
+    const valueLength = getValueLength(tag);
 
-    let tagVR = writeVRArray(tag.vr);
-    let tagLength = valueOffset === longHeaderLen ?
-        writeTypedNumber(valueLength, 'uint32', longHeaderLengthLen, littleEndian) :
-        writeTypedNumber(valueLength, 'uint16', lengthLen, littleEndian);
+    const tagVR = writeVRArray(tag.vr);
+    const tagLength =
+        valueOffset === longHeaderLen
+            ? writeTypedNumber(
+                  valueLength,
+                  "uint32",
+                  longHeaderLengthLen,
+                  littleEndian
+              )
+            : writeTypedNumber(valueLength, "uint16", lengthLen, littleEndian);
 
-    let newTag = new Uint8Array(valueLength + valueOffset);
+    const newTag = new Uint8Array(valueLength + valueOffset);
     newTag.set(tagName);
     newTag.set(tagVR, vrOffset);
     newTag.set(tagLength, lengthOffset);
 
     switch (tag.tagVR) {
-        case 'FD':
+        case "FD":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'double', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "double",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'FL':
+        case "FL":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'float', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "float",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'UL':
+        case "UL":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'uint32', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "uint32",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'US':
+        case "US":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'uint16', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "uint16",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'SL':
+        case "SL":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'int32', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "int32",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'SS':
+        case "SS":
             newTag.set(
-                writeTypedNumber(parseInt(tag.tagValue, 10), 'int16', valueLength, littleEndian),
-                valueOffset);
+                writeTypedNumber(
+                    parseInt(tag.tagValue, 10),
+                    "int16",
+                    valueLength,
+                    littleEndian
+                ),
+                valueOffset
+            );
             break;
-        case 'AT':
-            let atGroup = parseInt(tag.tagValue.slice(0, 4), 16);
-            let atElement = parseInt(tag.tagValue.slice(4,), 16);
-            newTag.set(writeTypedNumber(atGroup, 'uint16', valueLength / 2, littleEndian), valueOffset);
-            newTag.set(writeTypedNumber(atElement, 'uint16', valueLength / 2, littleEndian), valueOffset + 2);
-            break;
+        // case 'AT':
+        //     const atGroup = parseInt(tag.value.slice(0, 4), 16);
+        //     const atElement = parseInt(tag.value.slice(4,), 16);
+        //     newTag.set(writeTypedNumber(atGroup, 'uint16', valueLength / 2, littleEndian), valueOffset);
+        //     newTag.set(writeTypedNumber(atElement, 'uint16', valueLength / 2, littleEndian), valueOffset + 2);
+        //     break;
         default:
-            for (var i = 0; i < tag.value.length; i++) {
+            for (let i = 0; i < tag.value.length; i++) {
                 newTag[i + 8] = tag.value.charCodeAt(i);
             }
             break;
@@ -176,30 +238,34 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     return newTag;
 }
 
-
-function writeTypedNumber(num: number, type: string, arrayLength: number, littleEndian: boolean) {
-    let arrbuff = new ArrayBuffer(arrayLength);
-    let view = new DataView(arrbuff);
+function writeTypedNumber(
+    num: number,
+    type: string,
+    arrayLength: number,
+    littleEndian: boolean
+) {
+    const arrbuff = new ArrayBuffer(arrayLength);
+    const view = new DataView(arrbuff);
     switch (type) {
-        case 'uint16':
+        case "uint16":
             view.setUint16(0, num, littleEndian);
             break;
-        case 'uint32':
+        case "uint32":
             view.setUint16(0, num, littleEndian);
             break;
-        case 'int8':
+        case "int8":
             view.setInt8(0, num);
             break;
-        case 'int16':
+        case "int16":
             view.setInt16(0, num, littleEndian);
             break;
-        case 'int32':
+        case "int32":
             view.setInt32(0, num, littleEndian);
             break;
-        case 'float':
+        case "float":
             view.setFloat32(0, num, littleEndian);
             break;
-        case 'double':
+        case "double":
             view.setFloat64(0, num, littleEndian);
             break;
         default:
@@ -209,18 +275,17 @@ function writeTypedNumber(num: number, type: string, arrayLength: number, little
 }
 
 /**
- * 
+ *
  * @param vr - the 2 character vr
  * @returns byte array of vr value
  */
 function writeVRArray(vr: string) {
-    let vrArray = new Uint8Array(vrLen);
-    for (var i = 0; i < 2; i++) {
+    const vrArray = new Uint8Array(vrLen);
+    for (let i = 0; i < 2; i++) {
         vrArray[i] = vr.charCodeAt(i);
     }
     return vrArray;
 }
-
 
 function getValueLength(tag: any) {
     if (tag.tagVR in NUMBERS) {
@@ -232,26 +297,25 @@ function getValueLength(tag: any) {
             byteLength++;
         }
         switch (tag.tagVR[1]) {
-            case 'S':
-                byteLength += (2 - byteLength % 2);
+            case "S":
+                byteLength += 2 - (byteLength % 2);
                 break;
-            case 'L':
-                byteLength += (4 - byteLength % 4);
+            case "L":
+                byteLength += 4 - (byteLength % 4);
                 break;
-            case 'D':
-                byteLength += (8 - byteLength % 8);
+            case "D":
+                byteLength += 8 - (byteLength % 8);
                 break;
             default:
                 break;
         }
         return byteLength;
-    } else if (tag.tagVR === 'AT') {
+    } else if (tag.tagVR === "AT") {
         return 4;
     } else {
         return tag.value.length;
     }
 }
-
 
 /**
  * @description - Get the tags for a single file, filtered by the file name

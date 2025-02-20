@@ -15,7 +15,7 @@ const logMsgFormat = (log: any) => ({
 });
 
 // log.enableAll(); // this puts all messages to console, off only warn or higher gets printed
-log.setLevel("warn")
+log.setLevel("warn");
 
 /**
  *

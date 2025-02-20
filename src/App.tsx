@@ -143,7 +143,6 @@ const App: React.FC = () => {
 
     // File handling
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
-
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
@@ -242,15 +241,21 @@ const App: React.FC = () => {
                 <div className="flex-grow p-8">
                     {!loading ? (
                         <>
-                            <FileUploader onFileUpload={handleFileUpload} loading={setLoading} clearData={clearData} toggleModal={showError} />
+                            <FileUploader
+                                onFileUpload={handleFileUpload}
+                                loading={setLoading}
+                                clearData={clearData}
+                                toggleModal={showError}
+                            />
 
                             <FileHeader
                                 files={files}
                                 currentFileIndex={currentFileIndex}
                             />
-                        </>) : (
-                        <div className="flex items-center justify-center h-full">
-                            <ArrowPathIcon className="h-24 w-24 text-gray-400 animate-spin" />
+                        </>
+                    ) : (
+                        <div className="flex h-full items-center justify-center">
+                            <ArrowPathIcon className="h-24 w-24 animate-spin text-gray-400" />
                         </div>
                     )}
 
