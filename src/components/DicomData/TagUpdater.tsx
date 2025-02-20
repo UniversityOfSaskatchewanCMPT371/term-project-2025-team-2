@@ -1,13 +1,13 @@
 /**
  *
  * @param dicomData - The dicom data object
- * @param newTableData - The new tag values
+ * @param newTagData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
  */
-export function tagUpdater(dicomData: any, newTableData: any) {
+export function tagUpdater(dicomData: any, newTagData: any) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
-    const filteredTags = newTableData;
+    const filteredTags = newTagData;
     let data;
 
     if (filteredTags.length === 0) {

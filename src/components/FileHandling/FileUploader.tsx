@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
 import { FileUploaderProps } from "../../types/FileTypes.ts";
@@ -15,7 +15,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     clearData,
     toggleModal,
 }) => {
-    const [files, setFiles] = useState<File[]>([]);
 
     /**
      *
@@ -25,9 +24,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
-            logger.info(files); // here just to use the files variable
             const fileArray = Array.from(selectedFiles);
-            setFiles(fileArray);
             processFiles(fileArray);
         }
     };
@@ -64,8 +61,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     const onDrop = (acceptedFiles: File[]) => {
         clearData();
         loading(true);
-
-        setFiles(acceptedFiles);
         processFiles(acceptedFiles);
     };
 
@@ -81,7 +76,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         <div>
             <div
                 {...getRootProps()}
-                className="relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center"
+                className={`relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center`}
             >
                 <input {...getInputProps()} />
                 <p className="text-base-content">
