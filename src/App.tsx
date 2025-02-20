@@ -46,14 +46,18 @@ const App: React.FC = () => {
 
     const updateTagValues = (newData: any) => {
         setNewTagValues((prevData) => {
-            const existingIndex = prevData.findIndex(item => item.fileName === newData.fileName && item.tagId === newData.tagId);
+            const existingIndex = prevData.findIndex(
+                (item) =>
+                    item.fileName === newData.fileName &&
+                    item.tagId === newData.tagId
+            );
 
             if (existingIndex !== -1) {
-                return prevData.map((item, index) => 
+                return prevData.map((item, index) =>
                     index === existingIndex ? newData : item
                 );
             }
-            
+
             return [...prevData, newData];
         });
     };

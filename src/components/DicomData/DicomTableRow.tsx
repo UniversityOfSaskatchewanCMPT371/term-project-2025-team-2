@@ -12,7 +12,6 @@ const handleClick = (
     setIsEditing(true);
 };
 
-
 /**
  * DicomTableRow component
  * @param DicomTableRowProps - row, index, onUpdateValue, nested, updated, level
@@ -30,7 +29,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
-    const [deleteTag, setDeleteTag] = useState<boolean>(false)
+    const [deleteTag, setDeleteTag] = useState<boolean>(false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -51,21 +50,24 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     const toggleDelete = () => {
+        setDeleteTag((preValue) => !preValue);
+        const tempDeletetag = !deleteTag;
 
-        setDeleteTag(preValue => !preValue)
-        const tempDeletetag = !deleteTag
-
-        onUpdateValue(row.tagId, newValue, tempDeletetag)
-    }
+        onUpdateValue(row.tagId, newValue, tempDeletetag);
+    };
 
     return (
         <React.Fragment key={index + row.tagId + row.value}>
-            <tr key={index + row.tagId} className={`hover:bg-blue-600 ${deleteTag && ("outline -outline-offset-4 outline-red-600")}`}>
+            <tr
+                key={index + row.tagId}
+                className={`hover:bg-blue-600 ${deleteTag && "outline -outline-offset-4 outline-red-600"}`}
+            >
                 <td
-                    className={`break-all border px-4 py-2 ${nested
+                    className={`break-all border px-4 py-2 ${
+                        nested
                             ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
                             : ""
-                        }`}
+                    }`}
                     style={{
                         paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
                     }}
@@ -87,7 +89,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
                 <td className="break-all border px-4 py-2">
                     {typeof row.value === "string" ||
-                        row.value instanceof String ? (
+                    row.value instanceof String ? (
                         <div className="flex">
                             <div className="flex-1">
                                 {isEditing ? (
@@ -114,9 +116,11 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={()=> toggleDelete()}
+                                onClick={() => toggleDelete()}
                             >
-                                <XCircleIcon className={`ml-4 h-6 w-6 ${deleteTag && ("text-red-600")}`} />
+                                <XCircleIcon
+                                    className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                />
                             </div>
                         </div>
                     ) : (
@@ -126,15 +130,15 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
             </tr>
             {typeof row.value !== "string" && isExpanded
                 ? Object.values(row.value.tags).map((nested: any) => (
-                    <DicomTableRow
-                        key={nested.tagId}
-                        row={nested}
-                        index={index}
-                        onUpdateValue={onUpdateValue}
-                        nested
-                        level={(level || 0) + 1}
-                    />
-                ))
+                      <DicomTableRow
+                          key={nested.tagId}
+                          row={nested}
+                          index={index}
+                          onUpdateValue={onUpdateValue}
+                          nested
+                          level={(level || 0) + 1}
+                      />
+                  ))
                 : null}
         </React.Fragment>
     );

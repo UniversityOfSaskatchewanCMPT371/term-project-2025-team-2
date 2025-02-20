@@ -15,7 +15,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     clearData,
     toggleModal,
 }) => {
-
     /**
      *
      * @param e - Change event

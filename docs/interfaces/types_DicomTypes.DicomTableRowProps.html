@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="IE=edge" />
-        <title>AppState | dicom-tag-editor</title>
+        <title>DicomTableRowProps | dicom-tag-editor</title>
         <meta name="description" content="Documentation for dicom-tag-editor" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="../assets/style.css" />
@@ -91,80 +91,109 @@
                     <ul class="tsd-breadcrumb">
                         <li><a href="../modules.html">dicom-tag-editor</a></li>
                         <li>
-                            <a href="../modules/types_types.html"
-                                >types/types</a
+                            <a href="../modules/types_DicomTypes.html"
+                                >types/DicomTypes</a
                             >
                         </li>
                         <li>
-                            <a href="types_types.AppState.html">AppState</a>
+                            <a href="types_DicomTypes.DicomTableRowProps.html"
+                                >DicomTableRowProps</a
+                            >
                         </li>
                     </ul>
-                    <h1>Interface AppState</h1>
+                    <h1>Interface DicomTableRowProps</h1>
                 </div>
                 <section class="tsd-panel tsd-comment">
                     <div class="tsd-comment tsd-typography">
-                        <p>interface AppState</p>
+                        <p>interface DicomTableRowProps</p>
                     </div>
-                    <div class="tsd-comment tsd-typography">
-                        <div class="tsd-tag-returns">
-                            <h4 class="tsd-anchor-link">
-                                <a id="returns" class="tsd-anchor"></a>Returns<a
-                                    href="#returns"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
-                                    ><svg viewBox="0 0 24 24">
-                                        <use
-                                            href="../assets/icons.svg#icon-anchor"
-                                        ></use></svg
-                                ></a>
-                            </h4>
-                            <p>AppState</p>
-                        </div>
-                        <div class="tsd-tag-description">
-                            <h4 class="tsd-anchor-link">
-                                <a id="description" class="tsd-anchor"></a
-                                >Description<a
-                                    href="#description"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
-                                    ><svg viewBox="0 0 24 24">
-                                        <use
-                                            href="../assets/icons.svg#icon-anchor"
-                                        ></use></svg
-                                ></a>
-                            </h4>
-                            <ul>
-                                <li>Interface for the AppState</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="tsd-comment tsd-typography"></div>
                 </section>
                 <div class="tsd-signature">
                     <span class="tsd-signature-keyword">interface</span>
-                    <span class="tsd-kind-interface">AppState</span>
+                    <span class="tsd-kind-interface">DicomTableRowProps</span>
                     <span class="tsd-signature-symbol">{</span><br />    <a
                         class="tsd-kind-property"
-                        href="types_types.AppState.html#currentfileindex"
-                        >currentFileIndex</a
+                        href="types_DicomTypes.DicomTableRowProps.html#index"
+                        >index</a
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">;</span><br />    <a
                         class="tsd-kind-property"
-                        href="types_types.AppState.html#dicomdata"
-                        >dicomData</a
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">any</span
-                    ><span class="tsd-signature-symbol">[]</span
+                        href="types_DicomTypes.DicomTableRowProps.html#level"
+                        >level</a
+                    ><span class="tsd-signature-symbol">?:</span>
+                    <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">;</span><br />    <a
                         class="tsd-kind-property"
-                        href="types_types.AppState.html#files"
-                        >files</a
+                        href="types_DicomTypes.DicomTableRowProps.html#nested"
+                        >nested</a
+                    ><span class="tsd-signature-symbol">?:</span>
+                    <span class="tsd-signature-type">boolean</span
+                    ><span class="tsd-signature-symbol">;</span><br />    <a
+                        class="tsd-kind-property"
+                        href="types_DicomTypes.DicomTableRowProps.html#onupdatevalue"
+                        >onUpdateValue</a
                     ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-symbol">(</span
+                    ><br />        <span class="tsd-kind-parameter">tagId</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span
+                    ><br />        <span class="tsd-kind-parameter"
+                        >newValue</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span
+                    ><br />        <span class="tsd-kind-parameter"
+                        >deleteTag</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">boolean</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                        class="tsd-signature-symbol"
+                        >)</span
+                    >
+                    <span class="tsd-signature-symbol">=&gt;</span>
+                    <span class="tsd-signature-type">void</span
+                    ><span class="tsd-signature-symbol">;</span><br />    <a
+                        class="tsd-kind-property"
+                        href="types_DicomTypes.DicomTableRowProps.html#row"
+                        >row</a
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-symbol">{</span
+                    ><br />        <span class="tsd-kind-property">tagId</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">tagName</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">value</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span>
+                    <span class="tsd-signature-symbol">|</span>
+                    <span class="tsd-signature-symbol">{</span>
+                    <span class="tsd-signature-symbol">[</span
+                    ><span class="tsd-kind-index-signature">tags</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">]:</span>
                     <a
-                        href="types_FileTypes.CustomFile.html"
+                        href="types_DicomTypes.DicomTag.html"
                         class="tsd-signature-type tsd-kind-interface"
-                        >CustomFile</a
-                    ><span class="tsd-signature-symbol">[]</span
+                        >DicomTag</a
+                    >
+                    <span class="tsd-signature-symbol">}</span
+                    ><span class="tsd-signature-symbol">;</span><br />    <span
+                        class="tsd-signature-symbol"
+                        >}</span
+                    ><span class="tsd-signature-symbol">;</span><br />    <a
+                        class="tsd-kind-property"
+                        href="types_DicomTypes.DicomTableRowProps.html#updated"
+                        >updated</a
+                    ><span class="tsd-signature-symbol">?:</span>
+                    <span class="tsd-signature-type">boolean</span
                     ><span class="tsd-signature-symbol">;</span><br /><span
                         class="tsd-signature-symbol"
                         >}</span
@@ -172,7 +201,7 @@
                 </div>
                 <aside class="tsd-sources">
                     <ul>
-                        <li>Defined in src/types/types.ts:29</li>
+                        <li>Defined in src/types/DicomTypes.d.ts:35</li>
                     </ul>
                 </aside>
                 <section class="tsd-panel-group tsd-index-group">
@@ -207,7 +236,43 @@
                                     </h3>
                                     <div class="tsd-index-list">
                                         <a
-                                            href="types_types.AppState.html#currentfileindex"
+                                            href="types_DicomTypes.DicomTableRowProps.html#index"
+                                            class="tsd-index-link"
+                                            ><svg
+                                                class="tsd-kind-icon"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <use
+                                                    href="../assets/icons.svg#icon-1024"
+                                                ></use></svg
+                                            ><span>index</span></a
+                                        >
+                                        <a
+                                            href="types_DicomTypes.DicomTableRowProps.html#level"
+                                            class="tsd-index-link"
+                                            ><svg
+                                                class="tsd-kind-icon"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <use
+                                                    href="../assets/icons.svg#icon-1024"
+                                                ></use></svg
+                                            ><span>level?</span></a
+                                        >
+                                        <a
+                                            href="types_DicomTypes.DicomTableRowProps.html#nested"
+                                            class="tsd-index-link"
+                                            ><svg
+                                                class="tsd-kind-icon"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <use
+                                                    href="../assets/icons.svg#icon-1024"
+                                                ></use></svg
+                                            ><span>nested?</span></a
+                                        >
+                                        <a
+                                            href="types_DicomTypes.DicomTableRowProps.html#onupdatevalue"
                                             class="tsd-index-link"
                                             ><svg
                                                 class="tsd-kind-icon"
@@ -217,11 +282,11 @@
                                                     href="../assets/icons.svg#icon-1024"
                                                 ></use></svg
                                             ><span
-                                                >current<wbr />File<wbr />Index</span
+                                                >on<wbr />Update<wbr />Value</span
                                             ></a
                                         >
                                         <a
-                                            href="types_types.AppState.html#dicomdata"
+                                            href="types_DicomTypes.DicomTableRowProps.html#row"
                                             class="tsd-index-link"
                                             ><svg
                                                 class="tsd-kind-icon"
@@ -230,10 +295,10 @@
                                                 <use
                                                     href="../assets/icons.svg#icon-1024"
                                                 ></use></svg
-                                            ><span>dicom<wbr />Data</span></a
+                                            ><span>row</span></a
                                         >
                                         <a
-                                            href="types_types.AppState.html#files"
+                                            href="types_DicomTypes.DicomTableRowProps.html#updated"
                                             class="tsd-index-link"
                                             ><svg
                                                 class="tsd-kind-icon"
@@ -242,7 +307,7 @@
                                                 <use
                                                     href="../assets/icons.svg#icon-1024"
                                                 ></use></svg
-                                            ><span>files</span></a
+                                            ><span>updated?</span></a
                                         >
                                     </div>
                                 </section>
@@ -274,11 +339,106 @@
                     </summary>
                     <section>
                         <section class="tsd-panel tsd-member">
-                            <a id="currentfileindex" class="tsd-anchor"></a>
+                            <a id="index" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                <span>current<wbr />File<wbr />Index</span
+                                <span>index</span
                                 ><a
-                                    href="#currentfileindex"
+                                    href="#index"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg viewBox="0 0 24 24">
+                                        <use
+                                            href="../assets/icons.svg#icon-anchor"
+                                        ></use></svg
+                                ></a>
+                            </h3>
+                            <div class="tsd-signature">
+                                <span class="tsd-kind-property">index</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">number</span>
+                            </div>
+                            <div class="tsd-comment tsd-typography">
+                                <p>Index of the row</p>
+                            </div>
+                            <div class="tsd-comment tsd-typography"></div>
+                            <aside class="tsd-sources">
+                                <ul>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:41
+                                    </li>
+                                </ul>
+                            </aside>
+                        </section>
+                        <section class="tsd-panel tsd-member">
+                            <a id="level" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                <code class="tsd-tag">Optional</code
+                                ><span>level</span
+                                ><a
+                                    href="#level"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg viewBox="0 0 24 24">
+                                        <use
+                                            href="../assets/icons.svg#icon-anchor"
+                                        ></use></svg
+                                ></a>
+                            </h3>
+                            <div class="tsd-signature">
+                                <span class="tsd-kind-property">level</span
+                                ><span class="tsd-signature-symbol">?:</span>
+                                <span class="tsd-signature-type">number</span>
+                            </div>
+                            <div class="tsd-comment tsd-typography">
+                                <p>Nesting level of the row</p>
+                            </div>
+                            <div class="tsd-comment tsd-typography"></div>
+                            <aside class="tsd-sources">
+                                <ul>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:45
+                                    </li>
+                                </ul>
+                            </aside>
+                        </section>
+                        <section class="tsd-panel tsd-member">
+                            <a id="nested" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                <code class="tsd-tag">Optional</code
+                                ><span>nested</span
+                                ><a
+                                    href="#nested"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg viewBox="0 0 24 24">
+                                        <use
+                                            href="../assets/icons.svg#icon-anchor"
+                                        ></use></svg
+                                ></a>
+                            </h3>
+                            <div class="tsd-signature">
+                                <span class="tsd-kind-property">nested</span
+                                ><span class="tsd-signature-symbol">?:</span>
+                                <span class="tsd-signature-type">boolean</span>
+                            </div>
+                            <div class="tsd-comment tsd-typography">
+                                <p>Boolean to check if the row is nested</p>
+                            </div>
+                            <div class="tsd-comment tsd-typography"></div>
+                            <aside class="tsd-sources">
+                                <ul>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:43
+                                    </li>
+                                </ul>
+                            </aside>
+                        </section>
+                        <section class="tsd-panel tsd-member">
+                            <a id="onupdatevalue" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                <span>on<wbr />Update<wbr />Value</span
+                                ><a
+                                    href="#onupdatevalue"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg viewBox="0 0 24 24">
@@ -289,26 +449,42 @@
                             </h3>
                             <div class="tsd-signature">
                                 <span class="tsd-kind-property"
-                                    >currentFileIndex</span
+                                    >onUpdateValue</span
                                 ><span class="tsd-signature-symbol">:</span>
-                                <span class="tsd-signature-type">number</span>
+                                <span class="tsd-signature-symbol">(</span
+                                ><span class="tsd-kind-parameter">tagId</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span
+                                ><span class="tsd-signature-symbol">,</span>
+                                <span class="tsd-kind-parameter">newValue</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span
+                                ><span class="tsd-signature-symbol">,</span>
+                                <span class="tsd-kind-parameter">deleteTag</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">boolean</span
+                                ><span class="tsd-signature-symbol">)</span>
+                                <span class="tsd-signature-symbol">=&gt;</span>
+                                <span class="tsd-signature-type">void</span>
                             </div>
                             <div class="tsd-comment tsd-typography">
-                                <p>Index of the currently viewed file</p>
+                                <p>Function to update the value of the row</p>
                             </div>
                             <div class="tsd-comment tsd-typography"></div>
                             <aside class="tsd-sources">
                                 <ul>
-                                    <li>Defined in src/types/types.ts:32</li>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:42
+                                    </li>
                                 </ul>
                             </aside>
                         </section>
                         <section class="tsd-panel tsd-member">
-                            <a id="dicomdata" class="tsd-anchor"></a>
+                            <a id="row" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                <span>dicom<wbr />Data</span
+                                <span>row</span
                                 ><a
-                                    href="#dicomdata"
+                                    href="#row"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg viewBox="0 0 24 24">
@@ -318,51 +494,85 @@
                                 ></a>
                             </h3>
                             <div class="tsd-signature">
-                                <span class="tsd-kind-property">dicomData</span
+                                <span class="tsd-kind-property">row</span
                                 ><span class="tsd-signature-symbol">:</span>
-                                <span class="tsd-signature-type">any</span
-                                ><span class="tsd-signature-symbol">[]</span>
-                            </div>
-                            <div class="tsd-comment tsd-typography">
-                                <p>Array of dicom data</p>
-                            </div>
-                            <div class="tsd-comment tsd-typography"></div>
-                            <aside class="tsd-sources">
-                                <ul>
-                                    <li>Defined in src/types/types.ts:31</li>
-                                </ul>
-                            </aside>
-                        </section>
-                        <section class="tsd-panel tsd-member">
-                            <a id="files" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                <span>files</span
-                                ><a
-                                    href="#files"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
-                                    ><svg viewBox="0 0 24 24">
-                                        <use
-                                            href="../assets/icons.svg#icon-anchor"
-                                        ></use></svg
-                                ></a>
-                            </h3>
-                            <div class="tsd-signature">
-                                <span class="tsd-kind-property">files</span
+                                <span class="tsd-signature-symbol">{</span
+                                ><br />    <span class="tsd-kind-property"
+                                    >tagId</span
                                 ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span
+                                ><span class="tsd-signature-symbol">;</span
+                                ><br />    <span class="tsd-kind-property"
+                                    >tagName</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span
+                                ><span class="tsd-signature-symbol">;</span
+                                ><br />    <span class="tsd-kind-property"
+                                    >value</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span>
+                                <span class="tsd-signature-symbol">|</span>
+                                <span class="tsd-signature-symbol">{</span>
+                                <span class="tsd-signature-symbol">[</span
+                                ><span class="tsd-kind-index-signature"
+                                    >tags</span
+                                ><span class="tsd-signature-symbol">:</span>
+                                <span class="tsd-signature-type">string</span
+                                ><span class="tsd-signature-symbol">]:</span>
                                 <a
-                                    href="types_FileTypes.CustomFile.html"
+                                    href="types_DicomTypes.DicomTag.html"
                                     class="tsd-signature-type tsd-kind-interface"
-                                    >CustomFile</a
-                                ><span class="tsd-signature-symbol">[]</span>
+                                    >DicomTag</a
+                                >
+                                <span class="tsd-signature-symbol">}</span
+                                ><span class="tsd-signature-symbol">;</span
+                                ><br /><span class="tsd-signature-symbol"
+                                    >}</span
+                                >
                             </div>
                             <div class="tsd-comment tsd-typography">
-                                <p>Array of files</p>
+                                <p>DICOM tag row</p>
                             </div>
                             <div class="tsd-comment tsd-typography"></div>
                             <aside class="tsd-sources">
                                 <ul>
-                                    <li>Defined in src/types/types.ts:30</li>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:36
+                                    </li>
+                                </ul>
+                            </aside>
+                        </section>
+                        <section class="tsd-panel tsd-member">
+                            <a id="updated" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                <code class="tsd-tag">Optional</code
+                                ><span>updated</span
+                                ><a
+                                    href="#updated"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg viewBox="0 0 24 24">
+                                        <use
+                                            href="../assets/icons.svg#icon-anchor"
+                                        ></use></svg
+                                ></a>
+                            </h3>
+                            <div class="tsd-signature">
+                                <span class="tsd-kind-property">updated</span
+                                ><span class="tsd-signature-symbol">?:</span>
+                                <span class="tsd-signature-type">boolean</span>
+                            </div>
+                            <div class="tsd-comment tsd-typography">
+                                <p>
+                                    Boolean to check if the row has been updated
+                                </p>
+                            </div>
+                            <div class="tsd-comment tsd-typography"></div>
+                            <aside class="tsd-sources">
+                                <ul>
+                                    <li>
+                                        Defined in src/types/DicomTypes.d.ts:44
+                                    </li>
                                 </ul>
                             </aside>
                         </section>
@@ -542,7 +752,34 @@
                                     >Properties
                                 </summary>
                                 <div>
-                                    <a href="#currentfileindex" class=""
+                                    <a href="#index" class=""
+                                        ><svg
+                                            class="tsd-kind-icon"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <use
+                                                href="../assets/icons.svg#icon-1024"
+                                            ></use></svg
+                                        ><span>index</span></a
+                                    ><a href="#level" class=""
+                                        ><svg
+                                            class="tsd-kind-icon"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <use
+                                                href="../assets/icons.svg#icon-1024"
+                                            ></use></svg
+                                        ><span>level</span></a
+                                    ><a href="#nested" class=""
+                                        ><svg
+                                            class="tsd-kind-icon"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <use
+                                                href="../assets/icons.svg#icon-1024"
+                                            ></use></svg
+                                        ><span>nested</span></a
+                                    ><a href="#onupdatevalue" class=""
                                         ><svg
                                             class="tsd-kind-icon"
                                             viewBox="0 0 24 24"
@@ -551,9 +788,9 @@
                                                 href="../assets/icons.svg#icon-1024"
                                             ></use></svg
                                         ><span
-                                            >current<wbr />File<wbr />Index</span
+                                            >on<wbr />Update<wbr />Value</span
                                         ></a
-                                    ><a href="#dicomdata" class=""
+                                    ><a href="#row" class=""
                                         ><svg
                                             class="tsd-kind-icon"
                                             viewBox="0 0 24 24"
@@ -561,8 +798,8 @@
                                             <use
                                                 href="../assets/icons.svg#icon-1024"
                                             ></use></svg
-                                        ><span>dicom<wbr />Data</span></a
-                                    ><a href="#files" class=""
+                                        ><span>row</span></a
+                                    ><a href="#updated" class=""
                                         ><svg
                                             class="tsd-kind-icon"
                                             viewBox="0 0 24 24"
@@ -570,7 +807,7 @@
                                             <use
                                                 href="../assets/icons.svg#icon-1024"
                                             ></use></svg
-                                        ><span>files</span></a
+                                        ><span>updated</span></a
                                     >
                                 </div>
                             </details>

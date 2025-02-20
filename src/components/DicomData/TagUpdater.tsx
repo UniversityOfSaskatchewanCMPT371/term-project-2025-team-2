@@ -9,7 +9,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
     let data;
-    console.log(newTagData)
+    console.log(newTagData);
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -28,7 +28,6 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         newTags.push(insertTag);
     });
 
-
     newTags.forEach((tag: any) => {
         if (tag.delete) {
             data = removeTag(dicomData, tag);
@@ -43,7 +42,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             const newTag = createTag(tagIdByte, tag, true);
             data = insertTag(dicomData, tag, newTag);
         }
-        dicomData.byteArray = data
+        dicomData.byteArray = data;
     });
 
     return data;
@@ -62,7 +61,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToAdd.dataOffSet +
-        dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+            dicomData.elements[tagToAdd.tagId.toLowerCase()].length
     );
 
     const buf1 = concatBuffers(first, newtag);
@@ -83,7 +82,7 @@ export function removeTag(dicomData: any, tagToRemove: any) {
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToRemove.dataOffSet +
-        dicomData.elements[tagToRemove.tagId.toLowerCase()].length
+            dicomData.elements[tagToRemove.tagId.toLowerCase()].length
     );
 
     const newArray = concatBuffers(first, last);
@@ -150,11 +149,11 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     const tagLength =
         valueOffset === longHeaderLen
             ? writeTypedNumber(
-                valueLength,
-                "uint32",
-                longHeaderLengthLen,
-                littleEndian
-            )
+                  valueLength,
+                  "uint32",
+                  longHeaderLengthLen,
+                  littleEndian
+              )
             : writeTypedNumber(valueLength, "uint16", lengthLen, littleEndian);
 
     const newTag = new Uint8Array(valueLength + valueOffset);
