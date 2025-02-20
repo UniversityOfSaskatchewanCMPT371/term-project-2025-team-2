@@ -56,8 +56,12 @@ const extractDicomTags = (dataSet: any) => {
     Object.keys(dataSet.elements).forEach((tag: any) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
-        const tagName = tagDictionary.lookup(tagId) || "Unknown Tag";
-        const vr = element.vr;
+        const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
+        let vr = element.vr;
+        const vrTagDict = tagDictionary.lookupTagVR(tagId);
+        if(!vr) {       // If VR is not found, use the VR from the dictionary
+            vr = vrTagDict;
+        }
 
         let value: any;
 
@@ -77,6 +81,10 @@ const extractDicomTags = (dataSet: any) => {
                         element.dataOffset + element.length
                     )
                     .toString();
+                break;
+            case "FD":
+                value = dataSet.double(tag).toString() || "N/A";
+                console.log("FD: ", value);
                 break;
             default:
                 value = dataSet.string(tag) || "N/A";
