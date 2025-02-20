@@ -6,12 +6,16 @@ import { AnyActionArg } from "react";
  * @param newTableData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
  */
-export function tagUpdater(dicomData: any, newTableData: any, fileName: string) {
+export function tagUpdater(
+    dicomData: any,
+    newTableData: any,
+    fileName: string
+) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = getSingleFileTagEdits(newTableData, fileName);
 
-    if(filteredTags.length === 0) {
+    if (filteredTags.length === 0) {
         return newDicomData;
     }
 
@@ -46,24 +50,21 @@ export function tagUpdater(dicomData: any, newTableData: any, fileName: string) 
 }
 
 /**
- * 
- * @param newTags 
- * @param fileName 
- * @returns 
+ *
+ * @param newTags
+ * @param fileName
+ * @returns
  */
-function getSingleFileTagEdits(newTags: AnyActionArg, fileName: String) {
-    
+function getSingleFileTagEdits(newTags: AnyActionArg, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
-
 }
 
 /**
- * 
+ *
  * @param blobData - The dicom data object, byteArray
  * @param fileName - string name of the file
  */
 export function downloadDicomFile(blobData: any, fileName: string) {
-
     const blob = new Blob([blobData], {
         type: "application/dicom",
     });
@@ -73,15 +74,14 @@ export function downloadDicomFile(blobData: any, fileName: string) {
         : fileName;
 
     const url = window.URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
+
+    const link = document.createElement("a");
     link.href = url;
-    link.download = newFileName  + "_edited.dcm";
-    
+    link.download = newFileName + "_edited.dcm";
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
-    window.URL.revokeObjectURL(url);
 
+    window.URL.revokeObjectURL(url);
 }
