@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {files.length > 1 && (
                     <>
                         <GenButton
-                            label="Save All Files"
+                            label={series ? "Apply Edits to All Files" : "Save All Files"}
                             disabled={false}
                             onClick={updateAllFiles}
                         />
@@ -54,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             >
                                 {series
                                     ? "✨ Editing as Series"
-                                    : "🔄 Edit Individually"}
+                                    : "🔄 Editing Individually"}
                             </button>
                         </div>
                     </>
@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 isOpen={isModalOpen}
                 onClose={toggleModal}
                 title="Help"
-                text="Add some text for usage help."
+                text="Select a file to view and edit its DICOM tags. If multiple files are uploaded, you can choose to edit them individually or as a series."
             />
         </div>
     );

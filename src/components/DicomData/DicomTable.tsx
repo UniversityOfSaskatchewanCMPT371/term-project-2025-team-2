@@ -81,7 +81,6 @@ const DicomTable: React.FC<DicomTableProps> = ({
         const updatedDicomData = tagUpdater(
             dicomData.DicomDataSet,
             newTableData,
-            fileName
         );
 
         const blob = new Blob([updatedDicomData], {

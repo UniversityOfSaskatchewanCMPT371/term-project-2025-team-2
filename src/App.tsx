@@ -13,6 +13,7 @@ import Modal from "./components/utils/Modal";
 import {
     tagUpdater,
     downloadDicomFile,
+    getSingleFileTagEdits,
 } from "./components/DicomData/TagUpdater";
 
 /**
@@ -26,7 +27,7 @@ const App: React.FC = () => {
 
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [showSeriesModal, setShowSeiresModal] = useState(false);
     const [series, setSeries] = useState(false);
 
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
@@ -82,28 +83,24 @@ const App: React.FC = () => {
         };
     }, []);
 
+    // PWA installation prompt
     useEffect(() => {
         const handleBeforeInstallPrompt = (e: Event) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             setDeferredPrompt(e);
             console.log("PWA: Install prompt captured and ready");
         };
 
-        // Add the event listener
         window.addEventListener(
             "beforeinstallprompt",
             handleBeforeInstallPrompt
         );
 
-        // Check if running in development mode
         if (import.meta.env.DEV) {
             console.log("PWA: Running in development mode");
         }
 
         window.addEventListener("appinstalled", () => {
-            // Clear the deferredPrompt so it can be garbage collected
             setDeferredPrompt(null);
             console.log("PWA: Application was installed");
         });
@@ -116,6 +113,8 @@ const App: React.FC = () => {
         };
     }, []);
 
+
+    // PWA installation prompt click handler
     const handleInstallClick = async () => {
         if (!deferredPrompt) {
             console.log("PWA: No installation prompt available");
@@ -123,21 +122,19 @@ const App: React.FC = () => {
         }
 
         try {
-            // Show the install prompt
             const promptEvent = deferredPrompt as any;
             promptEvent.prompt();
 
-            // Wait for the user to respond to the prompt
             const { outcome } = await promptEvent.userChoice;
             console.log(`PWA: User response to the install prompt: ${outcome}`);
 
-            // Clear the prompt regardless of outcome
             setDeferredPrompt(null);
         } catch (err) {
             console.error("PWA: Error during installation:", err);
         }
     };
 
+    // File handling
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
@@ -146,7 +143,7 @@ const App: React.FC = () => {
 
         log.info("file-loaded");
         if (newFiles.length > 1) {
-            setIsOpen(true);
+            setShowSeiresModal(true);
         }
     };
 
@@ -166,6 +163,7 @@ const App: React.FC = () => {
         setCurrentFileIndex(index);
     };
 
+    // Clear all data, files, tags, and new tags
     const clearData = () => {
         setFiles([]);
         setDicomData([]);
@@ -180,22 +178,38 @@ const App: React.FC = () => {
         if (!series) {
             newTableData.forEach((entry) => {
                 if (entry.fileName !== files[currentFileIndex].name) {
+                    setSidebarVisible(false);
                     setSeriesSwitchModel(true);
                 }
             });
         }
     };
 
+    // Update all files with new tags, handle series and individual file editing
     const updateAllFiles = () => {
-        dicomData.forEach((dicom, index) => {
-            const updatedFile = tagUpdater(
-                dicom.DicomDataSet,
-                newTableData,
-                files[index].name
-            );
-            downloadDicomFile(updatedFile, files[index].name);
-        });
 
+        if (series) {
+            dicomData.forEach((dicom, index) => {
+                const updatedFile = tagUpdater(
+                    dicom.DicomDataSet,
+                    getSingleFileTagEdits(newTableData, files[currentFileIndex].name),
+                );
+                downloadDicomFile(updatedFile, files[index].name);
+            });
+
+        } else {
+
+            dicomData.forEach((dicom, index) => {
+                const updatedFile = tagUpdater(
+                    dicom.DicomDataSet,
+                    getSingleFileTagEdits(newTableData, files[index].name),
+                );
+                downloadDicomFile(updatedFile, files[index].name);
+            });
+
+        }
+        
+        setSidebarVisible(false);
         clearData();
     };
 
@@ -241,10 +255,10 @@ const App: React.FC = () => {
                     )}
                 </div>
 
-                {isOpen ? (
+                {showSeriesModal ? (
                     <QuestionModal
                         setSeries={setSeries}
-                        setIsOpen={setIsOpen}
+                        setIsOpen={setShowSeiresModal}
                         title={"Edit Files"}
                         text={
                             "Multiple files have been uploaded. Do you want to edit them as a series?"

@@ -9,11 +9,10 @@ import { AnyActionArg } from "react";
 export function tagUpdater(
     dicomData: any,
     newTableData: any,
-    fileName: string
 ) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
-    const filteredTags = getSingleFileTagEdits(newTableData, fileName);
+    const filteredTags = newTableData
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -55,7 +54,7 @@ export function tagUpdater(
  * @param fileName
  * @returns
  */
-function getSingleFileTagEdits(newTags: AnyActionArg, fileName: string) {
+export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
