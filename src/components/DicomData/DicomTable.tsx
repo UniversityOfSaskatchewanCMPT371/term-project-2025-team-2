@@ -62,11 +62,12 @@ const DicomTable: React.FC<DicomTableProps> = ({
                       .includes(searchTerm.toLowerCase()))
     );
 
-    const handleUpdateValue = (tagId: string, newValue: string) => {
+    const handleUpdateValue = (tagId: string, newValue: string, deleteTag: boolean) => {
         updateTableData({
             fileName: fileName,
             tagId: tagId,
             newValue: newValue,
+            delete: deleteTag
         });
     };
 
