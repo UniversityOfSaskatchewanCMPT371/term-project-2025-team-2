@@ -29,6 +29,9 @@ const App: React.FC = () => {
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+    const showError = () => setShowErrorModal(true);
+
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
     const [showSeriesModal, setShowSeiresModal] = useState(false);
@@ -240,7 +243,7 @@ const App: React.FC = () => {
                 <div className="flex-grow p-8">
                     {!loading ? (
                         <>
-                            <FileUploader onFileUpload={handleFileUpload} loading={setLoading} clearData={clearData} />
+                            <FileUploader onFileUpload={handleFileUpload} loading={setLoading} clearData={clearData} toggleModal={showError} />
 
                             <FileHeader
                                 files={files}
@@ -292,6 +295,13 @@ const App: React.FC = () => {
                     text={
                         "Multiple files have been edited. Displayed files edited tags will be applied to all files"
                     }
+                />
+
+                <Modal
+                    isOpen={showErrorModal}
+                    onClose={() => setShowErrorModal(false)}
+                    title="Error"
+                    text="File isn't a valid DICOM file."
                 />
 
                 {sidebarVisible && (

@@ -26,16 +26,18 @@ export interface FileTableProps {
     currentFileIndex: number;
     onFileSelect: (index: number) => void;
     series: boolean;
-} /**
+} 
+
+/**
  * interface FileNavigationProps
  */
-
 export interface FileNavigationProps {
     currentFileIndex: number;
     fileCount: number;
     onPrevFile: () => void;
     onNextFile: () => void;
 }
+
 /**
  * interface FileUploaderProps
  */
@@ -44,6 +46,7 @@ export interface FileUploaderProps {
     onFileUpload: (files: CustomFile[], dicomData: any[]) => void;
     loading: (value: boolean) => void;
     clearData: () => void;
+    toggleModal: () => void;
 }
 /**
  * interface FileHeaderProps
