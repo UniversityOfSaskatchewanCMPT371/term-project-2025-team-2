@@ -1,5 +1,3 @@
-import { AnyActionArg } from "react";
-
 /**
  *
  * @param dicomData - The dicom data object
