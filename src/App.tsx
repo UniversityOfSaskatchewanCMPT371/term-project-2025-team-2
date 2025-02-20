@@ -6,7 +6,7 @@ import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
 import log from "./components/utils/Logger";
-import { CustomFile as CustomFile } from "./types/types";
+import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
 import Modal from "./components/utils/Modal";
@@ -15,6 +15,7 @@ import {
     downloadDicomFile,
     getSingleFileTagEdits,
 } from "./components/DicomData/TagUpdater";
+import logger from "./components/utils/Logger";
 
 /**
  *
@@ -47,7 +48,7 @@ const App: React.FC = () => {
     const sidebarRef = useRef<HTMLDivElement>(null);
     const sidebarButtonRef = useRef<HTMLButtonElement | null>(null);
 
-    const handleToggle = (e: any) => {
+    const themeToggle = (e: any) => {
         if (e.target.checked) {
             setTheme("corporate");
         } else {
@@ -59,12 +60,14 @@ const App: React.FC = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
+    // Set theme on load
     useEffect(() => {
         localStorage.setItem("theme", theme!);
         const localTheme = localStorage.getItem("theme");
         document.querySelector("html")?.setAttribute("data-theme", localTheme!);
     }, [theme]);
 
+    // Close sidebar when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -88,7 +91,7 @@ const App: React.FC = () => {
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
-            console.log("PWA: Install prompt captured and ready");
+            logger.info("PWA: Install prompt captured and ready");
         };
 
         window.addEventListener(
@@ -97,12 +100,12 @@ const App: React.FC = () => {
         );
 
         if (import.meta.env.DEV) {
-            console.log("PWA: Running in development mode");
+            logger.info("PWA: Running in development mode");
         }
 
         window.addEventListener("appinstalled", () => {
             setDeferredPrompt(null);
-            console.log("PWA: Application was installed");
+            logger.info("PWA: Application was installed");
         });
 
         return () => {
@@ -113,11 +116,10 @@ const App: React.FC = () => {
         };
     }, []);
 
-
     // PWA installation prompt click handler
     const handleInstallClick = async () => {
         if (!deferredPrompt) {
-            console.log("PWA: No installation prompt available");
+            logger.info("PWA: No installation prompt available");
             return;
         }
 
@@ -126,11 +128,11 @@ const App: React.FC = () => {
             promptEvent.prompt();
 
             const { outcome } = await promptEvent.userChoice;
-            console.log(`PWA: User response to the install prompt: ${outcome}`);
+            logger.info(`PWA: User response to the install prompt: ${outcome}`);
 
             setDeferredPrompt(null);
         } catch (err) {
-            console.error("PWA: Error during installation:", err);
+            logger.error("PWA: Error during installation:", err);
         }
     };
 
@@ -147,18 +149,21 @@ const App: React.FC = () => {
         }
     };
 
+    // File navigation - move to next file
     const nextFile = () => {
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
     };
 
+    // File navigation - move to previous file
     const prevFile = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
     };
 
+    // Handle file selection - update current file index
     const handleFileSelect = (index: number) => {
         setCurrentFileIndex(index);
     };
@@ -172,6 +177,7 @@ const App: React.FC = () => {
         setSeries(false);
     };
 
+    // Toggle editing mode between series and individual files
     const toggleSeries = () => {
         setSeries(!series);
 
@@ -187,38 +193,38 @@ const App: React.FC = () => {
 
     // Update all files with new tags, handle series and individual file editing
     const updateAllFiles = () => {
-
         if (series) {
             dicomData.forEach((dicom, index) => {
                 const updatedFile = tagUpdater(
                     dicom.DicomDataSet,
-                    getSingleFileTagEdits(newTableData, files[currentFileIndex].name),
+                    getSingleFileTagEdits(
+                        newTableData,
+                        files[currentFileIndex].name
+                    )
                 );
                 downloadDicomFile(updatedFile, files[index].name);
             });
-
         } else {
-
             dicomData.forEach((dicom, index) => {
                 const updatedFile = tagUpdater(
                     dicom.DicomDataSet,
-                    getSingleFileTagEdits(newTableData, files[index].name),
+                    getSingleFileTagEdits(newTableData, files[index].name)
                 );
                 downloadDicomFile(updatedFile, files[index].name);
             });
-
         }
-        
+
         setSidebarVisible(false);
         clearData();
     };
 
+    // main render
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
-                toggleTheme={handleToggle}
+                toggleTheme={themeToggle}
                 sidebarButtonRef={sidebarButtonRef}
                 onInstallClick={handleInstallClick}
                 showInstallButton={!!deferredPrompt}

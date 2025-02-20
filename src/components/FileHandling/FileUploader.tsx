@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
 import Modal from "../utils/Modal.tsx";
-import { FileUploaderProps } from "../../types/types.ts";
+import { FileUploaderProps } from "../../types/FileTypes.ts";
+import logger from "../utils/Logger.tsx";
 
 /**
  *
@@ -23,7 +24,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
-            console.log(files); // here just to use the files variable
+            logger.info(files); // here just to use the files variable
             const fileArray = Array.from(selectedFiles);
             setFiles(fileArray);
             processFiles(fileArray);
@@ -49,7 +50,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
                 .catch((error) => {
                     onFileUpload((fileArray = []), dicomDataArray);
                     toggleModal();
-                    console.error(error);
+                    logger.error(error);
                 });
         });
     };

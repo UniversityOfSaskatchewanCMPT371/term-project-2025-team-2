@@ -1,5 +1,6 @@
 import dicomParser from "dicom-parser";
 import { TagDictionary } from "../../tagDictionary/dictionary";
+import logger from "../utils/Logger";
 
 const tagDictionary = new TagDictionary();
 
@@ -23,9 +24,13 @@ export const parseDicomFile = (file: File): Promise<any> => {
                     const dicomData = extractDicomTags(dataSet);
                     resolve(dicomData);
                 } catch (error) {
+                    logger.error("Error parsing DICOM file: ", error);
                     reject("Error parsing DICOM file: " + error);
                 }
             } else {
+                logger.error(
+                    "Invalid file format: Could not read file as ArrayBuffer."
+                );
                 reject(
                     "Invalid file format: Could not read file as ArrayBuffer."
                 );
@@ -44,7 +49,7 @@ export const parseDicomFile = (file: File): Promise<any> => {
 const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
-        console.warn("Invalid DICOM dataset: No elements found.");
+        logger.warn("Invalid DICOM dataset: No elements found.");
         return dicomTags;
     }
 

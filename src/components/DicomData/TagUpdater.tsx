@@ -1,18 +1,13 @@
-import { AnyActionArg } from "react";
-
 /**
  *
  * @param dicomData - The dicom data object
  * @param newTableData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
  */
-export function tagUpdater(
-    dicomData: any,
-    newTableData: any,
-) {
+export function tagUpdater(dicomData: any, newTableData: any) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
-    const filteredTags = newTableData
+    const filteredTags = newTableData;
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -49,17 +44,17 @@ export function tagUpdater(
 }
 
 /**
- *
+ * @description - Get the tags for a single file, filtered by the file name
  * @param newTags
  * @param fileName
- * @returns
+ * @returns - object tags edited for a single file
  */
 export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
 /**
- *
+ * @description - Download the dicom file, single file
  * @param blobData - The dicom data object, byteArray
  * @param fileName - string name of the file
  */

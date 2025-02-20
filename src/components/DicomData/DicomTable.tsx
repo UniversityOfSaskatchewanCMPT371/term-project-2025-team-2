@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Search from "../utils/Search";
 import { DicomTableRow } from "./DicomTableRow.tsx";
-import { DicomTableProps } from "../../types/types.ts";
+import { DicomTableProps } from "../../types/DicomTypes.ts";
 import { GenButton } from "../utils/GenButton.tsx";
-import log from "../utils/Logger";
+import logger from "../utils/Logger";
 
 import { tagUpdater, downloadDicomFile } from "./TagUpdater.tsx";
 
@@ -23,7 +23,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
-        log.error("No DICOM data available");
+        logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
 
@@ -80,7 +80,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const updateFile = () => {
         const updatedDicomData = tagUpdater(
             dicomData.DicomDataSet,
-            newTableData,
+            newTableData
         );
 
         const blob = new Blob([updatedDicomData], {

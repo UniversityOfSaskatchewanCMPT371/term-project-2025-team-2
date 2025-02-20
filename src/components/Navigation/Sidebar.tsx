@@ -6,10 +6,14 @@ import Modal from "../utils/Modal.tsx";
 import { GenButton } from "../utils/GenButton.tsx";
 
 /**
- *
+ * @description Sidebar component
  * @param files - Array of files
  * @param onFileSelect - Function to handle file selection
  * @param currentFileIndex - Index of the currently viewed file
+ * @param series - Boolean to check if the files are being edited as a series
+ * @param seriesToggle - Function to toggle series mode
+ * @param isVisible - Boolean to check if the sidebar is visible
+ * @param updateAllFiles - Function to update all files
  * @returns rendered Sidebar component
  */
 const Sidebar: React.FC<SidebarProps> = ({
@@ -43,7 +47,11 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {files.length > 1 && (
                     <>
                         <GenButton
-                            label={series ? "Apply Edits to All Files" : "Save All Files"}
+                            label={
+                                series
+                                    ? "Apply Edits to All Files"
+                                    : "Save All Files"
+                            }
                             disabled={false}
                             onClick={updateAllFiles}
                         />

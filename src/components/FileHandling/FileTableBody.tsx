@@ -1,5 +1,5 @@
 import React from "react";
-import { FileListProps } from "../../types/types.ts";
+import { FileListProps } from "../../types/FileTypes.ts";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 
 /**

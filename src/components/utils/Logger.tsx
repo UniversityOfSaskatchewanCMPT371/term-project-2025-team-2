@@ -26,7 +26,7 @@ log.enableAll();
 remote.apply(log, {
     url: "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg",
     format: logMsgFormat,
-    level: "error",
+    level: "critical",
 });
 
 export default log;

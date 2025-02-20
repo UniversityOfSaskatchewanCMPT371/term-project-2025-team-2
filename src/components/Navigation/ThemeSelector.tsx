@@ -5,6 +5,7 @@ import { ThemeSelectorProps } from "../../types/types";
 /**
  *
  * @param toggleTheme - Function to toggle theme
+ * @param currTheme - Current theme
  * @returns rendered ThemeSelector component
  */
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({

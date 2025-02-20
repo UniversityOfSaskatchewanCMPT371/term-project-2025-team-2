@@ -1,6 +1,6 @@
 import React from "react";
 import { GenButton } from "../utils/GenButton";
-import { FileNavigationProps } from "../../types/types";
+import { FileNavigationProps } from "../../types/FileTypes";
 
 /**
  *

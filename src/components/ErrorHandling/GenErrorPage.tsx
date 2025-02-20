@@ -1,15 +1,20 @@
 import { GenErrorPageProps } from "../../types/types";
+import { GenButton } from "../utils/GenButton";
 /**
  * GenErrorPage
- * @param {GenErrorPageProps} { error }
- * @returns {JSX.Element} rendered GenErrorPage component
+ * @param error - Error object
+ * @returns rendered GenErrorPage component
  */
 function GenErrorPage({ error }: GenErrorPageProps) {
     return (
         <div className="flex h-screen flex-col items-center justify-center space-y-4">
             <h1>Something went wrong.</h1>
             <p>{error.message}</p>
-            <button onClick={() => window.location.reload()}>Reload</button>
+            <GenButton
+                label="Reload"
+                onClick={() => window.location.reload()}
+                disabled={false}
+            />
         </div>
     );
 }
