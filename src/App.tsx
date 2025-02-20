@@ -14,6 +14,8 @@ import {
     tagUpdater,
     downloadDicomFile,
     getSingleFileTagEdits,
+    createFile,
+    createZipFromFiles,
 } from "./components/DicomData/TagUpdater";
 import logger from "./components/utils/Logger";
 
@@ -35,6 +37,7 @@ const App: React.FC = () => {
     const [showSeriesModal, setShowSeiresModal] = useState(false);
     const [series, setSeries] = useState(false);
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
+    const [downloadOption, setDownloadOption] = useState<string>("single");
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
@@ -211,7 +214,10 @@ const App: React.FC = () => {
     };
 
     // Update all files with new tags, handle series and individual file editing
-    const updateAllFiles = () => {
+    // To Do - Refactor this function
+    const updateAllFiles = async () => {
+        let newFiles: any = [];
+
         if (series) {
             dicomData.forEach((dicom, index) => {
                 const updatedFile = tagUpdater(
@@ -221,7 +227,11 @@ const App: React.FC = () => {
                         files[currentFileIndex].name
                     )
                 );
-                downloadDicomFile(updatedFile, files[index].name);
+                if (downloadOption === "single") {
+                    downloadDicomFile(createFile(files[index].name, updatedFile));
+                } else {
+                    newFiles.push( createFile(files[index].name, updatedFile) );
+                }
             });
         } else {
             dicomData.forEach((dicom, index) => {
@@ -229,9 +239,19 @@ const App: React.FC = () => {
                     dicom.DicomDataSet,
                     getSingleFileTagEdits(newTagValues, files[index].name)
                 );
-                downloadDicomFile(updatedFile, files[index].name);
+                if (downloadOption === "single") {
+                    downloadDicomFile(createFile(files[index].name, updatedFile));
+                } else {
+                    newFiles.push( createFile(files[index].name, updatedFile) );
+                }
             });
         }
+
+        if (downloadOption === "zip") {
+            const zipFile = await createZipFromFiles(newFiles);
+            downloadDicomFile({'name': "updateDicoms.zip", 'content': zipFile});
+        }
+
         setSidebarVisible(false);
         clearData();
     };
@@ -330,6 +350,8 @@ const App: React.FC = () => {
                             seriesToggle={toggleSeries}
                             isVisible={sidebarVisible}
                             updateAllFiles={updateAllFiles}
+                            downloadOption={downloadOption}
+                            setDownloadOption={setDownloadOption}
                         />
                     </div>
                 )}

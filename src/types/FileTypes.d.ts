@@ -39,9 +39,18 @@ export interface FileNavigationProps {
 }
 
 /**
+ * interface FileData
+ * @property name - Name of the file
+ * @property content - File content
+ */
+export interface FileData {
+    name: string;
+    content: Blob;
+}
+
+/**
  * interface FileUploaderProps
  */
-
 export interface FileUploaderProps {
     onFileUpload: (files: CustomFile[], dicomData: any[]) => void;
     loading: (value: boolean) => void;

@@ -4,6 +4,7 @@ import { SidebarProps } from "../../types/types.ts";
 import FileTable from "../FileHandling/FileTable.tsx";
 import Modal from "../utils/Modal.tsx";
 import { GenButton } from "../utils/GenButton.tsx";
+import DownloadOption from "../utils/DownloadOption.tsx";
 
 /**
  * @description Sidebar component
@@ -24,6 +25,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     seriesToggle,
     isVisible,
     updateAllFiles,
+    setDownloadOption,
+    downloadOption,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,6 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="mt-4 flex flex-col p-6 pt-20">
                 <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-xl font-bold text-primary">Files</h3>
+                    {files.length > 1 && <DownloadOption  setDownloadOption={setDownloadOption} downloadOption={downloadOption} />}
                     <QuestionMarkCircleIcon
                         className="size-6 cursor-pointer text-base-content/70 transition-colors hover:text-primary"
                         onClick={toggleModal}
