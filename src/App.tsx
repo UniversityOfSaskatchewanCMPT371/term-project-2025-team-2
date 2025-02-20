@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
@@ -25,6 +27,7 @@ const App: React.FC = () => {
     const [files, setFiles] = useState<CustomFile[]>([]);
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -138,12 +141,15 @@ const App: React.FC = () => {
 
     // File handling
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
+
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
         setNewTableData([]);
 
         log.info("file-loaded");
+        setLoading(false);
+
         if (newFiles.length > 1) {
             setShowSeiresModal(true);
         }
@@ -232,12 +238,20 @@ const App: React.FC = () => {
 
             <div className="flex flex-1">
                 <div className="flex-grow p-8">
-                    <FileUploader onFileUpload={handleFileUpload} />
+                    {!loading ? (
+                        <>
+                            <FileUploader onFileUpload={handleFileUpload} loading={setLoading} clearData={clearData} />
 
-                    <FileHeader
-                        files={files}
-                        currentFileIndex={currentFileIndex}
-                    />
+                            <FileHeader
+                                files={files}
+                                currentFileIndex={currentFileIndex}
+                            />
+                        </>) : (
+                        <div className="flex items-center justify-center h-full">
+                            <ArrowPathIcon className="h-24 w-24 text-gray-400 animate-spin" />
+                        </div>
+                    )}
+
                     {files.length > 1 && !series ? (
                         <FileNavigation
                             currentFileIndex={currentFileIndex}

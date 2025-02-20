@@ -10,7 +10,7 @@ import logger from "../utils/Logger.tsx";
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */
-const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
+const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, loading, clearData }) => {
     const [files, setFiles] = useState<File[]>([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,6 +61,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
      * Handles file drop event
      */
     const onDrop = (acceptedFiles: File[]) => {
+        clearData();
+        loading(true);
+
         setFiles(acceptedFiles);
         processFiles(acceptedFiles);
     };

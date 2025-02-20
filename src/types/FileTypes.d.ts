@@ -42,6 +42,8 @@ export interface FileNavigationProps {
 
 export interface FileUploaderProps {
     onFileUpload: (files: CustomFile[], dicomData: any[]) => void;
+    loading: (value: boolean) => void;
+    clearData: () => void;
 }
 /**
  * interface FileHeaderProps
