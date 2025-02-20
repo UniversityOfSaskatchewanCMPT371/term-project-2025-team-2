@@ -10,6 +10,10 @@ import { CustomFile as CustomFile } from "./types/types";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
 import Modal from "./components/utils/Modal";
+import {
+    tagUpdater,
+    downloadDicomFile,
+} from "./components/DicomData/TagUpdater";
 
 /**
  *
@@ -182,6 +186,19 @@ const App: React.FC = () => {
         }
     };
 
+    const updateAllFiles = () => {
+        dicomData.forEach((dicom, index) => {
+            const updatedFile = tagUpdater(
+                dicom.DicomDataSet,
+                newTableData,
+                files[index].name
+            );
+            downloadDicomFile(updatedFile, files[index].name);
+        });
+
+        clearData();
+    };
+
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
@@ -253,6 +270,7 @@ const App: React.FC = () => {
                             series={series}
                             seriesToggle={toggleSeries}
                             isVisible={sidebarVisible}
+                            updateAllFiles={updateAllFiles}
                         />
                     </div>
                 )}

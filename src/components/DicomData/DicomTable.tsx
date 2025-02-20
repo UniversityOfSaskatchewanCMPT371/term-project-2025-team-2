@@ -5,7 +5,7 @@ import { DicomTableProps } from "../../types/types.ts";
 import { GenButton } from "../utils/GenButton.tsx";
 import log from "../utils/Logger";
 
-import { tagUpdater } from "./TagUpdater.tsx";
+import { tagUpdater, downloadDicomFile } from "./TagUpdater.tsx";
 
 /**
  *
@@ -80,7 +80,8 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const updateFile = () => {
         const updatedDicomData = tagUpdater(
             dicomData.DicomDataSet,
-            newTableData
+            newTableData,
+            fileName
         );
 
         const blob = new Blob([updatedDicomData], {
@@ -92,19 +93,6 @@ const DicomTable: React.FC<DicomTableProps> = ({
         clearData();
     };
 
-    function downloadDicomFile(blobData: any, fileName: string) {
-        const newFileName = fileName.includes(".dcm")
-            ? fileName.slice(0, -4)
-            : fileName;
-
-        const url = URL.createObjectURL(blobData);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = newFileName + "_edited.dcm";
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
     return (
         <div key={fileName} className="mt-8">
             <h2 className="text-2xl font-semibold">DICOM Tags</h2>
@@ -115,7 +103,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
                 />
                 <div className="ml-4">
                     <GenButton
-                        label="Save Edits"
+                        label="Save Single File Edits"
                         disabled={false}
                         onClick={updateFile}
                     />
