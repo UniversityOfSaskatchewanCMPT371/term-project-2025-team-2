@@ -109,7 +109,7 @@ describe("DicomParserUtils", () => {
         Object.keys(mockDataset.elements).forEach((tag) => {
             console.log("result[tag]");
             console.log(JSON.stringify(result[tag], null, 2)); // Pretty-print JSON in CI logs
-            expect(result[tag]).toEqual({
+            expect(result.tags[tag]).toEqual({
                 tagId: tag,
                 tagName: "Unknown",
                 value: "Some Value",
@@ -156,13 +156,13 @@ describe("DicomParserUtils", () => {
         console.log(JSON.stringify(result["0040A730"].value["00080100"], null, 2)); // Pretty-print JSON in CI logs
 
         // Ensure nested sequence extraction works
-        expect(result["0040A730"].value["00080100"]).toEqual({
+        expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
             tagId: "00080100",
             tagName: "Code Value",
             value: "12345",
         });
 
-        expect(result["0040A730"].value["00080102"]).toEqual({
+        expect(result.tags["0040A730"].value.tags["00080102"]).toEqual({
             tagId: "00080102",
             tagName: "Coding Scheme Designator",
             value: "LOINC",
@@ -195,9 +195,9 @@ describe("DicomParserUtils", () => {
         console.log("result[\"00100010\"]");
         console.log(JSON.stringify(result["00100010"], null, 2)); // Pretty-print JSON in CI logs
 
-        expect(result["00100010"].value).toBe("Aladin Alihodzic");
-        expect(result["00100020"].value).toBe("101010");
-        expect(result["00100030"].value).toBe("19960309");
+        expect(result.tags["00100010"].value).toBe("Aladin Alihodzic");
+        expect(result.tags["00100020"].value).toBe("101010");
+        expect(result.tags["00100030"].value).toBe("19960309");
     });
 
 });
