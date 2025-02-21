@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+test.describe.configure({ mode: 'parallel' });
 test('Upload DICOM file ', async ({ page }) => {
     // Navigate to your DICOM tag editor
     await page.goto(' http://localhost:5173');
@@ -142,8 +143,6 @@ test('Toggle sidebar', async ({ page }) => {
     const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
     await sidebarToggleButton.waitFor(); // Ensure button is present
 
-    const sidebar = page.locator('.sidebar');
-    console.log(await sidebar.count()); // Check if sidebar exists before clicking
 
     await sidebarToggleButton.click(); // Open sidebar
     console.log("Toggle sidebar working successfully")
@@ -193,8 +192,6 @@ test('Saving changes using Side bar toggle test', async ({ page }) => {
     const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
     await sidebarToggleButton.waitFor(); // Ensure button is present
 
-    const sidebar = page.locator('.sidebar');
-    console.log(await sidebar.count()); // Check if sidebar exists before clicking
 
     await sidebarToggleButton.click(); // Open sidebar
 
@@ -233,8 +230,6 @@ test('Testing edit individually and series button in side bar', async ({ page })
     const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
     await sidebarToggleButton.waitFor(); // Ensure button is present
 
-    const sidebar = page.locator('.sidebar');
-    console.log(await sidebar.count()); // Check if sidebar exists before clicking
 
     await sidebarToggleButton.click(); // Open sidebar
 
