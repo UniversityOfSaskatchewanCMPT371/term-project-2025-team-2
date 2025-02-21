@@ -285,3 +285,68 @@ test('Navigating from files from sidebar test', async ({ page }) => {
 
     await expect(page.locator('text=Currently Viewing: CR000001.dcm')).toBeVisible();
 });
+
+test('Updating file by navigating through side bar', async ({ page }) => {
+    await page.goto('http://localhost:5173');
+
+    const fileInput = page.locator('input[type="file"].hidden');
+    await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
+
+    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await expect(promptText).toBeVisible();
+
+    const noButton = page.locator('button', { hasText: 'No' });
+    await expect(noButton).toBeVisible();
+    await noButton.click();
+
+    await page.waitForTimeout(2000);
+
+    const currentFile = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFile).toBeVisible();
+
+    const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
+    await sidebarToggleButton.waitFor();
+    await sidebarToggleButton.click();
+
+    // Fixing selector issue for sidebar file list
+    const sidebarFileList = page.locator('div.mt-2.rounded-lg').nth(0).locator('table.w-full tbody');
+    await sidebarFileList.waitFor();
+
+    const firstFile = sidebarFileList.locator('text=CR000000.dcm').first();
+    await expect(firstFile).toBeVisible();
+    await firstFile.click();
+
+    const currentFileSidebar = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFileSidebar).toBeVisible();
+
+    const secondFile = sidebarFileList.locator('text=CR000001.dcm').first();
+    await expect(secondFile).toBeVisible();
+    await secondFile.click();
+
+    await expect(page.locator('text=Currently Viewing: CR000001.dcm')).toBeVisible();
+
+    await sidebarToggleButton.click();
+
+    await page.innerHTML('body')
+
+    // Find the row containing 'SOPClassUID'
+    const tagRow = page.locator('tr').filter({ hasText: 'SOPClassUID' }).first();
+    await expect(tagRow).toBeVisible();
+
+    // Click the edit button (pencil icon) in that row
+    const editButton = tagRow.locator('svg.h-6.w-6'); // Pencil button
+    await expect(editButton).toBeVisible();
+    await editButton.click();
+
+    // Now find and edit the input field
+    const tagInput = tagRow.locator('input');
+    await expect(tagInput).toBeVisible();
+    await tagInput.fill('New Value');
+
+    // Save changes
+    const saveButton = page.getByRole('button', { name: 'Save Single File Edits' });
+    await expect(saveButton).toBeEnabled();
+    await saveButton.click();
+
+    console.log("Done Editing the Dicom file")
+});
