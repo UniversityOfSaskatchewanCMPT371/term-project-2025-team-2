@@ -197,7 +197,7 @@ test('Saving changes using Side bar toggle test', async ({ page }) => {
 
     // Click the "Save All Files" button
     await saveAllFilesButton.click();
-    console.log("Save file button working successfully on sidebar toggle")
+    console.log("Save file button working successfully on sidebar toggle");
 });
 
 test('Testing edit individually and series button in side bar', async ({ page }) => {
@@ -242,6 +242,46 @@ test('Testing edit individually and series button in side bar', async ({ page })
 
     // Click the "Editing as Series" button
     await editAsSeriesButton.click();
+    console.log("Edit buttons working completely fine");
 
 });
 
+test('Navigating from files from sidebar test', async ({ page }) => {
+    await page.goto('http://localhost:5173');
+
+    const fileInput = page.locator('input[type="file"].hidden');
+    await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
+
+    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await expect(promptText).toBeVisible();
+
+    const noButton = page.locator('button', { hasText: 'No' });
+    await expect(noButton).toBeVisible();
+    await noButton.click();
+
+    await page.waitForTimeout(2000);
+
+    const currentFile = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFile).toBeVisible();
+
+    const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
+    await sidebarToggleButton.waitFor();
+    await sidebarToggleButton.click();
+
+    // Fixing selector issue for sidebar file list
+    const sidebarFileList = page.locator('div.mt-2.rounded-lg').nth(0).locator('table.w-full tbody');
+    await sidebarFileList.waitFor();
+
+    const firstFile = sidebarFileList.locator('text=CR000000.dcm').first();
+    await expect(firstFile).toBeVisible();
+    await firstFile.click();
+
+    const currentFileSidebar = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFileSidebar).toBeVisible();
+
+    const secondFile = sidebarFileList.locator('text=CR000001.dcm').first();
+    await expect(secondFile).toBeVisible();
+    await secondFile.click();
+
+    await expect(page.locator('text=Currently Viewing: CR000001.dcm')).toBeVisible();
+});
