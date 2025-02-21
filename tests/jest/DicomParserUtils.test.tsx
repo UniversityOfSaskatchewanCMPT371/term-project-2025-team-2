@@ -101,9 +101,9 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile); // invokes extractDicomTags
 
-        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract hidden DICOM tags correctly *****");
-        console.log("result ");
-        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+        // console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract hidden DICOM tags correctly *****");
+        // console.log("result ");
+        // console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
 
         // Check extracted tags
         Object.keys(mockDataset.elements).forEach((tag) => {
@@ -147,13 +147,13 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile);  // invokes extractDicomTags & mocked TagDictionary
 
-        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: Should extract nested sequence items correctly *****");
-        console.log("result ");
-        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
-        console.log("result[\"0040A730\"]");
-        console.log(JSON.stringify(result["0040A730"], null, 2)); // Pretty-print JSON in CI logs
-        console.log("result[\"0040A730\"].value[\"00080100\"]");
-        console.log(JSON.stringify(result["0040A730"].value["00080100"], null, 2)); // Pretty-print JSON in CI logs
+        // console.log("Debugging result: ***** UNIT-INTEGRATION TEST: Should extract nested sequence items correctly *****");
+        // console.log("result ");
+        // console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+        // console.log("result[\"0040A730\"]");
+        // console.log(JSON.stringify(result["0040A730"], null, 2)); // Pretty-print JSON in CI logs
+        // console.log("result[\"0040A730\"].value[\"00080100\"]");
+        // console.log(JSON.stringify(result["0040A730"].value["00080100"], null, 2)); // Pretty-print JSON in CI logs
 
         // Ensure nested sequence extraction works
         expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
@@ -189,11 +189,11 @@ describe("DicomParserUtils", () => {
 
         const result = await parseDicomFile(mockFile);
 
-        console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract values from multiple DICOM tags *****");
-        console.log("result ");
-        console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
-        console.log("result[\"00100010\"]");
-        console.log(JSON.stringify(result["00100010"], null, 2)); // Pretty-print JSON in CI logs
+        // console.log("Debugging result: ***** UNIT-INTEGRATION TEST: extract values from multiple DICOM tags *****");
+        // console.log("result ");
+        // console.log(JSON.stringify(result, null, 2)); // Pretty-print JSON in CI logs
+        // console.log("result[\"00100010\"]");
+        // console.log(JSON.stringify(result["00100010"], null, 2)); // Pretty-print JSON in CI logs
 
         expect(result.tags["00100010"].value).toBe("Aladin Alihodzic");
         expect(result.tags["00100020"].value).toBe("101010");
