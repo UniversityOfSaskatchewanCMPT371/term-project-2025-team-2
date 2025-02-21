@@ -22,7 +22,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const [searchTerm, setSearchTerm] = useState("");
     const [showHidden, setShowHidden] = useState(false);
 
-    if (!dicomData) {
+    if (!dicomData.tags) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
