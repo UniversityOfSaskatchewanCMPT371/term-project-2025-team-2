@@ -216,7 +216,7 @@ const App: React.FC = () => {
     // Update all files with new tags, handle series and individual file editing
     // To Do - Refactor this function
     const updateAllFiles = async () => {
-        let newFiles: any = [];
+        const newFiles: any = [];
 
         if (series) {
             dicomData.forEach((dicom, index) => {
@@ -228,9 +228,11 @@ const App: React.FC = () => {
                     )
                 );
                 if (downloadOption === "single") {
-                    downloadDicomFile(createFile(files[index].name, updatedFile));
+                    downloadDicomFile(
+                        createFile(files[index].name, updatedFile)
+                    );
                 } else {
-                    newFiles.push( createFile(files[index].name, updatedFile) );
+                    newFiles.push(createFile(files[index].name, updatedFile));
                 }
             });
         } else {
@@ -240,16 +242,18 @@ const App: React.FC = () => {
                     getSingleFileTagEdits(newTagValues, files[index].name)
                 );
                 if (downloadOption === "single") {
-                    downloadDicomFile(createFile(files[index].name, updatedFile));
+                    downloadDicomFile(
+                        createFile(files[index].name, updatedFile)
+                    );
                 } else {
-                    newFiles.push( createFile(files[index].name, updatedFile) );
+                    newFiles.push(createFile(files[index].name, updatedFile));
                 }
             });
         }
 
         if (downloadOption === "zip") {
             const zipFile = await createZipFromFiles(newFiles);
-            downloadDicomFile({'name': "updateDicoms.zip", 'content': zipFile});
+            downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
         }
 
         setSidebarVisible(false);

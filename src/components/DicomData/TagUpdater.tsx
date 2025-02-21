@@ -1,5 +1,5 @@
-import JSZip from 'jszip';
-import { FileData } from '../../types/FileTypes';
+import JSZip from "jszip";
+import { FileData } from "../../types/FileTypes";
 
 /**
  *
@@ -63,7 +63,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToAdd.dataOffSet +
-        dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+            dicomData.elements[tagToAdd.tagId.toLowerCase()].length
     );
 
     const buf1 = concatBuffers(first, newtag);
@@ -84,7 +84,7 @@ export function removeTag(dicomData: any, tagToRemove: any) {
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToRemove.dataOffSet +
-        dicomData.elements[tagToRemove.tagId.toLowerCase()].length
+            dicomData.elements[tagToRemove.tagId.toLowerCase()].length
     );
 
     const newArray = concatBuffers(first, last);
@@ -151,11 +151,11 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     const tagLength =
         valueOffset === longHeaderLen
             ? writeTypedNumber(
-                valueLength,
-                "uint32",
-                longHeaderLengthLen,
-                littleEndian
-            )
+                  valueLength,
+                  "uint32",
+                  longHeaderLengthLen,
+                  littleEndian
+              )
             : writeTypedNumber(valueLength, "uint16", lengthLen, littleEndian);
 
     const newTag = new Uint8Array(valueLength + valueOffset);
@@ -335,7 +335,6 @@ export function getSingleFileTagEdits(newTags: any, fileName: string) {
 }
 
 export function createFile(fileName: string, blobData: any) {
-
     const blob = new Blob([blobData], {
         type: "application/dicom",
     });
@@ -344,7 +343,7 @@ export function createFile(fileName: string, blobData: any) {
         ? fileName.slice(0, -4)
         : fileName;
 
-    return {'name': newFileName + "_edited.dcm", 'content': blob};
+    return { name: newFileName + "_edited.dcm", content: blob };
 }
 
 /**
@@ -353,7 +352,6 @@ export function createFile(fileName: string, blobData: any) {
  * @param fileName - string name of the file
  */
 export async function downloadDicomFile(newFile: FileData) {
-    
     const url = window.URL.createObjectURL(newFile.content);
 
     const link = document.createElement("a");
@@ -367,26 +365,26 @@ export async function downloadDicomFile(newFile: FileData) {
 }
 
 /**
-* Creates a ZIP file containing multiple files
-* @param files - Array of files with name and content
-* @returns Promise resolving to the ZIP file as a Blob
-*/
+ * Creates a ZIP file containing multiple files
+ * @param files - Array of files with name and content
+ * @returns Promise resolving to the ZIP file as a Blob
+ */
 export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     try {
         const zip = new JSZip();
 
         // Add each file to the ZIP
-        files.forEach(file => {
+        files.forEach((file) => {
             zip.file(file.name, file.content);
         });
 
         // Generate the ZIP file
         const zipBlob = await zip.generateAsync({
-            type: 'blob',
-            compression: 'DEFLATE',
+            type: "blob",
+            compression: "DEFLATE",
             compressionOptions: {
-                level: 6 // Compression level (1-9)
-            }
+                level: 6, // Compression level (1-9)
+            },
         });
 
         return zipBlob;
