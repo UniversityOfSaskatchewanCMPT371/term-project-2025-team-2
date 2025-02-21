@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../../types/DicomTypes";
 
 /**
@@ -29,6 +29,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
+    const [deleteTag, setDeleteTag] = useState<boolean>(false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -36,7 +37,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     const handleBlur = () => {
-        onUpdateValue(row.tagId, newValue);
+        onUpdateValue(row.tagId, newValue, deleteTag);
         setIsEditing(false);
     };
 
@@ -48,9 +49,19 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         setIsEditing(!isEditing);
     };
 
+    const toggleDelete = () => {
+        setDeleteTag((preValue) => !preValue);
+        const tempDeletetag = !deleteTag;
+
+        onUpdateValue(row.tagId, newValue, tempDeletetag);
+    };
+
     return (
         <React.Fragment key={index + row.tagId + row.value}>
-            <tr key={index + row.tagId} className={"hover:bg-blue-600"}>
+            <tr
+                key={index + row.tagId}
+                className={`hover:bg-blue-600 ${deleteTag && "outline -outline-offset-4 outline-red-600"}`}
+            >
                 <td
                     className={`break-all border px-4 py-2 ${
                         nested
@@ -102,6 +113,14 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 onClick={() => handleClick(toggleEditing)}
                             >
                                 <PencilSquareIcon className="h-6 w-6" />
+                            </div>
+                            <div
+                                className="flex cursor-pointer justify-end hover:text-accent"
+                                onClick={() => toggleDelete()}
+                            >
+                                <XCircleIcon
+                                    className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                />
                             </div>
                         </div>
                     ) : (

@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
-import log from "./components/utils/Logger";
 import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
@@ -20,7 +18,7 @@ import {
 import logger from "./components/utils/Logger";
 
 /**
- *
+ * @description Main App Function
  * @returns rendered App component
  */
 const App: React.FC = () => {
@@ -36,19 +34,32 @@ const App: React.FC = () => {
 
     const [showSeriesModal, setShowSeiresModal] = useState(false);
     const [series, setSeries] = useState(false);
-
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
     );
 
-    const [newTableData, setNewTableData] = useState<any[]>([]);
+    const [newTagValues, setNewTagValues] = useState<any[]>([]);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
-    const updateTableData = (newData: any) => {
-        setNewTableData((prevData) => [...prevData, newData]);
+    const updateTagValues = (newData: any) => {
+        setNewTagValues((prevData) => {
+            const existingIndex = prevData.findIndex(
+                (item) =>
+                    item.fileName === newData.fileName &&
+                    item.tagId === newData.tagId
+            );
+
+            if (existingIndex !== -1) {
+                return prevData.map((item, index) =>
+                    index === existingIndex ? newData : item
+                );
+            }
+
+            return [...prevData, newData];
+        });
     };
 
     const sidebarRef = useRef<HTMLDivElement>(null);
@@ -97,7 +108,7 @@ const App: React.FC = () => {
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
-            logger.info("PWA: Install prompt captured and ready");
+            logger.debug("PWA: Install prompt captured and ready");
         };
 
         window.addEventListener(
@@ -106,12 +117,12 @@ const App: React.FC = () => {
         );
 
         if (import.meta.env.DEV) {
-            logger.info("PWA: Running in development mode");
+            logger.debug("PWA: Running in development mode");
         }
 
         window.addEventListener("appinstalled", () => {
             setDeferredPrompt(null);
-            logger.info("PWA: Application was installed");
+            logger.debug("PWA: Application was installed");
         });
 
         return () => {
@@ -144,13 +155,12 @@ const App: React.FC = () => {
 
     // File handling
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
-
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
-        setNewTableData([]);
+        setNewTagValues([]);
 
-        log.info("file-loaded");
+        logger.debug("file-loaded");
         setLoading(false);
 
         if (newFiles.length > 1) {
@@ -182,7 +192,7 @@ const App: React.FC = () => {
         setFiles([]);
         setDicomData([]);
         setCurrentFileIndex(0);
-        setNewTableData([]);
+        setNewTagValues([]);
         setSeries(false);
     };
 
@@ -191,7 +201,7 @@ const App: React.FC = () => {
         setSeries(!series);
 
         if (!series) {
-            newTableData.forEach((entry) => {
+            newTagValues.forEach((entry) => {
                 if (entry.fileName !== files[currentFileIndex].name) {
                     setSidebarVisible(false);
                     setSeriesSwitchModel(true);
@@ -207,7 +217,7 @@ const App: React.FC = () => {
                 const updatedFile = tagUpdater(
                     dicom.DicomDataSet,
                     getSingleFileTagEdits(
-                        newTableData,
+                        newTagValues,
                         files[currentFileIndex].name
                     )
                 );
@@ -217,7 +227,7 @@ const App: React.FC = () => {
             dicomData.forEach((dicom, index) => {
                 const updatedFile = tagUpdater(
                     dicom.DicomDataSet,
-                    getSingleFileTagEdits(newTableData, files[index].name)
+                    getSingleFileTagEdits(newTagValues, files[index].name)
                 );
                 downloadDicomFile(updatedFile, files[index].name);
             });
@@ -243,15 +253,21 @@ const App: React.FC = () => {
                 <div className="flex-grow p-8">
                     {!loading ? (
                         <>
-                            <FileUploader onFileUpload={handleFileUpload} loading={setLoading} clearData={clearData} toggleModal={showError} />
+                            <FileUploader
+                                onFileUpload={handleFileUpload}
+                                loading={setLoading}
+                                clearData={clearData}
+                                toggleModal={showError}
+                            />
 
                             <FileHeader
                                 files={files}
                                 currentFileIndex={currentFileIndex}
                             />
-                        </>) : (
-                        <div className="flex items-center justify-center h-full">
-                            <ArrowPathIcon className="h-24 w-24 text-gray-400 animate-spin" />
+                        </>
+                    ) : (
+                        <div className="flex h-full items-center justify-center">
+                            <ArrowPathIcon className="h-24 w-24 animate-spin text-gray-400" />
                         </div>
                     )}
 
@@ -269,8 +285,8 @@ const App: React.FC = () => {
                             <DicomTable
                                 dicomData={dicomData[currentFileIndex]}
                                 fileName={files[currentFileIndex].name}
-                                updateTableData={updateTableData}
-                                newTableData={newTableData}
+                                updateTableData={updateTagValues}
+                                newTableData={newTagValues}
                                 clearData={clearData}
                             />
                         </div>
@@ -283,7 +299,7 @@ const App: React.FC = () => {
                         setIsOpen={setShowSeiresModal}
                         title={"Edit Files"}
                         text={
-                            "Multiple files have been uploaded. Do you want to edit individually?"
+                            "Multiple files have been uploaded. Do you want to edit as a series?"
                         }
                     />
                 ) : null}

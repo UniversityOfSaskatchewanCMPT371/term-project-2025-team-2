@@ -27,7 +27,14 @@ describe("FileUploader Component Tests", () => {
 
     //***** UNIT TEST: correctly render UI elements *****/
     test("renders FileUploader correctly", () => {
-        render(<FileUploader onFileUpload={mockOnFileUpload} loading={() => { }} clearData={() => { }} toggleModal={mockToggleModal} />);
+        render(
+            <FileUploader
+                onFileUpload={mockOnFileUpload}
+                loading={() => {}}
+                clearData={() => {}}
+                toggleModal={mockToggleModal}
+            />
+        );
 
         expect(
             screen.getByText(
@@ -42,7 +49,14 @@ describe("FileUploader Component Tests", () => {
 
     /***** UNIT-INTEGRATION TEST: to handle file selection *****/
     test("calls onFileUpload when files are selected", async () => {
-        render(<FileUploader onFileUpload={mockOnFileUpload} loading={() => { }} clearData={() => { }} toggleModal={mockToggleModal} />);
+        render(
+            <FileUploader
+                onFileUpload={mockOnFileUpload}
+                loading={() => {}}
+                clearData={() => {}}
+                toggleModal={mockToggleModal}
+            />
+        );
 
         const input = document.querySelector(
             'input[type="file"]'
@@ -60,7 +74,14 @@ describe("FileUploader Component Tests", () => {
 
     /***** UNIT-INTEGRATION TEST: to handle drag-and-drop *****/
     test("calls onFileUpload when a file is dropped", async () => {
-        render(<FileUploader onFileUpload={mockOnFileUpload} loading={() => { }} clearData={() => { }} toggleModal={mockToggleModal}/>);
+        render(
+            <FileUploader
+                onFileUpload={mockOnFileUpload}
+                loading={() => {}}
+                clearData={() => {}}
+                toggleModal={mockToggleModal}
+            />
+        );
 
         const dropZone = screen.getByText(/drag and drop/i);
         const file = new File(["mockDICOM"], "file1.dcm", {
@@ -123,7 +144,14 @@ describe("FileUploader Component Tests", () => {
 
         mockedParseDicomFile.mockResolvedValue(dicomMetadata);
 
-        render(<FileUploader onFileUpload={mockOnFileUpload} loading={() => { }} clearData={() => { }} toggleModal={mockToggleModal}/>);
+        render(
+            <FileUploader
+                onFileUpload={mockOnFileUpload}
+                loading={() => {}}
+                clearData={() => {}}
+                toggleModal={mockToggleModal}
+            />
+        );
 
         const file = new File(["DICOM"], "file1.dcm", {
             type: "application/dicom",

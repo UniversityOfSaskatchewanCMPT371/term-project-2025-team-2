@@ -59,7 +59,8 @@ const extractDicomTags = (dataSet: any) => {
         const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
         let vr = element.vr;
         const vrTagDict = tagDictionary.lookupTagVR(tagId);
-        if(!vr) {       // If VR is not found, use the VR from the dictionary
+        if (!vr) {
+            // If VR is not found, use the VR from the dictionary
             vr = vrTagDict;
         }
 

@@ -26,7 +26,7 @@ export interface FileTableProps {
     currentFileIndex: number;
     onFileSelect: (index: number) => void;
     series: boolean;
-} 
+}
 
 /**
  * interface FileNavigationProps
