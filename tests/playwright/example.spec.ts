@@ -144,3 +144,58 @@ test('Toggle sidebar', async ({ page }) => {
     await sidebarToggleButton.click(); // Open sidebar
     console.log("Toggle sidebar working successfully")
 });
+
+test('Saving changes using Side bar toggle test', async ({ page }) => {
+    await page.goto('http://localhost:5173');
+
+    const fileInput = page.locator('input[type="file"].hidden');
+    await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
+
+    // Wait for the prompt to appear (edit individually or in series)
+    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await expect(promptText).toBeVisible();
+
+    // Click "Yes" to edit files individually
+    const yesButton = page.locator('button', { hasText: 'No' });
+    await expect(yesButton).toBeVisible();
+    await yesButton.click();
+
+    // Wait for the first file to load
+    await page.waitForTimeout(2000); // Adjust timeout if needed
+
+    // Verify the first file is displayed
+    const currentFile = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFile).toBeVisible();
+
+    await page.innerHTML('body')
+
+    // Find the row containing 'SOPClassUID'
+    const tagRow = page.locator('tr').filter({ hasText: 'SOPClassUID' }).first();
+    await expect(tagRow).toBeVisible();
+
+    // Click the edit button (pencil icon) in that row
+    const editButton = tagRow.locator('svg.h-6.w-6'); // Pencil button
+    await expect(editButton).toBeVisible();
+    await editButton.click();
+
+    // Now find and edit the input field
+    const tagInput = tagRow.locator('input');
+    await expect(tagInput).toBeVisible();
+    await tagInput.fill('New Value');
+
+
+    const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    const sidebar = page.locator('.sidebar');
+    console.log(await sidebar.count()); // Check if sidebar exists before clicking
+
+    await sidebarToggleButton.click(); // Open sidebar
+
+    const saveAllFilesButton = page.locator('button', { hasText: 'Save All Files' });
+    await expect(saveAllFilesButton).toBeVisible();
+
+    // Click the "Save All Files" button
+    await saveAllFilesButton.click();
+    console.log("Save file button working successfully on sidebar toggle")
+});
