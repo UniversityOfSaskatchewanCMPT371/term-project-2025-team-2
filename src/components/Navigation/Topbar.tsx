@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip } from "react-tooltip";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { ThemeSelector } from "./ThemeSelector";
 import { TopbarProps } from "../../types/types";
@@ -30,12 +31,18 @@ const Topbar: React.FC<TopbarProps> = ({
 
                 <div className="flex items-center gap-4">
                     {showInstallButton && (
-                        <button
-                            onClick={onInstallClick}
-                            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/80"
-                        >
-                            Install App
-                        </button>
+                        <>
+                            <button
+                                onClick={onInstallClick}
+                                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/80"
+                                data-tooltip-id="pwa-button-tooltip"
+                                data-tooltip-content="Click to install offline app"
+                                data-tooltip-place="bottom"
+                            >
+                                Install App
+                            </button>
+                            <Tooltip id="pwa-button-tooltip" />
+                        </>
                     )}
                     <ThemeSelector
                         toggleTheme={toggleTheme}

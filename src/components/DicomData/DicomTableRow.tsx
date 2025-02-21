@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../../types/DicomTypes";
 
@@ -112,7 +113,15 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 className="flex cursor-pointer justify-end hover:text-accent"
                                 onClick={() => handleClick(toggleEditing)}
                             >
-                                <PencilSquareIcon className="h-6 w-6" />
+                                <PencilSquareIcon
+                                    className="h-6 w-6"
+                                    data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
+                                    data-tooltip-content="Edit Tag Value"
+                                    data-tooltip-place="top"
+                                />
+                                <Tooltip
+                                    id={`${row.tagId}-editTag-button-tooltip`}
+                                />
                             </div>
                             <div
                                 className="flex cursor-pointer justify-end hover:text-accent"
@@ -120,6 +129,16 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                             >
                                 <XCircleIcon
                                     className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                    data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
+                                    data-tooltip-content={
+                                        deleteTag
+                                            ? "Undo Delete"
+                                            : "To Be Deleted"
+                                    }
+                                    data-tooltip-place="left"
+                                />
+                                <Tooltip
+                                    id={`${row.tagId}-deleteTag-button-tooltip`}
                                 />
                             </div>
                         </div>
