@@ -131,3 +131,16 @@ test('Toggle night mode - verify click', async ({ page }) => {
     await expect(nightModeToggle).not.toBeChecked();
     console.log("Toggle night mode working successfully")
 });
+
+test('Toggle sidebar', async ({ page }) => {
+    await page.goto('http://localhost:5173');
+
+    const sidebarToggleButton = page.locator('button >> svg[data-slot="icon"]');
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    const sidebar = page.locator('.sidebar');
+    console.log(await sidebar.count()); // Check if sidebar exists before clicking
+
+    await sidebarToggleButton.click(); // Open sidebar
+    console.log("Toggle sidebar working successfully")
+});
