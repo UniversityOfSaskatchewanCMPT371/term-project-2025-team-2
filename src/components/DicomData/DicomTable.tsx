@@ -5,7 +5,7 @@ import { DicomTableProps } from "../../types/DicomTypes.ts";
 import { GenButton } from "../utils/GenButton.tsx";
 import logger from "../utils/Logger";
 
-import { tagUpdater, downloadDicomFile } from "./TagUpdater.tsx";
+import { tagUpdater, downloadDicomFile, createFile } from "./TagUpdater.tsx";
 
 /**
  *
@@ -92,7 +92,8 @@ const DicomTable: React.FC<DicomTableProps> = ({
             type: "application/dicom",
         });
 
-        downloadDicomFile(blob, fileName);
+        const newFile = createFile(fileName, blob);
+        downloadDicomFile(newFile);
 
         clearData();
     };

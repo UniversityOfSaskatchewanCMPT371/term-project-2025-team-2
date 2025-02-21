@@ -16,6 +16,8 @@ export interface SidebarProps {
     seriesToggle: () => void;
     isVisible: boolean;
     updateAllFiles: () => void;
+    downloadOption: string;
+    setDownloadOption: (value: string) => void;
 }
 
 /**
