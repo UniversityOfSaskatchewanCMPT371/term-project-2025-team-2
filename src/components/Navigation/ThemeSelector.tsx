@@ -23,9 +23,9 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
             <Tooltip id="theme-tooltip" />
             <input type="checkbox" onChange={toggleTheme} />
             {currTheme === "night" ? (
-                <SunIcon className="size-6" />
+                <SunIcon className="size-6" aria-label="sun" />
             ) : (
-                <MoonIcon className="size-6" />
+                <MoonIcon className="size-6" aria-label="moon" />
             )}
         </label>
     );

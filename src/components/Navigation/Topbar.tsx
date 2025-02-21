@@ -52,11 +52,13 @@ const Topbar: React.FC<TopbarProps> = ({
                         ref={sidebarButtonRef}
                         onClick={toggleSidebar}
                         className="p-1"
+                        data-testid="sidebar-toggle-button"
                     >
                         <Bars3Icon
                             className={`size-8 cursor-pointer transition-all duration-300 hover:text-primary ${
                                 sidebarVisible ? "rotate-180" : ""
                             }`}
+                            role="img"
                         />
                     </button>
                 </div>
