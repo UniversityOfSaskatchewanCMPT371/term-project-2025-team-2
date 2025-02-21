@@ -42,6 +42,9 @@ entirely in the browser, using **React**, **Vite**, **TailwindCSS**, and
   tags.
 - **PWAs (Progressive Web Apps)**: Enabling offline use and improved
   performance.
+- **Jest**: JavaScript/Typescript testing framework, works well with React. Used here for 
+   unit/integration type testing.
+- **Playwright**: End-to-End functional UI testing framework, automates browser interactions.
 
 ## Installation
 
@@ -71,6 +74,18 @@ Edge) to use the editor.
     ```
 5. Open your browser and go to `http://localhost:5173` to start using the DICOM
    tag editor.
+
+### For testers
+
+Once test files are made in your branch:
+
+1. Install the dependencies:
+    ```bash
+    npm install
+    ```
+2. Run all tests:
+    ```bash
+    npm test
 
 ### Docker Container
 
