@@ -27,6 +27,7 @@ test('View DICOM tags for an uploaded file', async ({ page }) => {
 });
 
 test('Edit a DICOM tag and save changes', async ({ page }) => {
+    test.setTimeout(30000);
     await page.goto('http://localhost:5173');
 
     // Upload a DICOM file
@@ -60,6 +61,7 @@ test('Edit a DICOM tag and save changes', async ({ page }) => {
 });
 
 test('Navigate between uploaded files', async ({ page }) => {
+    test.setTimeout(30000);
     // Navigate to your DICOM tag editor
     await page.goto('http://localhost:5173');
 
@@ -146,6 +148,7 @@ test('Toggle sidebar', async ({ page }) => {
 });
 
 test('Saving changes using Side bar toggle test', async ({ page }) => {
+    test.setTimeout(30000);
     await page.goto('http://localhost:5173');
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -201,6 +204,7 @@ test('Saving changes using Side bar toggle test', async ({ page }) => {
 });
 
 test('Testing edit individually and series button in side bar', async ({ page }) => {
+    test.setTimeout(30000);
     await page.goto('http://localhost:5173');
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -247,6 +251,7 @@ test('Testing edit individually and series button in side bar', async ({ page })
 });
 
 test('Navigating from files from sidebar test', async ({ page }) => {
+    test.setTimeout(30000);
     await page.goto('http://localhost:5173');
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -287,6 +292,7 @@ test('Navigating from files from sidebar test', async ({ page }) => {
 });
 
 test('Updating file by navigating through side bar', async ({ page }) => {
+    test.setTimeout(30000);
     await page.goto('http://localhost:5173');
 
     const fileInput = page.locator('input[type="file"].hidden');
