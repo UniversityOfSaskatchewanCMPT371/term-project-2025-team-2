@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import ErrorBoundary from "./components/ErrorHandling/ErrorBoundary.tsx";
 import { registerSW } from "virtual:pwa-register";
 import logger from "./components/utils/Logger.tsx";
+import "react-tooltip/dist/react-tooltip.css";
 
 // Register service worker with auto-update
 const updateSW = registerSW({

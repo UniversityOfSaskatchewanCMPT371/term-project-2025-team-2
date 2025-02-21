@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Tooltip } from "react-tooltip";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { SidebarProps } from "../../types/types.ts";
 import FileTable from "../FileHandling/FileTable.tsx";
@@ -68,11 +69,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <button
                                 onClick={seriesToggle}
                                 className="w-full rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-primary/10 hover:text-primary"
+                                data-tooltip-id="series-button-tooltip"
+                                data-tooltip-content={
+                                    series
+                                        ? "Click to edit individually"
+                                        : "Click to edit as series"
+                                }
+                                data-tooltip-place="top"
                             >
                                 {series
                                     ? "✨ Editing as Series"
                                     : "🔄 Editing Individually"}
                             </button>
+                            <Tooltip id="series-button-tooltip" />
                         </div>
                     </>
                 )}
