@@ -44,6 +44,7 @@ test('Edit a DICOM tag and save changes', async ({ page }) => {
 
     // Click the edit button (pencil icon) in that row
     const editButton = tagRow.locator('svg.h-6.w-6'); // Pencil button
+    await editButton.waitFor({state: 'visible', timeout: 30000});
     await expect(editButton).toBeVisible();
     await editButton.click();
 
@@ -71,6 +72,7 @@ test('Navigate between uploaded files', async ({ page }) => {
 
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -156,6 +158,7 @@ test('Saving changes using Side bar toggle test', async ({ page }) => {
 
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -212,6 +215,7 @@ test('Testing edit individually and series button in side bar', async ({ page })
 
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -258,6 +262,7 @@ test('Navigating from files from sidebar test', async ({ page }) => {
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator('button', { hasText: 'No' });
@@ -299,6 +304,7 @@ test('Updating file by navigating through side bar', async ({ page }) => {
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator('button', { hasText: 'No' });
