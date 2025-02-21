@@ -15,6 +15,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
 
     return (
         <div
+            role="dialog"
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             onClick={onClose}
         >
