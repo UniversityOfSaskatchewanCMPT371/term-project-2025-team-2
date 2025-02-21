@@ -91,5 +91,14 @@ test('Navigate between uploaded files', async ({ page }) => {
     // Verify the second file is displayed
     const secondFile = page.locator('text=Currently Viewing: CR000001.dcm');
     await expect(secondFile).toBeVisible();
+
+    const prevButton = page.locator('button', { hasText: 'Previous' });
+    await expect(prevButton).toBeVisible();
+    await prevButton.click();
+
+    // Verify the second file is displayed
+    const prevFile = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(prevFile).toBeVisible();
+
     console.log("Successfully navigating between the files")
 });
