@@ -44,7 +44,7 @@ test('Edit a DICOM tag and save changes', async ({ page }) => {
     await expect(tagRow).toBeVisible();
 
     // Click the edit button (pencil icon) in that row
-    const editButton = tagRow.locator('svg.h-6.w-6'); // Pencil button
+    const editButton = tagRow.locator('svg.h-6.w-6').first(); // Pencil button
     await editButton.waitFor({state: 'visible', timeout: 30000});
     await expect(editButton).toBeVisible();
     await editButton.click();
@@ -72,7 +72,7 @@ test('Navigate between uploaded files', async ({ page }) => {
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     // Wait for the prompt to appear (edit individually or in series)
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
