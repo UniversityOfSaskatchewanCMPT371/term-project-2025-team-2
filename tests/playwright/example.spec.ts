@@ -58,3 +58,38 @@ test('Edit a DICOM tag and save changes', async ({ page }) => {
 
     console.log("Done Editing the Dicom file")
 });
+
+test('Navigate between uploaded files', async ({ page }) => {
+    // Navigate to your DICOM tag editor
+    await page.goto('http://localhost:5173');
+
+    // Upload multiple DICOM files
+    const fileInput = page.locator('input[type="file"].hidden');
+    await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
+
+    // Wait for the prompt to appear (edit individually or in series)
+    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' });
+    await expect(promptText).toBeVisible();
+
+    // Click "Yes" to edit files individually
+    const yesButton = page.locator('button', { hasText: 'No' });
+    await expect(yesButton).toBeVisible();
+    await yesButton.click();
+
+    // Wait for the first file to load
+    await page.waitForTimeout(2000); // Adjust timeout if needed
+
+    // Verify the first file is displayed
+    const currentFile = page.locator('text=Currently Viewing: CR000000.dcm');
+    await expect(currentFile).toBeVisible();
+
+    // Navigate to the next file
+    const nextButton = page.locator('button', { hasText: 'Next' });
+    await expect(nextButton).toBeVisible();
+    await nextButton.click();
+
+    // Verify the second file is displayed
+    const secondFile = page.locator('text=Currently Viewing: CR000001.dcm');
+    await expect(secondFile).toBeVisible();
+    console.log("Successfully navigating between the files")
+});
