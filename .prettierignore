@@ -2,8 +2,12 @@
 build
 coverage
 dist
+docs
 node_modules
 .github
 .vscode
 package-lock.json
 package.json
+docker/dev/docker-compose.yml
+docker/prod/docker-compose.yml
+

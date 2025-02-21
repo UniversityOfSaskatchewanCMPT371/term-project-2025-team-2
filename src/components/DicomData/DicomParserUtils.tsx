@@ -1,5 +1,6 @@
 import dicomParser from "dicom-parser";
 import { TagDictionary } from "../../tagDictionary/dictionary";
+import logger from "../utils/Logger";
 
 const tagDictionary = new TagDictionary();
 
@@ -23,9 +24,13 @@ export const parseDicomFile = (file: File): Promise<any> => {
                     const dicomData = extractDicomTags(dataSet);
                     resolve(dicomData);
                 } catch (error) {
+                    logger.error("Error parsing DICOM file: ", error);
                     reject("Error parsing DICOM file: " + error);
                 }
             } else {
+                logger.error(
+                    "Invalid file format: Could not read file as ArrayBuffer."
+                );
                 reject(
                     "Invalid file format: Could not read file as ArrayBuffer."
                 );
@@ -44,15 +49,20 @@ export const parseDicomFile = (file: File): Promise<any> => {
 const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
-        console.warn("Invalid DICOM dataset: No elements found.");
+        logger.warn("Invalid DICOM dataset: No elements found.");
         return dicomTags;
     }
 
     Object.keys(dataSet.elements).forEach((tag: any) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
-        const tagName = tagDictionary.lookup(tagId) || "Unknown Tag";
-        const vr = element.vr;
+        const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
+        let vr = element.vr;
+        const vrTagDict = tagDictionary.lookupTagVR(tagId);
+        if (!vr) {
+            // If VR is not found, use the VR from the dictionary
+            vr = vrTagDict;
+        }
 
         let value: any;
 
@@ -73,6 +83,12 @@ const extractDicomTags = (dataSet: any) => {
                     )
                     .toString();
                 break;
+            case "FD":
+                value = dataSet.double(tag).toString() || "N/A";
+                break;
+            case "US":
+                value = dataSet.uint16(tag).toString() || "N/A";
+                break;
             default:
                 value = dataSet.string(tag) || "N/A";
                 break;
@@ -89,5 +105,5 @@ const extractDicomTags = (dataSet: any) => {
         }
     });
 
-    return dicomTags;
+    return { tags: dicomTags, DicomDataSet: dataSet };
 };

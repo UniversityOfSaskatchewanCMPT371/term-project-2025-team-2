@@ -14,7 +14,8 @@ const logMsgFormat = (log: any) => ({
     timestamp: new Date().toISOString(),
 });
 
-log.enableAll();
+// log.enableAll(); // this puts all messages to console, off only warn or higher gets printed
+log.setLevel("warn");
 
 /**
  *
@@ -26,7 +27,7 @@ log.enableAll();
 remote.apply(log, {
     url: "https://us-central1-data-a9e6d.cloudfunctions.net/app/add/msg",
     format: logMsgFormat,
-    level: "error",
+    level: "critical",
 });
 
 export default log;

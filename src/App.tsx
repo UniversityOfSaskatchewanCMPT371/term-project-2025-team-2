@@ -1,45 +1,74 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
-import log from "./components/utils/Logger";
-import { CustomFile as CustomFile } from "./types/types";
+import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/QuestionModal";
+import Modal from "./components/utils/Modal";
+import {
+    tagUpdater,
+    downloadDicomFile,
+    getSingleFileTagEdits,
+    createFile,
+    createZipFromFiles,
+} from "./components/DicomData/TagUpdater";
+import logger from "./components/utils/Logger";
 
 /**
- *
+ * @description Main App Function
  * @returns rendered App component
  */
 const App: React.FC = () => {
     const [files, setFiles] = useState<CustomFile[]>([]);
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+    const showError = () => setShowErrorModal(true);
 
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [showSeriesModal, setShowSeiresModal] = useState(false);
     const [series, setSeries] = useState(false);
+    const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
+    const [downloadOption, setDownloadOption] = useState<string>("single");
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
     );
 
-    const [newTableData, setNewTableData] = useState<any[]>([]);
+    const [newTagValues, setNewTagValues] = useState<any[]>([]);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
-    const updateTableData = (newData: any) => {
-        setNewTableData((prevData) => [...prevData, newData]);
+    const updateTagValues = (newData: any) => {
+        setNewTagValues((prevData) => {
+            const existingIndex = prevData.findIndex(
+                (item) =>
+                    item.fileName === newData.fileName &&
+                    item.tagId === newData.tagId
+            );
+
+            if (existingIndex !== -1) {
+                return prevData.map((item, index) =>
+                    index === existingIndex ? newData : item
+                );
+            }
+
+            return [...prevData, newData];
+        });
     };
 
     const sidebarRef = useRef<HTMLDivElement>(null);
     const sidebarButtonRef = useRef<HTMLButtonElement | null>(null);
 
-    const handleToggle = (e: any) => {
+    const themeToggle = (e: any) => {
         if (e.target.checked) {
             setTheme("corporate");
         } else {
@@ -51,12 +80,14 @@ const App: React.FC = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
+    // Set theme on load
     useEffect(() => {
         localStorage.setItem("theme", theme!);
         const localTheme = localStorage.getItem("theme");
         document.querySelector("html")?.setAttribute("data-theme", localTheme!);
     }, [theme]);
 
+    // Close sidebar when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -69,108 +100,201 @@ const App: React.FC = () => {
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
+    // PWA installation prompt
     useEffect(() => {
         const handleBeforeInstallPrompt = (e: Event) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             setDeferredPrompt(e);
-            console.log('PWA: Install prompt captured and ready');
+            logger.debug("PWA: Install prompt captured and ready");
         };
 
-        // Add the event listener
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        window.addEventListener(
+            "beforeinstallprompt",
+            handleBeforeInstallPrompt
+        );
 
-        // Check if running in development mode
         if (import.meta.env.DEV) {
-            console.log('PWA: Running in development mode');
+            logger.debug("PWA: Running in development mode");
         }
 
-        window.addEventListener('appinstalled', () => {
-            // Clear the deferredPrompt so it can be garbage collected
+        window.addEventListener("appinstalled", () => {
             setDeferredPrompt(null);
-            console.log('PWA: Application was installed');
+            logger.debug("PWA: Application was installed");
         });
 
         return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+            window.removeEventListener(
+                "beforeinstallprompt",
+                handleBeforeInstallPrompt
+            );
         };
     }, []);
 
+    // PWA installation prompt click handler
     const handleInstallClick = async () => {
         if (!deferredPrompt) {
-            console.log('PWA: No installation prompt available');
+            logger.info("PWA: No installation prompt available");
             return;
         }
 
         try {
-            // Show the install prompt
             const promptEvent = deferredPrompt as any;
             promptEvent.prompt();
-            
-            // Wait for the user to respond to the prompt
+
             const { outcome } = await promptEvent.userChoice;
-            console.log(`PWA: User response to the install prompt: ${outcome}`);
-            
-            // Clear the prompt regardless of outcome
+            logger.info(`PWA: User response to the install prompt: ${outcome}`);
+
             setDeferredPrompt(null);
         } catch (err) {
-            console.error('PWA: Error during installation:', err);
+            logger.error("PWA: Error during installation:", err);
         }
     };
 
+    // File handling
     const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
+        setNewTagValues([]);
 
-        log.info("file-loaded");
+        logger.debug("file-loaded");
+        setLoading(false);
+
         if (newFiles.length > 1) {
-            setIsOpen(true);
+            setShowSeiresModal(true);
         }
     };
 
+    // File navigation - move to next file
     const nextFile = () => {
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
     };
 
+    // File navigation - move to previous file
     const prevFile = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
     };
 
+    // Handle file selection - update current file index
     const handleFileSelect = (index: number) => {
         setCurrentFileIndex(index);
     };
 
+    // Clear all data, files, tags, and new tags
+    const clearData = () => {
+        setFiles([]);
+        setDicomData([]);
+        setCurrentFileIndex(0);
+        setNewTagValues([]);
+        setSeries(false);
+    };
+
+    // Toggle editing mode between series and individual files
+    const toggleSeries = () => {
+        setSeries(!series);
+
+        if (!series) {
+            newTagValues.forEach((entry) => {
+                if (entry.fileName !== files[currentFileIndex].name) {
+                    setSidebarVisible(false);
+                    setSeriesSwitchModel(true);
+                }
+            });
+        }
+    };
+
+    // Update all files with new tags, handle series and individual file editing
+    // To Do - Refactor this function
+    const updateAllFiles = async () => {
+        const newFiles: any = [];
+
+        if (series) {
+            dicomData.forEach((dicom, index) => {
+                const updatedFile = tagUpdater(
+                    dicom.DicomDataSet,
+                    getSingleFileTagEdits(
+                        newTagValues,
+                        files[currentFileIndex].name
+                    )
+                );
+                if (downloadOption === "single") {
+                    downloadDicomFile(
+                        createFile(files[index].name, updatedFile)
+                    );
+                } else {
+                    newFiles.push(createFile(files[index].name, updatedFile));
+                }
+            });
+        } else {
+            dicomData.forEach((dicom, index) => {
+                const updatedFile = tagUpdater(
+                    dicom.DicomDataSet,
+                    getSingleFileTagEdits(newTagValues, files[index].name)
+                );
+                if (downloadOption === "single") {
+                    downloadDicomFile(
+                        createFile(files[index].name, updatedFile)
+                    );
+                } else {
+                    newFiles.push(createFile(files[index].name, updatedFile));
+                }
+            });
+        }
+
+        if (downloadOption === "zip") {
+            const zipFile = await createZipFromFiles(newFiles);
+            downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
+        }
+
+        setSidebarVisible(false);
+        clearData();
+    };
+
+    // main render
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
-                toggleTheme={handleToggle}
+                toggleTheme={themeToggle}
                 sidebarButtonRef={sidebarButtonRef}
                 onInstallClick={handleInstallClick}
                 showInstallButton={!!deferredPrompt}
+                currTheme={theme}
             />
 
             <div className="flex flex-1">
                 <div className="flex-grow p-8">
-                    <FileUploader onFileUpload={handleFileUpload} />
+                    {!loading ? (
+                        <>
+                            <FileUploader
+                                onFileUpload={handleFileUpload}
+                                loading={setLoading}
+                                clearData={clearData}
+                                toggleModal={showError}
+                            />
 
-                    <FileHeader
-                        files={files}
-                        currentFileIndex={currentFileIndex}
-                    />
+                            <FileHeader
+                                files={files}
+                                currentFileIndex={currentFileIndex}
+                            />
+                        </>
+                    ) : (
+                        <div className="flex h-full items-center justify-center">
+                            <ArrowPathIcon className="h-24 w-24 animate-spin text-gray-400" />
+                        </div>
+                    )}
+
                     {files.length > 1 && !series ? (
                         <FileNavigation
                             currentFileIndex={currentFileIndex}
@@ -185,19 +309,40 @@ const App: React.FC = () => {
                             <DicomTable
                                 dicomData={dicomData[currentFileIndex]}
                                 fileName={files[currentFileIndex].name}
-                                updateTableData={updateTableData}
-                                newTableData={newTableData}
+                                updateTableData={updateTagValues}
+                                newTableData={newTagValues}
+                                clearData={clearData}
                             />
                         </div>
                     )}
                 </div>
 
-                {isOpen ? (
+                {showSeriesModal ? (
                     <QuestionModal
                         setSeries={setSeries}
-                        setIsOpen={setIsOpen}
+                        setIsOpen={setShowSeiresModal}
+                        title={"Edit Files"}
+                        text={
+                            "Multiple files have been uploaded. Do you want to edit as a series?"
+                        }
                     />
                 ) : null}
+
+                <Modal
+                    isOpen={seriesSwitchModel}
+                    onClose={() => setSeriesSwitchModel(false)}
+                    title={"Switch to Series"}
+                    text={
+                        "Multiple files have been edited. Displayed files edited tags will be applied to all files"
+                    }
+                />
+
+                <Modal
+                    isOpen={showErrorModal}
+                    onClose={() => setShowErrorModal(false)}
+                    title="Error"
+                    text="File isn't a valid DICOM file."
+                />
 
                 {sidebarVisible && (
                     <div ref={sidebarRef}>
@@ -206,8 +351,11 @@ const App: React.FC = () => {
                             onFileSelect={handleFileSelect}
                             currentFileIndex={currentFileIndex}
                             series={series}
-                            seriesToggle={() => setSeries(!series)}
+                            seriesToggle={toggleSeries}
                             isVisible={sidebarVisible}
+                            updateAllFiles={updateAllFiles}
+                            downloadOption={downloadOption}
+                            setDownloadOption={setDownloadOption}
                         />
                     </div>
                 )}

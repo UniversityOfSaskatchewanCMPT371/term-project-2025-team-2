@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import FileTableBody from "./FileTableBody.tsx";
 import Modal from "../utils/Modal.tsx";
-import { FileTableProps } from "../../types/types.ts";
+import { FileTableProps } from "../../types/FileTypes.ts";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 
 /**
- *
+ * @description FileTable component - renders a table of files
  * @param files - Array of files
  * @param currentFileIndex - Index of the currently viewed file
  * @param onFileSelect - Function to handle file selection
@@ -37,7 +37,7 @@ const FileTable: React.FC<FileTableProps> = ({
                     Uploaded Files ({files.length})
                 </h4>
             </div>
-            
+
             <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
                 <table className="w-full table-auto">
                     <FileTableBody
@@ -54,7 +54,7 @@ const FileTable: React.FC<FileTableProps> = ({
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title="Cannot Select File"
-                text="When editing as a series, only one file can be edited at a time."
+                text="When editing individually, only one file can be edited at a time."
             />
         </div>
     );

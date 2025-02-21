@@ -16,11 +16,11 @@ export class TagDictionary {
     }
 
     /**
-     * lookup - Look up the name of a DICOM tag from its tag number
+     * lookupTagName - Look up the name of a DICOM tag from its tag number
      * @param {string} tag
      * @returns {string} The name of the DICOM tag or Unknown if not found
      */
-    lookup(tag: string): string {
+    lookupTagName(tag: string): string {
         let tagName: string;
         try {
             tagName = this.dicomTagDictionary[tag.slice(1)].name;
@@ -29,5 +29,21 @@ export class TagDictionary {
         }
 
         return tagName;
+    }
+
+    /**
+     * lookupTagVR - Look up the VR (Value Representation) of a DICOM tag from its tag number
+     * @param {string} tag
+     * @returns {string} The VR of the DICOM tag or Unknown if not found
+     */
+    lookupTagVR(tag: string): string {
+        let tagVR: string;
+        try {
+            tagVR = this.dicomTagDictionary[tag.slice(1)].vr;
+        } catch {
+            tagVR = "Unknown";
+        }
+
+        return tagVR;
     }
 }

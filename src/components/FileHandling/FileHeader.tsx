@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FileHeaderProps } from "../../types/types";
+import { FileHeaderProps } from "../../types/FileTypes";
 
 /**
  *

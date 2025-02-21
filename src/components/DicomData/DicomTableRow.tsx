@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { DicomTableRowProps } from "../../types/types";
+import { Tooltip } from "react-tooltip";
+import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { DicomTableRowProps } from "../../types/DicomTypes";
 
 /**
  * handleClick function
@@ -29,6 +30,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
+    const [deleteTag, setDeleteTag] = useState<boolean>(false);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -36,7 +38,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     const handleBlur = () => {
-        onUpdateValue(row.tagId, newValue);
+        onUpdateValue(row.tagId, newValue, deleteTag);
         setIsEditing(false);
     };
 
@@ -48,26 +50,40 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         setIsEditing(!isEditing);
     };
 
+    const toggleDelete = () => {
+        setDeleteTag((preValue) => !preValue);
+        const tempDeletetag = !deleteTag;
+
+        onUpdateValue(row.tagId, newValue, tempDeletetag);
+    };
+
     return (
-        <>
-            <tr key={index + row.tagId} className={'hover:bg-blue-600'}>
+        <React.Fragment key={index + row.tagId + row.value}>
+            <tr
+                key={index + row.tagId}
+                className={`hover:bg-blue-600 ${deleteTag && "outline -outline-offset-4 outline-red-600"}`}
+            >
                 <td
                     className={`break-all border px-4 py-2 ${
-                        nested ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500` : ''
+                        nested
+                            ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
+                            : ""
                     }`}
-                    style={{ paddingLeft: `${nested ? 40 + level * 20 : 16}px` }}
+                    style={{
+                        paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
+                    }}
                 >
                     {typeof row.value !== "string" && (
                         <span
-                            className="mr-2 inline-block cursor-pointer text-white hover:text-blue-200 transition-colors"
+                            className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
                             onClick={toggleExpand}
-                            style={{ width: '20px' }}
+                            style={{ width: "20px" }}
                         >
                             {isExpanded ? "▼" : "▶"}
                         </span>
                     )}
                     {nested && (
-                        <span className="inline-block w-2 h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mr-2"></span>
+                        <span className="mr-2 inline-block h-2 w-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></span>
                     )}
                     {row.tagId}
                 </td>
@@ -97,7 +113,33 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 className="flex cursor-pointer justify-end hover:text-accent"
                                 onClick={() => handleClick(toggleEditing)}
                             >
-                                <PencilSquareIcon className="h-6 w-6" />
+                                <PencilSquareIcon
+                                    className="h-6 w-6"
+                                    data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
+                                    data-tooltip-content="Edit Tag Value"
+                                    data-tooltip-place="top"
+                                />
+                                <Tooltip
+                                    id={`${row.tagId}-editTag-button-tooltip`}
+                                />
+                            </div>
+                            <div
+                                className="flex cursor-pointer justify-end hover:text-accent"
+                                onClick={() => toggleDelete()}
+                            >
+                                <XCircleIcon
+                                    className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                    data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
+                                    data-tooltip-content={
+                                        deleteTag
+                                            ? "Undo Delete"
+                                            : "To Be Deleted"
+                                    }
+                                    data-tooltip-place="left"
+                                />
+                                <Tooltip
+                                    id={`${row.tagId}-deleteTag-button-tooltip`}
+                                />
                             </div>
                         </div>
                     ) : (
@@ -106,7 +148,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 </td>
             </tr>
             {typeof row.value !== "string" && isExpanded
-                ? Object.values(row.value).map((nested: any) => (
+                ? Object.values(row.value.tags).map((nested: any) => (
                       <DicomTableRow
                           key={nested.tagId}
                           row={nested}
@@ -117,6 +159,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                       />
                   ))
                 : null}
-        </>
+        </React.Fragment>
     );
 };

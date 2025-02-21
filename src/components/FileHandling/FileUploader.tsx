@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.tsx";
-import Modal from "../utils/Modal.tsx";
-import { FileUploaderProps } from "../../types/types.ts";
+import { FileUploaderProps } from "../../types/FileTypes.ts";
+import logger from "../utils/Logger.tsx";
 
 /**
  *
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */
-const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
-    const [files, setFiles] = useState<File[]>([]);
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+const FileUploader: React.FC<FileUploaderProps> = ({
+    onFileUpload,
+    loading,
+    clearData,
+    toggleModal,
+}) => {
     /**
      *
      * @param e - Change event
@@ -23,9 +23,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (selectedFiles) {
-            console.log(files); // here just to use the files variable
             const fileArray = Array.from(selectedFiles);
-            setFiles(fileArray);
             processFiles(fileArray);
         }
     };
@@ -49,7 +47,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
                 .catch((error) => {
                     onFileUpload((fileArray = []), dicomDataArray);
                     toggleModal();
-                    console.error(error);
+                    logger.error(error);
                 });
         });
     };
@@ -60,7 +58,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
      * Handles file drop event
      */
     const onDrop = (acceptedFiles: File[]) => {
-        setFiles(acceptedFiles);
+        clearData();
+        loading(true);
         processFiles(acceptedFiles);
     };
 
@@ -76,7 +75,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
         <div>
             <div
                 {...getRootProps()}
-                className="relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center"
+                className={`relative min-h-[200px] cursor-pointer rounded-lg border-2 border-dashed border-secondary px-5 py-10 text-center`}
             >
                 <input {...getInputProps()} />
                 <p className="text-base-content">
@@ -86,8 +85,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
 
                 <button
                     onClick={(e) => e.preventDefault()}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary bg-primary text-white px-7 py-3 text-lg transition duration-300 ease-in-out hover:bg-secondary hover:scale-110 disabled:bg-gray-400"
-
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-primary px-7 py-3 text-lg text-white transition duration-300 ease-in-out hover:scale-110 hover:bg-secondary disabled:bg-gray-400"
                 >
                     Select Files
                 </button>
@@ -97,12 +95,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload }) => {
                 multiple
                 onChange={handleFileChange}
                 className="hidden"
-            />
-            <Modal
-                isOpen={isModalOpen}
-                onClose={toggleModal}
-                title="Error"
-                text="File isn't a valid DICOM file."
             />
         </div>
     );

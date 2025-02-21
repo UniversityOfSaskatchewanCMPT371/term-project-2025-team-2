@@ -8,15 +8,16 @@ import eslintConfigPrettier from "eslint-config-prettier";
 export default tseslint.config(
     {
         ignores: [
-            'dist/*',
-            'dev-dist/*',
-            'node_modules/*',
-            '.git/*',
-            '*.config.js',
-            '*.config.ts',
-            'coverage/*',
-            'build/*'
-        ]
+            "dist/*",
+            "dev-dist/*",
+            "node_modules/*",
+            ".git/*",
+            "*.config.js",
+            "*.config.ts",
+            "coverage/*",
+            "build/*",
+            "docs/*",
+        ],
     },
     {
         extends: [

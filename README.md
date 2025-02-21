@@ -1,5 +1,9 @@
 # DICOM File Tag Editor
 
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1jIk5wzWlDpzqyio9LwB-J7vy9-hjx8zN" />
+</p>
+
 ## Overview
 
 This project is a simple DICOM file tag editor that allows users to view and
@@ -19,8 +23,7 @@ entirely in the browser, using **React**, **Vite**, **TailwindCSS**, and
 
 - Upload a DICOM file to extract metadata.
 - View and edit DICOM file tags.
-- Save the modified metadata (though actual file modification is not supported
-  in this version).
+- Save the modified tag values
 - A clean and simple UI for easier navigation.
 - PWA (Progressive Web App) support for offline use.
 
@@ -99,13 +102,13 @@ running.
    be listed.
 3. **Edit tags**: Modify the value of any editable tags in the provided input
    fields.
-4. **Automatically remove PII**: Optionally, click the "Remove PII" button to
-   automatically remove any personally identifiable information (PII) from the
-   DICOM file.
+4. **Automatically remove PII (not implemented)**: Optionally, click the "Remove
+   PII" button to automatically remove any personally identifiable information
+   (PII) from the DICOM file.
 5. **Save changes**: While the current version only allows you to edit and
    display tags, saving and updating the file’s actual metadata will be possible
    in future releases.
-6. **Download updated DICOM file**: Click the "Download" button to save the
+6. **Download updated DICOM file**: Click the "Save Files" button to save the
    updated DICOM file with the new metadata.
 
 ## Example Workflow

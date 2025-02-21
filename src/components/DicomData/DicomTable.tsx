@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Search from "../utils/Search";
 import { DicomTableRow } from "./DicomTableRow.tsx";
-import { DicomTableProps } from "../../types/types.ts";
+import { DicomTableProps } from "../../types/DicomTypes.ts";
 import { GenButton } from "../utils/GenButton.tsx";
-import log from "../utils/Logger";
+import logger from "../utils/Logger";
+
+import { tagUpdater, downloadDicomFile, createFile } from "./TagUpdater.tsx";
 
 /**
  *
@@ -15,16 +17,17 @@ const DicomTable: React.FC<DicomTableProps> = ({
     fileName,
     updateTableData,
     newTableData,
+    clearData,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showHidden, setShowHidden] = useState(false);
 
     if (!dicomData) {
-        log.error("No DICOM data available");
+        logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
 
-    const rows = Object.entries(dicomData).map(([tagId, tagData]) => ({
+    const rows = Object.entries(dicomData.tags).map(([tagId, tagData]) => ({
         tagId,
         tagName: tagData.tagName,
         value:
@@ -59,11 +62,16 @@ const DicomTable: React.FC<DicomTableProps> = ({
                       .includes(searchTerm.toLowerCase()))
     );
 
-    const handleUpdateValue = (tagId: string, newValue: string) => {
+    const handleUpdateValue = (
+        tagId: string,
+        newValue: string,
+        deleteTag: boolean
+    ) => {
         updateTableData({
             fileName: fileName,
             tagId: tagId,
             newValue: newValue,
+            delete: deleteTag,
         });
     };
 
@@ -71,10 +79,23 @@ const DicomTable: React.FC<DicomTableProps> = ({
         setShowHidden(!showHidden);
     };
 
-    // placeholder for updating the file
+    /**
+     * update tag values in the DICOM file, and download new file
+     */
     const updateFile = () => {
-        console.log(dicomData);
-        console.log(newTableData);
+        const updatedDicomData = tagUpdater(
+            dicomData.DicomDataSet,
+            newTableData
+        );
+
+        const blob = new Blob([updatedDicomData], {
+            type: "application/dicom",
+        });
+
+        const newFile = createFile(fileName, blob);
+        downloadDicomFile(newFile);
+
+        clearData();
     };
 
     return (
@@ -87,7 +108,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
                 />
                 <div className="ml-4">
                     <GenButton
-                        label="Save Edits"
+                        label="Save Single File Edits"
                         disabled={false}
                         onClick={updateFile}
                     />

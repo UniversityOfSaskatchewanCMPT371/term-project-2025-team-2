@@ -1,60 +1,4 @@
-/**
- * interface DicomTag
- * @property tagName - Name of the DICOM tag
- * @property value - Value of the DICOM tag
- * @returns DicomTag
- */
-export interface DicomTag {
-    tagName: string;
-    value: string | DicomTag[];
-    hidden?: boolean;
-}
-
-/**
- * interface DicomTableProps
- * @property dicomData - DICOM data
- * @returns DicomTableProps
- * @description - Interface for the DicomTable component
- */
-export interface DicomTableProps {
-    dicomData: { [key: string]: DicomTag };
-    fileName: string;
-    updateTableData: (data: any) => void;
-    newTableData: any[];
-}
-
-/**
- * interface DicomTableRowProps
- * @property row - DICOM tag row
- * @property index - Index of the row
- * @property onUpdateValue - Function to update the value of the row
- * @property nested - Boolean to check if the row is nested
- * @property updated - Boolean to check if the row has been updated
- * @property level - Nesting level of the row
- */
-export interface DicomTableRowProps {
-    row: {
-        tagId: string;
-        tagName: string;
-        value: string | any[];
-    };
-    index: number;
-    onUpdateValue: (tagId: string, newValue: string) => void;
-    nested?: boolean;
-    updated?: boolean;
-    level?: number;
-}
-
-/**
- * interface DicomTableRowProps
- * @property row - DICOM tag row
- * @property index - Index of the row
- * @returns DicomTableRowProps
- * @description - Interface for the DicomTableRow component
- */
-export interface CustomFile {
-    name: string;
-}
+import { CustomFile } from "./FileTypes";
 
 /**
  * interface SidebarProps
@@ -71,35 +15,9 @@ export interface SidebarProps {
     series: boolean;
     seriesToggle: () => void;
     isVisible: boolean;
-}
-
-/**
- * interface FileListProps
- * @property files - Array of files
- * @property currentFileIndex - Index of the currently viewed file
- * @property onFileSelect - Function to handle file selection
- * @property series - Boolean to check if the files are being edited as a series
- */
-export interface FileListProps {
-    files: CustomFile[];
-    currentFileIndex: number;
-    onFileSelect: (index: number) => void;
-    openModal: (value: boolean) => void;
-    series: boolean;
-}
-
-/**
- * interface FileTableProps
- * @property files - Array of files
- * @property currentFileIndex - Index of the currently viewed file
- * @property onFileSelect - Function to handle file selection
- * @property series - Boolean to check if the files are being edited as a series
- */
-export interface FileTableProps {
-    files: any[];
-    currentFileIndex: number;
-    onFileSelect: (index: number) => void;
-    series: boolean;
+    updateAllFiles: () => void;
+    downloadOption: string;
+    setDownloadOption: (value: string) => void;
 }
 
 /**
@@ -117,31 +35,6 @@ export interface AppState {
 }
 
 /**
- * interface FileNavigationProps
- */
-export interface FileNavigationProps {
-    currentFileIndex: number;
-    fileCount: number;
-    onPrevFile: () => void;
-    onNextFile: () => void;
-}
-
-/**
- * interface FileUploaderProps
- */
-export interface FileUploaderProps {
-    onFileUpload: (files: CustomFile[], dicomData: any[]) => void;
-}
-
-/**
- * interface FileHeaderProps
- */
-export interface FileHeaderProps {
-    files: CustomFile[];
-    currentFileIndex: number;
-}
-
-/**
  * interface HelpIconProps
  * @param onClick - Function to handle help icon click
  * @param icon - Icon to render
@@ -155,9 +48,11 @@ export interface IconButtonProps {
 /**
  * interface ThemeSelectorProps
  * @param toggleTheme - Function to toggle theme
+ * @param currTheme - Current theme
  */
 export interface ThemeSelectorProps {
     toggleTheme: (e: any) => void;
+    currTheme: string;
 }
 
 /**
@@ -180,6 +75,7 @@ export interface GenButtonProps {
  * @param sidebarButtonRef - Ref for the sidebar toggle button
  * @param onInstallClick - Function to handle install click
  * @param showInstallButton - Boolean to determine if install button is shown
+ * @param currTheme - Current theme
  */
 export interface TopbarProps {
     toggleSidebar: () => void;
@@ -188,6 +84,7 @@ export interface TopbarProps {
     sidebarButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
     onInstallClick: () => void;
     showInstallButton: boolean;
+    currTheme: string;
 }
 
 /**
@@ -240,4 +137,6 @@ export interface GenErrorPageProps {
 export interface QuestionModalProps {
     setSeries: (value: boolean) => void;
     setIsOpen: (value: boolean) => void;
+    title: string;
+    text: string;
 }
