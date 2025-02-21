@@ -72,7 +72,8 @@ test('Navigate between uploaded files', async ({ page }) => {
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     // Wait for the prompt to appear (edit individually or in series)
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
+    const promptText = page.locator('.my-4').first();
+    //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
@@ -156,7 +157,8 @@ test('Saving changes using Side bar toggle test', async ({ page }) => {
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     // Wait for the prompt to appear (edit individually or in series)
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
+    const promptText = page.locator('.my-4').first();
+    //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
@@ -211,7 +213,8 @@ test('Testing edit individually and series button in side bar', async ({ page })
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
     // Wait for the prompt to appear (edit individually or in series)
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
+    const promptText = page.locator('.my-4').first();
+    //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
@@ -256,7 +259,8 @@ test('Navigating from files from sidebar test', async ({ page }) => {
     const fileInput = page.locator('input[type="file"].hidden');
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
+    const promptText = page.locator('.my-4').first();
+    //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
@@ -298,7 +302,8 @@ test('Updating file by navigating through side bar', async ({ page }) => {
     const fileInput = page.locator('input[type="file"].hidden');
     await fileInput.setInputFiles(['./test-data/CR000000.dcm', './test-data/CR000001.dcm']);
 
-    const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
+    const promptText = page.locator('.my-4').first();
+    //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
     await promptText.waitFor({state: 'visible', timeout: 30000});
     await expect(promptText).toBeVisible();
 
