@@ -102,3 +102,32 @@ test('Navigate between uploaded files', async ({ page }) => {
 
     console.log("Successfully navigating between the files")
 });
+
+test('Toggle night mode - verify click', async ({ page }) => {
+    // Navigate to your DICOM tag editor
+    await page.goto('http://localhost:5173');
+
+    // Locate the night mode toggle (checkbox inside the label)
+    const nightModeToggle = page.locator('label.swap.swap-rotate input[type="checkbox"]');
+    await expect(nightModeToggle).toBeVisible();
+
+    // Locate the parent label for the toggle
+    const nightModeLabel = page.locator('label.swap.swap-rotate');
+    await expect(nightModeLabel).toBeVisible();
+
+    // Check the initial state of the toggle (unchecked by default)
+    await expect(nightModeToggle).not.toBeChecked();
+
+    // Click the label to toggle night mode
+    await nightModeLabel.click();
+
+    // Verify the toggle is checked (click was successful)
+    await expect(nightModeToggle).toBeChecked();
+
+    // Click the label again to switch back to light mode
+    await nightModeLabel.click();
+
+    // Verify the toggle is unchecked (click was successful)
+    await expect(nightModeToggle).not.toBeChecked();
+    console.log("Toggle night mode working successfully")
+});
