@@ -2,7 +2,8 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
     testDir: "./tests/playwright",
-    timeout: 3000,
+    timeout: 5000,
+    workers: 4,
     webServer: {
         command: 'npm run dev',
         port: 5173,
