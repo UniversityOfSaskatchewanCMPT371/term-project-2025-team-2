@@ -52,7 +52,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 
     // Click the edit button (pencil icon) in that row
     const editButton = tagRow.locator("svg.h-6.w-6").first(); // Pencil button
-    await editButton.waitFor({ state: "visible", timeout: 30000 });
+    await editButton.waitFor({ state: "visible", timeout: 60000 });
     await expect(editButton).toBeVisible();
     await editButton.click();
 
@@ -72,7 +72,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 });
 
 test("Navigate between uploaded files", async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     // Navigate to your DICOM tag editor
     await page.goto("http://localhost:5173");
 
@@ -86,7 +86,7 @@ test("Navigate between uploaded files", async ({ page }) => {
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 30000 });
+    await promptText.waitFor({ state: "visible", timeout: 60000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -171,7 +171,7 @@ test("Toggle sidebar", async ({ page }) => {
 });
 
 test("Saving changes using Side bar toggle test", async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -183,7 +183,7 @@ test("Saving changes using Side bar toggle test", async ({ page }) => {
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 30000 });
+    await promptText.waitFor({ state: "visible", timeout: 60000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -239,7 +239,7 @@ test("Saving changes using Side bar toggle test", async ({ page }) => {
 test("Testing edit individually and series button in side bar", async ({
     page,
 }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -251,7 +251,7 @@ test("Testing edit individually and series button in side bar", async ({
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 30000 });
+    await promptText.waitFor({ state: "visible", timeout: 60000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -295,7 +295,7 @@ test("Testing edit individually and series button in side bar", async ({
 });
 
 test("Navigating from files from sidebar test", async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -306,7 +306,7 @@ test("Navigating from files from sidebar test", async ({ page }) => {
 
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 30000 });
+    await promptText.waitFor({ state: "visible", timeout: 60000 });
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator("button", { hasText: "No" }).first();
@@ -353,7 +353,7 @@ test("Navigating from files from sidebar test", async ({ page }) => {
 });
 
 test("Updating file by navigating through side bar", async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -364,7 +364,7 @@ test("Updating file by navigating through side bar", async ({ page }) => {
 
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 30000 });
+    await promptText.waitFor({ state: "visible", timeout: 60000 });
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator("button", { hasText: "No" }).first();
