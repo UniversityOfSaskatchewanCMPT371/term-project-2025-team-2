@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
@@ -18,6 +17,7 @@ import {
     createZipFromFiles,
 } from "./components/DicomData/TagUpdater";
 import logger from "./components/utils/Logger";
+import { LoadingScreen } from "./components/utils/LoadingScreen";
 
 /**
  * @description Main App Function
@@ -216,6 +216,7 @@ const App: React.FC = () => {
     // Update all files with new tags, handle series and individual file editing
     // To Do - Refactor this function
     const updateAllFiles = async () => {
+        setLoading(true);
         const newFiles: any = [];
 
         if (series) {
@@ -258,6 +259,7 @@ const App: React.FC = () => {
 
         setSidebarVisible(false);
         clearData();
+        setLoading(false);
     };
 
     // main render
@@ -275,25 +277,19 @@ const App: React.FC = () => {
 
             <div className="flex flex-1">
                 <div className="flex-grow p-8">
-                    {!loading ? (
-                        <>
-                            <FileUploader
-                                onFileUpload={handleFileUpload}
-                                loading={setLoading}
-                                clearData={clearData}
-                                toggleModal={showError}
-                            />
+                    <>
+                        <FileUploader
+                            onFileUpload={handleFileUpload}
+                            loading={setLoading}
+                            clearData={clearData}
+                            toggleModal={showError}
+                        />
 
-                            <FileHeader
-                                files={files}
-                                currentFileIndex={currentFileIndex}
-                            />
-                        </>
-                    ) : (
-                        <div className="flex h-full items-center justify-center">
-                            <ArrowPathIcon className="h-24 w-24 animate-spin text-gray-400" />
-                        </div>
-                    )}
+                        <FileHeader
+                            files={files}
+                            currentFileIndex={currentFileIndex}
+                        />
+                    </>
 
                     {files.length > 1 && !series ? (
                         <FileNavigation
@@ -361,6 +357,8 @@ const App: React.FC = () => {
                 )}
             </div>
             <Footer />
+
+            {loading && <LoadingScreen />}
         </div>
     );
 };
