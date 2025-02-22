@@ -39,6 +39,7 @@ export interface DicomDataSet {
  * @property {function(TableUpdateData): void} updateTableData - Callback function to update table data
  * @property {Array<{fileName: string, tagId: string, newValue: string}>} newTableData - Array of modified table data
  * @property {function(): void} clearData - Function to clear all modifications
+ * @property {boolean} showHiddenTags - Flag indicating if hidden tags should be shown
  */
 export interface DicomTableProps {
     dicomData: DicomDataSet;
@@ -50,6 +51,7 @@ export interface DicomTableProps {
         newValue: string;
     }>;
     clearData: () => void;
+    showHiddenTags: boolean;
 }
 
 /**
@@ -116,15 +118,11 @@ export interface TableUpdateData {
  * @property {string} searchTerm - Current search term
  * @property {function(string): void} onSearchChange - Callback function for search term changes
  * @property {function(): void} onSave - Callback function to save changes
- * @property {function(): void} onToggleHidden - Callback function to toggle hidden tags
- * @property {boolean} showHidden - Whether to show hidden tags
  */
 export interface TableControlsProps {
     searchTerm: string;
     onSearchChange: (term: string) => void;
     onSave: () => void;
-    onToggleHidden: () => void;
-    showHidden: boolean;
 }
 
 /**

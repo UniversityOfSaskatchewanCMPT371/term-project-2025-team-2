@@ -23,9 +23,10 @@ const DicomTable: React.FC<DicomTableProps> = ({
     updateTableData,
     newTableData,
     clearData,
+    showHiddenTags,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [showHidden, setShowHidden] = useState(false);
+    //const [showHidden, setShowHidden] = useState(false);
 
     if (Object.keys(dicomData).length === 0) {
         logger.error("No DICOM data available");
@@ -78,8 +79,6 @@ const DicomTable: React.FC<DicomTableProps> = ({
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
                 onSave={updateFile}
-                onToggleHidden={() => setShowHidden(!showHidden)}
-                showHidden={showHidden}
             />
             <table
                 className="mt-4 min-w-full table-auto border-collapse"
@@ -88,7 +87,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
                 <TableHeader />
                 <DicomTableBody
                     filteredRows={filteredRows}
-                    showHidden={showHidden}
+                    showHidden={showHiddenTags}
                     onUpdateValue={handleUpdateValue}
                 />
             </table>

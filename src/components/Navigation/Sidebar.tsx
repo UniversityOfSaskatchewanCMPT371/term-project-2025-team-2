@@ -19,6 +19,8 @@ import HelpModal from "../utils/Modals/HelpModal";
  * @param {() => void} props.updateAllFiles - Function to update all files
  * @param {(option: string) => void} props.setDownloadOption - Function to set the download option
  * @param {string} props.downloadOption - Currently selected download option
+ * @param {boolean} props.showHiddenTags - Flag indicating if hidden tags are shown
+ * @param {() => void} props.setShowHiddenTags - Function to toggle hidden tags visibility
  * @returns {JSX.Element} Rendered Sidebar component
  * @example
  * ```tsx
@@ -32,6 +34,8 @@ import HelpModal from "../utils/Modals/HelpModal";
  *   updateAllFiles={() => {}}
  *   setDownloadOption={(option) => {}}
  *   downloadOption="zip"
+ *   showHiddenTags={false}
+ *   setShowHiddenTags={(set) => {}}
  * />
  * ```
  */
@@ -45,6 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     updateAllFiles,
     setDownloadOption,
     downloadOption,
+    showHiddenTags,
+    setShowHiddenTags,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -82,6 +88,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                     files={files}
                     setDownloadOption={setDownloadOption}
                     downloadOption={downloadOption}
+                    showHiddenTags={showHiddenTags}
+                    setShowHiddenTags={setShowHiddenTags}
                 />
             )}
 

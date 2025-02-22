@@ -44,6 +44,7 @@ const App: React.FC = () => {
     );
 
     const [newTagValues, setNewTagValues] = useState<any[]>([]);
+    const [showHiddenTags, setShowHiddenTags] = useState<boolean>(false);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -308,6 +309,7 @@ const App: React.FC = () => {
                                 updateTableData={updateTagValues}
                                 newTableData={newTagValues}
                                 clearData={clearData}
+                                showHiddenTags={showHiddenTags}
                             />
                         </div>
                     )}
@@ -352,6 +354,8 @@ const App: React.FC = () => {
                             updateAllFiles={updateAllFiles}
                             downloadOption={downloadOption}
                             setDownloadOption={setDownloadOption}
+                            showHiddenTags={showHiddenTags}
+                            setShowHiddenTags={(set) => setShowHiddenTags(set)}
                         />
                     </div>
                 )}

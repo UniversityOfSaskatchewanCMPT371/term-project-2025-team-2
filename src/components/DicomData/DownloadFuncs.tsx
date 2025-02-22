@@ -29,7 +29,7 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     } catch (error) {
         throw new Error(`Failed to create ZIP: ${error}`);
     }
-}/**
+} /**
  * @description - Download the dicom file, single file
  * @param blobData - The dicom data object, byteArray
  * @param fileName - string name of the file
@@ -65,4 +65,3 @@ export function createFile(fileName: string, blobData: any) {
 
     return { name: newFileName + "_edited.dcm", content: blob };
 }
-

@@ -1,5 +1,3 @@
-
-
 enum NUMBERS {
     "FD",
     "FL",
@@ -30,7 +28,6 @@ const headerLen = 8;
 const longHeaderLen = 12;
 const vrOffset = 4;
 const lengthOffset = 6;
-
 
 /**
  *
@@ -346,4 +343,3 @@ function getValueLength(tag: any) {
 export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
-

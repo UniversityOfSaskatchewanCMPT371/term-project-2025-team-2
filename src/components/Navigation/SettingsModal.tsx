@@ -3,6 +3,7 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { GenButton } from "../utils/GenButton";
 import DownloadOption from "../utils/DownloadOption";
 import { SettingsModalProps } from "../../types/types";
+import { HiddenTagsOption } from "./HiddenTagsOption";
 
 /**
  * SettingsModal component for managing application settings
@@ -12,6 +13,8 @@ import { SettingsModalProps } from "../../types/types";
  * @param {File[]} props.files - Array of file objects
  * @param {(option: string) => void} props.setDownloadOption - Function to set the download option
  * @param {string} props.downloadOption - Currently selected download option
+ * @param {boolean} props.showHiddenTags - Flag indicating if hidden tags are shown
+ * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered SettingsModal component
  */
 const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -19,6 +22,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     files,
     setDownloadOption,
     downloadOption,
+    showHiddenTags,
+    setShowHiddenTags,
 }) => {
     return (
         <div
@@ -44,7 +49,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     />
                 </div>
 
-                {files.length > 1 ? (
+                <HiddenTagsOption
+                    showHiddenTags={showHiddenTags}
+                    setShowHiddenTags={setShowHiddenTags}
+                />
+
+                {files.length > 1 && (
                     <>
                         <p>Download Option</p>
                         <DownloadOption
@@ -52,8 +62,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                             downloadOption={downloadOption}
                         />
                     </>
-                ) : (
-                    <div className="mb-4">No Options</div>
                 )}
 
                 <GenButton
