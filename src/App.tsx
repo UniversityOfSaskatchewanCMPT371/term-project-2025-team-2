@@ -11,11 +11,11 @@ import QuestionModal from "./components/utils/Modals/QuestionModal";
 import Modal from "./components/utils/Modals/Modal";
 import {
     tagUpdater,
-    downloadDicomFile,
     getSingleFileTagEdits,
-    createFile,
-    createZipFromFiles,
 } from "./components/DicomData/TagUpdater";
+import { createFile } from "./components/DicomData/DownloadFuncs";
+import { downloadDicomFile } from "./components/DicomData/DownloadFuncs";
+import { createZipFromFiles } from "./components/DicomData/DownloadFuncs";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
 
