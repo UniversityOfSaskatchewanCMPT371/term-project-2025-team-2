@@ -4,7 +4,6 @@ import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/DicomTypes.ts";
 import { GenButton } from "../utils/GenButton.tsx";
 import logger from "../utils/Logger";
-
 import { tagUpdater, downloadDicomFile, createFile } from "./TagUpdater.tsx";
 
 /**

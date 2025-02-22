@@ -1,5 +1,13 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    act,
+} from "@testing-library/react";
 import DicomTable from "../../src/components/DicomData/DicomTable"; // Update the path accordingly
+import Logger from "../../src/components/utils/Logger";
+import * as tagUpdater from "../../src/components/DicomData/TagUpdater";
 
 // Mock the logger
 jest.mock("../../src/components/utils/Logger", () => ({
@@ -19,23 +27,23 @@ describe("DicomTable Component", () => {
 
     // Correct structure for mockDicomData
     const mockDicomData = {
-        "tags": {
+        tags: {
             "1": {
                 tagName: "PatientName",
                 value: "John Doe",
-                hidden: false
+                hidden: false,
             },
             "2": {
                 tagName: "StudyDate",
                 value: "2022-01-01",
-                hidden: false
+                hidden: false,
             },
             "3": {
                 tagName: "StudyID",
                 value: "12345",
-                hidden: true
+                hidden: true,
             },
-        }
+        },
     };
 
     const mockNewTableData = [
@@ -78,9 +86,7 @@ describe("DicomTable Component", () => {
             />
         );
         expect(screen.getByText(/No data available/i)).toBeInTheDocument();
-        expect(require("../../src/components/utils/Logger").error).toHaveBeenCalledWith(
-            "No DICOM data available"
-        );
+        expect(Logger.error).toHaveBeenCalledWith("No DICOM data available");
     });
 
     test("filters rows based on search term", async () => {
@@ -165,8 +171,8 @@ describe("DicomTable Component", () => {
 
         await waitFor(() => {
             expect(mockClearData).toHaveBeenCalled();
-            expect(require("../../src/components/DicomData/TagUpdater").downloadDicomFile).toHaveBeenCalled();
-            expect(require("../../src/components/DicomData/TagUpdater").createFile).toHaveBeenCalled();
+            expect(tagUpdater.downloadDicomFile).toHaveBeenCalled();
+            expect(tagUpdater.createFile).toHaveBeenCalled();
         });
     });
 });

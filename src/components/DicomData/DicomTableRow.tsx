@@ -137,7 +137,9 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                             : "To Be Deleted"
                                     }
                                     data-tooltip-place="left"
-                                    aria-label={deleteTag ? "Undo Delete" : "Delete Tag"}
+                                    aria-label={
+                                        deleteTag ? "Undo Delete" : "Delete Tag"
+                                    }
                                 />
                                 <Tooltip
                                     id={`${row.tagId}-deleteTag-button-tooltip`}

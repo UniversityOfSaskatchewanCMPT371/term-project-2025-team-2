@@ -8,7 +8,7 @@ export interface DicomTag {
     tagName: string;
     value: string | DicomTag[];
     hidden?: boolean;
-} 
+}
 
 /**
  * interface DicomTableProps
@@ -17,7 +17,7 @@ export interface DicomTag {
  * @description - Interface for the DicomTable component
  */
 export interface DicomTableProps {
-    dicomData: { [key: string]: {[key: string]: DicomTag} };
+    dicomData: { [key: string]: { [key: string]: DicomTag } };
     fileName: string;
     updateTableData: (data: any) => void;
     newTableData: any[];
