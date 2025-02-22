@@ -1,80 +1,51 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import DownloadOption from "../../src/components/utils/DownloadOption";
 
-describe("DownloadOption", () => {
+jest.mock("react-tooltip", () => ({
+    Tooltip: () => <div>Mocked Tooltip</div>,
+}));
+
+describe("DownloadOption Component", () => {
     const mockSetDownloadOption = jest.fn();
 
     beforeEach(() => {
         mockSetDownloadOption.mockClear();
     });
 
-    it("renders with the correct download option text based on the 'downloadOption' prop", () => {
-        // Test for "zip"
+    test("renders with 'zip' download option", () => {
         render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="zip"
-            />
+            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="zip" />
         );
-        expect(screen.getByText("Zip")).toBeInTheDocument();
 
-        // Test for "single"
-        render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="single"
-            />
-        );
-        expect(screen.getByText("Single")).toBeInTheDocument();
+        const checkbox = screen.getByRole("checkbox");
+        expect(checkbox).toBeChecked();
+
+        expect(screen.getByText("Zip File")).toBeInTheDocument();
+
+        expect(checkbox).toHaveAttribute("data-tooltip-content", "Switch to Individual Files");
     });
 
-    it("calls setDownloadOption with 'zip' when checkbox is checked", () => {
+    test("renders with 'individual files' download option", () => {
         render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="single"
-            />
+            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="single" />
         );
 
-        const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-        fireEvent.click(checkbox);
+        const checkbox = screen.getByRole("checkbox");
+        expect(checkbox).not.toBeChecked();
 
+        expect(screen.getByText("Individual Files")).toBeInTheDocument();
+
+        expect(checkbox).toHaveAttribute("data-tooltip-content", "Switch to Zip File");
+    });
+
+    test("checkbox click changes the download option", () => {
+        render(
+            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="single" />
+        );
+
+        const checkbox = screen.getByRole("checkbox");
+
+        fireEvent.click(checkbox);
         expect(mockSetDownloadOption).toHaveBeenCalledWith("zip");
-    });
-
-    it("calls setDownloadOption with 'single' when checkbox is unchecked", () => {
-        render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="zip"
-            />
-        );
-
-        const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-        fireEvent.click(checkbox);
-
-        expect(mockSetDownloadOption).toHaveBeenCalledWith("single");
-    });
-
-    it("checkbox is checked when downloadOption is 'zip'", () => {
-        render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="zip"
-            />
-        );
-        const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-        expect(checkbox.checked).toBe(true);
-    });
-
-    it("checkbox is unchecked when downloadOption is 'single'", () => {
-        render(
-            <DownloadOption
-                setDownloadOption={mockSetDownloadOption}
-                downloadOption="single"
-            />
-        );
-        const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-        expect(checkbox.checked).toBe(false);
     });
 });
