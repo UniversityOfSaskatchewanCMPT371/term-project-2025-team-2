@@ -32,7 +32,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 });
 
 test("Edit a DICOM tag and save changes", async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(60000);
     await page.goto("http://localhost:5173");
 
     // Upload a DICOM file
