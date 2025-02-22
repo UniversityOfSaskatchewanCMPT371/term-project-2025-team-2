@@ -1,8 +1,9 @@
 /**
- * interface DicomTag
- * @property tagName - Name of the DICOM tag
- * @property value - Value of the DICOM tag
- * @returns DicomTag
+ * A single DICOM tag with its properties
+ * @interface DicomTag
+ * @property {string} tagName - The human-readable name of the DICOM tag
+ * @property {(string|DicomTag[])} value - The value of the tag, which can be either a string or nested DICOM tags
+ * @property {boolean} [hidden] - Optional flag indicating if the tag should be hidden in the UI
  */
 export interface DicomTag {
     tagName: string;
@@ -11,17 +12,61 @@ export interface DicomTag {
 }
 
 /**
- * interface DicomTableProps
- * @property dicomData - DICOM data
- * @returns DicomTableProps
- * @description - Interface for the DicomTable component
+ * A mapping of tag IDs to their corresponding DICOM tag data
+ * @property {Object.<string, DicomTag>} DicomTags
+ */
+export interface DicomTags {
+    [tagId: string]: DicomTag;
+}
+
+/**
+ * The complete DICOM dataset structure
+ * @interface {Object} DicomDataSet
+ * @property {DicomTags} tags - Collection of all DICOM tags in the dataset
+ * @property {any} DicomDataSet - Raw DICOM dataset information
+ * @todo Replace 'any' with specific type for raw DICOM data
+ */
+export interface DicomDataSet {
+    tags: DicomTags;
+    DicomDataSet: any;
+}
+
+/**
+ * Props for the main DicomTable component
+ * @typedef {Object} DicomTableProps
+ * @property {DicomDataSet} dicomData - The DICOM dataset to display
+ * @property {string} fileName - Name of the current DICOM file
+ * @property {function(TableUpdateData): void} updateTableData - Callback function to update table data
+ * @property {Array<{fileName: string, tagId: string, newValue: string}>} newTableData - Array of modified table data
+ * @property {function(): void} clearData - Function to clear all modifications
  */
 export interface DicomTableProps {
-    dicomData: { [key: string]: { [key: string]: DicomTag } };
+    dicomData: DicomDataSet;
     fileName: string;
-    updateTableData: (data: any) => void;
-    newTableData: any[];
+    updateTableData: (data: TableUpdateData) => void;
+    newTableData: Array<{
+        fileName: string;
+        tagId: string;
+        newValue: string;
+    }>;
     clearData: () => void;
+}
+
+/**
+ * A row in the DICOM table view
+ * @interface {Object} TableRow
+ * @property {string} tagId - Unique identifier for the DICOM tag
+ * @property {string} tagName - Human-readable name of the tag
+ * @property {(string|DicomTag[])} value - Current value of the tag
+ * @property {boolean} hidden - Whether the tag is hidden in the UI
+ * @property {boolean} updated - Whether the tag has been modified
+ */
+export interface TableRow {
+    tagId: string;
+    tagName: string;
+    value: string | DicomTag[];
+    hidden: boolean;
+    updated: boolean;
 }
 
 /**
@@ -48,4 +93,59 @@ export interface DicomTableRowProps {
     nested?: boolean;
     updated?: boolean;
     level?: number;
+}
+
+/**
+ * Data structure for table updates
+ * @interface {Object} TableUpdateData
+ * @property {string} fileName - Name of the DICOM file being updated
+ * @property {string} tagId - ID of the tag being updated
+ * @property {string} newValue - New value for the tag
+ * @property {boolean} delete - Whether to delete the tag
+ */
+export interface TableUpdateData {
+    fileName: string;
+    tagId: string;
+    newValue: string;
+    delete: boolean;
+}
+
+/**
+ * Props for the table controls
+ * @interface {Object} TableControlsProps
+ * @property {string} searchTerm - Current search term
+ * @property {function(string): void} onSearchChange - Callback function for search term changes
+ * @property {function(): void} onSave - Callback function to save changes
+ * @property {function(): void} onToggleHidden - Callback function to toggle hidden tags
+ * @property {boolean} showHidden - Whether to show hidden tags
+ */
+export interface TableControlsProps {
+    searchTerm: string;
+    onSearchChange: (term: string) => void;
+    onSave: () => void;
+    onToggleHidden: () => void;
+    showHidden: boolean;
+}
+
+/**
+ * Props for the DicomTableBody component
+ * @interface {Object} DicomTableBodyProps
+ * @property {Array<TableRow>} filteredRows - Filtered list of DICOM tag rows
+ * @property {boolean} showHidden - Whether to show hidden tags
+ * @property {function(string, string, boolean): void} onUpdateValue - Callback function to update tag values
+ */
+export interface DicomTableBodyProps {
+    filteredRows: Array<{
+        tagId: string;
+        tagName: string;
+        value: any;
+        hidden: boolean;
+        updated: boolean;
+    }>;
+    showHidden: boolean;
+    onUpdateValue: (
+        tagId: string,
+        newValue: string,
+        deleteTag: boolean
+    ) => void;
 }

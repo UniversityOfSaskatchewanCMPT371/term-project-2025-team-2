@@ -334,6 +334,12 @@ export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
+/**
+ * @description - Create a new file object
+ * @param fileName - string name of the file
+ * @param blobData - The dicom data object, byteArray
+ * @returns - object with name and content of the file
+ */
 export function createFile(fileName: string, blobData: any) {
     const blob = new Blob([blobData], {
         type: "application/dicom",
