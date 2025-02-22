@@ -7,7 +7,7 @@ import { ArrowPathIcon } from "@heroicons/react/24/solid";
 const LoadingScreen = () => {
     return (
         <div
-            role="dialog"
+            role="img"
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80"
         >
             <div className="flex h-full items-center justify-center">
