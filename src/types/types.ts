@@ -27,6 +27,8 @@ export interface SidebarProps {
     setDownloadOption: (value: string) => void;
     showHiddenTags: boolean;
     setShowHiddenTags: (set: boolean) => void;
+    currTheme: string;
+    toggleTheme: (e: any) => void;
 }
 
 /**
@@ -89,11 +91,9 @@ export interface GenButtonProps {
 export interface TopbarProps {
     toggleSidebar: () => void;
     sidebarVisible: boolean;
-    toggleTheme: (e: any) => void;
-    sidebarButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
+    sidebarButtonRef: React.RefObject<HTMLButtonElement | null>;
     onInstallClick: () => void;
     showInstallButton: boolean;
-    currTheme: string;
 }
 
 /**
@@ -189,6 +189,8 @@ export interface SettingsModalProps {
     downloadOption: string;
     showHiddenTags: boolean;
     setShowHiddenTags: (set: boolean) => void;
+    currTheme: string;
+    toggleTheme: (e: any) => void;
 }
 
 /**

@@ -1,7 +1,6 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { ThemeSelector } from "./ThemeSelector";
 import { TopbarProps } from "../../types/types";
 
 /**
@@ -16,11 +15,9 @@ import { TopbarProps } from "../../types/types";
 const Topbar: React.FC<TopbarProps> = ({
     toggleSidebar,
     sidebarVisible,
-    toggleTheme,
     sidebarButtonRef,
     onInstallClick,
     showInstallButton,
-    currTheme,
 }) => {
     return (
         <div className="sticky top-0 z-20 w-full bg-base-100/80 shadow-md backdrop-blur-sm">
@@ -44,10 +41,6 @@ const Topbar: React.FC<TopbarProps> = ({
                             <Tooltip id="pwa-button-tooltip" />
                         </>
                     )}
-                    <ThemeSelector
-                        toggleTheme={toggleTheme}
-                        currTheme={currTheme}
-                    />
                     <button
                         ref={sidebarButtonRef}
                         onClick={toggleSidebar}

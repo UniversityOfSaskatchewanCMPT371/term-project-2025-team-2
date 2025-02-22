@@ -4,6 +4,7 @@ import { GenButton } from "../utils/GenButton";
 import DownloadOption from "../utils/DownloadOption";
 import { SettingsModalProps } from "../../types/types";
 import { HiddenTagsOption } from "./HiddenTagsOption";
+import { ThemeSelector } from "./ThemeSelector";
 
 /**
  * SettingsModal component for managing application settings
@@ -24,6 +25,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     downloadOption,
     showHiddenTags,
     setShowHiddenTags,
+    currTheme,
+    toggleTheme,
 }) => {
     return (
         <div
@@ -48,6 +51,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                         }}
                     />
                 </div>
+
+                <ThemeSelector
+                    currTheme={currTheme}
+                    toggleTheme={toggleTheme}
+                />
 
                 <HiddenTagsOption
                     showHiddenTags={showHiddenTags}

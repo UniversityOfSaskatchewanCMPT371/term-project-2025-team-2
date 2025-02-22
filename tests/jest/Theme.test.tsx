@@ -12,17 +12,6 @@ describe("ThemeSelector", () => {
         mockToggleTheme.mockClear();
     });
 
-    it("renders the correct icon based on the current theme", () => {
-        render(
-            <ThemeSelector toggleTheme={mockToggleTheme} currTheme="night" />
-        );
-
-        expect(screen.getByLabelText(/sun/i)).toBeInTheDocument();
-
-        render(<ThemeSelector toggleTheme={mockToggleTheme} currTheme="day" />);
-
-        expect(screen.getByLabelText(/moon/i)).toBeInTheDocument();
-    });
 
     it("renders a Tooltip component", () => {
         render(

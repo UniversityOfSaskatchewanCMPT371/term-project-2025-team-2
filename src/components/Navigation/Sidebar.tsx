@@ -51,6 +51,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     downloadOption,
     showHiddenTags,
     setShowHiddenTags,
+    currTheme,
+    toggleTheme,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -90,6 +92,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                     downloadOption={downloadOption}
                     showHiddenTags={showHiddenTags}
                     setShowHiddenTags={setShowHiddenTags}
+                    currTheme={currTheme}
+                    toggleTheme={toggleTheme}
                 />
             )}
 
