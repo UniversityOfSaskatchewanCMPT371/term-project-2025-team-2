@@ -17,7 +17,7 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
 
     return (
         <div>
-            <label className="label cursor-pointer mb-4">
+            <label className="label mb-4 cursor-pointer">
                 <input
                     className="toggle toggle-info"
                     type="checkbox"
@@ -25,10 +25,18 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
                     checked={downloadOption === "zip"}
                     onChange={handleChange}
                     data-tooltip-id="download-option-button-tooltip"
-                    data-tooltip-content={downloadOption === "zip" ? "Switch to Individual Files" : "Switch to Zip File"}
+                    data-tooltip-content={
+                        downloadOption === "zip"
+                            ? "Switch to Individual Files"
+                            : "Switch to Zip File"
+                    }
                     data-tooltip-place="top"
                 />
-                {downloadOption === "zip" ? <span>Zip File</span> : <span>Individual Files</span>}
+                {downloadOption === "zip" ? (
+                    <span>Zip File</span>
+                ) : (
+                    <span>Individual Files</span>
+                )}
             </label>
             <Tooltip id="download-option-button-tooltip" />
         </div>
