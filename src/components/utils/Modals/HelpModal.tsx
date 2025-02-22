@@ -1,6 +1,6 @@
 import React from "react";
-import { GenButton } from "../utils/GenButton";
-import { HelpModalProps } from "../../types/types";
+import { GenButton } from "../GenButton";
+import { HelpModalProps } from "../../../types/types";
 
 /**
  * HelpModal component for displaying help documentation

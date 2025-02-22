@@ -1,7 +1,7 @@
 import React from "react";
 import { DicomTableRow } from "./DicomTableRow";
 import EmptyTableRow from "./EmptyTableRow";
-import { DicomTableBodyProps } from "../../types/DicomTypes";
+import { DicomTableBodyProps } from "../../../types/DicomTypes";
 
 /**
  * DICOM table body component

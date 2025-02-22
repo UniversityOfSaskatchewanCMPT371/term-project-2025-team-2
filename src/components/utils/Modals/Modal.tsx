@@ -1,6 +1,6 @@
 import React from "react";
-import { GenButton } from "./GenButton.tsx";
-import { ModalProps } from "../../types/types.ts";
+import { GenButton } from "../GenButton.tsx";
+import { ModalProps } from "../../../types/types.ts";
 
 /**
  *

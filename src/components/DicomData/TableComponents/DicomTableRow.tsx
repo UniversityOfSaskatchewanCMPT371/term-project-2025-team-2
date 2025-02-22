@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { DicomTableRowProps } from "../../types/DicomTypes";
+import { DicomTableRowProps } from "../../../types/DicomTypes";
 
 /**
  * handleClick function

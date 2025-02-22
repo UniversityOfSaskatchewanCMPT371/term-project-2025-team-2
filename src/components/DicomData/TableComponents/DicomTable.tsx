@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logger from "../utils/Logger";
-import { tagUpdater, downloadDicomFile, createFile } from "./TagUpdater";
-import { DicomTableProps } from "../../types/DicomTypes";
-import { useFilteredRows } from "./useFilteredRows";
+import logger from "../../utils/Logger";
+import { tagUpdater, downloadDicomFile, createFile } from "../TagUpdater";
+import { DicomTableProps } from "../../../types/DicomTypes";
+import { useFilteredRows } from "../../Hooks/useFilteredRows";
 import { createRows } from "./rowUtils";
 import TableHeader from "./TableHeader";
 import TableControls from "./TableControls";

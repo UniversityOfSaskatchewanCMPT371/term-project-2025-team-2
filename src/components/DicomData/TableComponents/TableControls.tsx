@@ -1,7 +1,7 @@
 import React from "react";
-import Search from "../utils/Search";
-import { GenButton } from "../utils/GenButton";
-import { TableControlsProps } from "../../types/DicomTypes";
+import Search from "../../utils/Search";
+import { GenButton } from "../../utils/GenButton";
+import { TableControlsProps } from "../../../types/DicomTypes";
 
 /**
  * Controls component for the DICOM table

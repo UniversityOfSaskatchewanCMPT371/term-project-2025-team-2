@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
-import DicomTable from "./components/DicomData/DicomTable";
+import DicomTable from "./components/DicomData/TableComponents/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
 import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
-import QuestionModal from "./components/utils/QuestionModal";
-import Modal from "./components/utils/Modal";
+import QuestionModal from "./components/utils/Modals/QuestionModal";
+import Modal from "./components/utils/Modals/Modal";
 import {
     tagUpdater,
     downloadDicomFile,

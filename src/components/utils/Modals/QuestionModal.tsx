@@ -1,4 +1,4 @@
-import { QuestionModalProps } from "../../types/types";
+import { QuestionModalProps } from "../../../types/types";
 
 /**
  *
