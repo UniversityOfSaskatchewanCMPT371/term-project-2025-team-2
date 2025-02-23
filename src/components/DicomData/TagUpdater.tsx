@@ -1,5 +1,36 @@
-import JSZip from "jszip";
-import { FileData } from "../../types/FileTypes";
+
+
+enum NUMBERS {
+    "FD",
+    "FL",
+    "UL",
+    "US",
+    "SL",
+    "SS",
+}
+enum VR_with_12_bytes_header {
+    "VR",
+    "OB",
+    "OD",
+    "OF",
+    "OL",
+    "OW",
+    "SQ",
+    "UC",
+    "UR",
+    "UT",
+    "UN",
+}
+const groupLen = 2;
+const elementLen = 2;
+const vrLen = 2;
+const lengthLen = 2;
+const longHeaderLengthLen = 4;
+const headerLen = 8;
+const longHeaderLen = 12;
+const vrOffset = 4;
+const lengthOffset = 6;
+
 
 /**
  *
@@ -104,37 +135,6 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
     concatedBuffer.set(buffer2, bufffer1.length);
     return concatedBuffer;
 }
-
-enum NUMBERS {
-    "FD",
-    "FL",
-    "UL",
-    "US",
-    "SL",
-    "SS",
-}
-enum VR_with_12_bytes_header {
-    "VR",
-    "OB",
-    "OD",
-    "OF",
-    "OL",
-    "OW",
-    "SQ",
-    "UC",
-    "UR",
-    "UT",
-    "UN",
-}
-const groupLen = 2;
-const elementLen = 2;
-const vrLen = 2;
-const lengthLen = 2;
-const longHeaderLengthLen = 4;
-const headerLen = 8;
-const longHeaderLen = 12;
-const vrOffset = 4;
-const lengthOffset = 6;
 
 /**
  * @param tagName tag's group and element in bytearray
@@ -245,6 +245,14 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     return newTag;
 }
 
+/**
+ * @param num - number to be converted to bytearray
+ * @param type - type of number to be converted
+ * @param arrayLength - length of the array
+ * @param littleEndian - whether the number is little endian
+ * @description converts a number to a bytearray
+ * @return number's bytearray
+ */
 function writeTypedNumber(
     num: number,
     type: string,
@@ -294,6 +302,11 @@ function writeVRArray(vr: string) {
     return vrArray;
 }
 
+/**
+ * @param tag - tag to be written to bytearray
+ * @description gets the length of the tag's value
+ * @return length of the tag's value
+ */
 function getValueLength(tag: any) {
     if (tag.tagVR in NUMBERS) {
         let value = parseInt(tag.tagValue, 10);
@@ -334,67 +347,3 @@ export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
-/**
- * @description - Create a new file object
- * @param fileName - string name of the file
- * @param blobData - The dicom data object, byteArray
- * @returns - object with name and content of the file
- */
-export function createFile(fileName: string, blobData: any) {
-    const blob = new Blob([blobData], {
-        type: "application/dicom",
-    });
-
-    const newFileName = fileName.includes(".dcm")
-        ? fileName.slice(0, -4)
-        : fileName;
-
-    return { name: newFileName + "_edited.dcm", content: blob };
-}
-
-/**
- * @description - Download the dicom file, single file
- * @param blobData - The dicom data object, byteArray
- * @param fileName - string name of the file
- */
-export async function downloadDicomFile(newFile: FileData) {
-    const url = window.URL.createObjectURL(newFile.content);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = newFile.name;
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-}
-
-/**
- * Creates a ZIP file containing multiple files
- * @param files - Array of files with name and content
- * @returns Promise resolving to the ZIP file as a Blob
- */
-export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
-    try {
-        const zip = new JSZip();
-
-        // Add each file to the ZIP
-        files.forEach((file) => {
-            zip.file(file.name, file.content);
-        });
-
-        // Generate the ZIP file
-        const zipBlob = await zip.generateAsync({
-            type: "blob",
-            compression: "DEFLATE",
-            compressionOptions: {
-                level: 6, // Compression level (1-9)
-            },
-        });
-
-        return zipBlob;
-    } catch (error) {
-        throw new Error(`Failed to create ZIP: ${error}`);
-    }
-}

@@ -4,7 +4,7 @@ import FileTable from "../FileHandling/FileTable";
 import Header from "./Header";
 import SeriesControls from "./SeriesControls";
 import SettingsModal from "./SettingsModal";
-import HelpModal from "./HelpModal";
+import HelpModal from "../utils/Modals/HelpModal";
 
 /**
  * Main Sidebar component for file management and settings

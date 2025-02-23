@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FileTableBody from "./FileTableBody.tsx";
-import Modal from "../utils/Modal.tsx";
+import Modal from "../utils/Modals/Modal.tsx";
 import { FileTableProps } from "../../types/FileTypes.ts";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 
