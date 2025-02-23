@@ -514,3 +514,28 @@ test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
 
     console.log("Set Theme toggle state change verified");
 });
+
+test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    // Locate the second SVG icon (Sun icon) inside the label
+    const sunIcon = page.locator('label.mb-4cursor-pointer.label svg[data-slot="icon"]').nth(1);
+    await expect(sunIcon).toBeVisible();
+
+    // Verify the icon is clickable
+    await expect(sunIcon).toBeEnabled();
+
+    // Click the icon
+    await sunIcon.click();
+
+    console.log("Second SVG icon (Sun icon) is clickable");
+});
