@@ -539,3 +539,36 @@ test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
 
     console.log("Second SVG icon (Sun icon) is clickable");
 });
+
+test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    // Locate the parent label
+    const label = page.locator('label.mb-4cursor-pointer.label');
+
+    // Locate the Show Hidden Tags toggle inside the label using its unique ID
+    const showHiddenTagsToggle = label.locator('#hidden-tag-option');
+    await expect(showHiddenTagsToggle).toBeVisible();
+
+    // Verify the initial state of the toggle
+    const isInitiallyChecked = await showHiddenTagsToggle.isChecked();
+    console.log(`Initial state of Show Hidden Tags toggle: ${isInitiallyChecked ? 'Checked' : 'Unchecked'}`);
+
+    // Click the toggle to change its state
+    await showHiddenTagsToggle.click();
+
+    // Verify the new state of the toggle
+    const isNowChecked = await showHiddenTagsToggle.isChecked();
+    await expect(isNowChecked).toBe(!isInitiallyChecked); // State should be the opposite of the initial state
+
+    console.log("Show Hidden Tags toggle state change verified");
+});
