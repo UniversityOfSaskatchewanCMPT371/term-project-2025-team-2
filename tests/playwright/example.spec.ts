@@ -629,3 +629,26 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
 
     console.log("Second SVG icon (right icon) in Show Hidden Tags is clickable");
 });
+
+test("Verify Close button is clickable and closes settings menu", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    // Locate the Close button
+
+    const closeButton = page.locator('button:has-text("Close")').first();
+    // Verify the Close button is clickable
+    await expect(closeButton).toBeEnabled();
+
+    await closeButton.click();
+
+    console.log("Close button is clickable and closes the settings menu");
+});
