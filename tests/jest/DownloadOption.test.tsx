@@ -14,7 +14,10 @@ describe("DownloadOption Component", () => {
 
     test("renders with 'zip' download option", () => {
         render(
-            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="zip" />
+            <DownloadOption
+                setDownloadOption={mockSetDownloadOption}
+                downloadOption="zip"
+            />
         );
 
         const checkbox = screen.getByRole("checkbox");
@@ -22,12 +25,18 @@ describe("DownloadOption Component", () => {
 
         expect(screen.getByText("Zip File")).toBeInTheDocument();
 
-        expect(checkbox).toHaveAttribute("data-tooltip-content", "Switch to Individual Files");
+        expect(checkbox).toHaveAttribute(
+            "data-tooltip-content",
+            "Switch to Individual Files"
+        );
     });
 
     test("renders with 'individual files' download option", () => {
         render(
-            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="single" />
+            <DownloadOption
+                setDownloadOption={mockSetDownloadOption}
+                downloadOption="single"
+            />
         );
 
         const checkbox = screen.getByRole("checkbox");
@@ -35,12 +44,18 @@ describe("DownloadOption Component", () => {
 
         expect(screen.getByText("Individual Files")).toBeInTheDocument();
 
-        expect(checkbox).toHaveAttribute("data-tooltip-content", "Switch to Zip File");
+        expect(checkbox).toHaveAttribute(
+            "data-tooltip-content",
+            "Switch to Zip File"
+        );
     });
 
     test("checkbox click changes the download option", () => {
         render(
-            <DownloadOption setDownloadOption={mockSetDownloadOption} downloadOption="single" />
+            <DownloadOption
+                setDownloadOption={mockSetDownloadOption}
+                downloadOption="single"
+            />
         );
 
         const checkbox = screen.getByRole("checkbox");

@@ -42,9 +42,10 @@ entirely in the browser, using **React**, **Vite**, **TailwindCSS**, and
   tags.
 - **PWAs (Progressive Web Apps)**: Enabling offline use and improved
   performance.
-- **Jest**: JavaScript/Typescript testing framework, works well with React. Used here for 
-   unit/integration type testing.
-- **Playwright**: End-to-End functional UI testing framework, automates browser interactions.
+- **Jest**: JavaScript/Typescript testing framework, works well with React. Used
+  here for unit/integration type testing.
+- **Playwright**: End-to-End functional UI testing framework, automates browser
+  interactions.
 
 ## Installation
 
@@ -86,6 +87,7 @@ Once test files are made in your branch:
 2. Run all tests:
     ```bash
     npm test
+    ```
 
 ### Docker Container
 

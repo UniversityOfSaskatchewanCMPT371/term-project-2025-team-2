@@ -1,12 +1,17 @@
 import { CustomFile } from "./FileTypes";
 
 /**
- * interface SidebarProps
- * @property files - Array of files
- * @property onFileSelect - Function to handle file selection
- * @property currentFileIndex - Index of the currently viewed file
- * @returns SidebarProps
- * @description - Interface for the Sidebar component
+ * Props for the Sidebar component
+ * @interface SidebarProps
+ * @property {File[]} files - Array of file objects
+ * @property {(index: number) => void} onFileSelect - Function to handle file selection
+ * @property {number} currentFileIndex - Index of the currently selected file
+ * @property {boolean} series - Flag indicating if series mode is active
+ * @property {() => void} seriesToggle - Function to toggle series mode
+ * @property {boolean} isVisible - Flag indicating if the sidebar is visible
+ * @property {() => void} updateAllFiles - Function to update all files
+ * @property {(option: string) => void} setDownloadOption - Function to set the download option
+ * @property {string} downloadOption - Currently selected download option
  */
 export interface SidebarProps {
     files: CustomFile[];
@@ -139,4 +144,59 @@ export interface QuestionModalProps {
     setIsOpen: (value: boolean) => void;
     title: string;
     text: string;
+}
+
+/**
+ * Props for the Header component
+ * @interface HeaderProps
+ * @property {() => void} toggleModal - Function to toggle the settings modal
+ */
+export interface HeaderProps {
+    toggleModal: () => void;
+}
+
+/**
+ * Props for the SeriesControls component
+ * @interface SeriesControlsProps
+ * @property {boolean} series - Flag indicating if series mode is active
+ * @property {() => void} updateAllFiles - Function to update all files
+ * @property {() => void} seriesToggle - Function to toggle series mode
+ */
+export interface SeriesControlsProps {
+    series: boolean;
+    updateAllFiles: () => void;
+    seriesToggle: () => void;
+}
+
+/**
+ * Props for the SettingsModal component
+ * @interface SettingsModalProps
+ * @property {() => void} toggleModal - Function to toggle the modal visibility
+ * @property {File[]} files - Array of file objects
+ * @property {(option: string) => void} setDownloadOption - Function to set the download option
+ * @property {string} downloadOption - Currently selected download option
+ */
+export interface SettingsModalProps {
+    toggleModal: () => void;
+    files: CustomFile[];
+    setDownloadOption: (option: string) => void;
+    downloadOption: string;
+}
+
+/**
+ * Props for the HelpModal component
+ * @interface HelpModalProps
+ */
+
+export interface HelpModalProps {}
+
+/**
+ * Props for the DownloadOption component
+ * @interface DownloadOptionProps
+ * @property {(option: string) => void} setDownloadOption - Function to set the download option
+ * @property {string} downloadOption - Currently selected download option
+ */
+export interface DownloadOptionProps {
+    setDownloadOption: (option: string) => void;
+    downloadOption: string;
 }
