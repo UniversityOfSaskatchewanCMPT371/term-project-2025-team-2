@@ -118,6 +118,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                     data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
                                     data-tooltip-content="Edit Tag Value"
                                     data-tooltip-place="top"
+                                    aria-label="Edit Tag"
                                 />
                                 <Tooltip
                                     id={`${row.tagId}-editTag-button-tooltip`}
@@ -136,6 +137,9 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                             : "To Be Deleted"
                                     }
                                     data-tooltip-place="left"
+                                    aria-label={
+                                        deleteTag ? "Undo Delete" : "Delete Tag"
+                                    }
                                 />
                                 <Tooltip
                                     id={`${row.tagId}-deleteTag-button-tooltip`}

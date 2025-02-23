@@ -4,7 +4,6 @@ import { DicomTableRow } from "./DicomTableRow.tsx";
 import { DicomTableProps } from "../../types/DicomTypes.ts";
 import { GenButton } from "../utils/GenButton.tsx";
 import logger from "../utils/Logger";
-
 import { tagUpdater, downloadDicomFile, createFile } from "./TagUpdater.tsx";
 
 /**
@@ -22,7 +21,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
     const [searchTerm, setSearchTerm] = useState("");
     const [showHidden, setShowHidden] = useState(false);
 
-    if (!dicomData) {
+    if (!dicomData.tags) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
