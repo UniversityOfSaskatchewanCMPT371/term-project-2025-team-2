@@ -23,8 +23,8 @@ const FileTableBody: React.FC<FileListProps> = ({
                     key={index}
                     onClick={
                         !series
-                            ? () => onFileSelect(index)
-                            : () => openModal(true)
+                            ? () => openModal(true) 
+                            : () => onFileSelect(index)
                     }
                     className={`group cursor-pointer transition-all hover:bg-primary/5 ${
                         index === currentFileIndex ? "bg-primary/10" : ""
