@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip } from "react-tooltip";
 
 interface DownloadOptionProps {
     setDownloadOption: (value: string) => void;
@@ -16,15 +17,20 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
 
     return (
         <div>
-            <label htmlFor="download-option">
+            <label className="label cursor-pointer mb-4">
                 <input
+                    className="toggle toggle-info"
                     type="checkbox"
                     id="download-option"
                     checked={downloadOption === "zip"}
                     onChange={handleChange}
+                    data-tooltip-id="download-option-button-tooltip"
+                    data-tooltip-content={downloadOption === "zip" ? "Switch to Individual Files" : "Switch to Zip File"}
+                    data-tooltip-place="top"
                 />
-                {downloadOption === "zip" ? " Zip" : " Single"}
+                {downloadOption === "zip" ? <span>Zip File</span> : <span>Individual Files</span>}
             </label>
+            <Tooltip id="download-option-button-tooltip" />
         </div>
     );
 };

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { Cog6ToothIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { SidebarProps } from "../../types/types.ts";
 import FileTable from "../FileHandling/FileTable.tsx";
-import Modal from "../utils/Modal.tsx";
 import { GenButton } from "../utils/GenButton.tsx";
 import DownloadOption from "../utils/DownloadOption.tsx";
 
@@ -35,21 +34,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
-                isVisible ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"
+                }`}
         >
             <div className="mt-4 flex flex-col p-6 pt-20">
                 <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-xl font-bold text-primary">Files</h3>
-                    {files.length > 1 && (
-                        <DownloadOption
-                            setDownloadOption={setDownloadOption}
-                            downloadOption={downloadOption}
-                        />
-                    )}
-                    <QuestionMarkCircleIcon
-                        className="size-6 cursor-pointer text-base-content/70 transition-colors hover:text-primary"
+                    <Cog6ToothIcon
+                        className="size-6 cursor-pointer text-base-content/70 transition-colors hover:scale-110 hover:text-accent"
                         onClick={toggleModal}
                     />
                 </div>
@@ -96,12 +88,70 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
             </div>
 
-            <Modal
-                isOpen={isModalOpen}
-                onClose={toggleModal}
-                title="Help"
-                text="Here, you can view all your uploaded DICOM files. Switch between editing them as a series or individually, and save all edited files at once."
-            />
+            {isModalOpen && (
+                <div
+                    role="dialog"
+                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                    onClick={toggleModal}
+                >
+                    <div
+                        className="w-full max-w-sm rounded bg-base-100 p-6 text-base-content shadow-lg"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between">
+                            <h4 className="text-xl font-semibold mb-4">Settings</h4>
+                            <QuestionMarkCircleIcon className="size-6 mb-4 text-base-content/70 cursor-pointer transition-colors hover:scale-110 hover:text-accent" onClick={() => {
+                                const helpModal = document.getElementById('help_modal');
+                                if (helpModal) {
+                                    (helpModal as HTMLDialogElement).showModal();
+                                }
+                            }} />
+                        </div>
+
+                        {files.length > 1 ? (
+                            <>
+                                <p>Download Option</p>
+                                <DownloadOption
+                                    setDownloadOption={setDownloadOption}
+                                    downloadOption={downloadOption}
+                                />
+                            </>
+                        ) : (<div className="mb-4">No Options</div>)}
+
+                        <GenButton onClick={toggleModal} disabled={false} label="Close" />
+                    </div>
+
+                    <dialog id="help_modal" className="modal modal-bottom sm:modal-middle">
+                        <div className="modal-box">
+                            <h3 className="font-bold text-2xl">Help</h3>
+                            <div className="font-semibold text-lg py-4">Dicom tag Editor Options</div>
+                                <ul>
+                                    <li>Edit tag values or remove tags</li>
+                                    <li>Toggle between editing files individually or as a series</li>
+                                    <li>Download files as a zip or individual files</li>
+                                </ul>
+                                <div className="mt-4">
+                                    <a href="https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="link link-info">Detailed User Guide</a>
+                                </div>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <GenButton onClick={() => {
+                                        const helpModal = document.getElementById('help_modal');
+                                        if (helpModal) {
+                                            (helpModal as HTMLDialogElement).close();
+                                        }
+                                    }} disabled={false} label="Close" />
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
+
+                </div>
+            )}
+
         </div>
     );
 };
