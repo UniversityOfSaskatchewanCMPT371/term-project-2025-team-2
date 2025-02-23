@@ -23,7 +23,7 @@ const TableControls: React.FC<TableControlsProps> = ({
         <Search searchTerm={searchTerm} onSearchChange={onSearchChange} />
         <div className="ml-4">
             <GenButton
-                label="Save Single File Edits"
+                label="Download File"
                 disabled={false}
                 onClick={onSave}
             />
