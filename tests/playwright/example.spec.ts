@@ -459,3 +459,58 @@ test("Verify settings button is visible and clickable", async ({ page }) => {
     await settingsButton.click();
     console.log("Settings button is visible and clickable");
 });
+
+test("Verify Set Theme toggle functionality", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    const moonIcon = page.locator('label.mb-4cursor-pointer.label svg[data-slot="icon"]').first();
+    await expect(moonIcon).toBeVisible();
+
+    await expect(moonIcon).toBeEnabled();
+
+    await moonIcon.click();
+
+    await moonIcon.click();
+    console.log("First SVG icon (Moon icon) is clickable");
+});
+
+test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    const label = page.locator('label.mb-4cursor-pointer.label');
+
+    // Locate the Set Theme toggle inside the label using its unique ID
+    const setThemeToggle = label.locator('#theme-option');
+    await expect(setThemeToggle).toBeVisible();
+
+    // Verify the initial state of the toggle
+    const isInitiallyChecked = await setThemeToggle.isChecked();
+    console.log(`Initial state of toggle: ${isInitiallyChecked ? 'Checked' : 'Unchecked'}`);
+
+    // Click the toggle to change its state
+    await setThemeToggle.click();
+
+    // Verify the new state of the toggle
+    const isNowChecked = await setThemeToggle.isChecked();
+    await expect(isNowChecked).toBe(!isInitiallyChecked); // State should be the opposite of the initial state
+
+    console.log("Set Theme toggle state change verified");
+});
