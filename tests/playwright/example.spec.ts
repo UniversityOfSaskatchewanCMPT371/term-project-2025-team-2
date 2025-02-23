@@ -572,3 +572,60 @@ test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
 
     console.log("Show Hidden Tags toggle state change verified");
 });
+
+test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+
+    // Locate the Show Hidden Tags section using the <p> text
+    const showHiddenTagsSection = page.locator('p:has-text("Show Hidden Tags")').locator('xpath=..'); // Move to parent element
+
+    // Locate the first SVG icon (left icon) inside the label
+    const leftIcon = showHiddenTagsSection.locator('svg[data-slot="icon"]').first();
+    await expect(leftIcon).toBeVisible();
+
+    // Verify the icon is clickable
+    await expect(leftIcon).toBeEnabled();
+
+    // Click the icon
+    await leftIcon.click();
+
+    console.log("First SVG icon (left icon) in Show Hidden Tags is clickable");
+});
+
+test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    // Locate the Show Hidden Tags section using the <p> text
+    const showHiddenTagsSection = page.locator('p:has-text("Show Hidden Tags")').locator('xpath=..'); // Move to parent element
+
+    // Locate the second SVG icon (right icon) inside the label
+    const rightIcon = showHiddenTagsSection.locator('svg[data-slot="icon"]').nth(1);
+    await expect(rightIcon).toBeVisible();
+
+    // Verify the icon is clickable
+    await expect(rightIcon).toBeEnabled();
+
+    // Click the icon
+    await rightIcon.click();
+
+    console.log("Second SVG icon (right icon) in Show Hidden Tags is clickable");
+});
