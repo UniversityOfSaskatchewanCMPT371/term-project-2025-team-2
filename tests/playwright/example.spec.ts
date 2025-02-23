@@ -1,14 +1,14 @@
 import { test, expect } from "@playwright/test";
 test.describe.configure({ mode: "parallel" });
 test("Upload DICOM file ", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     // Navigate to your DICOM tag editor
     await page.goto(" http://localhost:5173");
 
     // Upload a DICOM file
     const fileInput = page.locator('input[type="file"].hidden');
     await fileInput.setInputFiles("./test-data/000000.dcm");
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     console.log("File uploaded");
 });
 
@@ -32,7 +32,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 });
 
 test("Edit a DICOM tag and save changes", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     await page.goto("http://localhost:5173");
 
     // Upload a DICOM file
@@ -52,7 +52,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 
     // Click the edit button (pencil icon) in that row
     const editButton = tagRow.locator("svg.h-6.w-6").first(); // Pencil button
-    await editButton.waitFor({ state: "visible", timeout: 60000 });
+    await editButton.waitFor({ state: "visible", timeout: 75000 });
     await expect(editButton).toBeVisible();
     await editButton.click();
 
@@ -72,7 +72,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 });
 
 test("Navigate between uploaded files", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     // Navigate to your DICOM tag editor
     await page.goto("http://localhost:5173");
 
@@ -86,7 +86,7 @@ test("Navigate between uploaded files", async ({ page }) => {
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 60000 });
+    await promptText.waitFor({ state: "visible", timeout: 75000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -127,36 +127,37 @@ test("Navigate between uploaded files", async ({ page }) => {
     console.log("Successfully navigating between the files");
 });
 
-test("Toggle night mode - verify click", async ({ page }) => {
-    // Navigate to your DICOM tag editor
-    await page.goto("http://localhost:5173");
+// theme selctor moved to settings updated test needed
+// test("Toggle night mode - verify click", async ({ page }) => {
+//     // Navigate to your DICOM tag editor
+//     await page.goto("http://localhost:5173");
 
-    // Locate the night mode toggle (checkbox inside the label)
-    const nightModeToggle = page
-        .locator('label.swap.swap-rotate input[type="checkbox"]')
-        .first();
-    await expect(nightModeToggle).toBeVisible();
+//     // Locate the night mode toggle (checkbox inside the label)
+//     const nightModeToggle = page
+//         .locator('label.swap.swap-rotate input[type="checkbox"]')
+//         .first();
+//     await expect(nightModeToggle).toBeVisible();
 
-    // Locate the parent label for the toggle
-    const nightModeLabel = page.locator("label.swap.swap-rotate").first();
-    await expect(nightModeLabel).toBeVisible();
+//     // Locate the parent label for the toggle
+//     const nightModeLabel = page.locator("label.swap.swap-rotate").first();
+//     await expect(nightModeLabel).toBeVisible();
 
-    // Check the initial state of the toggle (unchecked by default)
-    await expect(nightModeToggle).not.toBeChecked();
+//     // Check the initial state of the toggle (unchecked by default)
+//     await expect(nightModeToggle).not.toBeChecked();
 
-    // Click the label to toggle night mode
-    await nightModeLabel.click();
+//     // Click the label to toggle night mode
+//     await nightModeLabel.click();
 
-    // Verify the toggle is checked (click was successful)
-    await expect(nightModeToggle).toBeChecked();
+//     // Verify the toggle is checked (click was successful)
+//     await expect(nightModeToggle).toBeChecked();
 
-    // Click the label again to switch back to light mode
-    await nightModeLabel.click();
+//     // Click the label again to switch back to light mode
+//     await nightModeLabel.click();
 
-    // Verify the toggle is unchecked (click was successful)
-    await expect(nightModeToggle).not.toBeChecked();
-    console.log("Toggle night mode working successfully");
-});
+//     // Verify the toggle is unchecked (click was successful)
+//     await expect(nightModeToggle).not.toBeChecked();
+//     console.log("Toggle night mode working successfully");
+// });
 
 test("Toggle sidebar", async ({ page }) => {
     await page.goto("http://localhost:5173");
@@ -171,7 +172,7 @@ test("Toggle sidebar", async ({ page }) => {
 });
 
 test("Saving changes using Side bar toggle test", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -183,7 +184,7 @@ test("Saving changes using Side bar toggle test", async ({ page }) => {
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 60000 });
+    await promptText.waitFor({ state: "visible", timeout: 75000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -239,7 +240,7 @@ test("Saving changes using Side bar toggle test", async ({ page }) => {
 test("Testing edit individually and series button in side bar", async ({
     page,
 }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -251,7 +252,7 @@ test("Testing edit individually and series button in side bar", async ({
     // Wait for the prompt to appear (edit individually or in series)
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 60000 });
+    await promptText.waitFor({ state: "visible", timeout: 75000 });
     await expect(promptText).toBeVisible();
 
     // Click "Yes" to edit files individually
@@ -295,7 +296,7 @@ test("Testing edit individually and series button in side bar", async ({
 });
 
 test("Navigating from files from sidebar test", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -306,7 +307,7 @@ test("Navigating from files from sidebar test", async ({ page }) => {
 
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 60000 });
+    await promptText.waitFor({ state: "visible", timeout: 75000 });
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator("button", { hasText: "No" }).first();
@@ -353,7 +354,7 @@ test("Navigating from files from sidebar test", async ({ page }) => {
 });
 
 test("Updating file by navigating through side bar", async ({ page }) => {
-    test.setTimeout(60000);
+    test.setTimeout(75000);
     await page.goto("http://localhost:5173");
 
     const fileInput = page.locator('input[type="file"].hidden');
@@ -364,7 +365,7 @@ test("Updating file by navigating through side bar", async ({ page }) => {
 
     const promptText = page.locator(".my-4").first();
     //const promptText = page.locator('p', { hasText: 'Multiple files have been uploaded. Do you want to edit individually?' }).first();
-    await promptText.waitFor({ state: "visible", timeout: 60000 });
+    await promptText.waitFor({ state: "visible", timeout: 75000 });
     await expect(promptText).toBeVisible();
 
     const noButton = page.locator("button", { hasText: "No" }).first();

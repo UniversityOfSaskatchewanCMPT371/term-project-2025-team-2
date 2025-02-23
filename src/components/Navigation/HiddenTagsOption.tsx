@@ -1,6 +1,6 @@
 import { Tooltip } from "react-tooltip";
 import { HiddenTagsProps } from "../../types/types";
-
+import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
 /**
  * Hidden tags option component
  * @component
@@ -16,7 +16,8 @@ const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
     return (
         <div>
             <p>Show Hidden Tags</p>
-            <label className="label mb-4 cursor-pointer">
+            <label className="mb-4cursor-pointer label">
+                <EyeSlashIcon className="size-6" />
                 <input
                     className="toggle toggle-info"
                     type="checkbox"
@@ -32,11 +33,7 @@ const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
                     }
                     data-tooltip-place="top"
                 />
-                {showHiddenTags ? (
-                    <span>All Tags Shown</span>
-                ) : (
-                    <span>Some Tags Hidden</span>
-                )}
+                <EyeIcon className="size-6" />
             </label>
             <Tooltip id="hidden-tag-tooltip" />
         </div>

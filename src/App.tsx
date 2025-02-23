@@ -37,14 +37,19 @@ const App: React.FC = () => {
     const [showSeriesModal, setShowSeiresModal] = useState(false);
     const [series, setSeries] = useState(false);
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
-    const [downloadOption, setDownloadOption] = useState<string>("single");
+
+    const [downloadOption, setDownloadOption] = useState<string>(
+        localStorage.getItem("downloadOption") ?? "single"
+    );
 
     const [theme, setTheme] = useState(
         localStorage.getItem("theme") ?? "corporate"
     );
 
     const [newTagValues, setNewTagValues] = useState<any[]>([]);
-    const [showHiddenTags, setShowHiddenTags] = useState<boolean>(false);
+    const [showHiddenTags, setShowHiddenTags] = useState<boolean>(
+        JSON.parse(localStorage.getItem("showHiddenTags") ?? "false")
+    );
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -87,6 +92,16 @@ const App: React.FC = () => {
         const localTheme = localStorage.getItem("theme");
         document.querySelector("html")?.setAttribute("data-theme", localTheme!);
     }, [theme]);
+
+    // Save download option on change
+    useEffect(() => {
+        localStorage.setItem("downloadOption", downloadOption);
+    }, [downloadOption]);
+
+    // Save show hidden tags on change
+    useEffect(() => {
+        localStorage.setItem("showHiddenTags", JSON.stringify(showHiddenTags));
+    }, [showHiddenTags]);
 
     // Close sidebar when clicking outside
     useEffect(() => {
@@ -269,11 +284,9 @@ const App: React.FC = () => {
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
-                toggleTheme={themeToggle}
                 sidebarButtonRef={sidebarButtonRef}
                 onInstallClick={handleInstallClick}
                 showInstallButton={!!deferredPrompt}
-                currTheme={theme}
             />
 
             <div className="flex flex-1">
@@ -356,6 +369,8 @@ const App: React.FC = () => {
                             setDownloadOption={setDownloadOption}
                             showHiddenTags={showHiddenTags}
                             setShowHiddenTags={(set) => setShowHiddenTags(set)}
+                            currTheme={theme}
+                            toggleTheme={themeToggle}
                         />
                     </div>
                 )}
