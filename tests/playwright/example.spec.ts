@@ -652,3 +652,33 @@ test("Verify Close button is clickable and closes settings menu", async ({ page 
 
     console.log("Close button is clickable and closes the settings menu");
 });
+
+test("Verify question mark icon is clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await settingsButton.click();
+
+    const settingsSection = page.locator('div:has-text("Settings")');
+
+    // Locate the question mark icon using its specific class
+    const questionMarkIcon = settingsSection.locator('svg.mb-4.size-6.cursor-pointer.text-base-content\\/70');
+    await expect(questionMarkIcon).toBeVisible();
+
+    // Verify the icon is clickable
+    await expect(questionMarkIcon).toBeEnabled();
+
+    // Click the icon to open the modal or menu
+    await questionMarkIcon.click();
+
+    const modalOrMenu = page.locator('.modal-box');
+    await expect(modalOrMenu).toBeVisible();
+
+    console.log("Question mark icon is clickable and opens the modal/menu");
+});
