@@ -12,6 +12,8 @@ import { CustomFile } from "./FileTypes";
  * @property {() => void} updateAllFiles - Function to update all files
  * @property {(option: string) => void} setDownloadOption - Function to set the download option
  * @property {string} downloadOption - Currently selected download option
+ * @property {boolean} showHiddenTags - Flag indicating if hidden tags are shown
+ * @property {(set: boolean) => void} setShowHiddenTags - Function to set the visibility of hidden tags
  */
 export interface SidebarProps {
     files: CustomFile[];
@@ -23,6 +25,8 @@ export interface SidebarProps {
     updateAllFiles: () => void;
     downloadOption: string;
     setDownloadOption: (value: string) => void;
+    showHiddenTags: boolean;
+    setShowHiddenTags: (set: boolean) => void;
 }
 
 /**
@@ -175,12 +179,16 @@ export interface SeriesControlsProps {
  * @property {File[]} files - Array of file objects
  * @property {(option: string) => void} setDownloadOption - Function to set the download option
  * @property {string} downloadOption - Currently selected download option
+ * @property {boolean} showHiddenTags - Flag indicating if hidden tags are shown
+ * @property {(set: boolean) => void} setShowHiddenTags - Function to set the visibility of hidden tags
  */
 export interface SettingsModalProps {
     toggleModal: () => void;
     files: CustomFile[];
     setDownloadOption: (option: string) => void;
     downloadOption: string;
+    showHiddenTags: boolean;
+    setShowHiddenTags: (set: boolean) => void;
 }
 
 /**
@@ -199,4 +207,15 @@ export interface HelpModalProps {}
 export interface DownloadOptionProps {
     setDownloadOption: (option: string) => void;
     downloadOption: string;
+}
+
+/**
+ * Props for the HiddenTagsOption component
+ * @interface HiddenTagsProps
+ * @property {boolean} showHiddenTags - Flag indicating if hidden tags are shown
+ * @property {(set: boolean) => void} setShowHiddenTags - Function to set the visibility of hidden tags
+ */
+export interface HiddenTagsProps {
+    showHiddenTags: boolean;
+    setShowHiddenTags: (set: boolean) => void;
 }

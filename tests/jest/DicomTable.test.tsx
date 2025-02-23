@@ -65,13 +65,12 @@ describe("DicomTable Component", () => {
                     updateTableData={mockUpdateTableData}
                     newTableData={mockNewTableData}
                     clearData={mockClearData}
-
+                    showHiddenTags={false}
                 />
             );
         });
         expect(screen.getByText(/DICOM Tags/i)).toBeInTheDocument();
         expect(screen.getByText(/Save Single File Edits/i)).toBeInTheDocument();
-        expect(screen.getByText(/Show Hidden Tags/i)).toBeInTheDocument();
     });
 
     // broken test
@@ -97,6 +96,7 @@ describe("DicomTable Component", () => {
                 updateTableData={mockUpdateTableData}
                 newTableData={[]}
                 clearData={mockClearData}
+                showHiddenTags={false}
             />
         );
 
@@ -109,32 +109,32 @@ describe("DicomTable Component", () => {
         });
     });
 
-    test("toggles visibility of hidden tags", async () => {
-        render(
-            <DicomTable
-                dicomData={mockDicomData}
-                fileName="file1.dcm"
-                updateTableData={mockUpdateTableData}
-                newTableData={mockNewTableData}
-                clearData={mockClearData}
-            />
-        );
+    // test("toggles visibility of hidden tags", async () => {
+    //     render(
+    //         <DicomTable
+    //             dicomData={mockDicomData}
+    //             fileName="file1.dcm"
+    //             updateTableData={mockUpdateTableData}
+    //             newTableData={mockNewTableData}
+    //             clearData={mockClearData}
+    //         />
+    //     );
 
-        const showHideButton = screen.getByText(/Show Hidden Tags/i);
-        fireEvent.click(showHideButton);
+    //     const showHideButton = screen.getByText(/Show Hidden Tags/i);
+    //     fireEvent.click(showHideButton);
 
-        await waitFor(() => {
-            expect(screen.getByText(/StudyID/i)).toBeInTheDocument();
-            expect(screen.getByText(/Hide Hidden Tags/i)).toBeInTheDocument();
-        });
+    //     await waitFor(() => {
+    //         expect(screen.getByText(/StudyID/i)).toBeInTheDocument();
+    //         expect(screen.getByText(/Hide Hidden Tags/i)).toBeInTheDocument();
+    //     });
 
-        fireEvent.click(showHideButton);
+    //     fireEvent.click(showHideButton);
 
-        await waitFor(() => {
-            expect(screen.queryByText(/StudyID/i)).not.toBeInTheDocument();
-            expect(screen.getByText(/Show Hidden Tags/i)).toBeInTheDocument();
-        });
-    });
+    //     await waitFor(() => {
+    //         expect(screen.queryByText(/StudyID/i)).not.toBeInTheDocument();
+    //         expect(screen.getByText(/Show Hidden Tags/i)).toBeInTheDocument();
+    //     });
+    // });
 
     // test("calls updateTableData when updating a tag value", async () => {
     //     render(

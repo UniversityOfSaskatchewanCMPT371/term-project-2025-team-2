@@ -18,8 +18,6 @@ const TableControls: React.FC<TableControlsProps> = ({
     searchTerm,
     onSearchChange,
     onSave,
-    onToggleHidden,
-    showHidden,
 }) => (
     <div className="flex-col-2 flex">
         <Search searchTerm={searchTerm} onSearchChange={onSearchChange} />
@@ -28,13 +26,6 @@ const TableControls: React.FC<TableControlsProps> = ({
                 label="Save Single File Edits"
                 disabled={false}
                 onClick={onSave}
-            />
-        </div>
-        <div className="ml-4">
-            <GenButton
-                label={showHidden ? "Hide Hidden Tags" : "Show Hidden Tags"}
-                disabled={false}
-                onClick={onToggleHidden}
             />
         </div>
     </div>
