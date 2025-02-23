@@ -441,3 +441,21 @@ test("Updating file by navigating through side bar", async ({ page }) => {
     console.log("Done Editing the Dicom file");
 });
 // Just testing playwright tests pull request
+
+test("Verify settings button is visible and clickable", async ({ page }) => {
+    await page.goto("http://localhost:5173");
+
+    const sidebarToggleButton = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
+    await sidebarToggleButton.waitFor(); // Ensure button is present
+
+    await sidebarToggleButton.click(); // Open sidebar
+    // Locate the settings button
+    const settingsButton = page.locator('svg.size-6.cursor-pointer');
+    await expect(settingsButton).toBeVisible();
+
+    // Click the settings button
+    await settingsButton.click();
+    console.log("Settings button is visible and clickable");
+});
