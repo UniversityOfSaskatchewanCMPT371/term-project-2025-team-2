@@ -4,7 +4,7 @@ from pydicom.dataset import FileDataset
 from pydicom.uid import generate_uid
 import datetime
 
-# Define the DICOM filename
+# Define the DICOM file name
 dicom_filename = "./test-data/test_dicoms/test_dicom1.dcm"
 
 # Create a new empty DICOM dataset
