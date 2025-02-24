@@ -46,7 +46,7 @@ describe("File Handling Integration Tests", () => {
             fireEvent.click(fileInput);
         });
 
-        // Now, find the file input element and trigger the file change event
+        // Find the file input element and trigger the file change event
         const hiddenFileInput = screen
             .getByRole("presentation")
             .querySelector('input[type="file"]');
