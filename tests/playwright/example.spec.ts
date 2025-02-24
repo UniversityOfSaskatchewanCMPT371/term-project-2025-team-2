@@ -63,7 +63,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 
     // Save changes
     const saveButton = page.getByRole("button", {
-        name: "Save Single File Edits",
+        name: "Download File",
     });
     await expect(saveButton).toBeEnabled();
     await saveButton.click();
@@ -433,7 +433,7 @@ test("Updating file by navigating through side bar", async ({ page }) => {
 
     // Save changes
     const saveButton = page.getByRole("button", {
-        name: "Save Single File Edits",
+        name: "Download File",
     });
     await expect(saveButton).toBeEnabled();
     await saveButton.click();

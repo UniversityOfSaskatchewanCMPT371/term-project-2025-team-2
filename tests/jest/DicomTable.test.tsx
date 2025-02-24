@@ -70,7 +70,7 @@ describe("DicomTable Component", () => {
             );
         });
         expect(screen.getByText(/DICOM Tags/i)).toBeInTheDocument();
-        expect(screen.getByText(/Save Single File Edits/i)).toBeInTheDocument();
+        expect(screen.getByText(/Download File/i)).toBeInTheDocument();
     });
 
     // broken test
@@ -147,7 +147,7 @@ describe("DicomTable Component", () => {
     //         />
     //     );
 
-    //     const updateButton = screen.getByText(/Save Single File Edits/i);
+    //     const updateButton = screen.getByText(/Download File/i);
     //     fireEvent.click(updateButton);
 
     //     await waitFor(() => {
@@ -166,7 +166,7 @@ describe("DicomTable Component", () => {
     //         />
     //     );
 
-    //     const updateButton = screen.getByText(/Save Single File Edits/i);
+    //     const updateButton = screen.getByText(/Download File/i);
     //     fireEvent.click(updateButton);
 
     //     await waitFor(() => {
