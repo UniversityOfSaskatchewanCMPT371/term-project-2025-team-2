@@ -1,11 +1,15 @@
 import { test, expect } from "@playwright/test";
+
+// Use environment variable for the base URL
+const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
+
 test.describe.configure({ mode: "parallel" });
 
 test("Upload DICOM file", async ({ page }) => {
     test.setTimeout(75000);
     try {
         // Navigate to your DICOM tag editor
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
@@ -18,17 +22,15 @@ test("Upload DICOM file", async ({ page }) => {
     }
 });
 
-
 test("View DICOM tags for an uploaded file", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles("./test-data/CR000001.dcm");
-        await page.waitForTimeout(1000);
 
-        // Verify that the DICOM tags table is displayed
+        // Wait for the DICOM tags table to be visible
         const tagTable = page.locator("table").first();
         await expect(tagTable).toBeVisible();
 
@@ -47,16 +49,13 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 test("Edit a DICOM tag and save changes", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles("./test-data/CR000001.dcm");
 
-        // Wait for the uploaded file to appear
-        await page.waitForTimeout(2000);
-
-        // Find the row containing 'SOPClassUID'
+        // Wait for the row containing 'SOPClassUID' to be visible
         const tagRow = page
             .locator("tr")
             .filter({ hasText: "SOPClassUID" })
@@ -65,7 +64,6 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 
         // Click the edit button (pencil icon) in that row
         const editButton = tagRow.locator("svg.h-6.w-6").first();
-        await editButton.waitFor({ state: "visible", timeout: 75000 });
         await expect(editButton).toBeVisible();
         await editButton.click();
 
@@ -91,7 +89,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 test("Navigate between uploaded files", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         // Upload multiple DICOM files
         const fileInput = page.locator('input[type="file"].hidden');
@@ -102,16 +100,12 @@ test("Navigate between uploaded files", async ({ page }) => {
 
         // Wait for the prompt to appear
         const promptText = page.locator(".my-4").first();
-        await promptText.waitFor({ state: "visible", timeout: 75000 });
         await expect(promptText).toBeVisible();
 
         // Click "No" to edit files individually
         const noButton = page.locator("button", { hasText: "No" }).first();
         await expect(noButton).toBeVisible();
         await noButton.click();
-
-        // Wait for the first file to load
-        await page.waitForTimeout(2000);
 
         // Verify the first file is displayed
         const currentFile = page
@@ -150,7 +144,7 @@ test("Navigate between uploaded files", async ({ page }) => {
 
 test("Toggle sidebar", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -165,11 +159,10 @@ test("Toggle sidebar", async ({ page }) => {
     }
 });
 
-
 test("Saving changes using Sidebar toggle", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -179,16 +172,12 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
 
         // Wait for the prompt to appear
         const promptText = page.locator(".my-4").first();
-        await promptText.waitFor({ state: "visible", timeout: 75000 });
         await expect(promptText).toBeVisible();
 
         // Click "No" to edit files individually
         const noButton = page.locator("button", { hasText: "No" }).first();
         await expect(noButton).toBeVisible();
         await noButton.click();
-
-        // Wait for the first file to load
-        await page.waitForTimeout(2000);
 
         // Verify the first file is displayed
         const currentFile = page
@@ -237,7 +226,7 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
 test("Testing edit individually and series button in sidebar", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -247,16 +236,12 @@ test("Testing edit individually and series button in sidebar", async ({ page }) 
 
         // Wait for the prompt to appear
         const promptText = page.locator(".my-4").first();
-        await promptText.waitFor({ state: "visible", timeout: 75000 });
         await expect(promptText).toBeVisible();
 
         // Click "No" to edit files individually
         const noButton = page.locator("button", { hasText: "No" }).first();
         await expect(noButton).toBeVisible();
         await noButton.click();
-
-        // Wait for the first file to load
-        await page.waitForTimeout(2000);
 
         // Verify the first file is displayed
         const currentFile = page
@@ -295,7 +280,7 @@ test("Testing edit individually and series button in sidebar", async ({ page }) 
 test("Navigating from files from sidebar", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -304,14 +289,11 @@ test("Navigating from files from sidebar", async ({ page }) => {
         ]);
 
         const promptText = page.locator(".my-4").first();
-        await promptText.waitFor({ state: "visible", timeout: 75000 });
         await expect(promptText).toBeVisible();
 
         const noButton = page.locator("button", { hasText: "No" }).first();
         await expect(noButton).toBeVisible();
         await noButton.click();
-
-        await page.waitForTimeout(2000);
 
         const currentFile = page
             .locator("text=Currently Viewing: CR000000.dcm")
@@ -358,7 +340,7 @@ test("Navigating from files from sidebar", async ({ page }) => {
 test("Updating file by navigating through sidebar", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -367,14 +349,11 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
         ]);
 
         const promptText = page.locator(".my-4").first();
-        await promptText.waitFor({ state: "visible", timeout: 75000 });
         await expect(promptText).toBeVisible();
 
         const noButton = page.locator("button", { hasText: "No" }).first();
         await expect(noButton).toBeVisible();
         await noButton.click();
-
-        await page.waitForTimeout(2000);
 
         const currentFile = page
             .locator("text=Currently Viewing: CR000000.dcm")
@@ -444,7 +423,7 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
 
 test("Verify settings button is visible and clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -465,7 +444,7 @@ test("Verify settings button is visible and clickable", async ({ page }) => {
 
 test("Verify Set Theme toggle functionality", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -492,16 +471,15 @@ test("Verify Set Theme toggle functionality", async ({ page }) => {
     }
 });
 
-
 test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
             .first();
-        await sidebarToggleButton.waitFor(); // Ensure button is present
-        await sidebarToggleButton.click(); // Open sidebar
+        await sidebarToggleButton.waitFor();
+        await sidebarToggleButton.click();
 
         const settingsButton = page.locator('svg.size-6.cursor-pointer');
         await settingsButton.click();
@@ -521,7 +499,7 @@ test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
 
         // Verify the new state of the toggle
         const isNowChecked = await setThemeToggle.isChecked();
-        await expect(isNowChecked).toBe(!isInitiallyChecked); // State should be the opposite of the initial state
+        await expect(isNowChecked).toBe(!isInitiallyChecked);
 
         console.log("Set Theme toggle state change verified");
     } catch (error) {
@@ -532,7 +510,7 @@ test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
 
 test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -564,7 +542,7 @@ test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
 
 test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -602,7 +580,7 @@ test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
 
 test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -637,7 +615,7 @@ test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async
 
 test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -672,7 +650,7 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
 
 test("Verify Close button is clickable and closes settings menu", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -698,7 +676,7 @@ test("Verify Close button is clickable and closes settings menu", async ({ page 
 
 test("Verify question mark icon is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -733,7 +711,7 @@ test("Verify question mark icon is clickable", async ({ page }) => {
 
 test("Verify GitHub link is clickable", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -778,7 +756,7 @@ test("Verify GitHub link is clickable", async ({ page }) => {
 
 test("Verify GitHub link opens correct URL", async ({ page }) => {
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
@@ -831,7 +809,7 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
 test("Verify delete functionality for a DICOM tag", async ({ page }) => {
     test.setTimeout(75000);
     try {
-        await page.goto("http://localhost:5173");
+        await page.goto(BASE_URL);
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
