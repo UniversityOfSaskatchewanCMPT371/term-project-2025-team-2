@@ -25,20 +25,7 @@ ds.StudyInstanceUID = generate_uid()
 ds.SOPInstanceUID = generate_uid()
 ds.SOPClassUID = pydicom.uid.SecondaryCaptureImageStorage
 
-# Create a simple NumPy array to store pixel data (grayscale image 256x256)
-pixel_array = np.random.randint(0, 256, (256, 256), dtype=np.uint8)
-
-# Add pixel data attributes
-ds.Rows, ds.Columns = pixel_array.shape
-ds.PhotometricInterpretation = "MONOCHROME2"
-ds.SamplesPerPixel = 1
-ds.BitsAllocated = 8
-ds.BitsStored = 8
-ds.HighBit = 7
-ds.PixelRepresentation = 0
-ds.PixelData = pixel_array.tobytes()
-
 # Save the DICOM file
 ds.save_as(dicom_filename)
 
-print(f"DICOM file '{dicom_filename}' created successfully!")
+print(f"DICOM file '{dicom_filename}' has been created successfully!")
