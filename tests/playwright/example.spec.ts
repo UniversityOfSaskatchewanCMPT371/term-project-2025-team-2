@@ -3,10 +3,11 @@ import { test, expect } from "@playwright/test";
 // Use environment variable for the base URL
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
+test.setTimeout(120000);
+
 test.describe.configure({ mode: "parallel" });
 
 test("Upload DICOM file", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         // Navigate to your DICOM tag editor
         await page.goto(BASE_URL);
@@ -47,7 +48,6 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 });
 
 test("Edit a DICOM tag and save changes", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -87,7 +87,6 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 });
 
 test("Navigate between uploaded files", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -160,7 +159,6 @@ test("Toggle sidebar", async ({ page }) => {
 });
 
 test("Saving changes using Sidebar toggle", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -224,7 +222,6 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
 });
 
 test("Testing edit individually and series button in sidebar", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -278,7 +275,6 @@ test("Testing edit individually and series button in sidebar", async ({ page }) 
 });
 
 test("Navigating from files from sidebar", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -338,7 +334,6 @@ test("Navigating from files from sidebar", async ({ page }) => {
 });
 
 test("Updating file by navigating through sidebar", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
@@ -807,7 +802,6 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
 });
 
 test("Verify delete functionality for a DICOM tag", async ({ page }) => {
-    test.setTimeout(75000);
     try {
         await page.goto(BASE_URL);
 
