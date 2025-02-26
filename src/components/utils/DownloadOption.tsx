@@ -1,5 +1,6 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
+import { isSafari } from "react-device-detect";
 
 interface DownloadOptionProps {
     setDownloadOption: (value: string) => void;
@@ -10,7 +11,13 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
     setDownloadOption,
     downloadOption,
 }) => {
+    const safari = isSafari;
+
     const handleChange = (event: any) => {
+        if (safari) {
+            // Safari does not support downloading multiple files at once
+            return;
+        }
         if (event.target.checked) setDownloadOption("zip");
         else setDownloadOption("single");
     };
@@ -26,6 +33,7 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
                     onChange={handleChange}
                     data-tooltip-id="download-option-button-tooltip"
                     data-tooltip-content={
+                        safari ? "Not supported in Safari" :
                         downloadOption === "zip"
                             ? "Switch to Individual Files"
                             : "Switch to Zip File"
