@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { isSafari } from "react-device-detect";
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
@@ -39,7 +40,7 @@ const App: React.FC = () => {
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
 
     const [downloadOption, setDownloadOption] = useState<string>(
-        localStorage.getItem("downloadOption") ?? "single"
+        isSafari ? "zip" : localStorage.getItem("downloadOption") ?? "single"
     );
 
     const [theme, setTheme] = useState(

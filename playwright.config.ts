@@ -1,4 +1,4 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
     testDir: "./tests/playwright",
@@ -10,9 +10,32 @@ export default defineConfig({
         reuseExistingServer: !process.env.CI, // Avoids duplicate servers in local runs
         timeout: 120000,
     },
-    use: {
-        baseURL: "http://localhost:5173",
-        headless: true,
-        browserName: "firefox",
-    },
+    projects: [
+        {
+            name: "firefox",
+            use: {
+                baseURL: "http://localhost:5173",
+                headless: true,
+                browserName: "firefox",
+            },
+        },
+        // comment out the following browsers due to failing safari test, issue noted
+        // {
+        //     name: "webkit",
+        //     use: {
+        //         baseURL: "http://localhost:5173",
+        //         headless: true,
+        //         browserName: "webkit",
+        //         ...devices["Desktop Safari"],
+        //     },
+        // },
+        // {
+        //     name: "chromium",
+        //     use: {
+        //         baseURL: "http://localhost:5173",
+        //         headless: true,
+        //         browserName: "chromium",
+        //     },
+        // },
+    ]
 });
