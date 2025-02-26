@@ -11,7 +11,9 @@
     "style": "npm run lint -- --fix && prettier --write .",
     "preview": "vite preview",
     "docs": "typedoc --entryPointStrategy Expand src",
-    "test": "jest"
+    "test": "jest",
+    "install:pydicom": "pip install -r requirements-dev.txt",
+    "postinstall": "node -e \"if (process.env.NODE_ENV !== 'production') { require('child_process').execSync('npm run install:pydicom', { stdio: 'inherit' }); }\""
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -36,6 +38,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
