@@ -2,9 +2,9 @@ name: Jest tests
 
 on:
     push:
-      branches: [ "main", "development" ]
+      branches: [ "main", "development", "feat/test_workflows" ]
     pull_request:
-      branches: [ "main", "development" ]
+      branches: [ "main", "development", "feat/test_workflows" ]
 
     workflow_dispatch:
 
