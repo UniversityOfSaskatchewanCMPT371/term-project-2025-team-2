@@ -26,7 +26,6 @@ const DicomTable: React.FC<DicomTableProps> = ({
     showHiddenTags,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    //const [showHidden, setShowHidden] = useState(false);
 
     if (Object.keys(dicomData).length === 0) {
         logger.error("No DICOM data available");

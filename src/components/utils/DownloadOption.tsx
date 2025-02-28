@@ -33,10 +33,11 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
                     onChange={handleChange}
                     data-tooltip-id="download-option-button-tooltip"
                     data-tooltip-content={
-                        safari ? "Not supported in Safari" :
-                        downloadOption === "zip"
-                            ? "Switch to Individual Files"
-                            : "Switch to Zip File"
+                        safari
+                            ? "Not supported in Safari"
+                            : downloadOption === "zip"
+                              ? "Switch to Individual Files"
+                              : "Switch to Zip File"
                     }
                     data-tooltip-place="top"
                 />

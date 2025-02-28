@@ -19,12 +19,17 @@ import { downloadDicomFile } from "./components/DicomData/DownloadFuncs";
 import { createZipFromFiles } from "./components/DicomData/DownloadFuncs";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
+import { GenButton } from "./components/utils/GenButton";
+
+import { AutoAnon } from "./components/Auto/AutoClean";
 
 /**
  * @description Main App Function
  * @returns rendered App component
  */
 const App: React.FC = () => {
+    const MAXSINGLEFILESDOWNLOAD = 2;
+
     const [files, setFiles] = useState<CustomFile[]>([]);
     const [dicomData, setDicomData] = useState<any[]>([]);
     const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
@@ -40,7 +45,7 @@ const App: React.FC = () => {
     const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
 
     const [downloadOption, setDownloadOption] = useState<string>(
-        isSafari ? "zip" : localStorage.getItem("downloadOption") ?? "single"
+        isSafari ? "zip" : (localStorage.getItem("downloadOption") ?? "single")
     );
 
     const [theme, setTheme] = useState(
@@ -183,6 +188,14 @@ const App: React.FC = () => {
         logger.debug("file-loaded");
         setLoading(false);
 
+        // If more than 15 files, set download option to zip
+        // downloading to many files at once can cause files to be skipped
+        // state needs to be made global to limit user changing download option
+        // in settings
+        if (newFiles.length > MAXSINGLEFILESDOWNLOAD) {
+            setDownloadOption("zip");
+        }
+
         if (newFiles.length > 1) {
             setShowSeiresModal(true);
         }
@@ -314,6 +327,17 @@ const App: React.FC = () => {
                             onNextFile={nextFile}
                         />
                     ) : null}
+
+                    {/* Button here for testing, temp location. Other refactor tasks will make moving this simpler */}
+                    {files.length > 0 && dicomData.length > 0 && (
+                        <div className="mt-4">
+                            <GenButton
+                                onClick={() => AutoAnon(dicomData, files)}
+                                label="Auto Anon"
+                                disabled={false}
+                            />
+                        </div>
+                    )}
 
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>

@@ -36,7 +36,9 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
         await expect(tagTable).toBeVisible();
 
         const sopClassUID = page
-            .locator("tr", { has: page.locator("td", { hasText: "SOPClassUID" }) })
+            .locator("tr", {
+                has: page.locator("td", { hasText: "SOPClassUID" }),
+            })
             .first();
         await expect(sopClassUID).toBeVisible();
 
@@ -124,7 +126,9 @@ test("Navigate between uploaded files", async ({ page }) => {
         await expect(secondFile).toBeVisible();
 
         // Navigate back to the previous file
-        const prevButton = page.locator("button", { hasText: "Previous" }).first();
+        const prevButton = page
+            .locator("button", { hasText: "Previous" })
+            .first();
         await expect(prevButton).toBeVisible();
         await prevButton.click();
 
@@ -221,7 +225,9 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
     }
 });
 
-test("Testing edit individually and series button in sidebar", async ({ page }) => {
+test("Testing edit individually and series button in sidebar", async ({
+    page,
+}) => {
     try {
         await page.goto(BASE_URL);
 
@@ -269,7 +275,10 @@ test("Testing edit individually and series button in sidebar", async ({ page }) 
 
         console.log("Edit buttons working completely fine");
     } catch (error) {
-        console.error("Error testing edit individually and series buttons:", error);
+        console.error(
+            "Error testing edit individually and series buttons:",
+            error
+        );
         throw error;
     }
 });
@@ -426,7 +435,7 @@ test("Verify settings button is visible and clickable", async ({ page }) => {
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await expect(settingsButton).toBeVisible();
         await settingsButton.click();
 
@@ -447,7 +456,7 @@ test("Verify Set Theme toggle functionality", async ({ page }) => {
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const moonIcon = page
@@ -476,18 +485,20 @@ test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const label = page.locator('label.mb-4cursor-pointer.label');
+        const label = page.locator("label.mb-4cursor-pointer.label");
 
         // Locate the Set Theme toggle inside the label using its unique ID
-        const setThemeToggle = label.locator('#theme-option');
+        const setThemeToggle = label.locator("#theme-option");
         await expect(setThemeToggle).toBeVisible();
 
         // Verify the initial state of the toggle
         const isInitiallyChecked = await setThemeToggle.isChecked();
-        console.log(`Initial state of toggle: ${isInitiallyChecked ? 'Checked' : 'Unchecked'}`);
+        console.log(
+            `Initial state of toggle: ${isInitiallyChecked ? "Checked" : "Unchecked"}`
+        );
 
         // Click the toggle to change its state
         await setThemeToggle.click();
@@ -513,7 +524,7 @@ test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         // Locate the second SVG icon (Sun icon) inside the label
@@ -545,19 +556,21 @@ test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         // Locate the parent label
-        const label = page.locator('label.mb-4cursor-pointer.label');
+        const label = page.locator("label.mb-4cursor-pointer.label");
 
         // Locate the Show Hidden Tags toggle inside the label using its unique ID
-        const showHiddenTagsToggle = label.locator('#hidden-tag-option');
+        const showHiddenTagsToggle = label.locator("#hidden-tag-option");
         await expect(showHiddenTagsToggle).toBeVisible();
 
         // Verify the initial state of the toggle
         const isInitiallyChecked = await showHiddenTagsToggle.isChecked();
-        console.log(`Initial state of Show Hidden Tags toggle: ${isInitiallyChecked ? 'Checked' : 'Unchecked'}`);
+        console.log(
+            `Initial state of Show Hidden Tags toggle: ${isInitiallyChecked ? "Checked" : "Unchecked"}`
+        );
 
         // Click the toggle to change its state
         await showHiddenTagsToggle.click();
@@ -573,7 +586,9 @@ test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
     }
 });
 
-test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async ({ page }) => {
+test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async ({
+    page,
+}) => {
     try {
         await page.goto(BASE_URL);
 
@@ -583,16 +598,18 @@ test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         // Locate the Show Hidden Tags section using the <p> text
         const showHiddenTagsSection = page
             .locator('p:has-text("Show Hidden Tags")')
-            .locator('xpath=..'); // Move to parent element
+            .locator("xpath=.."); // Move to parent element
 
         // Locate the first SVG icon (left icon) inside the label
-        const leftIcon = showHiddenTagsSection.locator('svg[data-slot="icon"]').first();
+        const leftIcon = showHiddenTagsSection
+            .locator('svg[data-slot="icon"]')
+            .first();
         await expect(leftIcon).toBeVisible();
 
         // Verify the icon is clickable
@@ -601,14 +618,18 @@ test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async
         // Click the icon
         await leftIcon.click();
 
-        console.log("First SVG icon (left icon) in Show Hidden Tags is clickable");
+        console.log(
+            "First SVG icon (left icon) in Show Hidden Tags is clickable"
+        );
     } catch (error) {
         console.error("Error verifying first SVG icon (left icon):", error);
         throw error;
     }
 });
 
-test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", async ({ page }) => {
+test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", async ({
+    page,
+}) => {
     try {
         await page.goto(BASE_URL);
 
@@ -618,16 +639,18 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         // Locate the Show Hidden Tags section using the <p> text
         const showHiddenTagsSection = page
             .locator('p:has-text("Show Hidden Tags")')
-            .locator('xpath=..'); // Move to parent element
+            .locator("xpath=.."); // Move to parent element
 
         // Locate the second SVG icon (right icon) inside the label
-        const rightIcon = showHiddenTagsSection.locator('svg[data-slot="icon"]').nth(1);
+        const rightIcon = showHiddenTagsSection
+            .locator('svg[data-slot="icon"]')
+            .nth(1);
         await expect(rightIcon).toBeVisible();
 
         // Verify the icon is clickable
@@ -636,14 +659,18 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
         // Click the icon
         await rightIcon.click();
 
-        console.log("Second SVG icon (right icon) in Show Hidden Tags is clickable");
+        console.log(
+            "Second SVG icon (right icon) in Show Hidden Tags is clickable"
+        );
     } catch (error) {
         console.error("Error verifying second SVG icon (right icon):", error);
         throw error;
     }
 });
 
-test("Verify Close button is clickable and closes settings menu", async ({ page }) => {
+test("Verify Close button is clickable and closes settings menu", async ({
+    page,
+}) => {
     try {
         await page.goto(BASE_URL);
 
@@ -653,7 +680,7 @@ test("Verify Close button is clickable and closes settings menu", async ({ page 
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         // Locate the Close button
@@ -679,13 +706,15 @@ test("Verify question mark icon is clickable", async ({ page }) => {
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const settingsSection = page.locator('div:has-text("Settings")');
 
         // Locate the question mark icon using its specific class
-        const questionMarkIcon = settingsSection.locator('svg.mb-4.size-6.cursor-pointer.text-base-content\\/70');
+        const questionMarkIcon = settingsSection.locator(
+            "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
+        );
         await expect(questionMarkIcon).toBeVisible();
 
         // Verify the icon is clickable
@@ -694,7 +723,7 @@ test("Verify question mark icon is clickable", async ({ page }) => {
         // Click the icon to open the modal or menu
         await questionMarkIcon.click();
 
-        const modalOrMenu = page.locator('.modal-box');
+        const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
         console.log("Question mark icon is clickable and opens the modal/menu");
@@ -714,13 +743,15 @@ test("Verify GitHub link is clickable", async ({ page }) => {
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const settingsSection = page.locator('div:has-text("Settings")');
 
         // Locate the question mark icon using its specific class
-        const questionMarkIcon = settingsSection.locator('svg.mb-4.size-6.cursor-pointer.text-base-content\\/70');
+        const questionMarkIcon = settingsSection.locator(
+            "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
+        );
         await expect(questionMarkIcon).toBeVisible();
 
         // Verify the icon is clickable
@@ -729,18 +760,22 @@ test("Verify GitHub link is clickable", async ({ page }) => {
         // Click the icon to open the modal or menu
         await questionMarkIcon.click();
 
-        const modalOrMenu = page.locator('.modal-box');
+        const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
-        const githubLink = page.locator('a.link.link-info:has-text("Detailed User Guide")');
+        const githubLink = page.locator(
+            'a.link.link-info:has-text("Detailed User Guide")'
+        );
         await expect(githubLink).toBeVisible();
 
         // Verify the link is clickable
         await expect(githubLink).toBeEnabled();
 
         // Optionally, verify the link's href attribute
-        const href = await githubLink.getAttribute('href');
-        expect(href).toBe('https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2');
+        const href = await githubLink.getAttribute("href");
+        expect(href).toBe(
+            "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
+        );
 
         console.log("GitHub link is clickable and has the correct URL");
     } catch (error) {
@@ -759,13 +794,15 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
         await sidebarToggleButton.waitFor(); // Ensure button is present
         await sidebarToggleButton.click(); // Open sidebar
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const settingsSection = page.locator('div:has-text("Settings")');
 
         // Locate the question mark icon using its specific class
-        const questionMarkIcon = settingsSection.locator('svg.mb-4.size-6.cursor-pointer.text-base-content\\/70');
+        const questionMarkIcon = settingsSection.locator(
+            "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
+        );
         await expect(questionMarkIcon).toBeVisible();
 
         // Verify the icon is clickable
@@ -774,25 +811,29 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
         // Click the icon to open the modal or menu
         await questionMarkIcon.click();
 
-        const modalOrMenu = page.locator('.modal-box');
+        const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
         // Locate the GitHub link inside the modal or menu
-        const githubLink = page.locator('a.link.link-info:has-text("Detailed User Guide")');
+        const githubLink = page.locator(
+            'a.link.link-info:has-text("Detailed User Guide")'
+        );
         await expect(githubLink).toBeVisible();
 
-        const href = await githubLink.getAttribute('href');
+        const href = await githubLink.getAttribute("href");
         console.log(`GitHub link href: ${href}`);
 
         const [newPage] = await Promise.all([
-            page.waitForEvent('popup'), // Wait for the new tab to open
+            page.waitForEvent("popup"), // Wait for the new tab to open
             githubLink.click(), // Click the link
         ]);
 
-        await newPage.waitForLoadState('load');
+        await newPage.waitForLoadState("load");
 
         const actualUrl = newPage.url();
-        expect(actualUrl).toBe('https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2');
+        expect(actualUrl).toBe(
+            "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
+        );
 
         console.log("GitHub link opens the correct URL in a new tab");
     } catch (error) {

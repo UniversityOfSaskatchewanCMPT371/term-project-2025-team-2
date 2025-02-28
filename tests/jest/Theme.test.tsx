@@ -12,7 +12,6 @@ describe("ThemeSelector", () => {
         mockToggleTheme.mockClear();
     });
 
-
     it("renders a Tooltip component", () => {
         render(
             <ThemeSelector toggleTheme={mockToggleTheme} currTheme="night" />

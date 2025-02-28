@@ -27,7 +27,6 @@ function extractDicomValue(dataSet: any, tag: string): string {
     return value ?? "N/A";
 }
 
-
 /**
  * Reads a DICOM file path and extracts expected tag names and values
  * return: record of expected DICOM data objects (tagId, tagName, value)
@@ -39,9 +38,12 @@ function readDicomData(dicomFilePath: string) {
     const dataSet = dicomParser.parseDicom(new Uint8Array(dicomBuffer));
 
     // Extract expected DICOM data
-    const expectedDicomData: Record<string, { tagId: string; tagName: string; value: string }> = {};
+    const expectedDicomData: Record<
+        string,
+        { tagId: string; tagName: string; value: string }
+    > = {};
 
-    Object.keys(dataSet.elements).forEach(tag => {
+    Object.keys(dataSet.elements).forEach((tag) => {
         const cleanTagId = tag.toUpperCase().replace(/^X/, ""); // clean up tag id
         const tagName = standardDataElements[cleanTagId]?.name ?? "Unknown";
         const value = extractDicomValue(dataSet, tag);
@@ -52,7 +54,9 @@ function readDicomData(dicomFilePath: string) {
 
 // ***** SYSTEM TEST for upload DICOM file to parse to display *****
 // compares html table contents to input file data
-test("DICOM Table Data Matches Expected Tag Names and Values", async ({ page }) => {
+test("DICOM Table Data Matches Expected Tag Names and Values", async ({
+    page,
+}) => {
     // Read and Parse test_dicom1.dcm DICOM File
     const dicomFilePath = "test-data/test_dicoms/test_dicom1.dcm";
     const expectedDicomData = readDicomData(dicomFilePath);
