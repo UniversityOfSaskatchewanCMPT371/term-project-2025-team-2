@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Sidebar from "./components/Navigation/Sidebar";
-import Topbar from "./components/Navigation/Topbar";
+import Sidebar from "@components/Navigation/Sidebar";
+import Topbar from "@components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/TableComponents/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
