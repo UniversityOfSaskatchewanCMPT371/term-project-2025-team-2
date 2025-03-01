@@ -26,10 +26,9 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
@@ -77,10 +76,9 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 

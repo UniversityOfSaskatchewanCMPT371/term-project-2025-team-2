@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { isSafari } from "react-device-detect";
 import Sidebar from "./components/Navigation/Sidebar";
 import Topbar from "./components/Navigation/Topbar";
 import FileUploader from "./components/FileHandling/FileUploader";
@@ -10,99 +9,73 @@ import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/Modals/QuestionModal";
 import Modal from "./components/utils/Modals/Modal";
-import {
-    tagUpdater,
-    getSingleFileTagEdits,
-} from "./components/DicomData/TagUpdater";
-import { createFile } from "./components/DicomData/DownloadFuncs";
-import { downloadDicomFile } from "./components/DicomData/DownloadFuncs";
-import { createZipFromFiles } from "./components/DicomData/DownloadFuncs";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
-import { GenButton } from "./components/utils/GenButton";
 
-import { AutoAnon } from "./components/Auto/AutoClean";
+import { useStore } from "./components/State/Store";
+import { DicomData } from "./types/DicomTypes";
 
 /**
  * @description Main App Function
  * @returns rendered App component
  */
 const App: React.FC = () => {
-    const MAXSINGLEFILESDOWNLOAD = 2;
+    const MAXSINGLEFILESDOWNLOAD = 15;
 
-    const [files, setFiles] = useState<CustomFile[]>([]);
-    const [dicomData, setDicomData] = useState<any[]>([]);
-    const [currentFileIndex, setCurrentFileIndex] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(false);
+    const files = useStore((state) => state.files);
+    const setFiles = useStore((state) => state.setFiles);
 
-    const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
-    const showError = () => setShowErrorModal(true);
+    const dicomData = useStore((state) => state.dicomData);
+    const setDicomData = useStore((state) => state.setDicomData);
 
-    const [sidebarVisible, setSidebarVisible] = useState(false);
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
 
-    const [showSeriesModal, setShowSeiresModal] = useState(false);
-    const [series, setSeries] = useState(false);
-    const [seriesSwitchModel, setSeriesSwitchModel] = useState(false);
+    const loading = useStore((state) => state.loading);
+    const setLoading = useStore((state) => state.setLoading);
 
-    const [downloadOption, setDownloadOption] = useState<string>(
-        isSafari ? "zip" : (localStorage.getItem("downloadOption") ?? "single")
+    const showErrorModal = useStore((state) => state.showErrorModal);
+    const showError = useStore((state) => state.showError);
+    const setShowErrorModal = useStore((state) => state.setShowErrorModal);
+
+    const sidebarVisible = useStore((state) => state.sidebarVisible);
+    const setSidebarVisible = useStore((state) => state.setSidebarVisible);
+
+    const showSeriesModal = useStore((state) => state.showSeriesModal);
+    const setShowSeiresModal = useStore((state) => state.setShowSeriesModal);
+
+    const series = useStore((state) => state.series);
+    const setSeries = useStore((state) => state.setSeries);
+
+    const seriesSwitchModel = useStore((state) => state.seriesSwitchModel);
+    const setSeriesSwitchModel = useStore(
+        (state) => state.setSeriesSwitchModel
     );
 
-    const [theme, setTheme] = useState(
-        localStorage.getItem("theme") ?? "corporate"
-    );
+    const setDownloadOption = useStore((state) => state.setDownloadOption);
 
-    const [newTagValues, setNewTagValues] = useState<any[]>([]);
-    const [showHiddenTags, setShowHiddenTags] = useState<boolean>(
-        JSON.parse(localStorage.getItem("showHiddenTags") ?? "false")
-    );
+    const emptyNewTagValues = useStore((state) => state.emptyNewTagValues);
+
+    const showHiddenTags = useStore((state) => state.showHiddenTags);
+
+    const theme = useStore((state) => state.theme);
+
+    const clearData = useStore((state) => state.clearData);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
-    const updateTagValues = (newData: any) => {
-        setNewTagValues((prevData) => {
-            const existingIndex = prevData.findIndex(
-                (item) =>
-                    item.fileName === newData.fileName &&
-                    item.tagId === newData.tagId
-            );
-
-            if (existingIndex !== -1) {
-                return prevData.map((item, index) =>
-                    index === existingIndex ? newData : item
-                );
-            }
-
-            return [...prevData, newData];
-        });
-    };
-
     const sidebarRef = useRef<HTMLDivElement>(null);
     const sidebarButtonRef = useRef<HTMLButtonElement | null>(null);
-
-    const themeToggle = (e: any) => {
-        if (e.target.checked) {
-            setTheme("corporate");
-        } else {
-            setTheme("night");
-        }
-    };
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
-    // Set theme on load
+    // Save theme on change, set theme on load
     useEffect(() => {
-        localStorage.setItem("theme", theme!);
-        const localTheme = localStorage.getItem("theme");
-        document.querySelector("html")?.setAttribute("data-theme", localTheme!);
+        localStorage.setItem("theme", theme);
+        document.querySelector("html")?.setAttribute("data-theme", theme);
     }, [theme]);
-
-    // Save download option on change
-    useEffect(() => {
-        localStorage.setItem("downloadOption", downloadOption);
-    }, [downloadOption]);
 
     // Save show hidden tags on change
     useEffect(() => {
@@ -179,11 +152,14 @@ const App: React.FC = () => {
     };
 
     // File handling
-    const handleFileUpload = (newFiles: CustomFile[], newDicomData: any[]) => {
+    const handleFileUpload = (
+        newFiles: CustomFile[],
+        newDicomData: DicomData[]
+    ) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
-        setNewTagValues([]);
+        emptyNewTagValues();
 
         logger.debug("file-loaded");
         setLoading(false);
@@ -213,83 +189,6 @@ const App: React.FC = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
-    };
-
-    // Handle file selection - update current file index
-    const handleFileSelect = (index: number) => {
-        setCurrentFileIndex(index);
-    };
-
-    // Clear all data, files, tags, and new tags
-    const clearData = () => {
-        setFiles([]);
-        setDicomData([]);
-        setCurrentFileIndex(0);
-        setNewTagValues([]);
-        setSeries(false);
-    };
-
-    // Toggle editing mode between series and individual files
-    const toggleSeries = () => {
-        setSeries(!series);
-
-        if (!series) {
-            newTagValues.forEach((entry) => {
-                if (entry.fileName !== files[currentFileIndex].name) {
-                    setSidebarVisible(false);
-                    setSeriesSwitchModel(true);
-                }
-            });
-        }
-    };
-
-    // Update all files with new tags, handle series and individual file editing
-    // To Do - Refactor this function
-    const updateAllFiles = async () => {
-        setLoading(true);
-        const newFiles: any = [];
-
-        if (series) {
-            dicomData.forEach((dicom, index) => {
-                const updatedFile = tagUpdater(
-                    dicom.DicomDataSet,
-                    getSingleFileTagEdits(
-                        newTagValues,
-                        files[currentFileIndex].name
-                    )
-                );
-                if (downloadOption === "single") {
-                    downloadDicomFile(
-                        createFile(files[index].name, updatedFile)
-                    );
-                } else {
-                    newFiles.push(createFile(files[index].name, updatedFile));
-                }
-            });
-        } else {
-            dicomData.forEach((dicom, index) => {
-                const updatedFile = tagUpdater(
-                    dicom.DicomDataSet,
-                    getSingleFileTagEdits(newTagValues, files[index].name)
-                );
-                if (downloadOption === "single") {
-                    downloadDicomFile(
-                        createFile(files[index].name, updatedFile)
-                    );
-                } else {
-                    newFiles.push(createFile(files[index].name, updatedFile));
-                }
-            });
-        }
-
-        if (downloadOption === "zip") {
-            const zipFile = await createZipFromFiles(newFiles);
-            downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
-        }
-
-        setSidebarVisible(false);
-        clearData();
-        setLoading(false);
     };
 
     // main render
@@ -328,27 +227,9 @@ const App: React.FC = () => {
                         />
                     ) : null}
 
-                    {/* Button here for testing, temp location. Other refactor tasks will make moving this simpler */}
-                    {files.length > 0 && dicomData.length > 0 && (
-                        <div className="mt-4">
-                            <GenButton
-                                onClick={() => AutoAnon(dicomData, files)}
-                                label="Auto Anon"
-                                disabled={false}
-                            />
-                        </div>
-                    )}
-
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>
-                            <DicomTable
-                                dicomData={dicomData[currentFileIndex]}
-                                fileName={files[currentFileIndex].name}
-                                updateTableData={updateTagValues}
-                                newTableData={newTagValues}
-                                clearData={clearData}
-                                showHiddenTags={showHiddenTags}
-                            />
+                            <DicomTable />
                         </div>
                     )}
                 </div>
@@ -382,21 +263,7 @@ const App: React.FC = () => {
 
                 {sidebarVisible && (
                     <div ref={sidebarRef}>
-                        <Sidebar
-                            files={files}
-                            onFileSelect={handleFileSelect}
-                            currentFileIndex={currentFileIndex}
-                            series={series}
-                            seriesToggle={toggleSeries}
-                            isVisible={sidebarVisible}
-                            updateAllFiles={updateAllFiles}
-                            downloadOption={downloadOption}
-                            setDownloadOption={setDownloadOption}
-                            showHiddenTags={showHiddenTags}
-                            setShowHiddenTags={(set) => setShowHiddenTags(set)}
-                            currTheme={theme}
-                            toggleTheme={themeToggle}
-                        />
+                        <Sidebar isVisible={sidebarVisible} />
                     </div>
                 )}
             </div>

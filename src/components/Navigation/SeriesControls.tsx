@@ -3,26 +3,41 @@ import { Tooltip } from "react-tooltip";
 import { GenButton } from "../utils/GenButton";
 import { SeriesControlsProps } from "../../types/types";
 
+import { updateAllFiles } from "../DicomData/UpdateAllFiles";
+import { useStore } from "../State/Store";
+
 /**
  * SeriesControls component for managing series-related functionality
  * @component
  * @param {SeriesControlsProps} props - Component props
- * @param {boolean} props.series - Flag indicating if series mode is active
- * @param {() => void} props.updateAllFiles - Function to update all files
- * @param {() => void} props.seriesToggle - Function to toggle series mode
  * @returns {JSX.Element} Rendered SeriesControls component
  */
-const SeriesControls: React.FC<SeriesControlsProps> = ({
-    series,
-    updateAllFiles,
-    seriesToggle,
-}) => {
+const SeriesControls: React.FC<SeriesControlsProps> = () => {
+    const files = useStore((state) => state.files);
+    const dicomData = useStore((state) => state.dicomData);
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const newTagValues = useStore((state) => state.newTagValues);
+    const downloadOption = useStore((state) => state.downloadOption);
+    const series = useStore((state) => state.series);
+    const seriesToggle = useStore((state) => state.toggleSeries);
+    const clearData = useStore((state) => state.clearData);
+
     return (
         <>
             <GenButton
                 label={series ? "Apply Edits to All Files" : "Save All Files"}
                 disabled={false}
-                onClick={updateAllFiles}
+                onClick={() => {
+                    updateAllFiles(
+                        dicomData,
+                        series,
+                        newTagValues,
+                        files,
+                        currentFileIndex,
+                        downloadOption
+                    );
+                    clearData();
+                }}
             />
             <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
                 <button

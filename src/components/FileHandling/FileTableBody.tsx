@@ -2,6 +2,8 @@ import React from "react";
 import { FileListProps } from "../../types/FileTypes.ts";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 
+import { useStore } from "../State/Store.tsx";
+
 /**
  *
  * @param files - Array of files
@@ -9,13 +11,12 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline";
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileList component
  */
-const FileTableBody: React.FC<FileListProps> = ({
-    files,
-    currentFileIndex,
-    onFileSelect,
-    series,
-    openModal,
-}) => {
+const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const series = useStore((state) => state.series);
+    const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
+    const files = useStore((state) => state.files);
+
     return (
         <tbody>
             {files.map((file, index) => (
@@ -23,7 +24,7 @@ const FileTableBody: React.FC<FileListProps> = ({
                     key={index}
                     onClick={
                         !series
-                            ? () => onFileSelect(index)
+                            ? () => setCurrentFileIndex(index)
                             : () => openModal(true)
                     }
                     className={`group cursor-pointer transition-all hover:bg-primary/5 ${

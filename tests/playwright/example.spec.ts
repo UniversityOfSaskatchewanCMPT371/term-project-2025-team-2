@@ -99,44 +99,55 @@ test("Navigate between uploaded files", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        // Wait for the prompt to appear
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        // Wait for the upload to complete and prompt to appear
+        // More robust way to wait for the prompt
+        await page.waitForTimeout(10000);
 
         // Click "No" to edit files individually
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
-        // Verify the first file is displayed
-        const currentFile = page
-            .locator("text=Currently Viewing: CR000000.dcm")
-            .first();
-        await expect(currentFile).toBeVisible();
+        // Wait for the UI to update after selection
+        await page.waitForTimeout(1000);
 
-        // Navigate to the next file
-        const nextButton = page.locator("button", { hasText: "Next" }).first();
-        await expect(nextButton).toBeVisible();
-        await nextButton.click();
+        // Verify the first file is displayed
+        await page.waitForSelector("text=Currently Viewing: CR000000.dcm", {
+            state: "visible",
+            timeout: 5000,
+        });
+
+        // Navigate to the next file - find by role and text for more reliability
+        await page.waitForSelector('button:has-text("Next")', {
+            state: "visible",
+            timeout: 5000,
+        });
+        await page.click('button:has-text("Next")');
+
+        // Wait for the UI to update after navigation
+        await page.waitForTimeout(1000);
 
         // Verify the second file is displayed
-        const secondFile = page
-            .locator("text=Currently Viewing: CR000001.dcm")
-            .first();
-        await expect(secondFile).toBeVisible();
+        await page.waitForSelector("text=Currently Viewing: CR000001.dcm", {
+            state: "visible",
+            timeout: 5000,
+        });
 
         // Navigate back to the previous file
-        const prevButton = page
-            .locator("button", { hasText: "Previous" })
-            .first();
-        await expect(prevButton).toBeVisible();
-        await prevButton.click();
+        await page.waitForSelector('button:has-text("Previous")', {
+            state: "visible",
+            timeout: 5000,
+        });
+        await page.click('button:has-text("Previous")');
+
+        // Wait for the UI to update after navigation
+        await page.waitForTimeout(1000);
 
         // Verify the first file is displayed again
-        const prevFile = page
-            .locator("text=Currently Viewing: CR000000.dcm")
-            .first();
-        await expect(prevFile).toBeVisible();
+        await page.waitForSelector("text=Currently Viewing: CR000000.dcm", {
+            state: "visible",
+            timeout: 5000,
+        });
 
         console.log("Successfully navigated between files");
     } catch (error) {
@@ -166,57 +177,64 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
+        // Upload multiple DICOM files with better waiting
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
         ]);
 
-        // Wait for the prompt to appear
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        // Click "No" to edit files individually
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
-        // Verify the first file is displayed
-        const currentFile = page
-            .locator("text=Currently Viewing: CR000000.dcm")
-            .first();
-        await expect(currentFile).toBeVisible();
+        // Wait for UI update
+        await page.waitForTimeout(1000);
 
-        // Find the row containing 'SOPClassUID'
-        const tagRow = page
-            .locator("tr")
-            .filter({ hasText: "SOPClassUID" })
-            .first();
-        await expect(tagRow).toBeVisible();
+        // Verify the first file is displayed with better waiting
+        await page.waitForSelector("text=Currently Viewing: CR000000.dcm", {
+            state: "visible",
+            timeout: 5000,
+        });
 
-        // Click the edit button (pencil icon) in that row
-        const editButton = tagRow.locator("svg.h-6.w-6").first();
-        await expect(editButton).toBeVisible();
+        // Find the row with better waiting
+        await page.waitForSelector('tr:has-text("SOPClassUID")', {
+            state: "visible",
+            timeout: 5000,
+        });
+
+        // Better approach to find the edit button
+        const editButton = await page
+            .locator('tr:has-text("SOPClassUID")')
+            .locator("svg")
+            .first();
+        await editButton.waitFor({ state: "visible", timeout: 5000 });
         await editButton.click();
 
-        // Now find and edit the input field
-        const tagInput = tagRow.locator("input").first();
-        await expect(tagInput).toBeVisible();
-        await tagInput.fill("New Value");
+        // Wait for the input field to appear
+        await page.waitForSelector("input[type=text]", {
+            state: "visible",
+            timeout: 5000,
+        });
+        await page.fill("input[type=text]", "New Value");
 
-        // Toggle sidebar
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
             .first();
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        // Save changes
-        const saveAllFilesButton = page
-            .locator("button", { hasText: "Save All Files" })
-            .first();
-        await expect(saveAllFilesButton).toBeVisible();
-        await saveAllFilesButton.click();
+        // Wait for sidebar to appear
+        await page.waitForTimeout(1000);
+
+        // Save changes with better waiting
+        await page.waitForSelector('button:has-text("Save All Files")', {
+            state: "visible",
+            timeout: 5000,
+        });
+        await page.click('button:has-text("Save All Files")');
 
         console.log("Save file button working successfully on sidebar toggle");
     } catch (error) {
@@ -237,12 +255,9 @@ test("Testing edit individually and series button in sidebar", async ({
             "./test-data/CR000001.dcm",
         ]);
 
-        // Wait for the prompt to appear
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        // Click "No" to edit files individually
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
@@ -293,10 +308,9 @@ test("Navigating from files from sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
@@ -352,10 +366,9 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 

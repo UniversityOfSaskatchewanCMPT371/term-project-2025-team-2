@@ -10,6 +10,8 @@ import TableHeader from "./TableHeader";
 import TableControls from "./TableControls";
 import DicomTableBody from "./DicomTableBody";
 
+import { useStore } from "../../State/Store";
+
 /**
  * Main DICOM table component
  * @component
@@ -17,22 +19,29 @@ import DicomTableBody from "./DicomTableBody";
  * @returns {JSX.Element} The rendered DICOM table
  * @throws {Error} When no DICOM data is available
  */
-const DicomTable: React.FC<DicomTableProps> = ({
-    dicomData,
-    fileName,
-    updateTableData,
-    newTableData,
-    clearData,
-    showHiddenTags,
-}) => {
+const DicomTable: React.FC<DicomTableProps> = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
-    if (Object.keys(dicomData).length === 0) {
+    const files = useStore((state) => state.files);
+    const dicomData = useStore((state) => state.dicomData);
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const newTagValues = useStore((state) => state.newTagValues);
+    const clearData = useStore((state) => state.clearData);
+    const updateTableData = useStore((state) => state.setNewTagValues);
+    const showHiddenTags = useStore((state) => state.showHiddenTags);
+
+    const fileName = files[currentFileIndex].name;
+
+    if (Object.keys(dicomData[currentFileIndex].tags).length === 0) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
 
-    const rows = createRows(dicomData, fileName, newTableData);
+    const rows = createRows(
+        dicomData[currentFileIndex],
+        fileName,
+        newTagValues
+    );
     const filteredRows = useFilteredRows(rows, searchTerm);
 
     /**
@@ -47,7 +56,7 @@ const DicomTable: React.FC<DicomTableProps> = ({
         deleteTag: boolean
     ) => {
         updateTableData({
-            fileName,
+            fileName: files[currentFileIndex].name,
             tagId,
             newValue,
             delete: deleteTag,
@@ -60,8 +69,8 @@ const DicomTable: React.FC<DicomTableProps> = ({
      */
     const updateFile = () => {
         const updatedDicomData = tagUpdater(
-            dicomData.DicomDataSet,
-            newTableData
+            dicomData[currentFileIndex].DicomDataSet,
+            newTagValues
         );
         const blob = new Blob([updatedDicomData], {
             type: "application/dicom",

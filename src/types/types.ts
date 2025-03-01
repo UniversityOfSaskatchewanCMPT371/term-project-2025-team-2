@@ -3,32 +3,11 @@ import { CustomFile } from "./FileTypes";
 /**
  * Props for the Sidebar component
  * @interface SidebarProps
- * @property {File[]} files - Array of file objects
- * @property {(index: number) => void} onFileSelect - Function to handle file selection
- * @property {number} currentFileIndex - Index of the currently selected file
- * @property {boolean} series - Flag indicating if series mode is active
- * @property {() => void} seriesToggle - Function to toggle series mode
  * @property {boolean} isVisible - Flag indicating if the sidebar is visible
- * @property {() => void} updateAllFiles - Function to update all files
- * @property {(option: string) => void} setDownloadOption - Function to set the download option
- * @property {string} downloadOption - Currently selected download option
- * @property {boolean} showHiddenTags - Flag indicating if hidden tags are shown
  * @property {(set: boolean) => void} setShowHiddenTags - Function to set the visibility of hidden tags
  */
 export interface SidebarProps {
-    files: CustomFile[];
-    onFileSelect: (index: number) => void;
-    currentFileIndex: number;
-    series: boolean;
-    seriesToggle: () => void;
     isVisible: boolean;
-    updateAllFiles: () => void;
-    downloadOption: string;
-    setDownloadOption: (value: string) => void;
-    showHiddenTags: boolean;
-    setShowHiddenTags: (set: boolean) => void;
-    currTheme: string;
-    toggleTheme: (e: any) => void;
 }
 
 /**
@@ -58,13 +37,8 @@ export interface IconButtonProps {
 
 /**
  * interface ThemeSelectorProps
- * @param toggleTheme - Function to toggle theme
- * @param currTheme - Current theme
  */
-export interface ThemeSelectorProps {
-    toggleTheme: (e: any) => void;
-    currTheme: string;
-}
+export interface ThemeSelectorProps {}
 
 /**
  * interface NavButtonProps
@@ -166,11 +140,7 @@ export interface HeaderProps {
  * @property {() => void} updateAllFiles - Function to update all files
  * @property {() => void} seriesToggle - Function to toggle series mode
  */
-export interface SeriesControlsProps {
-    series: boolean;
-    updateAllFiles: () => void;
-    seriesToggle: () => void;
-}
+export interface SeriesControlsProps {}
 
 /**
  * Props for the SettingsModal component
@@ -184,13 +154,6 @@ export interface SeriesControlsProps {
  */
 export interface SettingsModalProps {
     toggleModal: () => void;
-    files: CustomFile[];
-    setDownloadOption: (option: string) => void;
-    downloadOption: string;
-    showHiddenTags: boolean;
-    setShowHiddenTags: (set: boolean) => void;
-    currTheme: string;
-    toggleTheme: (e: any) => void;
 }
 
 /**
