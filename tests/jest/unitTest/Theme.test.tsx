@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ThemeSelector } from "../../src/components/Navigation/ThemeSelector";
+import { ThemeSelector } from "../../../src/components/Navigation/ThemeSelector";
 
 jest.mock("react-tooltip", () => ({
     Tooltip: () => <div>Tooltip</div>,

@@ -5,7 +5,7 @@ import {
     waitFor,
     act,
 } from "@testing-library/react";
-import DicomTable from "../../src/components/DicomData/TableComponents/DicomTable";
+import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
 
 describe("DicomTable Component - Edit and Delete Actions", () => {
     const mockUpdateTableData = jest.fn();

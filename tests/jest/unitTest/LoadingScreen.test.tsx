@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { LoadingScreen } from "../../src/components/utils/LoadingScreen";
+import { LoadingScreen } from "../../../src/components/utils/LoadingScreen";
 
 describe("LoadingScreen", () => {
     it("renders the LoadingScreen component with the spinning icon", () => {
