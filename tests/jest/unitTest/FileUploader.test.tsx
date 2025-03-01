@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { jest } from "@jest/globals";
-import { parseDicomFile } from "../../src/components/DicomData/DicomParserUtils";
+import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
 import { act } from "react";
 
 // Mock parseDicomFile before importing FileUploader
@@ -11,7 +11,7 @@ jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
     ),
 }));
 
-import FileUploader from "../../src/components/FileHandling/FileUploader";
+import FileUploader from "../../../src/components/FileHandling/FileUploader";
 
 describe("FileUploader Component Tests", () => {
     const mockToggleModal = jest.fn();

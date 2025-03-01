@@ -5,10 +5,10 @@ import {
     waitFor,
     act,
 } from "@testing-library/react";
-import FileUploader from "../../src/components/FileHandling/FileUploader";
-import FileTable from "../../src/components/FileHandling/FileTable";
-import FileHeader from "../../src/components/FileHandling/FileHeader";
-import FileTableBody from "../../src/components/FileHandling/FileTableBody";
+import FileUploader from "../../../src/components/FileHandling/FileUploader";
+import FileTable from "../../../src/components/FileHandling/FileTable";
+import FileHeader from "../../../src/components/FileHandling/FileHeader";
+import FileTableBody from "../../../src/components/FileHandling/FileTableBody";
 
 jest.mock("../../src/components/DicomData/DicomParserUtils.tsx", () => ({
     parseDicomFile: jest.fn().mockResolvedValue({ mockDicomData: true }),

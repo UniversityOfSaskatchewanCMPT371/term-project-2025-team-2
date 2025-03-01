@@ -5,7 +5,7 @@ import {
     waitFor,
     act,
 } from "@testing-library/react";
-import DicomTable from "../../src/components/DicomData/TableComponents/DicomTable";
+import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
 // import Logger from "../../src/components/utils/Logger";
 // import * as tagUpdater from "../../src/components/DicomData/TagUpdater";
 

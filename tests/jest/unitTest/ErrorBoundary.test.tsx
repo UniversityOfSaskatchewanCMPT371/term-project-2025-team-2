@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import Logger from "../../src/components/utils/Logger";
-import ErrorBoundary from "../../src/components/ErrorHandling/ErrorBoundary";
+import Logger from "../../../src/components/utils/Logger";
+import ErrorBoundary from "../../../src/components/ErrorHandling/ErrorBoundary";
 
 // Mock Logger before importing ErrorBoundary
 jest.mock("../../src/components/utils/Logger", () => ({
