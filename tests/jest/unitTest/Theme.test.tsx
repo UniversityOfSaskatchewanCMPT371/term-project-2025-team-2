@@ -4,7 +4,9 @@ import * as storeModule from "../../../src/components/State/Store";
 
 // Mock necessary imports
 jest.mock("../../../src/components/State/Store", () => {
-    const actualStore = jest.requireActual("../../../src/components/State/Store");
+    const actualStore = jest.requireActual(
+        "../../../src/components/State/Store"
+    );
     return {
         ...actualStore,
         useStore: jest.fn(),

@@ -19,10 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-    const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
     const files = useStore((state) => state.files);
-    const series = useStore((state) => state.series);
-    const currentFileIndex = useStore((state) => state.currentFileIndex);
 
     return (
         <div
@@ -34,12 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
                 {files.length > 1 && <SeriesControls />}
 
                 <div className="mt-2">
-                    <FileTable
-                        files={files}
-                        currentFileIndex={currentFileIndex}
-                        onFileSelect={setCurrentFileIndex}
-                        series={series}
-                    />
+                    <FileTable />
                 </div>
             </div>
 

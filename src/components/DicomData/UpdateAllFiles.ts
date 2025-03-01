@@ -11,7 +11,6 @@ export const updateAllFiles = async (
     currentFileIndex: number,
     downloadOption: string
 ) => {
-
     const newFiles: any = [];
 
     if (series) {

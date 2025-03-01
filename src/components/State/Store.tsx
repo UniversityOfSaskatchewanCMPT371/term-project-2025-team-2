@@ -85,7 +85,10 @@ export const useStore = create<Store>((set) => ({
         ? "zip"
         : (localStorage.getItem("downloadOption") ?? "single"),
 
-    setDownloadOption: (option) => { set({ downloadOption: option }); localStorage.setItem("downloadOption", option); },
+    setDownloadOption: (option) => {
+        set({ downloadOption: option });
+        localStorage.setItem("downloadOption", option);
+    },
 
     theme: localStorage.getItem("theme") ?? "corporate",
     toggleTheme: () =>
