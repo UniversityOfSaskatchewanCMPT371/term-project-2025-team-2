@@ -7,11 +7,7 @@
  */
 
 export interface FileListProps {
-    files: CustomFile[];
-    currentFileIndex: number;
-    onFileSelect: (index: number) => void;
     openModal: (value: boolean) => void;
-    series: boolean;
 }
 /**
  * interface FileTableProps
@@ -21,12 +17,7 @@ export interface FileListProps {
  * @property series - Boolean to check if the files are being edited as a series
  */
 
-export interface FileTableProps {
-    files: any[];
-    currentFileIndex: number;
-    onFileSelect: (index: number) => void;
-    series: boolean;
-}
+export interface FileTableProps {}
 
 /**
  * interface FileNavigationProps

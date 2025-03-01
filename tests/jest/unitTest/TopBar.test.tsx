@@ -6,7 +6,6 @@ jest.mock("react-tooltip", () => ({
     Tooltip: () => <div>Tooltip</div>,
 }));
 
-
 describe("Topbar", () => {
     const mockToggleSidebar = jest.fn();
     const mockOnInstallClick = jest.fn();

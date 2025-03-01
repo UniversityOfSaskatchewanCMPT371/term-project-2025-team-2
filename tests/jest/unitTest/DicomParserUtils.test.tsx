@@ -2,10 +2,11 @@ import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUti
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 
-// Mock dicomParser
-jest.mock("dicom-parser", () => ({
-    parseDicom: jest.fn(),
-}));
+jest.mock("dicom-parser", () => {
+    return {
+        parseDicom: jest.fn(),
+    };
+});
 
 // Mock TagDictionary
 jest.mock("../../../src/tagDictionary/dictionary", () => ({
@@ -25,11 +26,11 @@ jest.mock("../../../src/tagDictionary/dictionary", () => ({
         lookupTagVR(tag: string) {
             return (
                 {
-                    "00100010": "PN", // Patient Name VR
-                    "00100020": "LO", // Patient ID VR
-                    "00100030": "DA", // Patient Birth Date VR
+                    "00100010": "PN",
+                    "00100020": "LO",
+                    "00100030": "DA",
                 }[tag] || "Unknown"
-            ); // Default to Unknown VR if not found
+            );
         }
     },
 }));
@@ -48,7 +49,7 @@ describe("DicomParserUtils", () => {
     test("calls dicomParser.parseDicom when file is valid", async () => {
         const mockDataset = {
             elements: {
-                "00100010": { vr: "PN" }, // Patient Name
+                "00100010": { vr: "PN" },
             },
             string: jest.fn(() => "John Doe"),
         };
@@ -76,12 +77,11 @@ describe("DicomParserUtils", () => {
         const mockFileReader = jest
             .spyOn(global, "FileReader")
             .mockImplementation(() => {
-                // Simulates FileReader API calls with error event
                 const fileReaderInstance = {
-                    onerror: null as ((event: Event) => void) | null, // Ensure correct typing
+                    onerror: null as ((event: Event) => void) | null,
                     readAsArrayBuffer: jest.fn(() => {
                         if (fileReaderInstance.onerror) {
-                            fileReaderInstance.onerror(new Event("error")); // Trigger error event
+                            fileReaderInstance.onerror(new Event("error"));
                         }
                     }),
                 };
@@ -99,8 +99,8 @@ describe("DicomParserUtils", () => {
     test("extracts hidden DICOM tags correctly", async () => {
         const mockDataset = {
             elements: {
-                X0025101B: { vr: "UI" }, // Hidden Tag (should be hidden)
-                X00431029: { vr: "UI" }, // Hidden Tag (should be hidden)
+                X0025101B: { vr: "UI" },
+                X00431029: { vr: "UI" },
             },
             string: jest.fn((tag) =>
                 tag === "00100010" ? "John Doe" : "Some Value"
@@ -109,12 +109,9 @@ describe("DicomParserUtils", () => {
 
         (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
 
-        const result = await parseDicomFile(mockFile); // invokes extractDicomTags
+        const result = await parseDicomFile(mockFile);
 
-        // Check extracted tags
         Object.keys(mockDataset.elements).forEach((tag) => {
-            console.log("result[tag]");
-            console.log(JSON.stringify(result[tag], null, 2)); // Pretty-print JSON in CI logs
             expect(result.tags[tag]).toEqual({
                 tagId: tag,
                 tagName: "Unknown",
@@ -129,7 +126,6 @@ describe("DicomParserUtils", () => {
         const mockDataset = {
             elements: {
                 "0040A730": {
-                    // Content Sequence (SQ)
                     vr: "SQ",
                     items: [
                         {
@@ -139,12 +135,12 @@ describe("DicomParserUtils", () => {
                                         vr: "SH",
                                         dataOffset: 0,
                                         length: 10,
-                                    }, // CodeValue
+                                    },
                                     "00080102": {
                                         vr: "SH",
                                         dataOffset: 10,
                                         length: 10,
-                                    }, // CodingSchemeDesignator
+                                    },
                                 },
                                 string: jest.fn((tag) => {
                                     if (tag === "00080100") return "12345";
@@ -156,15 +152,14 @@ describe("DicomParserUtils", () => {
                     ],
                 },
             },
-            byteArray: new Uint8Array(128), // raw binary data
+            byteArray: new Uint8Array(128),
             string: jest.fn(() => null),
         };
 
         (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
 
-        const result = await parseDicomFile(mockFile); // invokes extractDicomTags & mocked TagDictionary
+        const result = await parseDicomFile(mockFile);
 
-        // Ensure nested sequence extraction works
         expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
             tagId: "00080100",
             tagName: "Code Value",
@@ -182,9 +177,9 @@ describe("DicomParserUtils", () => {
     test("extracts values from multiple DICOM tags", async () => {
         const mockDataset = {
             elements: {
-                "00100010": { vr: "PN" }, // Patient Name
-                "00100020": { vr: "LO" }, // Patient ID
-                "00100030": { vr: "DA" }, // Patient Birth Date
+                "00100010": { vr: "PN" },
+                "00100020": { vr: "LO" },
+                "00100030": { vr: "DA" },
             },
             string: jest.fn((tag) => {
                 if (tag === "00100010") return "Aladin Alihodzic";

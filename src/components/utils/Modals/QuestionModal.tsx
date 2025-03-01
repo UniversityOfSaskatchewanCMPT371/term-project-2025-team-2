@@ -31,6 +31,7 @@ function QuestionModal({
                         Yes
                     </button>
                     <button
+                        id="no"
                         onClick={() => {
                             setSeries(false);
                             setIsOpen(false);

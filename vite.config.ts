@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+import path from "path";
 
 const manifestForPlugIn: Partial<VitePWAOptions> = {
     registerType: "prompt",
@@ -104,5 +105,27 @@ export default defineConfig({
     server: {
         port: 5173,
         strictPort: true,
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src"),
+            "@components": path.resolve(__dirname, "./src/components"),
+            "@hooks": path.resolve(__dirname, "./src/components/hooks"),
+            "@utils/*": path.resolve(__dirname, "./src/components/utils/*"),
+            "@navigation/*": path.resolve(
+                __dirname,
+                "./src/components/navigation/*"
+            ),
+            "@DicomData/*": path.resolve(
+                __dirname,
+                "./src/components/DicomData/*"
+            ),
+            "@FileHandling/*": path.resolve(
+                __dirname,
+                "./src/components/FileHandling/*"
+            ),
+            "@state/*": path.resolve(__dirname, "./src/components/state/*"),
+            "@types/*": path.resolve(__dirname, "./src/components/types/*"),
+        },
     },
 });

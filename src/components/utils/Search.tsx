@@ -12,6 +12,7 @@ const Search: React.FC<SearchProps> = ({ searchTerm, onSearchChange }) => {
         <div className="mb-4 flex items-center">
             <input
                 type="text"
+                data-testid="dicom-search-input"
                 className="rounded border px-4 py-2"
                 placeholder="Search tags..."
                 value={searchTerm}
