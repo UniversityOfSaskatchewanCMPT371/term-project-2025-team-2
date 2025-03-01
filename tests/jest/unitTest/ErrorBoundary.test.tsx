@@ -5,12 +5,12 @@ import Logger from "../../../src/components/utils/Logger";
 import ErrorBoundary from "../../../src/components/ErrorHandling/ErrorBoundary";
 
 // Mock Logger before importing ErrorBoundary
-jest.mock("../../src/components/utils/Logger", () => ({
+jest.mock("../../../src/components/utils/Logger", () => ({
     error: jest.fn(),
 }));
 
 // Mock GenErrorPage before importing ErrorBoundary
-jest.mock("../../src/components/ErrorHandling/GenErrorPage", () => ({
+jest.mock("../../../src/components/ErrorHandling/GenErrorPage", () => ({
     __esModule: true,
     default: () => <div data-testid="gen-error-page">Error Page</div>,
 }));

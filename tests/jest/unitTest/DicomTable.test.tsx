@@ -9,11 +9,11 @@ import DicomTable from "../../../src/components/DicomData/TableComponents/DicomT
 // import Logger from "../../src/components/utils/Logger";
 // import * as tagUpdater from "../../src/components/DicomData/TagUpdater";
 
-jest.mock("../../src/components/utils/Logger", () => ({
+jest.mock("../../../src/components/utils/Logger", () => ({
     error: jest.fn(),
 }));
 
-jest.mock("../../src/components/DicomData/TagUpdater", () => ({
+jest.mock("../../../src/components/DicomData/TagUpdater", () => ({
     tagUpdater: jest.fn(),
     downloadDicomFile: jest.fn(),
     createFile: jest.fn(),

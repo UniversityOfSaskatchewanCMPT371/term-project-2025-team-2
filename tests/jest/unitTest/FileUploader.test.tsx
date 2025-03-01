@@ -5,7 +5,7 @@ import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUti
 import { act } from "react";
 
 // Mock parseDicomFile before importing FileUploader
-jest.mock("../../src/components/DicomData/DicomParserUtils", () => ({
+jest.mock("../../../src/components/DicomData/DicomParserUtils", () => ({
     parseDicomFile: jest.fn(() =>
         Promise.resolve({ mockMetadata: "mocked DICOM data" })
     ),
