@@ -8,7 +8,7 @@ jest.mock("dicom-parser", () => ({
 }));
 
 // Mock TagDictionary
-jest.mock("../../src/tagDictionary/dictionary", () => ({
+jest.mock("../../../src/tagDictionary/dictionary", () => ({
     TagDictionary: class {
         lookup(tag: string) {
             return (

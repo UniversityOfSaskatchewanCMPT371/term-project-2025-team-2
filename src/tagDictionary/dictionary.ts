@@ -1,4 +1,4 @@
-import { standardDataElements } from "./standardDataElements.tsx";
+import { standardDataElements } from "./standardDataElements.ts";
 
 /**
  * TagDictionary class
