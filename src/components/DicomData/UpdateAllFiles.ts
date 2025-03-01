@@ -11,7 +11,7 @@ export const updateAllFiles = async (
     currentFileIndex: number,
     downloadOption: string
 ) => {
-    // setLoading(true);
+
     const newFiles: any = [];
 
     if (series) {
@@ -47,8 +47,4 @@ export const updateAllFiles = async (
         const zipFile = await createZipFromFiles(newFiles);
         downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
     }
-
-    // setSidebarVisible(false);
-    // clearData();
-    // setLoading(false);
 };
