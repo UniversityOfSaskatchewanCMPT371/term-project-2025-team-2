@@ -8,12 +8,8 @@ jest.mock("dicom-parser", () => {
     };
 });
 
-<<<<<<<< HEAD:tests/jest/DicomParserUtils.test.ts
-jest.mock("../../src/tagDictionary/dictionary", () => ({
-========
 // Mock TagDictionary
 jest.mock("../../../src/tagDictionary/dictionary", () => ({
->>>>>>>> fix/separete_jest:tests/jest/unitTest/DicomParserUtils.test.tsx
     TagDictionary: class {
         lookup(tag: string) {
             return (

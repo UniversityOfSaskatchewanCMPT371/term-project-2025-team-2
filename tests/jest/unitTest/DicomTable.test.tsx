@@ -1,24 +1,24 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import DicomTable from "../../src/components/DicomData/TableComponents/DicomTable";
+import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
 import {
     createFile,
     downloadDicomFile,
-} from "../../src/components/DicomData/DownloadFuncs";
-import { tagUpdater } from "../../src/components/DicomData/TagUpdater";
-import logger from "../../src/components/utils/Logger";
-import * as storeModule from "../../src/components/State/Store";
+} from "../../../src/components/DicomData/DownloadFuncs";
+import { tagUpdater } from "../../../src/components/DicomData/TagUpdater";
+import logger from "../../../src/components/utils/Logger";
+import * as storeModule from "../../../src/components/State/Store";
 
 // Mock necessary imports and hooks
-jest.mock("../../src/components/DicomData/DownloadFuncs", () => ({
+jest.mock("../../../src/components/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn(),
     downloadDicomFile: jest.fn(),
 }));
 
-jest.mock("../../src/components/DicomData/TagUpdater", () => ({
+jest.mock("../../../src/components/DicomData/TagUpdater", () => ({
     tagUpdater: jest.fn(() => "updatedDicomData"),
 }));
 
-jest.mock("../../src/components/utils/Logger", () => ({
+jest.mock("../../../src/components/utils/Logger", () => ({
     default: {
         error: jest.fn(),
         info: jest.fn(),
@@ -32,8 +32,8 @@ jest.mock("../../src/components/utils/Logger", () => ({
 }));
 
 // Mock Zustand store
-jest.mock("../../src/components/State/Store", () => {
-    const actual = jest.requireActual("../../src/components/State/Store");
+jest.mock("../../../src/components/State/Store", () => {
+    const actual = jest.requireActual("../../../src/components/State/Store");
     return {
         ...actual,
         useStore: jest.fn(),
@@ -171,8 +171,6 @@ describe("DicomTable", () => {
 
         // Find the edit button by looking for specific patterns in the button text or class
         const editButton = screen.getAllByTestId("edit-tag-button")[0];
-
-        console.log("Found edit button:", editButton.outerHTML);
 
         await act(async () => {
             fireEvent.click(editButton);

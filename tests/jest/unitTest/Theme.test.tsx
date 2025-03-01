@@ -1,19 +1,15 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-<<<<<<< HEAD:tests/jest/Theme.test.tsx
-import { ThemeSelector } from "../../src/components/Navigation/ThemeSelector";
-import * as storeModule from "../../src/components/State/Store";
+import { ThemeSelector } from "../../../src/components/Navigation/ThemeSelector";
+import * as storeModule from "../../../src/components/State/Store";
 
 // Mock necessary imports
-jest.mock("../../src/components/State/Store", () => {
-    const actualStore = jest.requireActual("../../src/components/State/Store");
+jest.mock("../../../src/components/State/Store", () => {
+    const actualStore = jest.requireActual("../../../src/components/State/Store");
     return {
         ...actualStore,
         useStore: jest.fn(),
     };
 });
-=======
-import { ThemeSelector } from "../../../src/components/Navigation/ThemeSelector";
->>>>>>> fix/separete_jest:tests/jest/unitTest/Theme.test.tsx
 
 jest.mock("react-tooltip", () => ({
     Tooltip: () => <div>Tooltip</div>,
