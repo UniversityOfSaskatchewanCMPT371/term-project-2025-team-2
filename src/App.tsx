@@ -99,7 +99,7 @@ const App: React.FC = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    });
 
     // PWA installation prompt
     useEffect(() => {

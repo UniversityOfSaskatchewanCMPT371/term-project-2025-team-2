@@ -2,22 +2,26 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import { isSafari } from "react-device-detect";
 
-interface DownloadOptionProps {
-    setDownloadOption: (value: string) => void;
-    downloadOption: string;
-}
+import { useStore } from "../State/Store";
+import { DownloadOptionProps } from "../../types/types";
 
-const DownloadOption: React.FC<DownloadOptionProps> = ({
-    setDownloadOption,
-    downloadOption,
-}) => {
+const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const safari = isSafari;
+    const files = useStore((state) => state.files);
+    const MAXSINGLEFILESDOWNLOAD = 15;
+    const downloadOption = useStore((state) => state.downloadOption);
+    const setDownloadOption = useStore((state) => state.setDownloadOption);
 
     const handleChange = (event: any) => {
         if (safari) {
             // Safari does not support downloading multiple files at once
             return;
         }
+
+        if (files.length > MAXSINGLEFILESDOWNLOAD) {
+            return;
+        }
+
         if (event.target.checked) setDownloadOption("zip");
         else setDownloadOption("single");
     };
@@ -33,11 +37,13 @@ const DownloadOption: React.FC<DownloadOptionProps> = ({
                     onChange={handleChange}
                     data-tooltip-id="download-option-button-tooltip"
                     data-tooltip-content={
-                        safari
-                            ? "Not supported in Safari"
-                            : downloadOption === "zip"
-                              ? "Switch to Individual Files"
-                              : "Switch to Zip File"
+                        files.length > MAXSINGLEFILESDOWNLOAD
+                            ? "Too many files - Zip Only"
+                            : safari
+                              ? "Not supported in Safari"
+                              : downloadOption === "zip"
+                                ? "Switch to Individual Files"
+                                : "Switch to Zip File"
                     }
                     data-tooltip-place="top"
                 />

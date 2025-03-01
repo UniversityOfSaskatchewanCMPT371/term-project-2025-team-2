@@ -22,8 +22,6 @@ import { useStore } from "../State/Store";
  */
 const SettingsModal: React.FC<SettingsModalProps> = ({ toggleModal }) => {
     const files = useStore((state) => state.files);
-    const setDownloadOption = useStore((state) => state.setDownloadOption);
-    const downloadOption = useStore((state) => state.downloadOption);
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
 
@@ -61,10 +59,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ toggleModal }) => {
                 {files.length > 1 && (
                     <>
                         <p>Download Option</p>
-                        <DownloadOption
-                            setDownloadOption={setDownloadOption}
-                            downloadOption={downloadOption}
-                        />
+                        <DownloadOption />
                     </>
                 )}
 

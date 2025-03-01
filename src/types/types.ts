@@ -166,13 +166,8 @@ export interface HelpModalProps {}
 /**
  * Props for the DownloadOption component
  * @interface DownloadOptionProps
- * @property {(option: string) => void} setDownloadOption - Function to set the download option
- * @property {string} downloadOption - Currently selected download option
  */
-export interface DownloadOptionProps {
-    setDownloadOption: (option: string) => void;
-    downloadOption: string;
-}
+export interface DownloadOptionProps {}
 
 /**
  * Props for the HiddenTagsOption component
