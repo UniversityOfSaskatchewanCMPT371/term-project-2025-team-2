@@ -2,7 +2,7 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.ts";
 import { FileUploaderProps } from "../../types/FileTypes.ts";
-import logger from "../utils/Logger.tsx";
+import logger from "../utils/Logger";
 
 /**
  *
