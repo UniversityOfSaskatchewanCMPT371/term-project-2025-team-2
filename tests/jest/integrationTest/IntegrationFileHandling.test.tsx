@@ -10,6 +10,7 @@ import FileTable from "../../../src/components/FileHandling/FileTable";
 import FileHeader from "../../../src/components/FileHandling/FileHeader";
 import FileTableBody from "../../../src/components/FileHandling/FileTableBody";
 
+
 jest.mock("../../../src/components/DicomData/DicomParserUtils.ts", () => ({
     parseDicomFile: jest.fn().mockResolvedValue({ mockDicomData: true }),
 }));
