@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import HelpModal from "../../src/components/utils/Modals/HelpModal";
+import HelpModal from "../../../src/components/utils/Modals/HelpModal";
 
 describe("HelpModal", () => {
     it("renders the HelpModal component with the correct content", () => {
