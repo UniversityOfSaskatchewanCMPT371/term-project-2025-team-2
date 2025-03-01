@@ -4,7 +4,8 @@ import * as fs from 'fs';
 import AdmZip from 'adm-zip';
 import { promisify } from 'util';
 
-const BASE_URL = 'http://localhost:5173'; // Adjust if your app runs on a different URL
+// Use environment variable for the base URL
+export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 const mkdirAsync = promisify(fs.mkdir);
 const existsAsync = promisify(fs.exists);
