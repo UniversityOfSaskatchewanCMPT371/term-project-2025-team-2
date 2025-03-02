@@ -28,8 +28,6 @@ test('Auto anonymize DICOM file and verify changes', async ({ page }) => {
         await searchInput.press("Enter");
         
         await page.waitForTimeout(500);
-        
-        await page.screenshot({ path: 'original-file.png' });
 
         await page.waitForSelector('table', { state: 'visible', timeout: 10000 });
 
@@ -108,8 +106,6 @@ test('Auto anonymize DICOM file and verify changes', async ({ page }) => {
         await searchInput.press("Enter");
         
         await page.waitForTimeout(500);
-
-        await page.screenshot({ path: 'anon-file.png' });
 
         const finalValue = await institutionNameRowAfterReupload.locator('td').nth(2).textContent();
         expect(finalValue).toBe('ANONYMOUS');
