@@ -3,10 +3,11 @@ import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUti
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 
-// Mock dicomParser
-jest.mock("dicom-parser", () => ({
-    parseDicom: jest.fn(),
-}));
+jest.mock("dicom-parser", () => {
+    return {
+        parseDicom: jest.fn(),
+    };
+});
 
 // Mock TagDictionary
 jest.mock("../../../src/tagDictionary/dictionary", () => ({
@@ -26,11 +27,11 @@ jest.mock("../../../src/tagDictionary/dictionary", () => ({
         lookupTagVR(tag: string) {
             return (
                 {
-                    "00100010": "PN", // Patient Name VR
-                    "00100020": "LO", // Patient ID VR
-                    "00100030": "DA", // Patient Birth Date VR
+                    "00100010": "PN",
+                    "00100020": "LO",
+                    "00100030": "DA",
                 }[tag] || "Unknown"
-            ); // Default to Unknown VR if not found
+            );
         }
     },
 }));
@@ -61,12 +62,11 @@ describe("DicomParserUtils Unit Tests", () => {
         const mockFileReader = jest
             .spyOn(global, "FileReader")
             .mockImplementation(() => {
-                // Simulates FileReader API calls with error event
                 const fileReaderInstance = {
-                    onerror: null as ((event: Event) => void) | null, // Ensure correct typing
+                    onerror: null as ((event: Event) => void) | null,
                     readAsArrayBuffer: jest.fn(() => {
                         if (fileReaderInstance.onerror) {
-                            fileReaderInstance.onerror(new Event("error")); // Trigger error event
+                            fileReaderInstance.onerror(new Event("error"));
                         }
                     }),
                 };
@@ -79,4 +79,5 @@ describe("DicomParserUtils Unit Tests", () => {
 
         mockFileReader.mockRestore();
     });
+
 });

@@ -1,24 +1,24 @@
-import { test, expect, chromium, webkit } from '@playwright/test';
+import { test, expect, chromium, webkit } from "@playwright/test";
 
 /**
  * Test that in Safari, the download option cannot be changed.
  * and in non-Safari browsers, the download option can be changed.
  */
-test.describe('Safari DownloadOption Component', () => {
-    test('should not allow changing download option for Safari', async () => {
+test.describe("Safari DownloadOption Component", () => {
+    test("should not allow changing download option for Safari", async () => {
         // Launch the Safari (webkit) browser
         const browser = await webkit.launch();
 
         const context = await browser.newContext();
-        await context.clearCookies();   
+        await context.clearCookies();
 
         const page = await browser.newPage();
-        await page.goto('http://localhost:5173'); 
+        await page.goto("http://localhost:5173");
 
         // clear any saved downloadOption in localStorage
         await page.evaluate(() => {
             localStorage.clear();
-          });
+        });
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -26,10 +26,9 @@ test.describe('Safari DownloadOption Component', () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
@@ -42,35 +41,34 @@ test.describe('Safari DownloadOption Component', () => {
             .locator('button >> svg[data-slot="icon"]')
             .first();
         await sidebarToggleButton.waitFor();
-        await sidebarToggleButton.click(); 
+        await sidebarToggleButton.click();
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const checkbox = await page.locator('#download-option');
+        const checkbox = await page.locator("#download-option");
         expect(checkbox).toBeChecked();
 
         await checkbox.click();
-        await expect(checkbox).toBeChecked(); 
+        await expect(checkbox).toBeChecked();
 
         await browser.close();
     });
 
-    test('should allow changing download option for non-Safari browsers', async () => {
+    test("should allow changing download option for non-Safari browsers", async () => {
         // Launch a Chromium browser (non-Safari)
         const browser = await chromium.launch();
 
         const context = await browser.newContext();
-        await context.clearCookies();  
+        await context.clearCookies();
 
         const page = await browser.newPage();
-        await page.goto('http://localhost:5173'); 
+        await page.goto("http://localhost:5173");
 
         // clear any saved downloadOption in localStorage
         await page.evaluate(() => {
-            localStorage.clear(); 
-          });
-
+            localStorage.clear();
+        });
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
@@ -78,10 +76,9 @@ test.describe('Safari DownloadOption Component', () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        const promptText = page.locator(".my-4").first();
-        await expect(promptText).toBeVisible();
+        await page.waitForTimeout(12000);
 
-        const noButton = page.locator("button", { hasText: "No" }).first();
+        const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
         await noButton.click();
 
@@ -93,13 +90,13 @@ test.describe('Safari DownloadOption Component', () => {
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
             .first();
-        await sidebarToggleButton.waitFor(); 
-        await sidebarToggleButton.click(); 
+        await sidebarToggleButton.waitFor();
+        await sidebarToggleButton.click();
 
-        const settingsButton = page.locator('svg.size-6.cursor-pointer');
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const checkbox = await page.locator('#download-option');
+        const checkbox = await page.locator("#download-option");
 
         await expect(checkbox).not.toBeChecked();
 

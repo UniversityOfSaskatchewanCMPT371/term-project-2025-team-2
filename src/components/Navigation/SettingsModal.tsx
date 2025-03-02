@@ -6,6 +6,8 @@ import { SettingsModalProps } from "../../types/types";
 import { HiddenTagsOption } from "./HiddenTagsOption";
 import { ThemeSelector } from "./ThemeSelector";
 
+import { useStore } from "../State/Store";
+
 /**
  * SettingsModal component for managing application settings
  * @component
@@ -18,16 +20,11 @@ import { ThemeSelector } from "./ThemeSelector";
  * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered SettingsModal component
  */
-const SettingsModal: React.FC<SettingsModalProps> = ({
-    toggleModal,
-    files,
-    setDownloadOption,
-    downloadOption,
-    showHiddenTags,
-    setShowHiddenTags,
-    currTheme,
-    toggleTheme,
-}) => {
+const SettingsModal: React.FC<SettingsModalProps> = ({ toggleModal }) => {
+    const files = useStore((state) => state.files);
+    const showHiddenTags = useStore((state) => state.showHiddenTags);
+    const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
+
     return (
         <div
             role="dialog"
@@ -52,10 +49,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     />
                 </div>
 
-                <ThemeSelector
-                    currTheme={currTheme}
-                    toggleTheme={toggleTheme}
-                />
+                <ThemeSelector />
 
                 <HiddenTagsOption
                     showHiddenTags={showHiddenTags}
@@ -65,10 +59,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 {files.length > 1 && (
                     <>
                         <p>Download Option</p>
-                        <DownloadOption
-                            setDownloadOption={setDownloadOption}
-                            downloadOption={downloadOption}
-                        />
+                        <DownloadOption />
                     </>
                 )}
 

@@ -26,9 +26,39 @@ export interface DicomTags {
  * @property {any} DicomDataSet - Raw DICOM dataset information
  * @todo Replace 'any' with specific type for raw DICOM data
  */
-export interface DicomDataSet {
+export interface DicomData {
     tags: DicomTags;
     DicomDataSet: any;
+}
+
+/**
+ * A single DICOM file
+ * @interface {Object} DicomDataSet
+ * @property {Uint8Array} byteArray - The raw DICOM file data
+ * @property {any} byteArrayParser - The parser for the raw DICOM file data
+ * @property {element[]} elements - The DICOM elements in the file
+ * @property {any[]} warnings - Any warnings generated during parsing
+ */
+export interface DicomDataSet {
+    byteArray: Uint8Array;
+    byteArrayParser: any;
+    elements: element[];
+    warnings: any[];
+}
+
+/**
+ * An element in a DICOM dataset
+ * @interface {Object} element
+ * @property {string} tag - The DICOM tag
+ * @property {string} vr - The value representation of the tag
+ * @property {number} length - The length of the tag data
+ * @property {number} dataOffset - The offset of the tag data
+ */
+interface element {
+    tag: string;
+    vr: string;
+    length: number;
+    dataOffset: number;
 }
 
 /**
@@ -41,18 +71,7 @@ export interface DicomDataSet {
  * @property {function(): void} clearData - Function to clear all modifications
  * @property {boolean} showHiddenTags - Flag indicating if hidden tags should be shown
  */
-export interface DicomTableProps {
-    dicomData: DicomDataSet;
-    fileName: string;
-    updateTableData: (data: TableUpdateData) => void;
-    newTableData: Array<{
-        fileName: string;
-        tagId: string;
-        newValue: string;
-    }>;
-    clearData: () => void;
-    showHiddenTags: boolean;
-}
+export interface DicomTableProps {}
 
 /**
  * A row in the DICOM table view
