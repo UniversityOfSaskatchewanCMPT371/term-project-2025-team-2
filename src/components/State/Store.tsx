@@ -145,8 +145,8 @@ export const useStore = create<Store>((set, get) => ({
         const text = get().anonymizedText;
         let anonymized = text;
         TagsAnon.forEach(tag => {
-            const regex = new RegExp(tag.original, 'g');
-            anonymized = anonymized.replace(regex, tag.anonymized);
+            const regex = new RegExp(tag.tagId, 'g');
+            anonymized = anonymized.replace(regex, tag.value);
         });
         set({ anonymizedText: anonymized });
     },
