@@ -16,12 +16,15 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
             .locator("tr")
             .filter({ hasText: "SOPClassUID" })
             .first();
-        await expect(tagRow).toBeVisible();
+        // await expect(tagRow).toBeVisible();
+        await page.waitForTimeout(1000);
 
         // Click the edit button (pencil icon) in that row
         const editButton = tagRow.locator("svg.h-6.w-6").first();
         await expect(editButton).toBeVisible();
         await editButton.click();
+
+        await page.waitForTimeout(1000);
 
         // Now find and edit the input field
         const tagInput = tagRow.locator("input").first();

@@ -179,7 +179,6 @@ test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async
             .locator('p:has-text("Show Hidden Tags")')
             .locator("xpath=.."); // Move to parent element
 
-
         // Locate the first SVG icon (left icon) inside the label
         const leftIcon = showHiddenTagsSection
             .locator('svg[data-slot="icon"]')
@@ -219,7 +218,6 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
         const showHiddenTagsSection = page
             .locator('p:has-text("Show Hidden Tags")')
             .locator("xpath=.."); // Move to parent element
-
 
         // Locate the second SVG icon (right icon) inside the label
         const rightIcon = showHiddenTagsSection

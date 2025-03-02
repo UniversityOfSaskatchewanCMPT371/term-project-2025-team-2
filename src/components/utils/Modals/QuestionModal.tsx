@@ -21,6 +21,7 @@ function QuestionModal({
                 <p className="my-4">{text}</p>
                 <div className="flex justify-between">
                     <button
+                        id="yes"
                         onClick={() => {
                             setSeries(true);
                             setIsOpen(false);
