@@ -13,7 +13,7 @@ test("Verify delete functionality for a DICOM tag", async ({ page }) => {
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
-        await fileInput.setInputFiles("../../../test-data/CR000001.dcm");
+        await fileInput.setInputFiles("./test-data/CR000001.dcm");
 
         // Wait for the uploaded file to appear
         await page.waitForTimeout(2000); // Handle slow rendering

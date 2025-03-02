@@ -26,8 +26,8 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
         // Upload multiple DICOM files with better waiting
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);
@@ -96,8 +96,8 @@ test("Testing edit individually and series button in sidebar", async ({
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);
@@ -148,8 +148,8 @@ test("Navigating from files from sidebar", async ({ page }) => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);
@@ -205,8 +205,8 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);

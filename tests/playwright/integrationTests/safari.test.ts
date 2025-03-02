@@ -22,8 +22,8 @@ test.describe("Safari DownloadOption Component", () => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);
@@ -72,8 +72,8 @@ test.describe("Safari DownloadOption Component", () => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "../../../test-data/CR000000.dcm",
-            "../../../test-data/CR000001.dcm",
+            "./test-data/CR000000.dcm",
+            "./test-data/CR000001.dcm",
         ]);
 
         await page.waitForTimeout(12000);

@@ -15,7 +15,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
         await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
-        await fileInput.setInputFiles("../../../test-data/CR000000.dcm");
+        await fileInput.setInputFiles("./test-data/CR000000.dcm");
 
         await page.waitForTimeout(1000);
 
