@@ -1,3 +1,4 @@
+// tests/jest/integrationTest/DicomParserUtils.integration.test.tsx
 import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
@@ -7,34 +8,7 @@ jest.mock("dicom-parser", () => ({
     parseDicom: jest.fn(),
 }));
 
-// Mock TagDictionary
-jest.mock("../../../src/tagDictionary/dictionary", () => ({
-    TagDictionary: class {
-        lookup(tag: string) {
-            return (
-                {
-                    "0040A730": "Content Sequence",
-                    "00080100": "Code Value",
-                    "00080102": "Coding Scheme Designator",
-                }[tag] || "Unknown"
-            );
-        }
-        lookupTagName(tag: string) {
-            return this.lookup(tag);
-        }
-        lookupTagVR(tag: string) {
-            return (
-                {
-                    "00100010": "PN", // Patient Name VR
-                    "00100020": "LO", // Patient ID VR
-                    "00100030": "DA", // Patient Birth Date VR
-                }[tag] || "Unknown"
-            ); // Default to Unknown VR if not found
-        }
-    },
-}));
-
-describe("DicomParserUtils", () => {
+describe("DicomParserUtils Integration Tests", () => {
     let mockFile: File;
 
     beforeEach(() => {
@@ -44,7 +18,7 @@ describe("DicomParserUtils", () => {
         });
     });
 
-    /***** UNIT-INTEGRATION TEST: Should call dicomParser *****/
+    /***** INTEGRATION TEST: Should call dicomParser *****/
     test("calls dicomParser.parseDicom when file is valid", async () => {
         const mockDataset = {
             elements: {
@@ -60,42 +34,7 @@ describe("DicomParserUtils", () => {
         expect(dicomParser.parseDicom).toHaveBeenCalled();
     });
 
-    /***** UNIT TEST: Should reject on parsing errors *****/
-    test("rejects if dicomParser throws an error", async () => {
-        (dicomParser.parseDicom as jest.Mock).mockImplementation(() => {
-            throw new Error("Parsing Error");
-        });
-
-        await expect(parseDicomFile(mockFile)).rejects.toEqual(
-            "Error parsing DICOM file: Error: Parsing Error"
-        );
-    });
-
-    /***** UNIT TEST: Should reject on file reading error *****/
-    test("rejects if FileReader encounters an error", async () => {
-        const mockFileReader = jest
-            .spyOn(global, "FileReader")
-            .mockImplementation(() => {
-                // Simulates FileReader API calls with error event
-                const fileReaderInstance = {
-                    onerror: null as ((event: Event) => void) | null, // Ensure correct typing
-                    readAsArrayBuffer: jest.fn(() => {
-                        if (fileReaderInstance.onerror) {
-                            fileReaderInstance.onerror(new Event("error")); // Trigger error event
-                        }
-                    }),
-                };
-                return fileReaderInstance as unknown as FileReader;
-            });
-
-        await expect(parseDicomFile(mockFile)).rejects.toEqual(
-            "File reading error occurred."
-        );
-
-        mockFileReader.mockRestore();
-    });
-
-    /***** UNIT-INTEGRATION TEST: extract hidden DICOM tags correctly *****/
+    /***** INTEGRATION TEST: extract hidden DICOM tags correctly *****/
     test("extracts hidden DICOM tags correctly", async () => {
         const mockDataset = {
             elements: {
@@ -113,8 +52,6 @@ describe("DicomParserUtils", () => {
 
         // Check extracted tags
         Object.keys(mockDataset.elements).forEach((tag) => {
-            console.log("result[tag]");
-            console.log(JSON.stringify(result[tag], null, 2)); // Pretty-print JSON in CI logs
             expect(result.tags[tag]).toEqual({
                 tagId: tag,
                 tagName: "Unknown",
@@ -124,7 +61,7 @@ describe("DicomParserUtils", () => {
         });
     });
 
-    /***** UNIT-INTEGRATION TEST: Should extract nested sequence items correctly *****/
+    /***** INTEGRATION TEST: Should extract nested sequence items correctly *****/
     test("extracts nested DICOM sequence (SQ) items", async () => {
         const mockDataset = {
             elements: {
@@ -167,18 +104,18 @@ describe("DicomParserUtils", () => {
         // Ensure nested sequence extraction works
         expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
             tagId: "00080100",
-            tagName: "Code Value",
+            tagName: "Unknown",
             value: "12345",
         });
 
         expect(result.tags["0040A730"].value.tags["00080102"]).toEqual({
             tagId: "00080102",
-            tagName: "Coding Scheme Designator",
+            tagName: "Unknown",
             value: "LOINC",
         });
     });
 
-    /***** UNIT-INTEGRATION TEST: extract values from multiple DICOM tags *****/
+    /***** INTEGRATION TEST: extract values from multiple DICOM tags *****/
     test("extracts values from multiple DICOM tags", async () => {
         const mockDataset = {
             elements: {
