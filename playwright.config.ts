@@ -18,6 +18,7 @@ export default defineConfig({
                 headless: true,
                 browserName: "firefox",
             },
+            fullyParallel: true,
         },
         // comment out the following browsers due to failing safari test, issue noted
         // {

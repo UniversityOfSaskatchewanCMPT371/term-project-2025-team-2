@@ -4,7 +4,8 @@ import * as fs from 'fs';
 import AdmZip from 'adm-zip';
 import { promisify } from 'util';
 
-const BASE_URL = 'http://localhost:5173'; // Adjust if your app runs on a different URL
+// Use environment variable for the base URL
+export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 const mkdirAsync = promisify(fs.mkdir);
 const existsAsync = promisify(fs.exists);
@@ -27,8 +28,6 @@ test('Auto anonymize DICOM file and verify changes', async ({ page }) => {
         await searchInput.press("Enter");
         
         await page.waitForTimeout(500);
-        
-        await page.screenshot({ path: 'original-file.png' });
 
         await page.waitForSelector('table', { state: 'visible', timeout: 10000 });
 
@@ -107,8 +106,6 @@ test('Auto anonymize DICOM file and verify changes', async ({ page }) => {
         await searchInput.press("Enter");
         
         await page.waitForTimeout(500);
-
-        await page.screenshot({ path: 'anon-file.png' });
 
         const finalValue = await institutionNameRowAfterReupload.locator('td').nth(2).textContent();
         expect(finalValue).toBe('ANONYMOUS');
