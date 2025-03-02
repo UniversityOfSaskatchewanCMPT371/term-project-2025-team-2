@@ -13,6 +13,7 @@ import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
 
 import { useStore } from "./components/State/Store";
+import AutoAnonymize from './components/Auto/AutoAnonymize';
 import { DicomData } from "./types/DicomTypes";
 
 /**
@@ -61,6 +62,8 @@ const App: React.FC = () => {
     const theme = useStore((state) => state.theme);
 
     const clearData = useStore((state) => state.clearData);
+
+    const setAnonymizedText = useStore((state) => state.setAnonymizedText);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -130,6 +133,11 @@ const App: React.FC = () => {
             );
         };
     }, []);
+
+    useEffect(() => {
+        const sampleText = "<tag>Some text to be anonymized</tag>";
+        setAnonymizedText(sampleText);
+      }, [setAnonymizedText]);
 
     // PWA installation prompt click handler
     const handleInstallClick = async () => {
@@ -232,6 +240,7 @@ const App: React.FC = () => {
                             <DicomTable />
                         </div>
                     )}
+                    <AutoAnonymize />
                 </div>
 
                 {showSeriesModal ? (
