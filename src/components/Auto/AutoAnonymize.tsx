@@ -14,7 +14,7 @@ const AutoAnonymize: React.FC = () => {
         <textarea
           className="w-full p-2 border rounded"
           value={anonymizedText}
-          onChange={(e: { target: { value: any; }; }) => setAnonymizedText(e.target.value)}
+          onChange={(e) => setAnonymizedText(e.target.value)}
         />
       </div>
       <button

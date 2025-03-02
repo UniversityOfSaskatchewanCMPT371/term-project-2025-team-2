@@ -3,6 +3,7 @@ import { isSafari } from "react-device-detect";
 
 import { CustomFile } from "../../types/FileTypes";
 import { TableUpdateData, DicomData } from "../../types/DicomTypes";
+import { TagsAnon } from "../../Auto/tagsAnon";
 
 type Store = {
     files: CustomFile[];
@@ -48,9 +49,13 @@ type Store = {
     setShowHiddenTags: (show: boolean) => void;
 
     clearData: () => void;
+
+    anonymizedText: string;
+    setAnonymizedText: (text: string) => void;
+    anonymizeText: () => void;
 };
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
     files: [] as CustomFile[],
     setFiles: (files) => set({ files }),
 
@@ -132,5 +137,17 @@ export const useStore = create<Store>((set) => ({
         set({ loading: false });
         set({ sidebarVisible: false });
         set({ series: false });
+    },
+
+    anonymizedText: '',
+    setAnonymizedText: (text) => set({ anonymizedText: text }),
+    anonymizeText: () => {
+        const text = get().anonymizedText;
+        let anonymized = text;
+        TagsAnon.forEach(tag => {
+            const regex = new RegExp(tag.original, 'g');
+            anonymized = anonymized.replace(regex, tag.anonymized);
+        });
+        set({ anonymizedText: anonymized });
     },
 }));
