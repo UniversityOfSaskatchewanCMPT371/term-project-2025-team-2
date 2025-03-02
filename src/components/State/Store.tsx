@@ -3,7 +3,7 @@ import { isSafari } from "react-device-detect";
 
 import { CustomFile } from "../../types/FileTypes";
 import { TableUpdateData, DicomData } from "../../types/DicomTypes";
-import { TagsAnon } from "../../Auto/tagsAnon";
+import { TagsAnon } from "../Auto/TagsAnon";
 
 type Store = {
     files: CustomFile[];
