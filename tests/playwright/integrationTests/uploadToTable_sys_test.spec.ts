@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import dicomParser from "dicom-parser";
-import { standardDataElements } from "../../src/tagDictionary/standardDataElements";
+import { standardDataElements } from "../../../src/tagDictionary/standardDataElements";
 
 /**
  * Extracts DICOM value from particular tag in a dataSet
