@@ -5,7 +5,7 @@ import * as fs from "fs";
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 // Debug flag - set to true to enable debug logging
-const DEBUG = process.env.DEBUG_TESTS === "true" || false;
+const DEBUG = process.env.DEBUG_TESTS === "true" || true;
 
 // Helper function for debug logging
 const debug = (message: string) => {
@@ -78,11 +78,11 @@ test("Upload dicoms and verify file name matches tags displayed", async ({
             await page.waitForTimeout(500);
 
             // Take screenshot of the current file if in debug mode
-            if (DEBUG) {
-                await page.screenshot({
-                    path: `screenshot-file-${fileCount}.png`,
-                });
-            }
+            // if (DEBUG) {
+            //     await page.screenshot({
+            //         path: `screenshot-file-${fileCount}.png`,
+            //     });
+            // }
 
             // Find the PatientID row
             const PatientIDRow = page
