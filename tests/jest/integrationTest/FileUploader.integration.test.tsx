@@ -1,6 +1,12 @@
 // tests/jest/integrationTest/FileUploader.integration.test.tsx
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    act,
+} from "@testing-library/react";
 import { jest } from "@jest/globals";
 import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
 import FileUploader from "../../../src/components/FileHandling/FileUploader";

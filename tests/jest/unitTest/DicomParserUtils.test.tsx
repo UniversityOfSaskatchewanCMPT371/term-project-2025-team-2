@@ -79,5 +79,4 @@ describe("DicomParserUtils Unit Tests", () => {
 
         mockFileReader.mockRestore();
     });
-
 });
