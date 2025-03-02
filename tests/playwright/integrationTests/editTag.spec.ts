@@ -9,7 +9,7 @@ test("Edit a DICOM tag and save changes", async ({ page }) => {
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
-        await fileInput.setInputFiles("./test-data/CR000001.dcm");
+        await fileInput.setInputFiles("../../../test-data/CR000001.dcm");
 
         // Wait for the row containing 'SOPClassUID' to be visible
         const tagRow = page

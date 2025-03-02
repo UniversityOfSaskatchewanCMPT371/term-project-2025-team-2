@@ -25,7 +25,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 
         // Upload a DICOM file
         const fileInput = page.locator('input[type="file"].hidden');
-        await fileInput.setInputFiles("./test-data/CR000001.dcm");
+        await fileInput.setInputFiles("../../../test-data/CR000001.dcm");
 
         // Wait for the DICOM tags table to be visible
         const tagTable = page.locator("table").first();

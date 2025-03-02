@@ -10,8 +10,8 @@ test("Navigate between uploaded files", async ({ page }) => {
         // Upload multiple DICOM files
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles([
-            "./test-data/CR000000.dcm",
-            "./test-data/CR000001.dcm",
+            "../../../test-data/CR000000.dcm",
+            "../../../test-data/CR000001.dcm",
         ]);
 
         // Wait for the upload to complete and prompt to appear
