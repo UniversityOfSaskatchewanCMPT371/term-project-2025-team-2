@@ -12,13 +12,10 @@ import { fileURLToPath } from "url";
 const mkdirAsync = promisify(fs.mkdir);
 const existsAsync = promisify(fs.exists);
 
-// Use environment variable for the base URL
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
-// Debug flag - set to true to enable debug logging
 const DEBUG = process.env.DEBUG_TESTS === "true" || false;
 
-// Helper function for debug logging
 const debug = (message: string) => {
     if (DEBUG) {
         console.log(message);
@@ -27,9 +24,11 @@ const debug = (message: string) => {
 
 test("Auto anon tags in series", async ({ page }) => {
     try {
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+
         await page.goto(BASE_URL);
 
-        // Get all files from the directory
         const dicomDir = "./test-data/test_dicoms/gen_dicom_files";
         const dicomFiles = fs
             .readdirSync(dicomDir)
@@ -42,37 +41,22 @@ test("Auto anon tags in series", async ({ page }) => {
             throw new Error("No DICOM files found in the directory");
         }
 
-        // Upload all files at once
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles(dicomFiles);
 
-        await page.waitForTimeout(1000);
+        await page.waitForSelector("text=Edit Files",{
+            state: "visible",
+            timeout: 1000,
+        })
 
-        // Click "No" to edit files individually
-        const noButton = page.locator("id=yes");
-        await expect(noButton).toBeVisible();
-        await noButton.click();
+        const yesButton = page.locator("id=yes");
+        await expect(yesButton).toBeVisible();
+        await yesButton.click();
 
-        // Wait for the UI to update after selection
-        await page.waitForTimeout(1000);
-
-        // Verify the first file is displayed
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
             timeout: 5000,
         });
-
-        await page.waitForSelector("table", {
-            state: "visible",
-            timeout: 10000,
-        });
-
-        // Find the search input for PatientID
-        const searchInput =
-            page.getByPlaceholder(/Search tags.../i) ||
-            page.locator('input[type="text"]').first();
-
-        await page.waitForTimeout(500);
 
         const tagRow = page
             .locator("tr", {
@@ -87,7 +71,7 @@ test("Auto anon tags in series", async ({ page }) => {
         const downloadPromise = page.waitForEvent("download");
 
         const autoAnonButton = page.getByRole("button", { name: /Auto Anon/i });
-        await expect(autoAnonButton).toBeVisible({ timeout: 5000 });
+        await expect(autoAnonButton).toBeVisible({ timeout: 1000 });
         await autoAnonButton.click();
 
         const download = await downloadPromise;
@@ -136,41 +120,31 @@ test("Auto anon tags in series", async ({ page }) => {
             });
         }
 
-        // const files = fs.readdirSync(extractDir);
-
         const dicomFile = fs
             .readdirSync(extractDir)
             .filter((file) => file.endsWith(".dcm"))
             .map((file) => extractDir + "/" + file);
 
-        // const dicomFile = files.find(file => file.endsWith('.dcm'));
-
         if (!dicomFile) {
             throw new Error("No DICOM file found in the extracted zip");
         }
 
-        await page.waitForTimeout(1000);
-
         await fileInput.setInputFiles(dicomFile);
 
-        await page.waitForTimeout(1000);
+        await page.waitForSelector("text=Edit Files",{
+            state: "visible",
+            timeout: 5000,
+        })
 
         const no1Button = page.locator("id=no");
         await expect(no1Button).toBeVisible();
         await no1Button.click();
 
-        // Wait for the UI to update after selection
-        await page.waitForTimeout(1000);
-
         await page.waitForSelector("table", {
             state: "visible",
-            timeout: 10000,
+            timeout: 1000,
         });
 
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-
-        // Loop through all files using the Next button
         let fileCount = 0;
         let hasMoreFiles = true;
 
@@ -178,7 +152,6 @@ test("Auto anon tags in series", async ({ page }) => {
             fileCount++;
             debug(`Checking file #${fileCount}...`);
 
-            // Take screenshot of the current file if in debug mode
             if (DEBUG) {
                 await page.screenshot({
                     path: `${__dirname}/screenshots/screenshot-file-${fileCount}.png`,
@@ -187,30 +160,28 @@ test("Auto anon tags in series", async ({ page }) => {
             }
 
             for (const tag of Test_TagsAnon) {
-                const row = await page
+                const row = page
                     .locator("tr", {
                         has: page.locator("td", { hasText: tag.name }),
                     })
                     .first();
 
-                await expect(row).toBeVisible({ timeout: 5000 });
+                await expect(row).toBeVisible({ timeout: 1000 });
 
-                // Get the PatientID value
                 const rowValue = await row.locator("td").nth(2).textContent();
 
                 debug(`File ${fileCount} - ${tag.name} value: ${rowValue}`);
 
                 expect(rowValue).toContain(tag.value);
 
-                const PatientIDRow = await page
+                const PatientIDRow = page
                     .locator("tr", {
                         has: page.locator("td", { hasText: "PatientID" }),
                     })
                     .first();
 
-                await expect(PatientIDRow).toBeVisible({ timeout: 5000 });
+                await expect(PatientIDRow).toBeVisible({ timeout: 1000 });
 
-                // Get the current filename from the "Currently Viewing:" text
                 const currentlyViewingText = await page
                     .locator("text=/Currently Viewing: .+\.dcm/")
                     .textContent();
@@ -218,13 +189,11 @@ test("Auto anon tags in series", async ({ page }) => {
                     `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
                 );
 
-                // Extract just the filename using regex
                 const filenameMatch = currentlyViewingText?.match(
                     /Currently Viewing: (.+\.dcm)/
                 );
                 const filename = filenameMatch ? filenameMatch[1] : "";
 
-                // Extract number from filename (assuming format like CR000001.dcm)
                 const fileNumberMatch = filename.match(/(\d+)/);
                 const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
 
@@ -235,7 +204,6 @@ test("Auto anon tags in series", async ({ page }) => {
                     .textContent();
                 debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
 
-                // Check if the PatientID contains the same number as the filename
                 expect(patientIDValue).toContain(fileNumber);
 
                 debug(
@@ -243,10 +211,8 @@ test("Auto anon tags in series", async ({ page }) => {
                 );
             }
 
-            // Try to click the Next button if it's not disabled
             const nextButton = page.getByRole("button", { name: /Next/i });
 
-            // Check if the Next button is disabled
             const isDisabled = await nextButton.getAttribute("disabled");
 
             if (isDisabled === "true" || isDisabled === "") {
@@ -255,17 +221,16 @@ test("Auto anon tags in series", async ({ page }) => {
                 );
                 hasMoreFiles = false;
             } else {
-                // Click the Next button and wait for the UI to update
+
                 await nextButton.click();
                 debug("Clicked Next button");
-                await page.waitForTimeout(1000); // Wait for UI to update
 
                 // Wait for the new file to be displayed
                 await page.waitForSelector(
                     "text=/Currently Viewing: .+\.dcm/",
                     {
                         state: "visible",
-                        timeout: 5000,
+                        timeout: 2000,
                     }
                 );
             }
@@ -274,11 +239,10 @@ test("Auto anon tags in series", async ({ page }) => {
             }
         }
 
-        // This log is important enough to keep even when debugging is off
-        console.log(`Successfully checked ${fileCount} files`);
+        console.log(`\nSuccessfully checked ${fileCount} files`);
     } catch (error) {
-        // Always log errors regardless of debug setting
-        console.error("Test failed:", error);
+
+        console.error("\nTest failed:", error);
         throw error;
     }
 });

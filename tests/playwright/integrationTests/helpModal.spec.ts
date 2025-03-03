@@ -10,24 +10,21 @@ test("Verify question mark icon is clickable", async ({ page }) => {
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
             .first();
-        await sidebarToggleButton.waitFor(); // Ensure button is present
-        await sidebarToggleButton.click(); // Open sidebar
+        await sidebarToggleButton.waitFor();
+        await sidebarToggleButton.click();
 
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const settingsSection = page.locator('div:has-text("Settings")');
 
-        // Locate the question mark icon using its specific class
         const questionMarkIcon = settingsSection.locator(
             "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
         );
         await expect(questionMarkIcon).toBeVisible();
 
-        // Verify the icon is clickable
         await expect(questionMarkIcon).toBeEnabled();
 
-        // Click the icon to open the modal or menu
         await questionMarkIcon.click();
 
         const modalOrMenu = page.locator(".modal-box");
@@ -39,6 +36,7 @@ test("Verify question mark icon is clickable", async ({ page }) => {
         throw error;
     }
 });
+
 test("Verify GitHub link is clickable", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
@@ -46,24 +44,20 @@ test("Verify GitHub link is clickable", async ({ page }) => {
         const sidebarToggleButton = page
             .locator('button >> svg[data-slot="icon"]')
             .first();
-        await sidebarToggleButton.waitFor(); // Ensure button is present
-        await sidebarToggleButton.click(); // Open sidebar
+        await sidebarToggleButton.waitFor();
+        await sidebarToggleButton.click(); 
 
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
         const settingsSection = page.locator('div:has-text("Settings")');
 
-        // Locate the question mark icon using its specific class
         const questionMarkIcon = settingsSection.locator(
             "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
         );
         await expect(questionMarkIcon).toBeVisible();
-
-        // Verify the icon is clickable
         await expect(questionMarkIcon).toBeEnabled();
 
-        // Click the icon to open the modal or menu
         await questionMarkIcon.click();
 
         const modalOrMenu = page.locator(".modal-box");
@@ -73,17 +67,13 @@ test("Verify GitHub link is clickable", async ({ page }) => {
             'a.link.link-info:has-text("Detailed User Guide")'
         );
         await expect(githubLink).toBeVisible();
-
-        // Verify the link is clickable
         await expect(githubLink).toBeEnabled();
 
-        // Optionally, verify the link's href attribute
         const href = await githubLink.getAttribute("href");
         expect(href).toBe(
             "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
         );
 
-        console.log("GitHub link is clickable and has the correct URL");
     } catch (error) {
         console.error("Error verifying GitHub link:", error);
         throw error;
@@ -125,9 +115,6 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
         );
         await expect(githubLink).toBeVisible();
 
-        const href = await githubLink.getAttribute("href");
-        console.log(`GitHub link href: ${href}`);
-
         const [newPage] = await Promise.all([
             page.waitForEvent("popup"), // Wait for the new tab to open
             githubLink.click(), // Click the link
@@ -140,7 +127,6 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
             "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
         );
 
-        console.log("GitHub link opens the correct URL in a new tab");
     } catch (error) {
         console.error("Error verifying GitHub link URL:", error);
         throw error;

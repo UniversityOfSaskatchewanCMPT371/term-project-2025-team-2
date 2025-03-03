@@ -15,7 +15,6 @@ test.describe("Safari DownloadOption Component", () => {
         const page = await browser.newPage();
         await page.goto("http://localhost:5173");
 
-        // clear any saved downloadOption in localStorage
         await page.evaluate(() => {
             localStorage.clear();
         });
@@ -26,11 +25,14 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(12000);
+        await page.waitForSelector("text=Edit Files",{
+            state: "visible",
+            timeout: 2000,
+        })
 
-        const noButton = page.locator("id=no");
-        await expect(noButton).toBeVisible();
-        await noButton.click();
+        const yesButton = page.locator("id=yes");
+        await expect(yesButton).toBeVisible();
+        await yesButton.click();
 
         const currentFile = page
             .locator("text=Currently Viewing: CR000000.dcm")
@@ -46,7 +48,7 @@ test.describe("Safari DownloadOption Component", () => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const checkbox = await page.locator("#download-option");
+        const checkbox = page.locator("#download-option");
         expect(checkbox).toBeChecked();
 
         await checkbox.click();
@@ -65,7 +67,6 @@ test.describe("Safari DownloadOption Component", () => {
         const page = await browser.newPage();
         await page.goto("http://localhost:5173");
 
-        // clear any saved downloadOption in localStorage
         await page.evaluate(() => {
             localStorage.clear();
         });
@@ -76,11 +77,14 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(12000);
+        await page.waitForSelector("text=Edit Files",{
+            state: "visible",
+            timeout: 2000,
+        })
 
-        const noButton = page.locator("id=no");
-        await expect(noButton).toBeVisible();
-        await noButton.click();
+        const yesButton = page.locator("id=yes");
+        await expect(yesButton).toBeVisible();
+        await yesButton.click();
 
         const currentFile = page
             .locator("text=Currently Viewing: CR000000.dcm")
@@ -96,7 +100,7 @@ test.describe("Safari DownloadOption Component", () => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const checkbox = await page.locator("#download-option");
+        const checkbox = page.locator("#download-option");
 
         await expect(checkbox).not.toBeChecked();
 
