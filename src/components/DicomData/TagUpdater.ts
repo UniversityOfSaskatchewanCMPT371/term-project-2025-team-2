@@ -45,6 +45,8 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         return newDicomData;
     }
 
+    console.log("Filtered Tags:", filteredTags);
+
     filteredTags.forEach((tag: any) => {
         const insertTag = {
             tagId: tag.tagId,
@@ -58,10 +60,14 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         newTags.push(insertTag);
     });
 
+    console.log("New Tags to Insert:", newTags);
+
     newTags.forEach((tag: any) => {
         if (tag.delete) {
+            console.log("Removing Tag:", tag);
             data = removeTag(dicomData, tag);
         } else {
+            console.log("Inserting Tag:", tag);
             const tagIdByte = new Uint8Array(groupLen + elementLen);
             const group = parseInt(tag.tagId.slice(1, 5), 16);
             const element = parseInt(tag.tagId.slice(5), 16);
@@ -75,6 +81,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         dicomData.byteArray = data;
     });
 
+    console.log(data)
     return data;
 }
 
@@ -88,14 +95,22 @@ export function tagUpdater(dicomData: any, newTagData: any) {
 function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const dicomByteArray = dicomData.byteArray;
 
+    console.log("Inserting Tag:", tagToAdd);
+    console.log("New Tag Byte Array:", newtag);
+
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToAdd.dataOffSet +
             dicomData.elements[tagToAdd.tagId.toLowerCase()].length
     );
 
+    console.log("First Part of Byte Array:", first);
+    console.log("Last Part of Byte Array:", last);
+
     const buf1 = concatBuffers(first, newtag);
     const newArray = concatBuffers(buf1, last);
+
+    console.log("New Byte Array:", newArray);
 
     return newArray;
 }
@@ -159,6 +174,11 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     newTag.set(tagName);
     newTag.set(tagVR, vrOffset);
     newTag.set(tagLength, lengthOffset);
+
+    console.log("Creating Tag:", tag);
+    console.log("Tag Name Byte Array:", tagName);
+    console.log("Tag VR Byte Array:", tagVR);
+    console.log("Tag Length Byte Array:", tagLength);
 
     switch (tag.tagVR) {
         case "FD":

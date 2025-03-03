@@ -1,22 +1,19 @@
 import React from 'react';
-import {useStore} from '../State/Store';
+import { useStore } from '../State/Store';
+import { AutoAnon } from './AutoClean';
 
 const AutoAnonymize: React.FC = () => {
-  const { anonymizedText, setAnonymizedText, anonymizeText } = useStore();
+  const dicomData = useStore((state) => state.dicomData);
+  const files = useStore((state) => state.files);
 
-  const handleAnonymizeClick = () => {
-    anonymizeText();
+  const handleAnonymizeClick = async () => {
+    if (dicomData.length > 0 && files.length > 0) {
+      await AutoAnon(dicomData, files);
+    }
   };
 
   return (
     <div className="p-4">
-      <div className="mb-4">
-        <textarea
-          className="w-full p-2 border rounded"
-          value={anonymizedText}
-          onChange={(e) => setAnonymizedText(e.target.value)}
-        />
-      </div>
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded"
         onClick={handleAnonymizeClick}
