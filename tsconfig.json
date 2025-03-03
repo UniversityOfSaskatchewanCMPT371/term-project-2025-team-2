@@ -10,12 +10,13 @@
         "paths": {
             "@components/*": ["components/*"],
             "@utils/*": ["components/utils/*"],
-            "@navigation/*": ["components/navigation/*"],
+            "@navigation/*": ["components/Navigation/*"],
             "@DicomData/*": ["components/DicomData/*"],
-            "@hooks/*": ["components/hooks/*"],
+            "@hooks/*": ["components/Hooks/*"],
             "@FileHandling/*": ["components/FileHandling/*"],
-            "@state/*": ["components/state/*"],
-            "@types/*": ["types/*"]
+            "@state/*": ["components/State/*"],
+            "@types/*": ["types/*"],
+            "@auto/*": ["components/Auto/*"]
         }
     }
 }

@@ -110,22 +110,20 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./src"),
             "@components": path.resolve(__dirname, "./src/components"),
-            "@hooks": path.resolve(__dirname, "./src/components/hooks"),
-            "@utils/*": path.resolve(__dirname, "./src/components/utils/*"),
-            "@navigation/*": path.resolve(
+            "@hooks": path.resolve(__dirname, "./src/components/Hooks"),
+            "@utils": path.resolve(__dirname, "./src/components/utils"),
+            "@navigation": path.resolve(
                 __dirname,
-                "./src/components/navigation/*"
+                "./src/components/Navigation"
             ),
-            "@DicomData/*": path.resolve(
+            "@DicomData": path.resolve(__dirname, "./src/components/DicomData"),
+            "@FileHandling": path.resolve(
                 __dirname,
-                "./src/components/DicomData/*"
+                "./src/components/FileHandling"
             ),
-            "@FileHandling/*": path.resolve(
-                __dirname,
-                "./src/components/FileHandling/*"
-            ),
-            "@state/*": path.resolve(__dirname, "./src/components/state/*"),
-            "@types/*": path.resolve(__dirname, "./src/components/types/*"),
+            "@state": path.resolve(__dirname, "./src/components/State"),
+            "@types": path.resolve(__dirname, "./src/types"),
+            "@auto": path.resolve(__dirname, "./src/components/Auto"),
         },
     },
 });

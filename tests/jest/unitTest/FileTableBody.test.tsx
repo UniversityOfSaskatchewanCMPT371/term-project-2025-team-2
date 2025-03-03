@@ -12,17 +12,19 @@ describe("FileTableBody Component", () => {
 
     test("renders correctly with files", () => {
         const mockFiles = [{ name: "file1.dcm" }, { name: "file2.dcm" }];
-        (store.useStore as unknown as jest.Mock).mockImplementation((selector) => {
-            if (selector) {
-                return selector({
-                    files: mockFiles,
-                    currentFileIndex: 0,
-                    series: false,
-                    setCurrentFileIndex: jest.fn(),
-                });
+        (store.useStore as unknown as jest.Mock).mockImplementation(
+            (selector) => {
+                if (selector) {
+                    return selector({
+                        files: mockFiles,
+                        currentFileIndex: 0,
+                        series: false,
+                        setCurrentFileIndex: jest.fn(),
+                    });
+                }
+                return { files: mockFiles };
             }
-            return { files: mockFiles };
-        });
+        );
 
         render(<FileTableBody openModal={jest.fn()} />);
 
@@ -33,17 +35,19 @@ describe("FileTableBody Component", () => {
     test("calls setCurrentFileIndex when a file is clicked", () => {
         const mockFiles = [{ name: "file1.dcm" }, { name: "file2.dcm" }];
         const setCurrentFileIndexMock = jest.fn();
-        (store.useStore as unknown as jest.Mock).mockImplementation((selector) => {
-            if (selector) {
-                return selector({
-                    files: mockFiles,
-                    currentFileIndex: 0,
-                    series: false,
-                    setCurrentFileIndex: setCurrentFileIndexMock,
-                });
+        (store.useStore as unknown as jest.Mock).mockImplementation(
+            (selector) => {
+                if (selector) {
+                    return selector({
+                        files: mockFiles,
+                        currentFileIndex: 0,
+                        series: false,
+                        setCurrentFileIndex: setCurrentFileIndexMock,
+                    });
+                }
+                return { files: mockFiles };
             }
-            return { files: mockFiles };
-        });
+        );
 
         render(<FileTableBody openModal={jest.fn()} />);
 
@@ -56,17 +60,19 @@ describe("FileTableBody Component", () => {
     test("opens modal when series is true", () => {
         const mockFiles = [{ name: "file1.dcm" }];
         const openModalMock = jest.fn();
-        (store.useStore as unknown as jest.Mock).mockImplementation((selector) => {
-            if (selector) {
-                return selector({
-                    files: mockFiles,
-                    currentFileIndex: 0,
-                    series: true,
-                    setCurrentFileIndex: jest.fn(),
-                });
+        (store.useStore as unknown as jest.Mock).mockImplementation(
+            (selector) => {
+                if (selector) {
+                    return selector({
+                        files: mockFiles,
+                        currentFileIndex: 0,
+                        series: true,
+                        setCurrentFileIndex: jest.fn(),
+                    });
+                }
+                return { files: mockFiles };
             }
-            return { files: mockFiles };
-        });
+        );
 
         render(<FileTableBody openModal={openModalMock} />);
 
@@ -75,4 +81,4 @@ describe("FileTableBody Component", () => {
 
         expect(openModalMock).toHaveBeenCalledWith(true);
     });
-}); 
+});
