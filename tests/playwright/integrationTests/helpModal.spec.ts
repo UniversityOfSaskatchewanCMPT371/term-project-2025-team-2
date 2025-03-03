@@ -30,7 +30,6 @@ test("Verify question mark icon is clickable", async ({ page }) => {
         const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
-        console.log("Question mark icon is clickable and opens the modal/menu");
     } catch (error) {
         console.error("Error verifying question mark icon:", error);
         throw error;
