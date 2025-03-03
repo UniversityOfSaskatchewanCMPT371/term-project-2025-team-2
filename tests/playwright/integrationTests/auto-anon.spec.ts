@@ -25,7 +25,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         await searchInput.clear();
 
-        await searchInput.fill("InstitutionName");
+        await searchInput.fill("PatientName");
         await searchInput.press("Enter");
 
         await page.waitForTimeout(500);
@@ -37,7 +37,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const institutionNameRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "InstitutionName" }),
+                has: page.locator("td", { hasText: "PatientName" }),
             })
             .first();
 
@@ -104,7 +104,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const institutionNameRowAfterReupload = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "InstitutionName" }),
+                has: page.locator("td", { hasText: "PatientName" }),
             })
             .first();
 
@@ -114,7 +114,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         await searchInput.clear();
 
-        await searchInput.fill("InstitutionName");
+        await searchInput.fill("PatientName");
         await searchInput.press("Enter");
 
         await page.waitForTimeout(500);

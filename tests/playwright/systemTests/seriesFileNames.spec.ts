@@ -5,7 +5,7 @@ import * as fs from "fs";
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 // Debug flag - set to true to enable debug logging
-const DEBUG = process.env.DEBUG_TESTS === "true" || true;
+const DEBUG = process.env.DEBUG_TESTS === "true" || false;
 
 // Helper function for debug logging
 const debug = (message: string) => {

@@ -16,7 +16,7 @@ interface tagIdAnon {
  * @returns {tagIdAnon[]}
  */
 export const Test_TagsAnon: tagIdAnon[] = [
-    { tagId: "X00080080", name: "Institution Name", value: "ANONYMOUS" },
+    { tagId: "X00100010", name: "PatientName", value: "ANONYMOUS" },
 ];
 
 /**

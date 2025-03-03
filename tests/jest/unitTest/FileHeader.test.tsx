@@ -6,7 +6,9 @@ describe("FileHeader Component", () => {
         const files = [{ name: "testFile1.dcm" }, { name: "testFile2.dcm" }];
         const currentFileIndex = 0;
 
-        render(<FileHeader files={files} currentFileIndex={currentFileIndex} />);
+        render(
+            <FileHeader files={files} currentFileIndex={currentFileIndex} />
+        );
 
         const headerText = screen.getByText("Currently Viewing: testFile1.dcm");
         expect(headerText).toBeInTheDocument();
@@ -18,4 +20,4 @@ describe("FileHeader Component", () => {
         const headerText = screen.queryByText(/Currently Viewing:/);
         expect(headerText).not.toBeInTheDocument();
     });
-}); 
+});

@@ -12,9 +12,7 @@
     "preview": "vite preview",
     "docs": "typedoc --entryPointStrategy Expand src",
     "test": "jest",
-    "playwright": "playwright test",
-    "install:pydicom": "pip install -r requirements-dev.txt",
-    "postinstall": "node -e \"if (process.env.NODE_ENV !== 'production') { require('child_process').execSync('npm run install:pydicom', { stdio: 'inherit' }); }\""
+    "playwright": "playwright test"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

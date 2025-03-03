@@ -1,8 +1,13 @@
 import { test, expect } from "@playwright/test";
 import * as fs from "fs";
 
+import { Test_TagsAnon } from "@auto/TagsAnon";
+
 import AdmZip from "adm-zip";
 import { promisify } from "util";
+
+import * as path from "path";
+import { fileURLToPath } from "url";
 
 const mkdirAsync = promisify(fs.mkdir);
 const existsAsync = promisify(fs.exists);
@@ -20,7 +25,7 @@ const debug = (message: string) => {
     }
 };
 
-test("Edit tag in series", async ({ page }) => {
+test("Auto anon tags in series", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
@@ -77,43 +82,19 @@ test("Edit tag in series", async ({ page }) => {
 
         await expect(tagRow).toBeVisible({ timeout: 1000 });
 
-        // Click the edit button (pencil icon) in that row
-        const editButton = tagRow.locator("svg.h-6.w-6").first();
-        await expect(editButton).toBeVisible();
-        await editButton.click();
-
-        // Now find and edit the input field
-        const tagInput = tagRow.locator("input").first();
-        await expect(tagInput).toBeVisible();
-        await tagInput.fill("New Value");
-
-        const sidebarToggleButton = page
-            .locator('button >> svg[data-slot="icon"]')
-            .first();
-        await sidebarToggleButton.waitFor();
-        await sidebarToggleButton.click();
-
-        // Wait for sidebar to appear
-        await page.waitForTimeout(1000);
-
-        // Save changes with better waiting
-        await page.waitForSelector(
-            'button:has-text("Apply Edits to All Files")',
-            {
-                state: "visible",
-                timeout: 5000,
-            }
-        );
+        await expect(tagRow).not.toHaveText("ANONYMOUS");
 
         const downloadPromise = page.waitForEvent("download");
 
-        await page.click('button:has-text("Apply Edits to All Files")');
+        const autoAnonButton = page.getByRole("button", { name: /Auto Anon/i });
+        await expect(autoAnonButton).toBeVisible({ timeout: 5000 });
+        await autoAnonButton.click();
 
         const download = await downloadPromise;
 
         const zipFilePath = await download.path();
 
-        const path = zipFilePath.split("/");
+        const zipFilePathParts = zipFilePath.split("/");
 
         if (DEBUG) {
             fs.readdir("/" + path[1] + "/" + path[2] + "/", (err, files) => {
@@ -128,7 +109,12 @@ test("Edit tag in series", async ({ page }) => {
             });
         }
 
-        const extractDir = "/" + path[1] + "/" + path[2] + "/extracted";
+        const extractDir =
+            "/" +
+            zipFilePathParts[1] +
+            "/" +
+            zipFilePathParts[2] +
+            "/extracted";
 
         if (!(await existsAsync(extractDir))) {
             await mkdirAsync(extractDir, { recursive: true });
@@ -181,6 +167,9 @@ test("Edit tag in series", async ({ page }) => {
             timeout: 10000,
         });
 
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+
         // Loop through all files using the Next button
         let fileCount = 0;
         let hasMoreFiles = true;
@@ -189,81 +178,70 @@ test("Edit tag in series", async ({ page }) => {
             fileCount++;
             debug(`Checking file #${fileCount}...`);
 
-            // Clear and set the search to find PatientID
-            await searchInput.clear();
-            await searchInput.fill("PatientName");
-            await searchInput.press("Enter");
-            await page.waitForTimeout(500);
-
             // Take screenshot of the current file if in debug mode
-            // if (DEBUG) {
-            //     await page.screenshot({
-            //         path: `screenshot-file-${fileCount}.png`,
-            //     });
-            // }
+            if (DEBUG) {
+                await page.screenshot({
+                    path: `${__dirname}/screenshots/screenshot-file-${fileCount}.png`,
+                    fullPage: true,
+                });
+            }
 
-            // Find the PatientID row
-            const PatientNameRow = page
-                .locator("tr", {
-                    has: page.locator("td", { hasText: "PatientName" }),
-                })
-                .first();
+            for (const tag of Test_TagsAnon) {
+                const row = await page
+                    .locator("tr", {
+                        has: page.locator("td", { hasText: tag.name }),
+                    })
+                    .first();
 
-            await expect(PatientNameRow).toBeVisible({ timeout: 5000 });
+                await expect(row).toBeVisible({ timeout: 5000 });
 
-            // Get the PatientID value
-            const patientNameValue = await PatientNameRow.locator("td")
-                .nth(2)
-                .textContent();
-            debug(`File ${fileCount} - PatientName value: ${patientNameValue}`);
+                // Get the PatientID value
+                const rowValue = await row.locator("td").nth(2).textContent();
 
-            expect(patientNameValue).toContain("New Value");
-            debug(
-                `File ${fileCount} - Verified: PatientName contains the new value`
-            );
+                debug(`File ${fileCount} - ${tag.name} value: ${rowValue}`);
 
-            await searchInput.clear();
-            await searchInput.fill("PatientID");
-            await searchInput.press("Enter");
-            await page.waitForTimeout(500);
+                expect(rowValue).toContain(tag.value);
 
-            const PatientIDRow = page
-                .locator("tr", {
-                    has: page.locator("td", { hasText: "PatientID" }),
-                })
-                .first();
+                const PatientIDRow = await page
+                    .locator("tr", {
+                        has: page.locator("td", { hasText: "PatientID" }),
+                    })
+                    .first();
 
-            await expect(PatientIDRow).toBeVisible({ timeout: 5000 });
+                await expect(PatientIDRow).toBeVisible({ timeout: 5000 });
 
-            // Get the current filename from the "Currently Viewing:" text
-            const currentlyViewingText = await page
-                .locator("text=/Currently Viewing: .+\.dcm/")
-                .textContent();
-            debug(
-                `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
-            );
+                // Get the current filename from the "Currently Viewing:" text
+                const currentlyViewingText = await page
+                    .locator("text=/Currently Viewing: .+\.dcm/")
+                    .textContent();
+                debug(
+                    `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
+                );
 
-            // Extract just the filename using regex
-            const filenameMatch = currentlyViewingText?.match(
-                /Currently Viewing: (.+\.dcm)/
-            );
-            const filename = filenameMatch ? filenameMatch[1] : "";
+                // Extract just the filename using regex
+                const filenameMatch = currentlyViewingText?.match(
+                    /Currently Viewing: (.+\.dcm)/
+                );
+                const filename = filenameMatch ? filenameMatch[1] : "";
 
-            // Extract number from filename (assuming format like CR000001.dcm)
-            const fileNumberMatch = filename.match(/(\d+)/);
-            const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
-            debug(`File ${fileCount} - File number: ${fileNumber}`);
+                // Extract number from filename (assuming format like CR000001.dcm)
+                const fileNumberMatch = filename.match(/(\d+)/);
+                const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
 
-            const patientIDValue = await PatientIDRow.locator("td")
-                .nth(2)
-                .textContent();
-            debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
+                debug(`File ${fileCount} - File number: ${fileNumber}`);
 
-            // Check if the PatientID contains the same number as the filename
-            expect(patientIDValue).toContain(fileNumber);
-            debug(
-                `File ${fileCount} - Verified: PatientID contains the file number`
-            );
+                const patientIDValue = await PatientIDRow.locator("td")
+                    .nth(2)
+                    .textContent();
+                debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
+
+                // Check if the PatientID contains the same number as the filename
+                expect(patientIDValue).toContain(fileNumber);
+
+                debug(
+                    `File ${fileCount} - Verified: PatientID contains the file number`
+                );
+            }
 
             // Try to click the Next button if it's not disabled
             const nextButton = page.getByRole("button", { name: /Next/i });
@@ -290,6 +268,9 @@ test("Edit tag in series", async ({ page }) => {
                         timeout: 5000,
                     }
                 );
+            }
+            if (!DEBUG) {
+                process.stdout.write(". ");
             }
         }
 
