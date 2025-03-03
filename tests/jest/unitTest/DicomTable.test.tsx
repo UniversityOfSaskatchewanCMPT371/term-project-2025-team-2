@@ -93,8 +93,6 @@ describe("DicomTable", () => {
             render(<DicomTable />);
         });
 
-        // For debugging
-        // screen.debug();
 
         // Try different selector approaches to find the search input
         let searchInput: any;
