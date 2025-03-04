@@ -47,21 +47,19 @@ describe("DicomTableRow", () => {
         await act(async () => {
             setup();
         });
-        const editIcon = screen.getByLabelText("Edit Tag"); // Using aria-label to find the icon
+        const editIcon = screen.getByLabelText("Edit Tag"); 
         fireEvent.click(editIcon);
 
-        // Assert that the input field is shown and the edit state is toggled
-        expect(screen.getByRole("textbox")).toBeInTheDocument(); // Assuming the edit state displays an input field
+        expect(screen.getByRole("textbox")).toBeInTheDocument(); 
     });
 
     test("shows the delete tooltip when hovering over the delete icon", async () => {
         await act(async () => {
             setup();
         });
-        const deleteIcon = screen.getByLabelText("Delete Tag"); // Use the aria-label to find the icon
+        const deleteIcon = screen.getByLabelText("Delete Tag"); 
         fireEvent.mouseOver(deleteIcon);
 
-        // Tooltip should appear
         await waitFor(() => {
             expect(screen.getByText("To Be Deleted")).toBeInTheDocument();
         });
@@ -87,10 +85,8 @@ describe("DicomTableRow", () => {
         const expandIcon = screen.getByText("▶");
         fireEvent.click(expandIcon);
 
-        // Ensure nested row is rendered after expanding
         expect(screen.getByText("Nested Nested Tag")).toBeInTheDocument();
 
-        // Collapse the nested row
         fireEvent.click(expandIcon);
         expect(screen.queryByText("Nested Nested Tag")).toBeNull();
     });
@@ -99,7 +95,6 @@ describe("DicomTableRow", () => {
         await act(async () => {
             setup();
         });
-        // Initially, it should show the value as text, not an input
         expect(screen.getByText("Value 1")).toBeInTheDocument();
         expect(screen.queryByRole("textbox")).toBeNull();
     });

@@ -13,7 +13,6 @@ jest.mock("../../../src/components/ErrorHandling/GenErrorPage", () => ({
     default: () => <div data-testid="gen-error-page">Error Page</div>,
 }));
 
-// Component to simulate an error
 const ProblematicComponent: React.FC = () => {
     throw new Error("Test error");
 };
@@ -21,7 +20,7 @@ const ProblematicComponent: React.FC = () => {
 describe("ErrorBoundary Component", () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        console.error = jest.fn(); // Mock console.error globally
+        console.error = jest.fn(); 
     });
 
     test("renders children when no error occurs", () => {

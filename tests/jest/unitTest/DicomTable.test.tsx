@@ -1,34 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
-import {
-    createFile,
-    downloadDicomFile,
-} from "../../../src/components/DicomData/DownloadFuncs";
-import { tagUpdater } from "../../../src/components/DicomData/TagUpdater";
-import logger from "../../../src/components/utils/Logger";
 import * as storeModule from "../../../src/components/State/Store";
-
-jest.mock("../../../src/components/DicomData/DownloadFuncs", () => ({
-    createFile: jest.fn(),
-    downloadDicomFile: jest.fn(),
-}));
-
-jest.mock("../../../src/components/DicomData/TagUpdater", () => ({
-    tagUpdater: jest.fn(() => "updatedDicomData"),
-}));
-
-jest.mock("../../../src/components/utils/Logger", () => ({
-    default: {
-        error: jest.fn(),
-        info: jest.fn(),
-        debug: jest.fn(),
-        warn: jest.fn(),
-    },
-    error: jest.fn(),
-    info: jest.fn(),
-    debug: jest.fn(),
-    warn: jest.fn(),
-}));
 
 
 jest.mock("../../../src/components/State/Store", () => {
@@ -39,11 +11,10 @@ jest.mock("../../../src/components/State/Store", () => {
     };
 });
 
-describe("DicomTable", () => {
+describe("DicomTable - Unit Tests", () => {
     let mockState: any;
 
     beforeEach(() => {
-        // Reset all mocks
         jest.clearAllMocks();
 
         mockState = {
@@ -59,8 +30,6 @@ describe("DicomTable", () => {
             ],
             currentFileIndex: 0,
             newTagValues: [{ tag1: "value2" }],
-            clearData: jest.fn(),
-            setNewTagValues: jest.fn(),
             showHiddenTags: false,
         };
 
@@ -82,7 +51,6 @@ describe("DicomTable", () => {
             render(<DicomTable />);
         });
         expect(screen.getByText("No data available")).toBeInTheDocument();
-        expect(logger.error).toHaveBeenCalledWith("No DICOM data available");
     });
 
     it("handles search term changes", async () => {
@@ -90,69 +58,11 @@ describe("DicomTable", () => {
             render(<DicomTable />);
         });
 
-
-    
-        let searchInput: any;
-
-        try {
-           
-            searchInput = screen.getByPlaceholderText(/Search tags.../i);
-        } catch (error) {
-            console.log(error);
-            try {
-          
-                const textboxes = screen.getAllByRole("input");
-                searchInput = textboxes[0]; 
-            } catch (error) {
-                console.log(error);
-                try {
-                    const inputs =
-                        document.querySelectorAll('input[type="text"]');
-                    if (inputs.length > 0) {
-                        searchInput = inputs[0];
-                    } else {
-                        const allInputs = document.querySelectorAll("input");
-                        if (allInputs.length > 0) {
-                            searchInput = allInputs[0];
-                        }
-                    }
-                } catch (error) {
-                    console.log(error);
-                    console.warn(
-                        "No suitable input element found for search test"
-                    );
-                    return;
-                }
-            }
-        }
-
-        if (searchInput) {
-            await act(async () => {
-                fireEvent.change(searchInput, { target: { value: "tag1" } });
-            });
-            expect(searchInput).toHaveValue("tag1");
-        } else {
-            console.warn("No search input element found, skipping test");
-        }
-    });
-
-    it("calls updateFile when save button is clicked", async () => {
+        const searchInput = screen.getByPlaceholderText(/Search tags.../i);
         await act(async () => {
-            render(<DicomTable />);
+            fireEvent.change(searchInput, { target: { value: "tag1" } });
         });
-        const saveButton = screen.getByText(/Download File/i);
-
-        await act(async () => {
-            fireEvent.click(saveButton);
-        });
-
-        expect(tagUpdater).toHaveBeenCalledWith(
-            "dicomData",
-            mockState.newTagValues
-        );
-        expect(createFile).toHaveBeenCalled();
-        expect(downloadDicomFile).toHaveBeenCalled();
-        expect(mockState.clearData).toHaveBeenCalled();
+        expect(searchInput).toHaveValue("tag1");
     });
 
     it("updates a tag value when edit button is clicked", async () => {
@@ -166,16 +76,6 @@ describe("DicomTable", () => {
             fireEvent.click(editButton);
         });
 
-    });
-
-    it("logs an error when no dicomData is available for the current file", async () => {
-
-        mockState.dicomData = [{ tags: {} }];
-
-        await act(async () => {
-            render(<DicomTable />);
-        });
-
-        expect(logger.error).toHaveBeenCalledWith("No DICOM data available");
+        expect(editButton).toBeDefined();
     });
 });

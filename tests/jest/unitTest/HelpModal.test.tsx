@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen} from "@testing-library/react";
 import HelpModal from "../../../src/components/utils/Modals/HelpModal";
 
 describe("HelpModal", () => {
@@ -28,19 +28,4 @@ describe("HelpModal", () => {
         );
     });
 
-    // TODO: Fix this test
-    // it("closes the modal when the 'Close' button is clicked", () => {
-    //     render(<HelpModal />);
-
-    //     const helpModal = screen.getByRole("dialog");
-
-    //     helpModal.setAttribute('open', 'true');
-
-    //     expect(helpModal).toBeInTheDocument();
-
-    //     const closeButton = screen.getByRole("button", { name: /close/i });
-    //     fireEvent.click(closeButton);
-
-    //     expect(helpModal).not.toBeInTheDocument();
-    // });
 });
