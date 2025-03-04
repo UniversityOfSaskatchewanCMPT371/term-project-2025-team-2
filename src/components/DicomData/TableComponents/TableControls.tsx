@@ -5,6 +5,7 @@ import { TableControlsProps } from "../../../types/DicomTypes";
 import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
 import AnonPopup from "./AnonPopup";
+import { standardDataElements } from "../../../tagDictionary/standardDataElements";
 
 /**
  * Controls component for the DICOM table
@@ -35,7 +36,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     const handleAutoAnon = async () => {
         const newTagData = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: any; }) => ({
             tagId: tag.tagId,
-            tagName: tag.tagName, 
+            tagName: standardDataElements[tag.tagId]?.name || "Unknown",
             newValue: tag.newValue
         }));
         setTags(newTagData);
