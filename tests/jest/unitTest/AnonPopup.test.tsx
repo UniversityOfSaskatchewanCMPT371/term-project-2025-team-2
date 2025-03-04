@@ -1,6 +1,4 @@
-//import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-//import '@testing-library/jest-dom/extend-expect';
 import AnonPopup from '../../../src/components/DicomData/TableComponents/AnonPopup';
 
 const mockTags = [

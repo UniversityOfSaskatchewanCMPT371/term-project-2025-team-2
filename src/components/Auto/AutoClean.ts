@@ -1,4 +1,4 @@
-import { Test_TagsAnon } from "./TagsAnon";
+import { TagsAnon } from "./TagsAnon";
 import { tagUpdater } from "../DicomData/TagUpdater";
 import {
     createFile,
@@ -15,7 +15,8 @@ import { CustomFile } from "../../types/FileTypes";
 export function FormatData(dicomData: any) {
     const newDicomData: any = [];
 
-    Test_TagsAnon.forEach((tag: any) => {
+    //Test_TagsAnon.forEach((tag: any) => {
+    TagsAnon.forEach((tag: any) => {
         if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
             return;
         }

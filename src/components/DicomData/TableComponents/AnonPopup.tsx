@@ -9,7 +9,7 @@ interface AnonPopupProps {
 const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel }) => {
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-5 rounded-lg text-center shadow-lg max-w-lg w-11/12">
+            <div className="bg-white p-5 rounded-lg text-center shadow-lg max-w-lg w-11/12 max-h-full overflow-y-auto">
                 <h2 className="mb-5 text-xl">Tags to be Anonymized</h2>
                 <ul className="list-none p-0 mb-5">
                     {tags.map((tag, index) => (
