@@ -2,6 +2,7 @@ import { TagsAnon } from "./TagsAnon";
 import { tagUpdater } from "../DicomData/TagUpdater";
 import {
     createFile,
+    createZipFromFiles,
     downloadDicomFile,
 } from "../DicomData/DownloadFuncs";
 import { CustomFile } from "../../types/FileTypes";
@@ -11,28 +12,28 @@ import { CustomFile } from "../../types/FileTypes";
  * @param dicomData
  * @returns formatted data
  */
-export function FormatData(dicomData: any, tag: any) {
+export function FormatData(dicomData: any) {
     const newDicomData: any = [];
 
-    // tags.forEach((tag: any) => {
-    if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
-        return;
-    }
+    TagsAnon.forEach((tag: any) => {
+        if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
+            return;
+        }
 
-    const tagData = {
-        tagId: tag.tagId,
-        newValue: tag.value,
-        vr:
-            dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()].vr ||
-            "NO",
-        dataOffSet:
-            dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]
-                .dataOffset,
-        length: tag.value.length,
-        deleteTag: false,
-    };
-    newDicomData.push(tagData);
-    // });
+        const tagData = {
+            tagId: tag.tagId,
+            newValue: tag.value,
+            vr:
+                dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()].vr ||
+                "NO",
+            dataOffSet:
+                dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]
+                    .dataOffset,
+            length: tag.value.length,
+            deleteTag: false,
+        };
+        newDicomData.push(tagData);
+    });
 
     return newDicomData;
 }
@@ -45,33 +46,16 @@ export function FormatData(dicomData: any, tag: any) {
  * @returns none
  */
 export const AutoAnon = async (dicomData: any[], files: CustomFile[]) => {
-    // const newFiles: any = [];
+   
+    const newFiles: any = [];
 
-    TagsAnon.forEach((tag: any) => {
-        
-        // console.log("tag", tag);
-        
-        const formatedData = FormatData(dicomData[0], tag);
-        let newFile: any;
-        
-       
-        if(!formatedData) {
-            return;
-        }
-        if(formatedData[0].vr !== "PN") {
-            return;
-        }
-        
-        console.log("tag update ", formatedData);
-        // dicomData.forEach((dicom: any, index: number) => {
+    dicomData.forEach((dicom: any, index: number) => {
+        const formatedData = FormatData(dicom);
         const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
 
-        newFile = createFile(tag.tagId + "_" + formatedData[0].vr, updatedFile);
-        // newFiles.push(createFile(files[index].name, updatedFile));
-        // });
-
-        downloadDicomFile(newFile);
+        newFiles.push(createFile(files[index].name, updatedFile));
     });
-    // const zipFile = await createZipFromFiles(newFiles);
-    // downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
+
+    const zipFile = await createZipFromFiles(newFiles);
+    downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
 };

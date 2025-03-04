@@ -115,8 +115,8 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const buf1 = concatBuffers(first, newtag);
     const newArray = concatBuffers(buf1, last);
 
-    console.log("new tag", newtag);
-    console.log("old tag", dicomByteArray.slice(tagToAdd.dataOffSet - 10, tagToAdd.dataOffSet + dicomData.elements[tagToAdd.tagId.toLowerCase()].length+4));
+    // console.log("new tag", newtag);
+    // console.log("old tag", dicomByteArray.slice(tagToAdd.dataOffSet - 10, tagToAdd.dataOffSet + dicomData.elements[tagToAdd.tagId.toLowerCase()].length+4));
 
     return newArray;
 }

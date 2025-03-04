@@ -59,9 +59,9 @@ export function createFile(fileName: string, blobData: any) {
         type: "application/dicom",
     });
 
-    // const newFileName = fileName.includes(".dcm")
-    //     ? fileName.slice(0, -4)
-    //     : fileName;
+    const newFileName = fileName.includes(".dcm")
+        ? fileName.slice(0, -4)
+        : fileName;
 
-    return { name: fileName + "_edited.dcm", content: blob };
+    return { name: newFileName + "_edited.dcm", content: blob };
 }
