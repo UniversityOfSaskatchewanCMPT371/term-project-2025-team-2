@@ -1,5 +1,5 @@
 import React from 'react';
-import './TagPopup.css';
+import '../../../AnonPopup.css';
 
 interface TagPopupProps {
     tags: { tagId: string, newValue: string }[];

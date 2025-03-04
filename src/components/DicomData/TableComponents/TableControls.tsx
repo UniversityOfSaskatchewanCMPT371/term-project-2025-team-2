@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import Search from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
 import { TableControlsProps } from "../../../types/DicomTypes";
-import { AutoAnon } from "../../Auto/AutoClean";
+import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
+import AnonPopup from "./AnonPopup";
+
 /**
  * Controls component for the DICOM table
  * @component
@@ -24,6 +26,27 @@ const TableControls: React.FC<TableControlsProps> = ({
     const files = useStore((state) => state.files);
     const clearData = useStore((state) => state.clearData);
 
+    const [showPopup, setShowPopup] = useState(false);
+    const [tags, setTags] = useState<{ tagId: string, newValue: string }[]>([]);
+    const [formattedData, setFormattedData] = useState<any[]>([]);
+
+    const handleAutoAnon = async () => {
+        const newTagData = FormatData(dicomData[0]);
+        setTags(newTagData);
+        setFormattedData(newTagData);
+        setShowPopup(true);
+    };
+
+    const handleConfirm = async () => {
+        await AutoAnon(dicomData, files);
+        setShowPopup(false);
+        clearData();
+    };
+
+    const handleCancel = () => {
+        setShowPopup(false);
+    };
+
     return (
         <div className="flex-col-2 flex">
             <Search searchTerm={searchTerm} onSearchChange={onSearchChange} />
@@ -38,15 +61,15 @@ const TableControls: React.FC<TableControlsProps> = ({
 
                 <div className="ml-4">
                     <GenButton
-                        onClick={() => {
-                            AutoAnon(dicomData, files);
-                            clearData();
-                        }}
+                        onClick={handleAutoAnon}
                         label="Auto Anon"
                         disabled={false}
                     />
                 </div>
             </div>
+            {showPopup && (
+                <AnonPopup tags={tags} onConfirm={handleConfirm} onCancel={handleCancel} />
+            )}
         </div>
     );
 };
