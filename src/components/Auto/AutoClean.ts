@@ -58,6 +58,10 @@ export const AutoAnon = async (dicomData: any[], files: CustomFile[]) => {
         if(!formatedData) {
             return;
         }
+        if(formatedData[0].vr !== "PN") {
+            return;
+        }
+        
         console.log("tag update ", formatedData);
         // dicomData.forEach((dicom: any, index: number) => {
         const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
