@@ -8,7 +8,6 @@ import { tagUpdater } from "../../../src/components/DicomData/TagUpdater";
 import logger from "../../../src/components/utils/Logger";
 import * as storeModule from "../../../src/components/State/Store";
 
-// Mock necessary imports and hooks
 jest.mock("../../../src/components/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn(),
     downloadDicomFile: jest.fn(),
@@ -31,7 +30,7 @@ jest.mock("../../../src/components/utils/Logger", () => ({
     warn: jest.fn(),
 }));
 
-// Mock Zustand store
+
 jest.mock("../../../src/components/State/Store", () => {
     const actual = jest.requireActual("../../../src/components/State/Store");
     return {
@@ -47,7 +46,6 @@ describe("DicomTable", () => {
         // Reset all mocks
         jest.clearAllMocks();
 
-        // Create mock DICOM data structure with an array of tags
         mockState = {
             files: [{ name: "test.dcm" }],
             dicomData: [
@@ -66,7 +64,6 @@ describe("DicomTable", () => {
             showHiddenTags: false,
         };
 
-        // Set up the store mock
         (storeModule.useStore as unknown as jest.Mock).mockImplementation(
             (selector) => (selector ? selector(mockState) : mockState)
         );
@@ -93,31 +90,27 @@ describe("DicomTable", () => {
             render(<DicomTable />);
         });
 
-        // For debugging
-        // screen.debug();
 
-        // Try different selector approaches to find the search input
+    
         let searchInput: any;
 
         try {
-            // Try finding by placeholder text first (with safer regex)
+           
             searchInput = screen.getByPlaceholderText(/Search tags.../i);
         } catch (error) {
             console.log(error);
             try {
-                // Try finding by role with type attribute
+          
                 const textboxes = screen.getAllByRole("input");
-                searchInput = textboxes[0]; // Use first textbox
+                searchInput = textboxes[0]; 
             } catch (error) {
                 console.log(error);
                 try {
-                    // Try finding any input with type="text"
                     const inputs =
                         document.querySelectorAll('input[type="text"]');
                     if (inputs.length > 0) {
                         searchInput = inputs[0];
                     } else {
-                        // Try any input element as last resort
                         const allInputs = document.querySelectorAll("input");
                         if (allInputs.length > 0) {
                             searchInput = allInputs[0];
@@ -125,16 +118,14 @@ describe("DicomTable", () => {
                     }
                 } catch (error) {
                     console.log(error);
-                    // Safely skip if no input found
                     console.warn(
                         "No suitable input element found for search test"
                     );
-                    return; // Skip this test
+                    return;
                 }
             }
         }
 
-        // Only proceed with the test if we found a valid input element
         if (searchInput) {
             await act(async () => {
                 fireEvent.change(searchInput, { target: { value: "tag1" } });
@@ -169,28 +160,22 @@ describe("DicomTable", () => {
             render(<DicomTable />);
         });
 
-        // Find the edit button by looking for specific patterns in the button text or class
         const editButton = screen.getAllByTestId("edit-tag-button")[0];
 
         await act(async () => {
             fireEvent.click(editButton);
         });
 
-        // Check if our mock was called
-        //   expect(toggleEditing).toHaveBeenCalled();
     });
 
     it("logs an error when no dicomData is available for the current file", async () => {
-        // Save original implementation
 
-        // Instead of null tags, provide an empty object
         mockState.dicomData = [{ tags: {} }];
 
         await act(async () => {
             render(<DicomTable />);
         });
 
-        // Check if the error was logged
         expect(logger.error).toHaveBeenCalledWith("No DICOM data available");
     });
 });

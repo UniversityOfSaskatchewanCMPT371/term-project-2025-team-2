@@ -1,4 +1,3 @@
-// tests/jest/unitTest/DicomParserUtils.unit.test.tsx
 import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
@@ -9,7 +8,7 @@ jest.mock("dicom-parser", () => {
     };
 });
 
-// Mock TagDictionary
+
 jest.mock("../../../src/tagDictionary/dictionary", () => ({
     TagDictionary: class {
         lookup(tag: string) {
@@ -40,7 +39,6 @@ describe("DicomParserUtils Unit Tests", () => {
     let mockFile: File;
 
     beforeEach(() => {
-        // Create a mock DICOM file
         mockFile = new File([new ArrayBuffer(10)], "test.dcm", {
             type: "application/dicom",
         });
