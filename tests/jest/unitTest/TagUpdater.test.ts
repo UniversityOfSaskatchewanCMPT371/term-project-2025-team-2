@@ -2,20 +2,12 @@ import { tagUpdater} from '../../../src/components/DicomData/TagUpdater';
 import { parseDicomFile } from '../../../src/components/DicomData/DicomParserUtils';
 import { DicomData } from '../../../src/types/DicomTypes';
 
-//const tagUpdaterFuncs = require('../../../src/components/DicomData/TagUpdater');
-
-function createFile(path: string, name: string): File | null {      // , type: string
-    // let response = await fetch(path);
-    // let data = await response.blob();
-    // let metadata = {
-    //     type: type
-    // };
-    // return new File([data], name, metadata);
+function createFileObj(path: string, name: string): File | null {
     const fs = require('fs');
     try {
         const fileBuffer = fs.readFileSync(path);
         const file = new File([fileBuffer], name, {
-            type: 'application/dicom', // Set appropriate MIME type, adjust based on the file type
+            type: 'application/dicom',
         });
     
         return file;
@@ -27,36 +19,14 @@ function createFile(path: string, name: string): File | null {      // , type: s
 
 describe('TagUpdater unit tests', () => {
     let sampleDicomData: DicomData;
-    beforeEach(() => {
-        // await createFile('test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm', 'test_dicom_0.dcm').then((file) => {     //, 'application/dicom'
-        //     if (file === null) {
-        //         console.error('Error reading file in TagUpdater unit tests');
-        //         return;
-        //     }
-        //     sampleDicomData = parseDicomFile(file);
-        // });
-
-        // const dicomFile = createFile('test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm', 'test_dicom_0.dcm');
-        // if (dicomFile === null) {
-        //     console.error('Error reading file in TagUpdater unit tests');
-        //     return;
-        // }
-        // parseDicomFile(dicomFile)
-        // .then((dicomData) => {
-        //     sampleDicomData = dicomData;
-        // })
-        // .catch((error) => {
-        //     console.error('Error parsing DICOM file in TagUpdater unit tests:', error);
-        // });
-    });
-
-    // No tag value updates
-    test('no tag value updates', async() => {
-        const dicomFile = createFile('test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm', 'test_dicom_0.dcm');
+    beforeEach(async() => {
+        // make a File from the test DICOM file
+        const dicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm', 'test_dicom_0.dcm');
         if (dicomFile === null) {
             console.error('Error reading file in TagUpdater unit tests');
             return;
         }
+        // parse dicom File
         await parseDicomFile(dicomFile)
         .then((dicomData) => {
             sampleDicomData = dicomData;
@@ -65,13 +35,19 @@ describe('TagUpdater unit tests', () => {
             console.error('Error parsing DICOM file in TagUpdater unit tests:', error);
         });
 
+    });
+
+    // No tag value updates
+    test('no tag value updates', async() => {
         let updatedFile = tagUpdater(sampleDicomData.DicomDataSet, []);
         expect(updatedFile).toEqual(sampleDicomData.DicomDataSet.byteArray);
     });
 
-    // 1 tag value update
+    // 1 tag value update - beginning, end, middle
 
-    // 2 tag value updates
+    // 2 tag value updates that are not next to each other
+
+    // 2 tag value updates that are next to each other
 });
 
 describe('insertTag() unit tests', () => {
