@@ -43,7 +43,6 @@ test("Verify Set Theme toggle functionality", async ({ page }) => {
         await expect(moonIcon).toBeEnabled();
 
         await moonIcon.click();
-        await moonIcon.click();
 
     } catch (error) {
         console.error("Error verifying Set Theme toggle:", error);

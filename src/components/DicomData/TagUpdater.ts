@@ -41,6 +41,8 @@ const longHeaderLen = 12;
 const vrOffset = 4;
 const lengthOffset = 6;
 
+import dicomParser from "dicom-parser";
+
 /**
  *
  * @param dicomData - The dicom data object
@@ -61,7 +63,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         const insertTag = {
             tagId: tag.tagId,
             value: tag.newValue,
-            vr: dicomData.elements[tag.tagId.toLowerCase()].vr || "UN",
+            vr: dicomData.elements[tag.tagId.toLowerCase()].vr || "NO",
             dataOffSet:
                 dicomData.elements[tag.tagId.toLowerCase()].dataOffset || 0,
             length: tag.newValue.length,
@@ -78,13 +80,17 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             const group = parseInt(tag.tagId.slice(1, 5), 16);
             const element = parseInt(tag.tagId.slice(5), 16);
 
+            tag.dataOffSet = dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+
             tagIdByte.set(
                 new Uint8Array([group, group >> 8, element, element >> 8])
             );
             const newTag = createTag(tagIdByte, tag, true);
             data = insertTag(dicomData, tag, newTag);
         }
-        dicomData.byteArray = data;
+        const newData = dicomParser.parseDicom(data);
+        dicomData.byteArray = newData.byteArray;
+        dicomData.elements = newData.elements;
     });
 
     return data;
@@ -108,6 +114,9 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
 
     const buf1 = concatBuffers(first, newtag);
     const newArray = concatBuffers(buf1, last);
+
+    // console.log("new tag", newtag);
+    // console.log("old tag", dicomByteArray.slice(tagToAdd.dataOffSet - 10, tagToAdd.dataOffSet + dicomData.elements[tagToAdd.tagId.toLowerCase()].length+4));
 
     return newArray;
 }
@@ -153,7 +162,7 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
  */
 function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     const valueOffset =
-        tag.tagVR in VR_with_12_bytes_header ? longHeaderLen : headerLen;
+        tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
 
     const tagVR = writeVRArray(tag.vr);
@@ -172,7 +181,7 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     newTag.set(tagVR, vrOffset);
     newTag.set(tagLength, lengthOffset);
 
-    switch (tag.tagVR) {
+    switch (tag.vr) {
         case "FD":
             newTag.set(
                 writeTypedNumber(

@@ -1,4 +1,4 @@
-import { Test_TagsAnon } from "./TagsAnon";
+import { TagsAnon } from "./TagsAnon";
 import { tagUpdater } from "../DicomData/TagUpdater";
 import {
     createFile,
@@ -15,7 +15,7 @@ import { CustomFile } from "../../types/FileTypes";
 export function FormatData(dicomData: any) {
     const newDicomData: any = [];
 
-    Test_TagsAnon.forEach((tag: any) => {
+    TagsAnon.forEach((tag: any) => {
         if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
             return;
         }
@@ -25,10 +25,10 @@ export function FormatData(dicomData: any) {
             newValue: tag.value,
             vr:
                 dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()].vr ||
-                "UN",
+                "NO",
             dataOffSet:
                 dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]
-                    .dataOffset || 0,
+                    .dataOffset,
             length: tag.value.length,
             deleteTag: false,
         };
@@ -46,11 +46,12 @@ export function FormatData(dicomData: any) {
  * @returns none
  */
 export const AutoAnon = async (dicomData: any[], files: CustomFile[]) => {
+   
     const newFiles: any = [];
-    const formatedData = FormatData(dicomData[0]);
 
     dicomData.forEach((dicom: any, index: number) => {
-        const updatedFile = tagUpdater(dicom.DicomDataSet, formatedData);
+        const formatedData = FormatData(dicom);
+        const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
 
         newFiles.push(createFile(files[index].name, updatedFile));
     });
