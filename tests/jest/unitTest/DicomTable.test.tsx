@@ -43,7 +43,6 @@ describe("DicomTable", () => {
     let mockState: any;
 
     beforeEach(() => {
-        // Reset all mocks
         jest.clearAllMocks();
 
         mockState = {

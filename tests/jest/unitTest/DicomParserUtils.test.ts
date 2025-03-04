@@ -44,7 +44,6 @@ describe("DicomParserUtils Unit Tests", () => {
         });
     });
 
-    /***** UNIT TEST: Should reject on parsing errors *****/
     test("rejects if dicomParser throws an error", async () => {
         (dicomParser.parseDicom as jest.Mock).mockImplementation(() => {
             throw new Error("Parsing Error");
@@ -55,7 +54,6 @@ describe("DicomParserUtils Unit Tests", () => {
         );
     });
 
-    /***** UNIT TEST: Should reject on file reading error *****/
     test("rejects if FileReader encounters an error", async () => {
         const mockFileReader = jest
             .spyOn(global, "FileReader")
