@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "docs": "typedoc --entryPointStrategy Expand src",
     "test": "jest",
-    "playwright": "NODE_NO_WARNINGS=1 playwright test"
+    "playwright": "NODE_NO_WARNINGS=1 playwright test",
+    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
