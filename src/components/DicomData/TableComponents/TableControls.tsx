@@ -25,7 +25,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     const dicomData = useStore((state) => state.dicomData);
     const files = useStore((state) => state.files);
     const tags = useStore((state) => state.tags);
-    const formattedData = useStore((state) => state.formattedData);
+    //const formattedData = useStore((state) => state.formattedData);
     const setTags = useStore((state) => state.setTags);
     const setFormattedData = useStore((state) => state.setFormattedData);
     const clearData = useStore((state) => state.clearData);
@@ -33,7 +33,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     const [showPopup, setShowPopup] = useState(false);
 
     const handleAutoAnon = async () => {
-        const newTagData = FormatData(dicomData[0]).map((tag: { tagId: any; tagName: any; newValue: any; }) => ({
+        const newTagData = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: any; }) => ({
             tagId: tag.tagId,
             tagName: tag.tagName, 
             newValue: tag.newValue
