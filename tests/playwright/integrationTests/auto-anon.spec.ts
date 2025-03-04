@@ -4,11 +4,18 @@ import * as fs from "fs";
 import AdmZip from "adm-zip";
 import { promisify } from "util";
 
-// Use environment variable for the base URL
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 const mkdirAsync = promisify(fs.mkdir);
 const existsAsync = promisify(fs.exists);
+
+const DEBUG = process.env.DEBUG_TESTS === "true" || false;
+
+const debug = (message: string) => {
+    if (DEBUG) {
+        console.log(message);
+    }
+};
 
 test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
     try {
@@ -16,19 +23,6 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles("./test-data/CR000000.dcm");
-
-        await page.waitForTimeout(1000);
-
-        const searchInput =
-            page.getByPlaceholder(/Search tags.../i) ||
-            page.locator('input[type="text"]').first();
-
-        await searchInput.clear();
-
-        await searchInput.fill("PatientName");
-        await searchInput.press("Enter");
-
-        await page.waitForTimeout(500);
 
         await page.waitForSelector("table", {
             state: "visible",
@@ -55,16 +49,18 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const path = zipFilePath.split("/");
 
-        fs.readdir("/" + path[1] + "/" + path[2] + "/", (err, files) => {
-            if (err) {
-                console.log("Unable to scan directory:", err);
-            } else {
-                console.log("Contents of the folder:");
-                files.forEach((file) => {
-                    console.log(file);
-                });
-            }
-        });
+        if (DEBUG) {
+            fs.readdir("/" + path[1] + "/" + path[2] + "/", (err, files) => {
+                if (err) {
+                    console.log("Unable to scan directory:", err);
+                } else {
+                    console.log("Contents of the folder:");
+                    files.forEach((file) => {
+                        console.log(file);
+                    });
+                }
+            });
+        }
 
         const extractDir = "/" + path[1] + "/" + path[2] + "/extracted";
 
@@ -75,16 +71,18 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
         const zip = new AdmZip(zipFilePath);
         zip.extractAllTo(extractDir, true);
 
-        fs.readdir(extractDir, (err, files) => {
-            if (err) {
-                console.log("Unable to scan directory:", err);
-            } else {
-                console.log("Ext Contents of the folder:");
-                files.forEach((file) => {
-                    console.log(file);
-                });
-            }
-        });
+        if (DEBUG) {
+            fs.readdir(extractDir, (err, files) => {
+                if (err) {
+                    console.log("Unable to scan directory:", err);
+                } else {
+                    console.log("Ext Contents of the folder:");
+                    files.forEach((file) => {
+                        console.log(file);
+                    });
+                }
+            });
+        }
 
         const files = fs.readdirSync(extractDir);
         const dicomFile = files.find((file) => file.endsWith(".dcm"));
@@ -92,8 +90,6 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
         if (!dicomFile) {
             throw new Error("No DICOM file found in the extracted zip");
         }
-
-        await page.waitForTimeout(1000);
 
         await fileInput.setInputFiles(extractDir + "/" + dicomFile);
 
@@ -111,13 +107,6 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
         await expect(institutionNameRowAfterReupload).toBeVisible({
             timeout: 5000,
         });
-
-        await searchInput.clear();
-
-        await searchInput.fill("PatientName");
-        await searchInput.press("Enter");
-
-        await page.waitForTimeout(500);
 
         const finalValue = await institutionNameRowAfterReupload
             .locator("td")

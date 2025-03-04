@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "docs": "typedoc --entryPointStrategy Expand src",
     "test": "jest",
-    "playwright": "playwright test"
+    "playwright": "NODE_NO_WARNINGS=1 playwright test"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
