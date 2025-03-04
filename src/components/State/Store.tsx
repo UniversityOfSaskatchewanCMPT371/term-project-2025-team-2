@@ -47,6 +47,12 @@ type Store = {
     showHiddenTags: boolean;
     setShowHiddenTags: (show: boolean) => void;
 
+    tags: { tagId: string, tagName: string, newValue: string }[];
+    setTags: (tags: { tagId: string, tagName: string, newValue: string }[]) => void;
+
+    formattedData: any[];
+    setFormattedData: (data: any[]) => void;
+
     clearData: () => void;
 };
 
@@ -123,6 +129,12 @@ export const useStore = create<Store>((set) => ({
         localStorage.getItem("showHiddenTags") ?? "false"
     ),
     setShowHiddenTags: (show) => set({ showHiddenTags: show }),
+
+    tags: [],
+    setTags: (tags) => set({ tags }),
+
+    formattedData: [],
+    setFormattedData: (data) => set({ formattedData: data }),
 
     clearData: () => {
         set({ newTagValues: [] });

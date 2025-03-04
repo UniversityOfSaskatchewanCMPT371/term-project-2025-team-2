@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface AnonPopupProps {
-    tags: { tagId: string, newValue: string }[];
+    tags: { tagId: string, tagName: string, newValue: string }[];
     onConfirm: () => void;
     onCancel: () => void;
 }
@@ -14,7 +14,7 @@ const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel }) => {
                 <ul className="list-none p-0 mb-5">
                     {tags.map((tag, index) => (
                         <li key={index} className="mb-2 text-lg">
-                            <strong>{tag.tagId}</strong>: {tag.newValue}
+                            <strong>{tag.tagId} ({tag.tagName})</strong>: {tag.newValue}
                         </li>
                     ))}
                 </ul>
