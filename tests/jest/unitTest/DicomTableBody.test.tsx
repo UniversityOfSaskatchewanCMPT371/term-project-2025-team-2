@@ -29,7 +29,6 @@ describe("DicomTableBody Component", () => {
 
         render(<DicomTableBody filteredRows={mockRows} showHidden={false} onUpdateValue={mockOnUpdateValue} />);
 
-        // Ensure DicomTableRow is rendered for each item
         expect(screen.getAllByTestId("dicom-table-row")).toHaveLength(mockRows.length);
     });
 
@@ -41,7 +40,6 @@ describe("DicomTableBody Component", () => {
 
         render(<DicomTableBody filteredRows={mockRows} showHidden={false} onUpdateValue={mockOnUpdateValue} />);
 
-        // Only non-hidden row should be rendered
         expect(screen.getAllByTestId("dicom-table-row")).toHaveLength(1);
     });
 
@@ -53,7 +51,6 @@ describe("DicomTableBody Component", () => {
 
         render(<DicomTableBody filteredRows={mockRows} showHidden={true} onUpdateValue={mockOnUpdateValue} />);
 
-        // Both rows should be rendered
         expect(screen.getAllByTestId("dicom-table-row")).toHaveLength(2);
     });
 

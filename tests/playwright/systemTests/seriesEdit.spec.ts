@@ -67,6 +67,12 @@ test("Edit tag in series", async ({ page }) => {
             })
             .first();
 
+        await page.waitForSelector("text=Files", {
+            state: "visible",
+            timeout: 500,
+        });
+
+
         await expect(tagRow).toBeVisible({ timeout: 1000 });
 
         const editButton = tagRow.locator("svg.h-6.w-6").first();
@@ -83,10 +89,15 @@ test("Edit tag in series", async ({ page }) => {
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        await page.waitForSelector("text=Files", {
-            state: "visible",
-            timeout: 500,
-        });
+        const settingsButton = page.locator("svg.size-6.cursor-pointer");
+        await settingsButton.click();
+
+        const setDownloadToggle = page.locator(`input[type="checkbox"]#download-option`);
+
+        await setDownloadToggle.click();
+
+        const closeButton = page.locator('button:has-text("Close")').first();
+        await closeButton.click();
 
         await page.waitForSelector(
             'button:has-text("Apply Edits to All Files")',
