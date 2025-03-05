@@ -43,7 +43,16 @@ describe('TagUpdater unit tests', () => {
         expect(updatedFile).toEqual(sampleDicomData.DicomDataSet.byteArray);
     });
 
-    // 1 tag value update - beginning, end, middle
+    // 1 tag value update - beginning, end, middle, value >> (value can never be too big), value <<
+    test('Updated 1 tag value', async() => {
+        
+        // get the edited dicom file from pydicom generater
+
+        // update initial dicom file with tag updater
+
+        // check if edited dicom file matches the output of tag updater
+
+    });
 
     // 2 tag value updates that are not next to each other
 

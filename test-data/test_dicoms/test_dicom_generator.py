@@ -7,6 +7,7 @@ import os
 import argparse
 
 
+# TODO: refactor this to use createdicom() function
 def create_dicom_files():
     '''
     This function creates a number of DICOM files.
@@ -90,3 +91,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     create_dicom_files()
+    #createdicom("dicom_test_new1", generate_uid(), "John Doe", "1", "CT", datetime.datetime.now().strftime("%Y%m%d"), generate_uid(), generate_uid(), generate_uid())
