@@ -29,6 +29,7 @@ describe('AnonPopup', () => {
     test('renders the popup with tags', () => {
         render(<AnonPopup tags={mockTags} onConfirm={jest.fn()} onCancel={jest.fn()} />);
 
+        // title of popup
         expect(screen.getByText('Tags to be Anonymized')).toBeInTheDocument();
 
         // checks list items (li elements) in popup
