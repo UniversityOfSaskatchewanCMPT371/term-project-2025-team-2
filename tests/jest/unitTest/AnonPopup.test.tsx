@@ -7,6 +7,7 @@ const mockTags = [
 ];
 
 describe('AnonPopup', () => {
+    // ***** UNIT TEST onConfirm called on OK pressed *****
     test('calls onConfirm when OK button is clicked', () => {
         const onConfirm = jest.fn();
         render(<AnonPopup tags={mockTags} onConfirm={onConfirm} onCancel={jest.fn()} />);
@@ -15,6 +16,7 @@ describe('AnonPopup', () => {
         expect(onConfirm).toHaveBeenCalledTimes(1);
     });
 
+    // ***** UNIT TEST onCancel called on Cancel pressed *****
     test('calls onCancel when Cancel button is clicked', () => {
         const onCancel = jest.fn();
         render(<AnonPopup tags={mockTags} onConfirm={jest.fn()} onCancel={onCancel} />);
@@ -23,6 +25,7 @@ describe('AnonPopup', () => {
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
+    // ***** UNIT TEST renders the popup with tags *****
     test('renders the popup with tags', () => {
         render(<AnonPopup tags={mockTags} onConfirm={jest.fn()} onCancel={jest.fn()} />);
 
