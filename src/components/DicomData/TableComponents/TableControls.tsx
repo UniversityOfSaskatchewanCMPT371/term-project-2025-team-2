@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+//import React, {useState} from "react";
 import Search from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
 import { TableControlsProps } from "../../../types/DicomTypes";
@@ -28,8 +28,10 @@ const TableControls: React.FC<TableControlsProps> = ({
     const setTags = useStore((state) => state.setTags);
     const setFormattedData = useStore((state) => state.setFormattedData);
     const clearData = useStore((state) => state.clearData);
+    const showPopup = useStore((state) => state.showPopup);
+    const setShowPopup = useStore((state) => state.setShowPopup);
 
-    const [showPopup, setShowPopup] = useState(false);
+    //const [showPopup, setShowPopup] = useState(false);
 
     const tagDictionary = new TagDictionary();
 

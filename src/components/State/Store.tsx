@@ -53,6 +53,9 @@ type Store = {
     formattedData: any[];
     setFormattedData: (data: any[]) => void;
 
+    showPopup: boolean;
+    setShowPopup: (show: boolean) => void;
+
     clearData: () => void;
 };
 
@@ -135,6 +138,9 @@ export const useStore = create<Store>((set) => ({
 
     formattedData: [],
     setFormattedData: (data) => set({ formattedData: data }),
+
+    showPopup: false,
+    setShowPopup: (show) => set({ showPopup: show }),
 
     clearData: () => {
         set({ newTagValues: [] });
