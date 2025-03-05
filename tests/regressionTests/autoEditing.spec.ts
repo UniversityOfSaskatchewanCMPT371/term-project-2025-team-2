@@ -22,7 +22,7 @@ const debug = (message: string) => {
     }
 };
 
-test("Auto anon tags in series", async ({ page }) => {
+test("Edit tags in MRI series", async ({ page }) => {
     try {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
@@ -149,11 +149,6 @@ test("Auto anon tags in series", async ({ page }) => {
         let hasMoreFiles = true;
 
         while (hasMoreFiles) {
-            
-            if(fileCount > 5) {
-                break;
-            }
-
             fileCount++;
             debug(`Checking file #${fileCount}...`);
 
@@ -164,90 +159,85 @@ test("Auto anon tags in series", async ({ page }) => {
                 });
             }
 
-            for (const tag of TagsAnon) {
-                try {
-                    const row = page
-                        .locator("tr", {
-                            has: page.locator("td", { hasText: tag.tagId }),
-                        })
-                        .first();
 
-                    await expect(row).toBeVisible({ timeout: 100 });
+            const row = page
+                .locator("tr", {
+                    has: page.locator("td", { hasText: "PatientName" }),
+                })
+                .first();
+
+            await expect(row).toBeVisible({ timeout: 100 });
 
 
-                    const rowValue = await row.locator("td").nth(2).textContent();
+            const rowValue = await row.locator("td").nth(2).textContent();
 
-                    debug(`File ${fileCount} - ${tag.name} value: ${rowValue}`);
+            debug(`File ${fileCount} - value: ${rowValue}`);
 
-                    expect(rowValue).toContain(tag.value);
-                } catch (error) {
-                    // console.error(`File ${fileCount}`);
+            expect(rowValue).toContain("ANONYMOUS");
 
+
+            // const PatientIDRow = page
+            //     .locator("tr", {
+            //         has: page.locator("td", { hasText: "PatientID" }),
+            //     })
+            //     .first();
+
+            // await expect(PatientIDRow).toBeVisible({ timeout: 1000 });
+
+            // const currentlyViewingText = await page
+            //     .locator("text=/Currently Viewing: .+\.dcm/")
+            //     .textContent();
+            // debug(
+            //     `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
+            // );
+
+            // const filenameMatch = currentlyViewingText?.match(
+            //     /Currently Viewing: (.+\.dcm)/
+            // );
+            // const filename = filenameMatch ? filenameMatch[1] : "";
+
+            // const fileNumberMatch = filename.match(/(\d+)/);
+            // const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
+
+            // debug(`File ${fileCount} - File number: ${fileNumber}`);
+
+            // const patientIDValue = await PatientIDRow.locator("td")
+            //     .nth(2)
+            //     .textContent();
+            // debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
+
+            // expect(patientIDValue).toContain(fileNumber);
+
+            // debug(
+            //     `File ${fileCount} - Verified: PatientID contains the file number`
+            // );
+        }
+
+        const nextButton = page.getByRole("button", { name: /Next/i });
+
+        const isDisabled = await nextButton.getAttribute("disabled");
+
+        if (isDisabled === "true" || isDisabled === "") {
+            debug(
+                "Next button is disabled. We have reached the last file."
+            );
+            hasMoreFiles = false;
+        } else {
+
+            await nextButton.click();
+            debug("Clicked Next button");
+
+            // Wait for the new file to be displayed
+            await page.waitForSelector(
+                "text=/Currently Viewing: .+\.dcm/",
+                {
+                    state: "visible",
+                    timeout: 2000,
                 }
-
-                // const PatientIDRow = page
-                //     .locator("tr", {
-                //         has: page.locator("td", { hasText: "PatientID" }),
-                //     })
-                //     .first();
-
-                // await expect(PatientIDRow).toBeVisible({ timeout: 1000 });
-
-                // const currentlyViewingText = await page
-                //     .locator("text=/Currently Viewing: .+\.dcm/")
-                //     .textContent();
-                // debug(
-                //     `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
-                // );
-
-                // const filenameMatch = currentlyViewingText?.match(
-                //     /Currently Viewing: (.+\.dcm)/
-                // );
-                // const filename = filenameMatch ? filenameMatch[1] : "";
-
-                // const fileNumberMatch = filename.match(/(\d+)/);
-                // const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
-
-                // debug(`File ${fileCount} - File number: ${fileNumber}`);
-
-                // const patientIDValue = await PatientIDRow.locator("td")
-                //     .nth(2)
-                //     .textContent();
-                // debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
-
-                // expect(patientIDValue).toContain(fileNumber);
-
-                // debug(
-                //     `File ${fileCount} - Verified: PatientID contains the file number`
-                // );
-            }
-
-            const nextButton = page.getByRole("button", { name: /Next/i });
-
-            const isDisabled = await nextButton.getAttribute("disabled");
-
-            if (isDisabled === "true" || isDisabled === "") {
-                debug(
-                    "Next button is disabled. We have reached the last file."
-                );
-                hasMoreFiles = false;
-            } else {
-
-                await nextButton.click();
-                debug("Clicked Next button");
-
-                // Wait for the new file to be displayed
-                await page.waitForSelector(
-                    "text=/Currently Viewing: .+\.dcm/",
-                    {
-                        state: "visible",
-                        timeout: 2000,
-                    }
-                );
-            }
-            if (!DEBUG) {
-                process.stdout.write(". ");
-            }
+            );
+        }
+        if (!DEBUG) {
+            process.stdout.write(". ");
         }
 
         console.log(`\nSuccessfully checked ${fileCount} files`);
