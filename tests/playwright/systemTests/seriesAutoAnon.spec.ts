@@ -74,6 +74,10 @@ test("Auto anon tags in series", async ({ page }) => {
         await expect(autoAnonButton).toBeVisible({ timeout: 1000 });
         await autoAnonButton.click();
 
+        const okAnonButton = page.getByRole("button", { name: /OK/i });
+        await expect(okAnonButton).toBeVisible({ timeout: 1000 });
+        await okAnonButton.click();
+
         const download = await downloadPromise;
 
         const zipFilePath = await download.path();
