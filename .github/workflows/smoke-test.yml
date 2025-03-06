@@ -2,7 +2,7 @@ name: Smoke Tests
 
 on:
   workflow_run:
-    workflows: [ "CI" ]
+    workflows: [ CI ]
     types: completed
 
   workflow_dispatch:
