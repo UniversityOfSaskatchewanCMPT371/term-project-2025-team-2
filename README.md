@@ -59,11 +59,11 @@ Edge) to use the editor.
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/dicom-tag-editor.git
+    git clone git@github.com:UniversityOfSaskatchewanCMPT371/term-project-2025-team-2.git
     ```
 2. Navigate into the project directory:
     ```bash
-    cd dicom-tag-editor
+    cd term-project-2025-team-2
     ```
 3. Install the dependencies:
     ```bash
@@ -84,9 +84,13 @@ Once test files are made in your branch:
     ```bash
     npm install
     ```
-2. Run all tests:
+2. Run all jest tests:
     ```bash
-    npm test
+    npm run test
+    ```
+3. Run all playwright tests:
+    ```bash
+    npm run playwright
     ```
 
 ### Docker Container
@@ -104,12 +108,10 @@ running.
    be listed.
 3. **Edit tags**: Modify the value of any editable tags in the provided input
    fields.
-4. **Automatically remove PII (not implemented)**: Optionally, click the "Remove
-   PII" button to automatically remove any personally identifiable information
+4. **Automatically remove PII (not implemented)**: Optionally, click the "Auto
+   Anon" button to automatically remove any personally identifiable information
    (PII) from the DICOM file.
-5. **Save changes**: While the current version only allows you to edit and
-   display tags, saving and updating the file’s actual metadata will be possible
-   in future releases.
+5. **Save changes**: Updates the files metadata and downloads the file(s).
 6. **Download updated DICOM file**: Click the "Save Files" button to save the
    updated DICOM file with the new metadata.
 

@@ -4,6 +4,8 @@ import Modal from "../utils/Modals/Modal.tsx";
 import { FileTableProps } from "../../types/FileTypes.ts";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 
+import { useStore } from "../State/Store.tsx";
+
 /**
  * @description FileTable component - renders a table of files
  * @param files - Array of files
@@ -11,13 +13,10 @@ import { DocumentIcon } from "@heroicons/react/24/outline";
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileTable component
  */
-const FileTable: React.FC<FileTableProps> = ({
-    files,
-    currentFileIndex,
-    onFileSelect,
-    series,
-}) => {
+const FileTable: React.FC<FileTableProps> = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const files = useStore((state) => state.files);
 
     if (files.length === 0) {
         return (
@@ -40,13 +39,7 @@ const FileTable: React.FC<FileTableProps> = ({
 
             <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
                 <table className="w-full table-auto">
-                    <FileTableBody
-                        files={files}
-                        currentFileIndex={currentFileIndex}
-                        onFileSelect={onFileSelect}
-                        series={series}
-                        openModal={setIsModalOpen}
-                    />
+                    <FileTableBody openModal={setIsModalOpen} />
                 </table>
             </div>
 

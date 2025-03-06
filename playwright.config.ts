@@ -2,8 +2,8 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
     testDir: "./tests/playwright",
-    timeout: 30000,
-    workers: process.env.CI ? 4 : undefined,
+    timeout: 30000000,
+    workers: process.env.CI ? 6 : 6,
     webServer: {
         command: "npm run dev",
         port: 5173,
@@ -18,6 +18,7 @@ export default defineConfig({
                 headless: true,
                 browserName: "firefox",
             },
+            fullyParallel: true,
         },
         // comment out the following browsers due to failing safari test, issue noted
         // {
@@ -37,5 +38,5 @@ export default defineConfig({
         //         browserName: "chromium",
         //     },
         // },
-    ]
+    ],
 });

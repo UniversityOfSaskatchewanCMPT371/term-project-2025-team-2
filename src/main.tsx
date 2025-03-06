@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
-import ErrorBoundary from "./components/ErrorHandling/ErrorBoundary.tsx";
+import ErrorBoundary from "./components/ErrorHandling/ErrorBoundary";
 import { registerSW } from "virtual:pwa-register";
-import logger from "./components/utils/Logger.tsx";
+import logger from "./components/utils/Logger";
 import "react-tooltip/dist/react-tooltip.css";
 
 // Register service worker with auto-update

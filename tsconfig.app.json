@@ -24,7 +24,19 @@
         "noUncheckedSideEffectImports": true,
 
         /* types */
-        "types": ["jest", "node", "@testing-library/jest-dom"]
+        "types": ["jest", "node", "@testing-library/jest-dom"],
+        "baseUrl": "src/",
+        "paths": {
+            "@components/*": ["components/*"],
+            "@utils/*": ["components/utils/*"],
+            "@navigation/*": ["components/Navigation/*"],
+            "@DicomData/*": ["components/DicomData/*"],
+            "@hooks/*": ["components/Hooks/*"],
+            "@FileHandling/*": ["components/FileHandling/*"],
+            "@state/*": ["components/State/*"],
+            "@types/*": ["types/*"],
+            "@auto/*": ["components/Auto/*"]
+        }
     },
     "include": ["src", "types"]
 }

@@ -115,6 +115,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                             >
                                 <PencilSquareIcon
                                     className="h-6 w-6"
+                                    data-testid="edit-tag-button"
                                     data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
                                     data-tooltip-content="Edit Tag Value"
                                     data-tooltip-place="top"
