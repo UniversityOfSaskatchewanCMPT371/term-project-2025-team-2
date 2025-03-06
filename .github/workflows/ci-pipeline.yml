@@ -46,6 +46,9 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
+
+      - name: Run smoke test
+        run: npm run test:smoke
       
       #Build project
       - name: Build

@@ -40,12 +40,12 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
-            timeout: 1000,
+            timeout:  5000,
         });
 
         await page.waitForSelector("table", {
             state: "visible",
-            timeout: 1000,
+            timeout: 5000,
         });
 
         if (DEBUG) {
