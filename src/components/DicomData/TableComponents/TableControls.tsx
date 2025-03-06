@@ -34,6 +34,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     const tagDictionary = new TagDictionary();
 
     const handleAutoAnon = async () => {
+        // format anon tags and show them
         const newTagData: AnonTag[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
             tagId: tag.tagId,
             tagName: tagDictionary.lookupTagName(tag.tagId),
@@ -44,6 +45,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     };
 
     const handleUpdateTag = (tagId: string, newValue: string) => {
+        // update tags after user input
         const updatedTags = anonTags.map((tag: AnonTag) =>
             tag.tagId === tagId ? { ...tag, newValue } : tag
         );
@@ -51,6 +53,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     };
 
     const handleConfirm = async () => {
+        // anonymize tags
         await AutoAnon(dicomData, files, anonTags);
         setShowPopup(false);
         clearData();
