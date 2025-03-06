@@ -20,6 +20,12 @@ export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel,
     const handleBlur = () => {
         setEditingTagId(null);
     };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleBlur();
+        }
+    };
     
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -35,7 +41,9 @@ export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel,
                                     value={tag.newValue}
                                     onChange={(event) => handleInputChange(tag.tagId, event)}
                                     onBlur={handleBlur}
+                                    onKeyDown={handleKeyDown}
                                     className="ml-2 p-1 border rounded"
+                                    style={{ backgroundColor: '#f0f0f0', color: '#333', borderColor: '#ccc' }}
                                     autoFocus
                                 />
                             ) : (
