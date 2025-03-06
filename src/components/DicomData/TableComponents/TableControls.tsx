@@ -1,6 +1,6 @@
 import Search from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
-import { AnonPopupProps, TableControlsProps } from "../../../types/DicomTypes";
+import { AnonTag, TableControlsProps } from "../../../types/DicomTypes";
 import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
 import { AnonPopup } from "./AnonPopup";
@@ -25,7 +25,7 @@ const TableControls: React.FC<TableControlsProps> = ({
 }) => {
     const dicomData = useStore((state) => state.dicomData);
     const files = useStore((state) => state.files);
-    const tags = useStore((state) => state.tags);
+    const anonTags = useStore((state) => state.tags);
     const setTags = useStore((state) => state.setTags);
     const clearData = useStore((state) => state.clearData);
     const showPopup = useStore((state) => state.showPopup);
@@ -34,7 +34,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     const tagDictionary = new TagDictionary();
 
     const handleAutoAnon = async () => {
-        const newTagData: AnonPopupProps[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
+        const newTagData: AnonTag[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
             tagId: tag.tagId,
             tagName: tagDictionary.lookupTagName(tag.tagId),
             newValue: tag.newValue
@@ -75,7 +75,7 @@ const TableControls: React.FC<TableControlsProps> = ({
             </div>
             {showPopup && (
                 <AnonPopup 
-                    tags={tags} 
+                    tags={anonTags} 
                     onConfirm={handleConfirm} 
                     onCancel={handleCancel} />
             )}

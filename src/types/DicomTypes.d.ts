@@ -168,18 +168,27 @@ export interface DicomTableBodyProps {
 }
 
 /**
+ * Tag data for anonymization
+ * @interface {Object} AnonTag
+ * @property {string} tagId - ID of the DICOM tag
+ * @property {string} tagName - Human-readable name of the tag
+ * @property {string} newValue - New value for the tag
+ */
+export interface AnonTag {
+    tagId: string;
+    tagName: string;
+    newValue: string;
+}
+
+/**
  * Props for the AnonPopup component
  * @interface {Object} AnonPopupProps
- * @property {Array<{ tagId: string, tagName: string, newValue: string }>} tags - List of tags to be anonymized
+ * @property {Array<AnonTag> tags - List of tags to be anonymized
  * @property {function(): void} onConfirm - Callback function for confirming the anonymization
  * @property {function(): void} onCancel - Callback function for canceling the anonymization
  */
 export interface AnonPopupProps {
-    tags: { 
-        tagId: string; 
-        tagName: string; 
-        newValue: string; 
-    }[];
+    tags: AnonTag[];
     onConfirm: () => void;
     onCancel: () => void;
 }
