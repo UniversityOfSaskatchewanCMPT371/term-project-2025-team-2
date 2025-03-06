@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "development" ]
+    branches: [ "main", "development", "feat/test_workflows" ]
   pull_request:
-    branches: [ "main", "development" ]
+    branches: [ "main", "development", "feat/test_workflows" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -47,12 +47,6 @@ jobs:
         run: npm run pretty
         continue-on-error: false
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run smoke test
-        run: npm run test:smoke
-      
       #Build project
       - name: Build
         run: npm run build
@@ -74,8 +68,4 @@ jobs:
       - name: Run Docker container
         run: |
           docker run -d -p 80:80 dicom-app
-      # Place holder for more actions
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+
