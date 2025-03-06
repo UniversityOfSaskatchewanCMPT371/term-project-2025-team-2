@@ -50,6 +50,9 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Start app in dev mode
+        run: npm run dev
+
       - name: Run smoke test
         run: npm run test:smoke
       
