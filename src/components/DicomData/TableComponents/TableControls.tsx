@@ -1,11 +1,12 @@
-//import React, {useState} from "react";
 import Search from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
-import { TableControlsProps } from "../../../types/DicomTypes";
+import { AnonPopupProps, TableControlsProps } from "../../../types/DicomTypes";
 import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
-import AnonPopup from "./AnonPopup";
+import { AnonPopup } from "./AnonPopup";
 import { TagDictionary } from "../../../tagDictionary/dictionary";
+
+
 /**
  * Controls component for the DICOM table
  * @component
@@ -26,23 +27,19 @@ const TableControls: React.FC<TableControlsProps> = ({
     const files = useStore((state) => state.files);
     const tags = useStore((state) => state.tags);
     const setTags = useStore((state) => state.setTags);
-    const setFormattedData = useStore((state) => state.setFormattedData);
     const clearData = useStore((state) => state.clearData);
     const showPopup = useStore((state) => state.showPopup);
     const setShowPopup = useStore((state) => state.setShowPopup);
 
-    //const [showPopup, setShowPopup] = useState(false);
-
     const tagDictionary = new TagDictionary();
 
     const handleAutoAnon = async () => {
-        const newTagData = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: any; }) => ({
+        const newTagData: AnonPopupProps[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
             tagId: tag.tagId,
             tagName: tagDictionary.lookupTagName(tag.tagId),
             newValue: tag.newValue
         }));
         setTags(newTagData);
-        setFormattedData(newTagData);
         setShowPopup(true);
     };
 
@@ -77,7 +74,10 @@ const TableControls: React.FC<TableControlsProps> = ({
                 </div>
             </div>
             {showPopup && (
-                <AnonPopup tags={tags} onConfirm={handleConfirm} onCancel={handleCancel} />
+                <AnonPopup 
+                    tags={tags} 
+                    onConfirm={handleConfirm} 
+                    onCancel={handleCancel} />
             )}
         </div>
     );

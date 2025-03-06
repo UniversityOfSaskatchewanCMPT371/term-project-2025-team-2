@@ -166,3 +166,20 @@ export interface DicomTableBodyProps {
         deleteTag: boolean
     ) => void;
 }
+
+/**
+ * Props for the AnonPopup component
+ * @interface {Object} AnonPopupProps
+ * @property {Array<{ tagId: string, tagName: string, newValue: string }>} tags - List of tags to be anonymized
+ * @property {function(): void} onConfirm - Callback function for confirming the anonymization
+ * @property {function(): void} onCancel - Callback function for canceling the anonymization
+ */
+export interface AnonPopupProps {
+    tags: { 
+        tagId: string; 
+        tagName: string; 
+        newValue: string; 
+    }[];
+    onConfirm: () => void;
+    onCancel: () => void;
+}

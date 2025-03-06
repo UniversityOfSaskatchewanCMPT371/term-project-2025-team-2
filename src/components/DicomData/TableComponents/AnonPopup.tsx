@@ -1,17 +1,12 @@
 import React from 'react';
-
-interface AnonPopupProps {
-    tags: { tagId: string, tagName: string, newValue: string }[];
-    onConfirm: () => void;
-    onCancel: () => void;
-}
+import { AnonPopupProps } from '../../../types/DicomTypes';
 
 /**
  * Confirmation popup for auto anonymized tags
  * @param {AnonPopupProps} props - Component props
  * @returns {JSX.Element} Popup box with list of tags to be anonymized
  */
-const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel }) => {
+export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel }) => {
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-5 rounded-lg text-center shadow-lg max-w-lg w-11/12 max-h-full overflow-y-auto">
@@ -31,5 +26,3 @@ const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel }) => {
         </div>
     );
 };
-
-export default AnonPopup;
