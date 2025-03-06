@@ -47,6 +47,9 @@ jobs:
         run: npm run pretty
         continue-on-error: false
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Run smoke test
         run: npm run test:smoke
       
