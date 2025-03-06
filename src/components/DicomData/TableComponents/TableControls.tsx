@@ -43,6 +43,13 @@ const TableControls: React.FC<TableControlsProps> = ({
         setShowPopup(true);
     };
 
+    const handleUpdateTag = (tagId: string, newValue: string) => {
+        const updatedTags = anonTags.map((tag: AnonTag) =>
+            tag.tagId === tagId ? { ...tag, newValue } : tag
+        );
+        setTags(updatedTags);
+    };
+
     const handleConfirm = async () => {
         await AutoAnon(dicomData, files);
         setShowPopup(false);
@@ -77,7 +84,9 @@ const TableControls: React.FC<TableControlsProps> = ({
                 <AnonPopup 
                     tags={anonTags} 
                     onConfirm={handleConfirm} 
-                    onCancel={handleCancel} />
+                    onCancel={handleCancel}
+                    onUpdateTag={handleUpdateTag}
+                />
             )}
         </div>
     );
