@@ -22,6 +22,7 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
     try {
         await page.goto(BASE_URL);
+        await page.waitForSelector('h1:text("DICOM Tag Editor")', { state: 'visible' });
 
         const dicomDir = "./test-data/test_dicoms/gen_dicom_files";
         const dicomFiles = fs
