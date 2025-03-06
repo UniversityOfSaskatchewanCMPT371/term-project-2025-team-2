@@ -51,7 +51,7 @@ const TableControls: React.FC<TableControlsProps> = ({
     };
 
     const handleConfirm = async () => {
-        await AutoAnon(dicomData, files);
+        await AutoAnon(dicomData, files, anonTags);
         setShowPopup(false);
         clearData();
     };
