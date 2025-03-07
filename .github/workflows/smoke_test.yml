@@ -5,6 +5,10 @@ on:
     workflows: [ CI ]
     types: [ completed ]
     branches: [ main, development, feat/test_workflows ]
+  push:
+    branches: [ "main", "development", "feat/test_workflows" ]
+  pull_request:
+    branches: [ "main", "development", "feat/test_workflows" ]
     
   workflow_dispatch:
 
