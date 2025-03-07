@@ -16,6 +16,7 @@ import { TagDictionary } from "../../../tagDictionary/dictionary";
  * @param {function(): void} props.onSave - Callback for save action
  * @param {function(): void} props.onToggleHidden - Callback for toggling hidden tags
  * @param {boolean} props.showHidden - Whether hidden tags are currently shown
+ * @precondition dicomData and files should not be empty
  * @returns {JSX.Element} The rendered controls section
  */
 const TableControls: React.FC<TableControlsProps> = ({
@@ -33,7 +34,11 @@ const TableControls: React.FC<TableControlsProps> = ({
 
     const tagDictionary = new TagDictionary();
 
+    console.assert(dicomData.length > 0, 'dicomData should not be empty');
+    console.assert(files.length > 0, 'files should not be empty');
+
     const handleAutoAnon = async () => {
+        // format anon tags and show them
         const newTagData: AnonTag[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
             tagId: tag.tagId,
             tagName: tagDictionary.lookupTagName(tag.tagId),
@@ -43,8 +48,17 @@ const TableControls: React.FC<TableControlsProps> = ({
         setShowPopup(true);
     };
 
+    const handleUpdateTag = (tagId: string, newValue: string) => {
+        // update tags after user input
+        const updatedTags = anonTags.map((tag: AnonTag) =>
+            tag.tagId === tagId ? { ...tag, newValue } : tag
+        );
+        setTags(updatedTags);
+    };
+
     const handleConfirm = async () => {
-        await AutoAnon(dicomData, files);
+        // anonymize tags
+        await AutoAnon(dicomData, files, anonTags);
         setShowPopup(false);
         clearData();
     };
@@ -77,7 +91,9 @@ const TableControls: React.FC<TableControlsProps> = ({
                 <AnonPopup 
                     tags={anonTags} 
                     onConfirm={handleConfirm} 
-                    onCancel={handleCancel} />
+                    onCancel={handleCancel}
+                    onUpdateTag={handleUpdateTag}
+                />
             )}
         </div>
     );
