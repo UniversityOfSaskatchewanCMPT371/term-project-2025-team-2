@@ -1,6 +1,7 @@
 name: Smoke Tests
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: 
         - CI
@@ -22,7 +23,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run tests
         run: npm run test:smoke 
-        
+
   build-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
