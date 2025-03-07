@@ -53,4 +53,17 @@ describe('AnonPopup', () => {
         expect(onUpdateTag).toHaveBeenCalledWith('X00100010', 'General Aladeen');
     });
 
+    // ***** UNIT TEST edits tag value on Enter *****
+    test('edits tag value on Enter', () => {
+        const onUpdateTag = jest.fn();
+        render(<AnonPopup tags={mockTags} onConfirm={jest.fn()} onCancel={jest.fn()} onUpdateTag={onUpdateTag} />);
+
+        fireEvent.click(screen.getByText('John Doe'));
+        const input = screen.getByDisplayValue('John Doe');
+        fireEvent.change(input, { target: { value: 'General Aladeen' } });
+        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+        expect(onkeydown).toHaveBeenCalledTimes(1);
+        expect(onUpdateTag).toHaveBeenCalledWith('X00100010', 'General Aladeen');
+    });
+
 });
