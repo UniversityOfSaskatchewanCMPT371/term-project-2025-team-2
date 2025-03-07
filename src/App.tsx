@@ -5,14 +5,15 @@ import FileUploader from "./components/FileHandling/FileUploader";
 import DicomTable from "./components/DicomData/TableComponents/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
 import FileHeader from "./components/FileHandling/FileHeader";
-import { CustomFile as CustomFile } from "./types/FileTypes";
 import Footer from "./components/Navigation/Footer";
 import QuestionModal from "./components/utils/Modals/QuestionModal";
 import Modal from "./components/utils/Modals/Modal";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
+import DownloadAllZip from "./components/utils/DownloadAllZip"; // Import new component
 
 import { useStore } from "./components/State/Store";
+import { CustomFile } from "./types/FileTypes";
 import { DicomData } from "./types/DicomTypes";
 
 /**
@@ -24,42 +25,27 @@ const App: React.FC = () => {
 
     const files = useStore((state) => state.files);
     const setFiles = useStore((state) => state.setFiles);
-
     const dicomData = useStore((state) => state.dicomData);
     const setDicomData = useStore((state) => state.setDicomData);
-
     const currentFileIndex = useStore((state) => state.currentFileIndex);
     const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
-
     const loading = useStore((state) => state.loading);
     const setLoading = useStore((state) => state.setLoading);
-
     const showErrorModal = useStore((state) => state.showErrorModal);
     const showError = useStore((state) => state.showError);
     const setShowErrorModal = useStore((state) => state.setShowErrorModal);
-
     const sidebarVisible = useStore((state) => state.sidebarVisible);
     const setSidebarVisible = useStore((state) => state.setSidebarVisible);
-
     const showSeriesModal = useStore((state) => state.showSeriesModal);
     const setShowSeiresModal = useStore((state) => state.setShowSeriesModal);
-
     const series = useStore((state) => state.series);
     const setSeries = useStore((state) => state.setSeries);
-
     const seriesSwitchModel = useStore((state) => state.seriesSwitchModel);
-    const setSeriesSwitchModel = useStore(
-        (state) => state.setSeriesSwitchModel
-    );
-
+    const setSeriesSwitchModel = useStore((state) => state.setSeriesSwitchModel);
     const setDownloadOption = useStore((state) => state.setDownloadOption);
-
     const emptyNewTagValues = useStore((state) => state.emptyNewTagValues);
-
     const showHiddenTags = useStore((state) => state.showHiddenTags);
-
     const theme = useStore((state) => state.theme);
-
     const clearData = useStore((state) => state.clearData);
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -109,10 +95,7 @@ const App: React.FC = () => {
             logger.debug("PWA: Install prompt captured and ready");
         };
 
-        window.addEventListener(
-            "beforeinstallprompt",
-            handleBeforeInstallPrompt
-        );
+        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
         if (import.meta.env.DEV) {
             logger.debug("PWA: Running in development mode");
@@ -124,50 +107,18 @@ const App: React.FC = () => {
         });
 
         return () => {
-            window.removeEventListener(
-                "beforeinstallprompt",
-                handleBeforeInstallPrompt
-            );
+            window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
         };
     }, []);
 
-    // PWA installation prompt click handler
-    const handleInstallClick = async () => {
-        if (!deferredPrompt) {
-            logger.info("PWA: No installation prompt available");
-            return;
-        }
-
-        try {
-            const promptEvent = deferredPrompt as any;
-            promptEvent.prompt();
-
-            const { outcome } = await promptEvent.userChoice;
-            logger.info(`PWA: User response to the install prompt: ${outcome}`);
-
-            setDeferredPrompt(null);
-        } catch (err) {
-            logger.error("PWA: Error during installation:", err);
-        }
-    };
-
-    // File handling
-    const handleFileUpload = (
-        newFiles: CustomFile[],
-        newDicomData: DicomData[]
-    ) => {
+    const handleFileUpload = (newFiles: CustomFile[], newDicomData: DicomData[]) => {
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
         emptyNewTagValues();
-
         logger.debug("file-loaded");
         setLoading(false);
 
-        // If more than 15 files, set download option to zip
-        // downloading to many files at once can cause files to be skipped
-        // state needs to be made global to limit user changing download option
-        // in settings
         if (newFiles.length > MAXSINGLEFILESDOWNLOAD) {
             setDownloadOption("zip");
         }
@@ -177,29 +128,24 @@ const App: React.FC = () => {
         }
     };
 
-    // File navigation - move to next file
     const nextFile = () => {
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
     };
 
-    // File navigation - move to previous file
     const prevFile = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
     };
 
-    // main render
     return (
         <div className="flex min-h-screen flex-col">
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
                 sidebarButtonRef={sidebarButtonRef}
-                onInstallClick={handleInstallClick}
-                showInstallButton={!!deferredPrompt}
             />
 
             <div className="flex flex-1">
@@ -212,10 +158,11 @@ const App: React.FC = () => {
                             toggleModal={showError}
                         />
 
-                        <FileHeader
-                            files={files}
-                            currentFileIndex={currentFileIndex}
-                        />
+                        <FileHeader files={files} currentFileIndex={currentFileIndex} />
+
+                        {/* Download All as ZIP Button in Main Page */}
+                        <DownloadAllZip />
+
                     </>
 
                     {files.length > 1 && !series ? (
@@ -249,9 +196,7 @@ const App: React.FC = () => {
                     isOpen={seriesSwitchModel}
                     onClose={() => setSeriesSwitchModel(false)}
                     title={"Switch to Series"}
-                    text={
-                        "Multiple files have been edited. Displayed files edited tags will be applied to all files"
-                    }
+                    text={"Multiple files have been edited. Displayed files edited tags will be applied to all files"}
                 />
 
                 <Modal
