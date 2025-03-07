@@ -16,7 +16,8 @@
     "test:unit":"jest tests/jest/unitTest",
     "test:integration":"jest tests/jest/integrationTest",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
-    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts"
+    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts",
+    "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/regressionTests/autoEditing.spec.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

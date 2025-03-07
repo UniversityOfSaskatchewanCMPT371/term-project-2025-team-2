@@ -23,7 +23,7 @@ test("Upload dicoms and verify file name matches tags displayed", async ({
     try {
         await page.goto(BASE_URL);
 
-        const dicomDir = "./test-data/test_dicoms/gen_dicom_files";
+        const dicomDir = "./test-data/test_dicoms/gen_dicom_files/simple_files";
         const dicomFiles = fs
             .readdirSync(dicomDir)
             .filter((file) => file.endsWith(".dcm"))

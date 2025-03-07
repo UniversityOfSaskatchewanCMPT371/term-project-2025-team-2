@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { isSafari } from "react-device-detect";
 
 import { CustomFile } from "../../types/FileTypes";
-import { TableUpdateData, DicomData } from "../../types/DicomTypes";
+import { TableUpdateData, DicomData, AnonTag } from "../../types/DicomTypes";
 
 type Store = {
     files: CustomFile[];
@@ -46,6 +46,15 @@ type Store = {
 
     showHiddenTags: boolean;
     setShowHiddenTags: (show: boolean) => void;
+
+    tags: AnonTag[];
+    setTags: (tags: AnonTag[]) => void;
+
+    showPopup: boolean;
+    setShowPopup: (show: boolean) => void;
+
+    editingTagId: string | null;
+    setEditingTagId: (id: string | null) => void;
 
     clearData: () => void;
 };
@@ -123,6 +132,15 @@ export const useStore = create<Store>((set) => ({
         localStorage.getItem("showHiddenTags") ?? "false"
     ),
     setShowHiddenTags: (show) => set({ showHiddenTags: show }),
+
+    tags: [] as AnonTag[],
+    setTags: (tags) => set({ tags }),
+
+    showPopup: false,
+    setShowPopup: (show) => set({ showPopup: show }),
+
+    editingTagId: null,
+    setEditingTagId: (id) => set({ editingTagId: id }),
 
     clearData: () => {
         set({ newTagValues: [] });

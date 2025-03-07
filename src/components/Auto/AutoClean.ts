@@ -6,6 +6,7 @@ import {
     downloadDicomFile,
 } from "../DicomData/DownloadFuncs";
 import { CustomFile } from "../../types/FileTypes";
+import { AnonTag } from "../../types/DicomTypes";
 
 /**
  * @description format the data to be used in the tagUpdater function
@@ -45,12 +46,21 @@ export function FormatData(dicomData: any) {
  * @param files
  * @returns none
  */
-export const AutoAnon = async (dicomData: any[], files: CustomFile[]) => {
+export const AutoAnon = async (dicomData: any[], files: CustomFile[], anonTags: AnonTag[]) => {
    
     const newFiles: any = [];
 
     dicomData.forEach((dicom: any, index: number) => {
         const formatedData = FormatData(dicom);
+
+        // Update the formatted data with the new values from anonTags
+        anonTags.forEach((anonTag) => {
+            const tagIndex = formatedData.findIndex((tag: any) => tag.tagId === anonTag.tagId);
+            if (tagIndex !== -1) {
+                formatedData[tagIndex].newValue = anonTag.newValue;
+            }
+        });
+
         const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
 
         newFiles.push(createFile(files[index].name, updatedFile));

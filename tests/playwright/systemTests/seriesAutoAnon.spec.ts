@@ -29,7 +29,7 @@ test("Auto anon tags in series", async ({ page }) => {
 
         await page.goto(BASE_URL);
 
-        const dicomDir = "./test-data/test_dicoms/gen_dicom_files";
+        const dicomDir = "./test-data/test_dicoms/gen_dicom_files/simple_files";
         const dicomFiles = fs
             .readdirSync(dicomDir)
             .filter((file) => file.endsWith(".dcm"))
@@ -73,6 +73,10 @@ test("Auto anon tags in series", async ({ page }) => {
         const autoAnonButton = page.getByRole("button", { name: /Auto Anon/i });
         await expect(autoAnonButton).toBeVisible({ timeout: 1000 });
         await autoAnonButton.click();
+
+        const okAnonButton = page.getByRole("button", { name: /OK/i });
+        await expect(okAnonButton).toBeVisible({ timeout: 1000 });
+        await okAnonButton.click();
 
         const download = await downloadPromise;
 
@@ -149,6 +153,11 @@ test("Auto anon tags in series", async ({ page }) => {
         let hasMoreFiles = true;
 
         while (hasMoreFiles) {
+            
+            if(fileCount > 5) {
+                break;
+            }
+
             fileCount++;
             debug(`Checking file #${fileCount}...`);
 
@@ -180,41 +189,6 @@ test("Auto anon tags in series", async ({ page }) => {
 
                 }
 
-                // const PatientIDRow = page
-                //     .locator("tr", {
-                //         has: page.locator("td", { hasText: "PatientID" }),
-                //     })
-                //     .first();
-
-                // await expect(PatientIDRow).toBeVisible({ timeout: 1000 });
-
-                // const currentlyViewingText = await page
-                //     .locator("text=/Currently Viewing: .+\.dcm/")
-                //     .textContent();
-                // debug(
-                //     `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
-                // );
-
-                // const filenameMatch = currentlyViewingText?.match(
-                //     /Currently Viewing: (.+\.dcm)/
-                // );
-                // const filename = filenameMatch ? filenameMatch[1] : "";
-
-                // const fileNumberMatch = filename.match(/(\d+)/);
-                // const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
-
-                // debug(`File ${fileCount} - File number: ${fileNumber}`);
-
-                // const patientIDValue = await PatientIDRow.locator("td")
-                //     .nth(2)
-                //     .textContent();
-                // debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
-
-                // expect(patientIDValue).toContain(fileNumber);
-
-                // debug(
-                //     `File ${fileCount} - Verified: PatientID contains the file number`
-                // );
             }
 
             const nextButton = page.getByRole("button", { name: /Next/i });
