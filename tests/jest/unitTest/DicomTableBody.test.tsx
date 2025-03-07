@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import DicomTableBody from "../../../src/components/DicomData/TableComponents/DicomTableBody";
+import { DicomTableBody } from "../../../src/components/DicomData/TableComponents/DicomTableBody";
 
 jest.mock("../../../src/components/DicomData/TableComponents/DicomTableRow", () => ({
     DicomTableRow: jest.fn(() => <tr data-testid="dicom-table-row"></tr>),

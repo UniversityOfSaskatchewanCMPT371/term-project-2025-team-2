@@ -8,7 +8,7 @@ import { useFilteredRows } from "../../Hooks/useFilteredRows";
 import { createRows } from "./rowUtils";
 import TableHeader from "./TableHeader";
 import TableControls from "./TableControls";
-import DicomTableBody from "./DicomTableBody";
+import { DicomTableBody } from "./DicomTableBody";
 
 import { useStore } from "../../State/Store";
 
