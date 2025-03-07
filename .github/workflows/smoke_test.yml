@@ -1,12 +1,8 @@
 name: Smoke Tests
 
 on:
-  push:
-    branches: [ "main", "development", "feat/test_workflows" ]
-  pull_request:
-    branches: [ "main", "development", "feat/test_workflows" ]
   workflow_run:
-    workflows: [ CI ]
+    workflows: ["ci-pipeline.yml"]
     types: [ completed ]
     branches: [ main, development, feat/test_workflows ]
 
