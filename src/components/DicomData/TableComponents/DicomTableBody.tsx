@@ -1,6 +1,6 @@
 import React from "react";
 import { DicomTableRow } from "./DicomTableRow";
-import { EmptyTableRow } from "./EmptyTableRow";
+import EmptyTableRow from "./EmptyTableRow";
 import { DicomTableBodyProps } from "../../../types/DicomTypes";
 
 /**
