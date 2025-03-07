@@ -11,5 +11,5 @@ export default {
     },
     setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     //ignore playwright tests
-    testPathIgnorePatterns: ["/node_modules/", "/tests/playwright/", "/tests/smokeTests/smokeTests.spec.ts"],
+    testPathIgnorePatterns: ["/node_modules/", "/tests/playwright/", "/tests/smokeTests/smokeTests.spec.ts", "/tests/regressionTests/autoEditing.spec.ts"],
 };

@@ -98,3 +98,24 @@ test("Upload dicom and verify file name matches tag displayed", async ({
     }
 
 });
+
+test("Toggle sidebar", async ({ page }) => {
+    try {
+        await page.goto(BASE_URL);
+
+        const sidebarToggleButton = page
+            .locator('button >> svg[data-slot="icon"]')
+            .first();
+        await sidebarToggleButton.waitFor();
+        await sidebarToggleButton.click();
+
+        await page.waitForSelector("text=Files", {
+            state: "visible",
+            timeout: 2000,
+        })
+
+    } catch (error) {
+        console.error("Error toggling sidebar:", error);
+        throw error;
+    }
+});
