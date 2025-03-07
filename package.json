@@ -13,6 +13,8 @@
     "docs": "typedoc --entryPointStrategy Expand src",
     "test": "jest",
     "test:smoke": "playwright test tests/smokeTests",
+    "test:unit":"jest tests/unit",
+    "test:integration":"jest tests/integrationTest && playwright test tests/integrationTests",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
     "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts"
   },
