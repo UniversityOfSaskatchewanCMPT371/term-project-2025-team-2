@@ -2,9 +2,12 @@ name: Smoke Tests
 
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: 
+        - CI
     types: 
         - completed
+    branches:
+        - feat/test_workflows
 
 jobs:
   smoke-tests:
@@ -21,8 +24,3 @@ jobs:
       - name: Run tests
         run: npm run test:smoke 
     
-  build-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-       - run: echo 'The build failed'
