@@ -1,0 +1,26 @@
+name: System Test
+
+on:
+  push:
+    branches: [ "main", "development", "test/test_workflows" ]
+  pull_request:
+    branches: [ "main", "development" ]
+
+  workflow_dispatch:
+
+jobs:
+  system_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm install
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run System Tests
+        run: xvfb-run npx playwright test tests/playwright/systemTests --headed
+
