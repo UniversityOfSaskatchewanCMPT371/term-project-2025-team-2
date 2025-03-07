@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { AnonPopupProps } from '../../../types/DicomTypes';
+import { useStore } from '../../State/Store';
 
 /**
  * Confirmation popup for auto anonymized tags
@@ -7,9 +7,10 @@ import { AnonPopupProps } from '../../../types/DicomTypes';
  * @returns {JSX.Element} Popup box with list of tags to be anonymized
  */
 export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel, onUpdateTag }) => {
-    const [editingTagId, setEditingTagId] = useState<string | null>(null);
+    const editingTagId = useStore((state) => state.editingTagId);
+    const setEditingTagId = useStore((state) => state.setEditingTagId);
 
-    // edited tag is part of tags
+    // edited tag is part of tags array
     if (editingTagId !== null) {
         console.assert(tags.some(tag => tag.tagId === editingTagId), 'editingTagId should be a valid tagId');
     }
