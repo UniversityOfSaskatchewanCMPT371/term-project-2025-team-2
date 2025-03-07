@@ -33,24 +33,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
      * @param fileArray - Array of files
      * Processes files
      */
-    // const processFiles = (fileArray: File[]) => {
-    //     const dicomDataArray: any[] = [];
-
-    //     fileArray.forEach((file) => {
-    //         parseDicomFile(file)
-    //             .then((dicomData) => {
-    //                 dicomDataArray.push(dicomData);
-    //                 if (dicomDataArray.length === fileArray.length) {
-    //                     onFileUpload(fileArray, dicomDataArray);
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 onFileUpload((fileArray = []), dicomDataArray);
-    //                 toggleModal();
-    //                 logger.error(error);
-    //             });
-    //     });
-    // };
     const processFiles = (fileArray: File[]) => {
         clearData();
         loading(true);
