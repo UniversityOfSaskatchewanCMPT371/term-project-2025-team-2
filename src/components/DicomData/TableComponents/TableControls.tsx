@@ -16,6 +16,7 @@ import { TagDictionary } from "../../../tagDictionary/dictionary";
  * @param {function(): void} props.onSave - Callback for save action
  * @param {function(): void} props.onToggleHidden - Callback for toggling hidden tags
  * @param {boolean} props.showHidden - Whether hidden tags are currently shown
+ * @precondition dicomData and files should not be empty
  * @returns {JSX.Element} The rendered controls section
  */
 const TableControls: React.FC<TableControlsProps> = ({
@@ -32,6 +33,9 @@ const TableControls: React.FC<TableControlsProps> = ({
     const setShowPopup = useStore((state) => state.setShowPopup);
 
     const tagDictionary = new TagDictionary();
+
+    console.assert(dicomData.length > 0, 'dicomData should not be empty');
+    console.assert(files.length > 0, 'files should not be empty');
 
     const handleAutoAnon = async () => {
         // format anon tags and show them

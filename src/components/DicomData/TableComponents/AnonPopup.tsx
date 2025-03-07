@@ -9,7 +9,10 @@ import { AnonPopupProps } from '../../../types/DicomTypes';
 export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel, onUpdateTag }) => {
     const [editingTagId, setEditingTagId] = useState<string | null>(null);
 
-    console.assert(Array.isArray(tags), 'tags should be an array');
+    // edited tag is part of tags
+    if (editingTagId !== null) {
+        console.assert(tags.some(tag => tag.tagId === editingTagId), 'editingTagId should be a valid tagId');
+    }
 
     const handleInputChange = (tagId: string, event: React.ChangeEvent<HTMLInputElement>) => {
         onUpdateTag(tagId, event.target.value);
