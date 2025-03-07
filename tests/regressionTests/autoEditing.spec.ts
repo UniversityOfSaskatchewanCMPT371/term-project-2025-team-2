@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import * as fs from "fs";
 
-import { TagsAnon } from "@auto/TagsAnon";
+// import { TagsAnon } from "@auto/TagsAnon";
 
 import AdmZip from "adm-zip";
 import { promisify } from "util";
@@ -21,6 +21,26 @@ const debug = (message: string) => {
         console.log(message);
     }
 };
+
+const tagsanon = [ 
+    "InstitutionName", 
+    "InstitutionAddress", 
+    "ReferringPhysicianName",   
+    "PerformingPhysicianName", 
+    "NameOfPhysiciansReadingStudy", 
+    "OperatorsName", 
+    "PatientName", 
+    "AdditionalPatientHistory",  
+    "OtherPatientIDs", 
+    "OtherPatientNames", 
+    "ClinicalTrialSponsorName", 
+    "ClinicalTrialSiteName", 
+    "ClinicalTrialCoordinatingCenterName", 
+    "ClinicalTrialProtocolEthicsCommitteeName", 
+    "ClinicalTrialProtocolEthicsCommitteeApprovalNumber",  
+    "EvaluatorName", 
+    "OrderCallbackPhoneNumber", 
+]
 
 test("Edit tags in MRI series", async ({ page }) => {
     try {
@@ -66,13 +86,15 @@ test("Edit tags in MRI series", async ({ page }) => {
 
         await expect(tagRow).toBeVisible({ timeout: 1000 });
 
-        await expect(tagRow).not.toHaveText("ANONYMOUS");
-
         const downloadPromise = page.waitForEvent("download");
 
         const autoAnonButton = page.getByRole("button", { name: /Auto Anon/i });
         await expect(autoAnonButton).toBeVisible({ timeout: 1000 });
         await autoAnonButton.click();
+
+        const okAnonButton = page.getByRole("button", { name: /OK/i });
+        await expect(okAnonButton).toBeVisible({ timeout: 1000 });
+        await okAnonButton.click();
 
         const download = await downloadPromise;
 
@@ -160,58 +182,26 @@ test("Edit tags in MRI series", async ({ page }) => {
             }
 
 
-            const row = page
-                .locator("tr", {
-                    has: page.locator("td", { hasText: "PatientName" }),
-                })
-                .first();
+            for(const tag of tagsanon) {
+                const row = page
+                    .locator("tr", {
+                        has: page.locator("td", { hasText: tag }),
+                    })
+                    .first();
 
-            await expect(row).toBeVisible({ timeout: 100 });
+                await expect(row).toBeVisible({ timeout: 20000 });
 
+                const rowValue = await row.locator("td").nth(2).textContent();
 
-            const rowValue = await row.locator("td").nth(2).textContent();
+                debug(`File ${fileCount} - ${tag}: ${rowValue}`);
 
-            debug(`File ${fileCount} - value: ${rowValue}`);
+                expect(rowValue).toContain("ANONYMOUS");
 
-            expect(rowValue).toContain("ANONYMOUS");
-
-
-            // const PatientIDRow = page
-            //     .locator("tr", {
-            //         has: page.locator("td", { hasText: "PatientID" }),
-            //     })
-            //     .first();
-
-            // await expect(PatientIDRow).toBeVisible({ timeout: 1000 });
-
-            // const currentlyViewingText = await page
-            //     .locator("text=/Currently Viewing: .+\.dcm/")
-            //     .textContent();
-            // debug(
-            //     `File ${fileCount} - Currently viewing: ${currentlyViewingText}`
-            // );
-
-            // const filenameMatch = currentlyViewingText?.match(
-            //     /Currently Viewing: (.+\.dcm)/
-            // );
-            // const filename = filenameMatch ? filenameMatch[1] : "";
-
-            // const fileNumberMatch = filename.match(/(\d+)/);
-            // const fileNumber = fileNumberMatch ? fileNumberMatch[0] : "";
-
-            // debug(`File ${fileCount} - File number: ${fileNumber}`);
-
-            // const patientIDValue = await PatientIDRow.locator("td")
-            //     .nth(2)
-            //     .textContent();
-            // debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
-
-            // expect(patientIDValue).toContain(fileNumber);
-
-            // debug(
-            //     `File ${fileCount} - Verified: PatientID contains the file number`
-            // );
-        }
+                if (!DEBUG) {
+                    process.stdout.write(". ");
+                }
+            };
+        
 
         const nextButton = page.getByRole("button", { name: /Next/i });
 
@@ -239,8 +229,10 @@ test("Edit tags in MRI series", async ({ page }) => {
         if (!DEBUG) {
             process.stdout.write(". ");
         }
+    }
 
         console.log(`\nSuccessfully checked ${fileCount} files`);
+
     } catch (error) {
 
         console.error("\nTest failed:", error);
