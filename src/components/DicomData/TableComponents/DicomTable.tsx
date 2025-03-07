@@ -19,7 +19,7 @@ import { useStore } from "../../State/Store";
  * @returns {JSX.Element} The rendered DICOM table
  * @throws {Error} When no DICOM data is available
  */
-const DicomTable: React.FC<DicomTableProps> = () => {
+export const DicomTable: React.FC<DicomTableProps> = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const files = useStore((state) => state.files);
@@ -102,5 +102,3 @@ const DicomTable: React.FC<DicomTableProps> = () => {
         </div>
     );
 };
-
-export default DicomTable;

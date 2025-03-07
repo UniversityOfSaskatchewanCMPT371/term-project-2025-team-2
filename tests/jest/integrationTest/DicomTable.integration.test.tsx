@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
+import { DicomTable } from "../../../src/components/DicomData/TableComponents/DicomTable";
 import {
     createFile,
     downloadDicomFile,
