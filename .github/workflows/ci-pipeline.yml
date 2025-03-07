@@ -46,6 +46,9 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       
       - name: Run Unit Tests
         run: npm run test:unit
