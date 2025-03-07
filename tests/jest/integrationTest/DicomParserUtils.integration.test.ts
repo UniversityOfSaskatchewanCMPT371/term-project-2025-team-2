@@ -1,9 +1,7 @@
-// tests/jest/integrationTest/DicomParserUtils.integration.test.tsx
 import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 
-// Mock dicomParser
 jest.mock("dicom-parser", () => ({
     parseDicom: jest.fn(),
 }));
@@ -12,13 +10,11 @@ describe("DicomParserUtils Integration Tests", () => {
     let mockFile: File;
 
     beforeEach(() => {
-        // Create a mock DICOM file
         mockFile = new File([new ArrayBuffer(10)], "test.dcm", {
             type: "application/dicom",
         });
     });
 
-    /***** INTEGRATION TEST: Should call dicomParser *****/
     test("calls dicomParser.parseDicom when file is valid", async () => {
         const mockDataset = {
             elements: {
@@ -34,7 +30,6 @@ describe("DicomParserUtils Integration Tests", () => {
         expect(dicomParser.parseDicom).toHaveBeenCalled();
     });
 
-    /***** INTEGRATION TEST: extract hidden DICOM tags correctly *****/
     test("extracts hidden DICOM tags correctly", async () => {
         const mockDataset = {
             elements: {
@@ -50,7 +45,6 @@ describe("DicomParserUtils Integration Tests", () => {
 
         const result = await parseDicomFile(mockFile); // invokes extractDicomTags
 
-        // Check extracted tags
         Object.keys(mockDataset.elements).forEach((tag) => {
             expect(result.tags[tag]).toEqual({
                 tagId: tag,
@@ -61,7 +55,6 @@ describe("DicomParserUtils Integration Tests", () => {
         });
     });
 
-    /***** INTEGRATION TEST: Should extract nested sequence items correctly *****/
     test("extracts nested DICOM sequence (SQ) items", async () => {
         const mockDataset = {
             elements: {
@@ -93,15 +86,14 @@ describe("DicomParserUtils Integration Tests", () => {
                     ],
                 },
             },
-            byteArray: new Uint8Array(128), // raw binary data
+            byteArray: new Uint8Array(128), 
             string: jest.fn(() => null),
         };
 
         (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
 
-        const result = await parseDicomFile(mockFile); // invokes extractDicomTags & mocked TagDictionary
+        const result = await parseDicomFile(mockFile); 
 
-        // Ensure nested sequence extraction works
         expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
             tagId: "00080100",
             tagName: "Unknown",
@@ -115,13 +107,12 @@ describe("DicomParserUtils Integration Tests", () => {
         });
     });
 
-    /***** INTEGRATION TEST: extract values from multiple DICOM tags *****/
     test("extracts values from multiple DICOM tags", async () => {
         const mockDataset = {
             elements: {
-                "00100010": { vr: "PN" }, // Patient Name
-                "00100020": { vr: "LO" }, // Patient ID
-                "00100030": { vr: "DA" }, // Patient Birth Date
+                "00100010": { vr: "PN" }, 
+                "00100020": { vr: "LO" }, 
+                "00100030": { vr: "DA" }, 
             },
             string: jest.fn((tag) => {
                 if (tag === "00100010") return "Aladin Alihodzic";

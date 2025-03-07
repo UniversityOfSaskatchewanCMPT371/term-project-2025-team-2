@@ -7,7 +7,6 @@ import { FileData } from "../../../src/types/FileTypes";
 
 describe("Download Functions", () => {
     beforeEach(() => {
-        // Mock createElement, click, and removeChild for download testing
         global.URL.createObjectURL = jest.fn(() => "mock-url");
         global.URL.revokeObjectURL = jest.fn();
 

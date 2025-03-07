@@ -1,9 +1,12 @@
-import React from "react";
 import Search from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
-import { TableControlsProps } from "../../../types/DicomTypes";
-import { AutoAnon } from "../../Auto/AutoClean";
+import { AnonTag, TableControlsProps } from "../../../types/DicomTypes";
+import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
+import { AnonPopup } from "./AnonPopup";
+import { TagDictionary } from "../../../tagDictionary/dictionary";
+
+
 /**
  * Controls component for the DICOM table
  * @component
@@ -22,7 +25,33 @@ const TableControls: React.FC<TableControlsProps> = ({
 }) => {
     const dicomData = useStore((state) => state.dicomData);
     const files = useStore((state) => state.files);
+    const anonTags = useStore((state) => state.tags);
+    const setTags = useStore((state) => state.setTags);
     const clearData = useStore((state) => state.clearData);
+    const showPopup = useStore((state) => state.showPopup);
+    const setShowPopup = useStore((state) => state.setShowPopup);
+
+    const tagDictionary = new TagDictionary();
+
+    const handleAutoAnon = async () => {
+        const newTagData: AnonTag[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
+            tagId: tag.tagId,
+            tagName: tagDictionary.lookupTagName(tag.tagId),
+            newValue: tag.newValue
+        }));
+        setTags(newTagData);
+        setShowPopup(true);
+    };
+
+    const handleConfirm = async () => {
+        await AutoAnon(dicomData, files);
+        setShowPopup(false);
+        clearData();
+    };
+
+    const handleCancel = () => {
+        setShowPopup(false);
+    };
 
     return (
         <div className="flex-col-2 flex">
@@ -38,15 +67,18 @@ const TableControls: React.FC<TableControlsProps> = ({
 
                 <div className="ml-4">
                     <GenButton
-                        onClick={() => {
-                            AutoAnon(dicomData, files);
-                            clearData();
-                        }}
+                        onClick={handleAutoAnon}
                         label="Auto Anon"
                         disabled={false}
                     />
                 </div>
             </div>
+            {showPopup && (
+                <AnonPopup 
+                    tags={anonTags} 
+                    onConfirm={handleConfirm} 
+                    onCancel={handleCancel} />
+            )}
         </div>
     );
 };
