@@ -4,13 +4,14 @@ import { useStore } from '../../State/Store';
 /**
  * Confirmation popup for auto anonymized tags
  * @param {AnonPopupProps} props - Component props
+ * @postcondition edited tag should not change to different tag (tagId)
  * @returns {JSX.Element} Popup box with list of tags to be anonymized
  */
 export const AnonPopup: React.FC<AnonPopupProps> = ({ tags, onConfirm, onCancel, onUpdateTag }) => {
     const editingTagId = useStore((state) => state.editingTagId);
     const setEditingTagId = useStore((state) => state.setEditingTagId);
 
-    // edited tag is part of tags array
+    // edited tag is part of tags array (tagId did not chnange)
     if (editingTagId !== null) {
         console.assert(tags.some(tag => tag.tagId === editingTagId), 'editingTagId should be a valid tagId');
     }
