@@ -1,6 +1,8 @@
 name: Smoke Tests
 
 on:
+  push:
+    branches: [ "hotfix/test_workflows" ]
   workflow_dispatch:
   workflow_run:
     workflows: 
