@@ -9,13 +9,12 @@ on:
     branches: [ "main", "development", "feat/test_workflows" ]
   pull_request:
     branches: [ "main", "development", "feat/test_workflows" ]
-    
+
   workflow_dispatch:
 
 jobs:
   smoke-tests:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     env: 
       NODE_ENV: development
 
