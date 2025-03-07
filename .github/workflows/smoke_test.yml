@@ -3,8 +3,12 @@ name: Smoke Tests
 on:
   workflow_run:
     workflows: [CI]
-    types: [completed]
-    branches: [ "main", "development", "feat/test_workflows" ]
+    types: 
+        - completed
+    branches: 
+        - main
+        - development
+        - feat/test_workflows
 
   workflow_dispatch:
 
@@ -31,4 +35,4 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-       - run: echo 'The triggering workflow failed'
+       - run: echo 'The build failed'
