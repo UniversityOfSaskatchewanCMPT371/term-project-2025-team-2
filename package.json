@@ -14,7 +14,7 @@
     "test": "jest",
     "test:smoke": "playwright test tests/smokeTests",
     "test:unit":"jest tests/jest/unitTest",
-    "test:integration":"jest tests/jest/integrationTest && playwright test tests/playwright/integrationTests --headed=false",
+    "test:integration":"jest tests/jest/integrationTest && playwright test tests/playwright/integrationTests --headed",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
     "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts"
   },
