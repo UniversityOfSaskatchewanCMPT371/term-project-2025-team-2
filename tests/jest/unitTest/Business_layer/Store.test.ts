@@ -1,22 +1,16 @@
-// tests/jest/unitTest/Business_layer/Store.test.ts
-import { useStore } from "../../../../src/components/State/Store"; // adjust the import path as needed
+import { useStore } from "../../../../src/components/State/Store"; 
 import { isSafari } from "react-device-detect";
 
-// Define sample data that adheres to the expected types.
-
-// For CustomFile, assume it only needs a 'name' property.
 const sampleFiles = [{ name: "file1.dcm" }];
 
-// For TableUpdateData, assume it requires: fileName, tagId, newValue, and delete.
+
 const sampleTag1 = { fileName: "file1", tagId: "T1", newValue: "value1", delete: false };
 const sampleTag2 = { fileName: "file1", tagId: "T1", newValue: "value2", delete: false };
 const sampleTag = { fileName: "file1", tagId: "T1", newValue: "value1", delete: false };
 
-// For AnonTag, assume it requires: tagId, tagName, and newValue.
 const sampleAnonTags = [{ tagId: "tag1", tagName: "Tag 1", newValue: "new value" }];
 
 beforeEach(() => {
-  // Reset the store state to its initial values.
   useStore.setState({
     files: [],
     dicomData: [],
@@ -114,7 +108,6 @@ describe("Zustand Store", () => {
   });
 
   test("setDownloadOption updates downloadOption and localStorage", () => {
-    // Spy on localStorage.setItem to verify it's called.
     const setItemSpy = jest.spyOn(Storage.prototype, "setItem");
     const { setDownloadOption } = useStore.getState();
     setDownloadOption("single");
@@ -137,10 +130,8 @@ describe("Zustand Store", () => {
 
   test("setNewTagValues adds a new tag and updates an existing one", () => {
     const { setNewTagValues } = useStore.getState();
-    // Add new tag value.
     setNewTagValues(sampleTag1);
     expect(useStore.getState().newTagValues).toEqual([sampleTag1]);
-    // Update the existing tag value.
     setNewTagValues(sampleTag2);
     expect(useStore.getState().newTagValues).toEqual([sampleTag2]);
   });
@@ -189,24 +180,19 @@ describe("Zustand Store", () => {
       clearData,
     } = useStore.getState();
 
-    // Set non-default values.
     setFiles(sampleFiles);
-    // We are not setting dicomData here.
     setCurrentFileIndex(3);
     setLoading(true);
     setSidebarVisible(true);
     setSeries(true);
 
-    // Verify state is modified.
     let state = useStore.getState();
     expect(state.files.length).toBeGreaterThan(0);
-    // Removed expectation for dicomData length since it wasn't set.
     expect(state.currentFileIndex).toBe(3);
     expect(state.loading).toBe(true);
     expect(state.sidebarVisible).toBe(true);
     expect(state.series).toBe(true);
 
-    // Clear data and verify reset.
     clearData();
     state = useStore.getState();
     expect(state.files).toEqual([]);
