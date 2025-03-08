@@ -40,7 +40,6 @@ function extractTagsFromByteArray(fileData: Uint8Array) {
     try {
         const dataSet = dicomParser.parseDicom(fileData);
         return extractDicomTags(dataSet);
-        // return dicomData
     }
     catch (error) {
         console.log("Error parsing DICOM file: ", error);
@@ -68,17 +67,18 @@ describe('TagUpdater unit tests', () => {
     });
 
     // No tag value updates
-    test('no tag value updates', async() => {
+    test('No tag value updates', async() => {
         const newValues: TableUpdateData[] = []
         let updatedFile: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
         expect(updatedFile).toEqual(sampleDicomData.DicomDataSet.byteArray);
     });
 
-    // 1 tag value update - beginning, end, middle, value >> (value can never be too big), value <<
-    test('Updated 1 tag value', async() => {        
+    test('Update 1 tag value', async() => {        
         // get the edited dicom file from pydicom generater
         let expectedDicomData: DicomData;
-        const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/test_dicom_0_edited.dcm', 'test_dicom_0_edited.dcm');
+        let filename: string = 'test_dicom_0_editName.dcm';
+        
+        const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/' + filename, filename);
         if (expectedDicomFile === null) {
             console.error('Error reading file in TagUpdater unit tests');
             return;
@@ -92,10 +92,8 @@ describe('TagUpdater unit tests', () => {
             delete: false
         }]
         let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
-
-        // check if edited dicom file matches the output of tag updater
         
-        // Option 1: get dicom data from expected file and compare
+        // Get dicom data from expected file and compare with updated file
         await parseDicomFile(expectedDicomFile)
         .then((dicomData) => {
             expectedDicomData = dicomData;
@@ -104,7 +102,38 @@ describe('TagUpdater unit tests', () => {
         })
     });
 
-    // 2 tag value updates that are not next to each other
+    test('Update 2 tag values', async() => {        
+        // get the edited dicom file from pydicom generater
+        let expectedDicomData: DicomData;
+        let filename: string = 'test_dicom_0_editNameID.dcm';
+        const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/' + filename, filename);
+        if (expectedDicomFile === null) {
+            console.error('Error reading file in TagUpdater unit tests');
+            return;
+        }
 
-    // 2 tag value updates that are next to each other
+        // update initial dicom file with tag updater
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_0.dcm',
+            tagId: 'X00100010',
+            newValue: 'ANONYMOUS',
+            delete: false
+        }, {
+            fileName: 'test_dicom_0.dcm',
+            tagId: 'X00100020',
+            newValue: '1010',
+            delete: false
+        }]
+        let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
+        
+        // Get dicom data from expected file and compare with updated file
+        await parseDicomFile(expectedDicomFile)
+        .then((dicomData) => {
+            expectedDicomData = dicomData;
+            dicomData = extractTagsFromByteArray(updatedFileData);
+            expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
+        })
+    });
+
+    
 });
