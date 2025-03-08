@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FileTableBody from "../../../src/components/FileHandling/FileTableBody";
-import * as store from "../../../src/components/State/Store";
+import FileTableBody from "../../../../src/components/FileHandling/FileTableBody";
+import * as store from "../../../../src/components/State/Store";
 
 // Mock the Zustand store
-jest.mock("../../../src/components/State/Store");
+jest.mock("../../../../src/components/State/Store");
 
 describe("FileTableBody Component", () => {
     beforeEach(() => {

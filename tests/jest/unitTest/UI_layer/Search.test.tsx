@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Search from "../../../src/components/utils/Search";
+import Search from "../../../../src/components/utils/Search";
 import "@testing-library/jest-dom";
 
 describe("Search component", () => {

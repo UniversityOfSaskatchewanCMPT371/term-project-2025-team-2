@@ -2,8 +2,8 @@ import {
     createZipFromFiles,
     downloadDicomFile,
     createFile,
-} from "../../../src/components/DicomData/DownloadFuncs";
-import { FileData } from "../../../src/types/FileTypes";
+} from "../../../../src/components/DicomData/DownloadFuncs";
+import { FileData } from "../../../../src/types/FileTypes";
 
 describe("Download Functions", () => {
     beforeEach(() => {
