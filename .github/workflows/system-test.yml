@@ -1,10 +1,11 @@
 name: System Test
 
 on:
-  push:
-    branches: [ "main", "development", "hotfix/test_workflows" ]
-  pull_request:
-    branches: [ "main", "development", "hotfix/test_workflows" ]
+  workflow_run:
+    workflows: 
+      - "Smoke Test"
+    types:
+      - completed
 
   workflow_dispatch:
 
