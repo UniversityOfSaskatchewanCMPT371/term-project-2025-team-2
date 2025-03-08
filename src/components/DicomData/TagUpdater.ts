@@ -50,7 +50,6 @@ import dicomParser from "dicom-parser";
  * @returns newDicomData - The updated dicom data object, byte array
  */
 export function tagUpdater(dicomData: any, newTagData: any) {
-    //console.log(newTagData)
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;

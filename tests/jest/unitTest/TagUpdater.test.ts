@@ -32,7 +32,7 @@ function compareDicomTags(obj1: Record<string, any>, obj2: Record<string, any>):
         equal = value1 === value2;
       }
       result = result && equal;
-      console.log(key, value1, value2, equal)
+      //console.log(key, value1, value2, equal)
     });
     return result;
 }
@@ -200,5 +200,63 @@ describe('TagUpdater unit tests', () => {
              expect(dicomData.tags[deleteTagId]).toBe(undefined)
              //expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);         // TODO: this fails
          })
+    });
+
+    test('Update 1 tag value with VR = FD', async() => {        
+        // get the edited dicom file from pydicom generater
+        let expectedDicomData: DicomData;
+        let filename: string = 'test_dicom_AllVRs_changeFD.dcm';
+        
+        const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/' + filename, filename);
+        if (expectedDicomFile === null) {
+            console.error('Error reading file in TagUpdater unit tests');
+            return;
+        }
+
+        // update initial dicom file with tag updater
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00081163',
+            newValue: '86232.111079',
+            delete: false
+        }]
+        let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
+        
+        // Get dicom data from expected file and compare with updated file
+        await parseDicomFile(expectedDicomFile)
+        .then((dicomData) => {
+            expectedDicomData = dicomData;
+            dicomData = extractTagsFromByteArray(updatedFileData);
+            expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
+        })
+    });
+
+    test('Update 1 tag value with VR = UL', async() => {        
+        // get the edited dicom file from pydicom generater
+        let expectedDicomData: DicomData;
+        let filename: string = 'test_dicom_AllVRs_changeUL.dcm';
+        
+        const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/' + filename, filename);
+        if (expectedDicomFile === null) {
+            console.error('Error reading file in TagUpdater unit tests');
+            return;
+        }
+
+        // update initial dicom file with tag updater
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00041600',
+            newValue: '750675509',
+            delete: false
+        }]
+        let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
+        
+        // Get dicom data from expected file and compare with updated file
+        await parseDicomFile(expectedDicomFile)
+        .then((dicomData) => {
+            expectedDicomData = dicomData;
+            dicomData = extractTagsFromByteArray(updatedFileData);
+            expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
+        })
     });
 });
