@@ -1,12 +1,13 @@
 name: Smoke Tests
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: 
         - CI
     types: 
         - completed
+  
+  workflow_dispatch:
 
 jobs:
   smoke-tests:
