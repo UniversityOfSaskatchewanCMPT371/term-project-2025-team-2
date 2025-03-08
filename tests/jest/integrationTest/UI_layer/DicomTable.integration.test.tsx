@@ -1,23 +1,23 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import DicomTable from "../../../src/components/DicomData/TableComponents/DicomTable";
+import DicomTable from "../../../../src/components/DicomData/TableComponents/DicomTable";
 import {
     createFile,
     downloadDicomFile,
-} from "../../../src/components/DicomData/DownloadFuncs";
-import { tagUpdater } from "../../../src/components/DicomData/TagUpdater";
-import logger from "../../../src/components/utils/Logger";
-import * as storeModule from "../../../src/components/State/Store";
+} from "../../../../src/components/DicomData/DownloadFuncs";
+import { tagUpdater } from "../../../../src/components/DicomData/TagUpdater";
+import logger from "../../../../src/components/utils/Logger";
+import * as storeModule from "../../../../src/components/State/Store";
 
-jest.mock("../../../src/components/DicomData/DownloadFuncs", () => ({
+jest.mock("../../../../src/components/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn(),
     downloadDicomFile: jest.fn(),
 }));
 
-jest.mock("../../../src/components/DicomData/TagUpdater", () => ({
+jest.mock("../../../../src/components/DicomData/TagUpdater", () => ({
     tagUpdater: jest.fn(() => "updatedDicomData"),
 }));
 
-jest.mock("../../../src/components/utils/Logger", () => ({
+jest.mock("../../../../src/components/utils/Logger", () => ({
     error: jest.fn(),
     info: jest.fn(),
     debug: jest.fn(),
@@ -25,8 +25,8 @@ jest.mock("../../../src/components/utils/Logger", () => ({
 }));
 
 
-jest.mock("../../../src/components/State/Store", () => {
-    const actual = jest.requireActual("../../../src/components/State/Store");
+jest.mock("../../../../src/components/State/Store", () => {
+    const actual = jest.requireActual("../../../../src/components/State/Store");
     return {
         ...actual,
         useStore: jest.fn(),

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import FileHeader from "../../../src/components/FileHandling/FileHeader";
+import FileHeader from "../../../../src/components/FileHandling/FileHeader";
 
 describe("FileHeader Component", () => {
     test("renders correctly when files are provided", () => {

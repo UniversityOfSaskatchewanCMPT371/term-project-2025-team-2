@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import QuestionModal from "../../../src/components/utils/Modals/QuestionModal";
+import QuestionModal from "../../../../src/components/utils/Modals/QuestionModal";
 import "@testing-library/jest-dom";
 
 describe("QuestionModal component", () => {

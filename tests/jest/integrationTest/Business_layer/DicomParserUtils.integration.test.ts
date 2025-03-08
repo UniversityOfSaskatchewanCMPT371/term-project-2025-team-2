@@ -1,4 +1,4 @@
-import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
+import { parseDicomFile } from "../../../../src/components/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 

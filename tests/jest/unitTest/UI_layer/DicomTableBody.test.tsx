@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import DicomTableBody from "../../../src/components/DicomData/TableComponents/DicomTableBody";
+import DicomTableBody from "../../../../src/components/DicomData/TableComponents/DicomTableBody";
 
-jest.mock("../../../src/components/DicomData/TableComponents/DicomTableRow", () => ({
+jest.mock("../../../../src/components/DicomData/TableComponents/DicomTableRow", () => ({
     DicomTableRow: jest.fn(() => <tr data-testid="dicom-table-row"></tr>),
 }));
-jest.mock("../../../src/components/DicomData/TableComponents/EmptyTableRow", () => ({
+jest.mock("../../../../src/components/DicomData/TableComponents/EmptyTableRow", () => ({
     __esModule: true,
     default: jest.fn(() => <tr data-testid="empty-table-row"></tr>),
 }));

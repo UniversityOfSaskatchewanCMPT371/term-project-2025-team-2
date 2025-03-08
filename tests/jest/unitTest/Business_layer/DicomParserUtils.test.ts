@@ -1,4 +1,4 @@
-import { parseDicomFile } from "../../../src/components/DicomData/DicomParserUtils";
+import { parseDicomFile } from "../../../../src/components/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 
@@ -9,7 +9,7 @@ jest.mock("dicom-parser", () => {
 });
 
 
-jest.mock("../../../src/tagDictionary/dictionary", () => ({
+jest.mock("../../../../src/tagDictionary/dictionary", () => ({
     TagDictionary: class {
         lookup(tag: string) {
             return (
