@@ -34,22 +34,35 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      * Processes files
      */
     const processFiles = (fileArray: File[]) => {
-        const dicomDataArray: any[] = [];
+        clearData();
+        loading(true);
 
-        fileArray.forEach((file) => {
-            parseDicomFile(file)
-                .then((dicomData) => {
-                    dicomDataArray.push(dicomData);
-                    if (dicomDataArray.length === fileArray.length) {
-                        onFileUpload(fileArray, dicomDataArray);
-                    }
-                })
-                .catch((error) => {
-                    onFileUpload((fileArray = []), dicomDataArray);
-                    toggleModal();
-                    logger.error(error);
-                });
-        });
+        // Map each file to a Promise that resolves with its parsed data
+        const promises = fileArray.map((file) =>
+            parseDicomFile(file).catch((error) => {
+                // If any file fails, clear everything and trigger modal
+                logger.error(error);
+                toggleModal();
+                return null; // Ensure failed files do not break Promise.all
+            })
+        );
+
+        // Wait for all Promises to resolve
+        Promise.all(promises)
+            .then((dicomDataArray) => {
+                // Check if all files succeeded (no `null` values)
+                if (dicomDataArray.every((data) => data !== null)) {
+                    onFileUpload(fileArray, dicomDataArray); // Ensures correct order
+                } else {
+                    onFileUpload(
+                        [],
+                        dicomDataArray.filter((data) => data !== null)
+                    );
+                }
+            })
+            .finally(() => {
+                loading(false);
+            });
     };
 
     /**

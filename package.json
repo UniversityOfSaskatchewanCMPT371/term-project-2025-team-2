@@ -13,7 +13,8 @@
     "docs": "typedoc --entryPointStrategy Expand src",
     "test": "jest",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
-    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts"
+    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts",
+    "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/regressionTests/autoEditing.spec.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -41,6 +42,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
