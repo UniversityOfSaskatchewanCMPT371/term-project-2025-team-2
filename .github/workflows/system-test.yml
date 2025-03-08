@@ -3,7 +3,7 @@ name: System Test
 on:
   workflow_run:
     workflows: 
-      - "Smoke Test"
+      - Smoke Tests
     types:
       - completed
 
