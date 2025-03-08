@@ -1,11 +1,10 @@
-import Search from "../../utils/Search";
+import { Search } from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
 import { AnonTag, TableControlsProps } from "../../../types/DicomTypes";
 import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
 import { AnonPopup } from "./AnonPopup";
 import { TagDictionary } from "../../../tagDictionary/dictionary";
-
 
 /**
  * Controls component for the DICOM table

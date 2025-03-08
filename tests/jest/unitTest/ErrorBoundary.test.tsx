@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import Logger from "../../../src/components/utils/Logger";
-import ErrorBoundary from "../../../src/components/ErrorHandling/ErrorBoundary";
+import { ErrorBoundary } from "../../../src/components/ErrorHandling/ErrorBoundary";
 
 jest.mock("../../../src/components/utils/Logger", () => ({
     error: jest.fn(),

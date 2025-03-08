@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import FileUploader from "../../../src/components/FileHandling/FileUploader";
+import { FileUploader } from "../../../src/components/FileHandling/FileUploader";
 
 describe("FileUploader Component Unit Tests", () => {
     const mockToggleModal = jest.fn();

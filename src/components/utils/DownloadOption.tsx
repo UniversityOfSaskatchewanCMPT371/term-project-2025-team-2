@@ -5,7 +5,7 @@ import { isSafari } from "react-device-detect";
 import { useStore } from "../State/Store";
 import { DownloadOptionProps } from "../../types/types";
 
-const DownloadOption: React.FC<DownloadOptionProps> = () => {
+export const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const safari = isSafari;
     const files = useStore((state) => state.files);
     const MAXSINGLEFILESDOWNLOAD = 15;
@@ -58,4 +58,3 @@ const DownloadOption: React.FC<DownloadOptionProps> = () => {
     );
 };
 
-export default DownloadOption;

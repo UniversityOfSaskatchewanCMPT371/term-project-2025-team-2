@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import DownloadOption from "../../../src/components/utils/DownloadOption";
+import { DownloadOption } from "../../../src/components/utils/DownloadOption";
 import * as storeModule from "../../../src/components/State/Store";
 
 jest.mock("react-tooltip", () => ({

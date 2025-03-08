@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { SidebarProps } from "../../types/types";
-import FileTable from "../FileHandling/FileTable";
-import Header from "./Header";
-import SeriesControls from "./SeriesControls";
-import SettingsModal from "./SettingsModal";
-import HelpModal from "../utils/Modals/HelpModal";
+import { FileTable } from "../FileHandling/FileTable";
+import { Header } from "./Header";
+import { SeriesControls } from "./SeriesControls";
+import { SettingsModal } from "./SettingsModal";
+import { HelpModal } from "../utils/Modals/HelpModal";
 
 import { useStore } from "../State/Store";
 

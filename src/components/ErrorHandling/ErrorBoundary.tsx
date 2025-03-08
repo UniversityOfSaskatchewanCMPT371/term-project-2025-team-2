@@ -8,7 +8,7 @@ import { ErrorBoundaryProps } from "../../types/types";
  * @param {ErrorBoundaryProps} { children, fallback }
  * @returns {JSX.Element} rendered ErrorBoundary component
  */
-class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     state = { hasError: false };
 
     static getDerivedStateFromError(error: any) {
@@ -33,5 +33,3 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
         return this.props.children;
     }
 }
-
-export default ErrorBoundary;

@@ -9,7 +9,7 @@ import logger from "../utils/Logger";
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */
-const FileUploader: React.FC<FileUploaderProps> = ({
+export const FileUploader: React.FC<FileUploaderProps> = ({
     onFileUpload,
     loading,
     clearData,
@@ -99,5 +99,3 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         </div>
     );
 };
-
-export default FileUploader;

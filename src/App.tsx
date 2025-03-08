@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "@components/Navigation/Sidebar";
-import Topbar from "@navigation/Topbar";
-import FileUploader from "./components/FileHandling/FileUploader";
+import { Topbar } from "@navigation/Topbar";
+import { FileUploader } from "./components/FileHandling/FileUploader";
 import { DicomTable } from "./components/DicomData/TableComponents/DicomTable";
 import { FileNavigation } from "./components/Navigation/FileNavigation";
-import FileHeader from "./components/FileHandling/FileHeader";
+import { FileHeader } from "./components/FileHandling/FileHeader";
 import { CustomFile as CustomFile } from "./types/FileTypes";
-import Footer from "./components/Navigation/Footer";
-import QuestionModal from "./components/utils/Modals/QuestionModal";
-import Modal from "./components/utils/Modals/Modal";
+import { Footer } from "./components/Navigation/Footer";
+import { QuestionModal } from "./components/utils/Modals/QuestionModal";
+import { Modal } from "./components/utils/Modals/Modal";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
 

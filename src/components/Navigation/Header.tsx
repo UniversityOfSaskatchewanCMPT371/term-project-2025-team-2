@@ -9,7 +9,7 @@ import { HeaderProps } from "../../types/types";
  * @param {() => void} props.toggleModal - Function to toggle the settings modal
  * @returns {JSX.Element} Rendered Header component
  */
-const Header: React.FC<HeaderProps> = ({ toggleModal }) => {
+export const Header: React.FC<HeaderProps> = ({ toggleModal }) => {
     return (
         <div className="mb-6 flex items-center justify-between">
             <h3 className="text-xl font-bold text-primary">Files</h3>
@@ -20,5 +20,3 @@ const Header: React.FC<HeaderProps> = ({ toggleModal }) => {
         </div>
     );
 };
-
-export default Header;

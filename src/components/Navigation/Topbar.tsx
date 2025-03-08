@@ -12,7 +12,7 @@ import { TopbarProps } from "../../types/types";
  * @param showInstallButton - Boolean to determine if install button is shown
  * @returns rendered Topbar component
  */
-const Topbar: React.FC<TopbarProps> = ({
+export const Topbar: React.FC<TopbarProps> = ({
     toggleSidebar,
     sidebarVisible,
     sidebarButtonRef,
@@ -59,5 +59,3 @@ const Topbar: React.FC<TopbarProps> = ({
         </div>
     );
 };
-
-export default Topbar;
