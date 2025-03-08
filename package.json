@@ -17,7 +17,6 @@
     "test:integration":"jest tests/jest/integrationTest",
     "test:regression": "playwright test -c playwright.config.regression.ts",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
-    "smokeTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.smoke.ts tests/smokeTests/smokeTests.spec.ts",
     "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/regressionTests/autoEditing.spec.ts"
   },
   "dependencies": {
