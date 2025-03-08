@@ -109,10 +109,7 @@ describe('TagUpdater unit tests', () => {
     });
 
     test('Update 2 tag values', async() => {        
-        // get the edited dicom file from pydicom generater
         let filename: string = 'test_dicom_0_editNameID.dcm';
-
-        // update initial dicom file with tag updater
         const newValues: TableUpdateData[] = [{
             fileName: 'test_dicom_0.dcm',
             tagId: 'X00100010',
@@ -153,7 +150,6 @@ describe('TagUpdater unit tests', () => {
              console.error('Error reading file in TagUpdater unit tests');
              return;
          }
- 
          // update initial dicom file with tag updater
          const deleteTagId: string = 'X00100020';
          const newValues: TableUpdateData[] = [{
@@ -180,9 +176,9 @@ describe('TagUpdater unit tests', () => {
     });
 
 
-    // TODO: Tests below fail due to tage not being in dicomData when tagUpdater tries to get tag.VR
+    // TODO: Tests below fail due to tag not being in dicomData when tagUpdater tries to get tag.VR
 
-    // test('Update 1 tag value with VR = FD', async() => {        
+    test('Update 1 tag value with VR = FD', async() => {        
     //     // get the edited dicom file from pydicom generater
     //     let expectedDicomData: DicomData;
     //     let filename: string = 'test_dicom_AllVRs_changeFD.dcm';
@@ -209,9 +205,9 @@ describe('TagUpdater unit tests', () => {
     //         dicomData = extractTagsFromByteArray(updatedFileData);
     //         expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
     //     })
-    // });
+    });
 
-    // test('Update 1 tag value with VR = UL', async() => {        
+    test('Update 1 tag value with VR = UL', async() => {        
     //     // get the edited dicom file from pydicom generater
     //     let expectedDicomData: DicomData;
     //     let filename: string = 'test_dicom_AllVRs_changeUL.dcm';
@@ -238,9 +234,9 @@ describe('TagUpdater unit tests', () => {
     //         dicomData = extractTagsFromByteArray(updatedFileData);
     //         expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
     //     })
-    // });
+    });
 
-    // test('Update 1 tag value with VR = US', async() => {        
+    test('Update 1 tag value with VR = US', async() => {        
     //     // get the edited dicom file from pydicom generater
     //     let expectedDicomData: DicomData;
     //     let filename: string = 'test_dicom_AllVRs_changeUS.dcm';
@@ -267,5 +263,10 @@ describe('TagUpdater unit tests', () => {
     //         dicomData = extractTagsFromByteArray(updatedFileData);
     //         expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
     //     })
-    // });
+    });
+
+    // TODO: These VRs are not showing the value correctly. Eg: a float is ")A". Good chance they'll also fail like the above
+    test('Update 1 tag value with VR = FL', async() => {   });
+    test('Update 1 tag value with VR = SL', async() => {   });
+    test('Update 1 tag value with VR = SL', async() => {   });
 });
