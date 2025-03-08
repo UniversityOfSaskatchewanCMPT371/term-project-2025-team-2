@@ -74,7 +74,7 @@ describe('TagUpdater unit tests', () => {
     let sampleDicomData: DicomData;
     beforeEach(async() => {
         // make a File from the test DICOM file
-        const dicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm', 'test_dicom_0.dcm');
+        const dicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/test_dicom_tagUpdtest.dcm', 'test_dicom_tagUpdtest.dcm');
         if (dicomFile === null) {
             console.error('Error reading file in TagUpdater unit tests');
             return;
@@ -100,7 +100,7 @@ describe('TagUpdater unit tests', () => {
     test('Update 1 tag value', async() => {        
         let filename: string = 'test_dicom_0_editName.dcm';
         const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_0.dcm',
+            fileName: 'test_dicom_tagUpdtest.dcm',
             tagId: 'X00100010',
             newValue: 'ANONYMOUS',
             delete: false
@@ -109,14 +109,17 @@ describe('TagUpdater unit tests', () => {
     });
 
     test('Update 2 tag values', async() => {        
+        // get the edited dicom file from pydicom generater
         let filename: string = 'test_dicom_0_editNameID.dcm';
+
+        // update initial dicom file with tag updater
         const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_0.dcm',
+            fileName: 'test_dicom_tagUpdtest.dcm',
             tagId: 'X00100010',
             newValue: 'ANONYMOUS',
             delete: false
         }, {
-            fileName: 'test_dicom_0.dcm',
+            fileName: 'test_dicom_tagUpdtest.dcm',
             tagId: 'X00100020',
             newValue: '1010',
             delete: false
@@ -128,7 +131,7 @@ describe('TagUpdater unit tests', () => {
         let filename: string = 'test_dicom_0_noName.dcm';
         const deleteTagId: string = 'X00100010';
         const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_0.dcm',
+            fileName: 'test_dicom_tagUpdtest.dcm',
             tagId: deleteTagId,
             newValue: 'John Doe',
             delete: true
@@ -150,15 +153,16 @@ describe('TagUpdater unit tests', () => {
              console.error('Error reading file in TagUpdater unit tests');
              return;
          }
+ 
          // update initial dicom file with tag updater
          const deleteTagId: string = 'X00100020';
          const newValues: TableUpdateData[] = [{
-             fileName: 'test_dicom_0.dcm',
+             fileName: 'test_dicom_tagUpdtest.dcm',
              tagId: 'X00100010',
              newValue: 'ANONYMOUS',
              delete: false
          }, {
-             fileName: 'test_dicom_0.dcm',
+             fileName: 'test_dicom_tagUpdtest.dcm',
              tagId: deleteTagId,
              newValue: '0',
              delete: true
@@ -176,7 +180,7 @@ describe('TagUpdater unit tests', () => {
     });
 
 
-    // TODO: Tests below fail due to tag not being in dicomData when tagUpdater tries to get tag.VR
+    // TODO: Tests below fail due to tage not being in dicomData when tagUpdater tries to get tag.VR
 
     test('Update 1 tag value with VR = FD', async() => {        
     //     // get the edited dicom file from pydicom generater
