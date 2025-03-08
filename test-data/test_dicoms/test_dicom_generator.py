@@ -137,7 +137,7 @@ def createDicomAllVRs(newfilename, mediaSOPInstUID, pname, ptid, mod, studydate,
     createCustomDicom(ds, dicom_filename)
 
 def createCustomDicom(fileDataSet, newfilename):
-    folder = "./test-data/test_dicoms/gen_dicom_files/"
+    folder = "./test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/"
     if not os.path.exists(folder):
         os.makedirs(folder)
     fileDataSet.save_as(folder + newfilename)
@@ -203,16 +203,16 @@ def createTagUpdaterAllVRsTestFiles():
     # TODO: Generate a modificationn of VR = FL, SL, SS
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-                    prog='gen test dicoms',
-                    description='generate test dicom files',
-                    epilog='Test dicom files generator')
-    parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
-    parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(
+    #                 prog='gen test dicoms',
+    #                 description='generate test dicom files',
+    #                 epilog='Test dicom files generator')
+    # parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
+    # parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
+    # args = parser.parse_args()
 
-    create_dicom_files()
+    # create_dicom_files()
 
     ### For tagUpdater() tests ###
-    # createTagUpdaterTestFiles()
-    # createTagUpdaterAllVRsTestFiles()
+    createTagUpdaterTestFiles()
+    createTagUpdaterAllVRsTestFiles()
