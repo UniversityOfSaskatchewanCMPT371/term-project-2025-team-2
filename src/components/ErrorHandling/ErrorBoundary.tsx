@@ -1,5 +1,5 @@
 import React from "react";
-import Logger from "../utils/Logger";
+import logger from "../utils/Logger";
 import GenErrorPage from "./GenErrorPage";
 import { ErrorBoundaryProps } from "../../types/types";
 
@@ -17,7 +17,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     }
 
     componentDidCatch(error: any, errorInfo: any) {
-        Logger.error("Uncaught error:", error, errorInfo);
+        logger.error("Uncaught error:", error, errorInfo);
         console.error("Uncaught error:", error, errorInfo);
     }
 

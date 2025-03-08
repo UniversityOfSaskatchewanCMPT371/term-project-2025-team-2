@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import Logger from "../../../src/components/utils/Logger";
+import logger from "../../../src/components/utils/Logger";
 import { ErrorBoundary } from "../../../src/components/ErrorHandling/ErrorBoundary";
 
 jest.mock("../../../src/components/utils/Logger", () => ({
@@ -20,7 +20,7 @@ const ProblematicComponent: React.FC = () => {
 describe("ErrorBoundary Component", () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        console.error = jest.fn(); 
+        console.error = jest.fn();
     });
 
     test("renders children when no error occurs", () => {
@@ -49,7 +49,7 @@ describe("ErrorBoundary Component", () => {
             </ErrorBoundary>
         );
 
-        expect(Logger.error).toHaveBeenCalledWith(
+        expect(logger.error).toHaveBeenCalledWith(
             "Uncaught error:",
             expect.any(Error),
             expect.any(Object)

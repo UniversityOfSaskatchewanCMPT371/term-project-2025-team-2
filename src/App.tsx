@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Sidebar from "@components/Navigation/Sidebar";
+import { Sidebar } from "@components/Navigation/Sidebar";
 import { Topbar } from "@navigation/Topbar";
 import { FileUploader } from "./components/FileHandling/FileUploader";
 import { DicomTable } from "./components/DicomData/TableComponents/DicomTable";
@@ -19,7 +19,7 @@ import { DicomData } from "./types/DicomTypes";
  * @description Main App Function
  * @returns rendered App component
  */
-const App: React.FC = () => {
+export const App: React.FC = () => {
     const MAXSINGLEFILESDOWNLOAD = 15;
 
     const files = useStore((state) => state.files);
@@ -274,4 +274,3 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
