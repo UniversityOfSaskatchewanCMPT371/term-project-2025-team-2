@@ -5,7 +5,7 @@ import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
 import { AnonPopup } from "./AnonPopup";
 import { TagDictionary } from "../../../tagDictionary/dictionary";
-import { updateAllFiles } from "@DicomData/UpdateAllFiles";
+import { updateAllFiles } from "../../DicomData/UpdateAllFiles";
 
 /**
  * Controls component for the DICOM table
