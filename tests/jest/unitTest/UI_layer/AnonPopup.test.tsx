@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
-import { AnonPopup } from '../../../../src/components/DicomData/TableComponents/AnonPopup';
+import { AnonPopup } from '@components/DicomData/TableComponents/AnonPopup';
 
 const mockTags = [
     { tagId: 'X00100010', tagName: 'PatientName', newValue: 'John Doe' },

@@ -1,10 +1,10 @@
 // tests/jest/unitTest/Business_layer/AutoClean.test.ts
-import { FormatData, AutoAnon } from '../../../../src/components/Auto/AutoClean';
-import { CustomFile } from "../../../../src/types/FileTypes";
-import { AnonTag } from "../../../../src/types/DicomTypes";
+import { FormatData, AutoAnon } from '@components/Auto/AutoClean';
+import { CustomFile } from "types/FileTypes";
+import { AnonTag } from "types/DicomTypes";
 
 // Mock the TagsAnon module to supply known tag values for testing.
-jest.mock('../../../../src/components/Auto/TagsAnon', () => ({
+jest.mock('@components/Auto/TagsAnon', () => ({
   TagsAnon: [
     { tagId: "0010,0010", value: "Anonymous" },
     { tagId: "0010,0020", value: "12345" }
@@ -12,7 +12,7 @@ jest.mock('../../../../src/components/Auto/TagsAnon', () => ({
 }));
 
 // Mock tagUpdater.
-jest.mock('../../../../src/components/DicomData/TagUpdater', () => ({
+jest.mock('@components/DicomData/TagUpdater', () => ({
   tagUpdater: jest.fn((_: any, __: any) => {
     // Return a mock updated file (for example, an ArrayBuffer)
     return new ArrayBuffer(10);
@@ -20,14 +20,14 @@ jest.mock('../../../../src/components/DicomData/TagUpdater', () => ({
 }));
 
 // Mock DownloadFuncs.
-jest.mock('../../../../src/components/DicomData/DownloadFuncs', () => ({
+jest.mock('@components/DicomData/DownloadFuncs', () => ({
   createFile: jest.fn((name: string, content: any) => ({ name, content })),
   createZipFromFiles: jest.fn((_: any[]) => Promise.resolve(new ArrayBuffer(20))),
   downloadDicomFile: jest.fn()
 }));
 
-import { tagUpdater } from '../../../../src/components/DicomData/TagUpdater';
-import { createFile, createZipFromFiles, downloadDicomFile } from '../../../../src/components/DicomData/DownloadFuncs';
+import { tagUpdater } from '@components/DicomData/TagUpdater';
+import { createFile, createZipFromFiles, downloadDicomFile } from '@components/DicomData/DownloadFuncs';
 
 describe("AutoClean Module", () => {
   describe("FormatData", () => {

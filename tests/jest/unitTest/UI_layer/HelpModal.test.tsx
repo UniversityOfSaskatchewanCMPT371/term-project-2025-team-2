@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import HelpModal from "../../../../src/components/utils/Modals/HelpModal";
+import HelpModal from "@utils/Modals/HelpModal";
 
 describe("HelpModal", () => {
   beforeEach(() => {
