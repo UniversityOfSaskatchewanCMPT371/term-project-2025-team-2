@@ -45,13 +45,27 @@ describe('TableControls', () => {
     test('renders the search input with the correct value', () => {
         render(
             <TableControls
-                searchTerm="initial value"
+                searchTerm="test search"
                 onSearchChange={jest.fn()}
                 onSave={jest.fn()}
             />
         );
         const searchInput = screen.getByRole('textbox');
-        expect(searchInput).toHaveValue('initial value');
+        expect(searchInput).toHaveValue('test search');
+    });
+
+    test('calls onSearchChange with an empty string when search input is cleared', () => {
+        const onSearchChange = jest.fn();
+        render(
+            <TableControls
+                searchTerm="initial value"
+                onSearchChange={onSearchChange}
+                onSave={jest.fn()}
+            />
+        );
+        const searchInput = screen.getByRole('textbox');
+        fireEvent.change(searchInput, { target: { value: '' } });
+        expect(onSearchChange).toHaveBeenCalledWith('');
     });
 
 });
