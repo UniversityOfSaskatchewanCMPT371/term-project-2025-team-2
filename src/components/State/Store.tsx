@@ -53,6 +53,9 @@ type Store = {
     showPopup: boolean;
     setShowPopup: (show: boolean) => void;
 
+    editingTagId: string | null;
+    setEditingTagId: (id: string | null) => void;
+
     clearData: () => void;
 };
 
@@ -135,6 +138,9 @@ export const useStore = create<Store>((set) => ({
 
     showPopup: false,
     setShowPopup: (show) => set({ showPopup: show }),
+
+    editingTagId: null,
+    setEditingTagId: (id) => set({ editingTagId: id }),
 
     clearData: () => {
         set({ newTagValues: [] });

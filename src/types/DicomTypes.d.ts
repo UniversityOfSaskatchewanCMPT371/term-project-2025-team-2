@@ -183,7 +183,7 @@ export interface AnonTag {
 /**
  * Props for the AnonPopup component
  * @interface {Object} AnonPopupProps
- * @property {Array<AnonTag> tags - List of tags to be anonymized
+ * @property {Array<AnonTag>} tags - List of tags to be anonymized
  * @property {function(): void} onConfirm - Callback function for confirming the anonymization
  * @property {function(): void} onCancel - Callback function for canceling the anonymization
  */
@@ -191,4 +191,5 @@ export interface AnonPopupProps {
     tags: AnonTag[];
     onConfirm: () => void;
     onCancel: () => void;
+    onUpdateTag: (tagId: string, newValue: string) => void;
 }
