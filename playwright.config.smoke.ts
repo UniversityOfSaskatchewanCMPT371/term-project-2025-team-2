@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-    testDir: "./tests/smokeTests",
+    testDir: "./tests/playwright/smokeTests",
     timeout: 900000,
     workers: process.env.CI ? 6 : 6,
     webServer: {
