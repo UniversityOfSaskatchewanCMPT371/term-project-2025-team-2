@@ -11,7 +11,7 @@ import QuestionModal from "./components/utils/Modals/QuestionModal";
 import Modal from "./components/utils/Modals/Modal";
 import logger from "./components/utils/Logger";
 import { LoadingScreen } from "./components/utils/LoadingScreen";
-import DownloadAllZip from "./components/utils/DownloadAllZip"; // Adjust path if needed
+
 
 import { useStore } from "./components/State/Store";
 import { DicomData } from "./types/DicomTypes";
@@ -217,7 +217,7 @@ const App: React.FC = () => {
                             files={files}
                             currentFileIndex={currentFileIndex}
                         />
-                        <DownloadAllZip />
+                        
                     </>
 
                     {files.length > 1 && !series ? (
@@ -228,6 +228,7 @@ const App: React.FC = () => {
                             onNextFile={nextFile}
                         />
                     ) : null}
+                    
 
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>

@@ -5,7 +5,7 @@ import { AutoAnon, FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
 import { AnonPopup } from "./AnonPopup";
 import { TagDictionary } from "../../../tagDictionary/dictionary";
-
+import { updateAllFiles } from "@DicomData/UpdateAllFiles";
 
 /**
  * Controls component for the DICOM table
@@ -30,6 +30,12 @@ const TableControls: React.FC<TableControlsProps> = ({
     const clearData = useStore((state) => state.clearData);
     const showPopup = useStore((state) => state.showPopup);
     const setShowPopup = useStore((state) => state.setShowPopup);
+
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const newTagValues = useStore((state) => state.newTagValues);
+    const downloadOption = useStore((state) => state.downloadOption);
+    const series = useStore((state) => state.series);
+
 
     const tagDictionary = new TagDictionary();
 
@@ -72,11 +78,29 @@ const TableControls: React.FC<TableControlsProps> = ({
                         disabled={false}
                     />
                 </div>
+
+                <div className="ml-4">
+                    <GenButton
+                        label={"Download All as Zip"}
+                        disabled={false}
+                        onClick={() => {
+                            updateAllFiles(
+                                dicomData,
+                                series,
+                                newTagValues,
+                                files,
+                                currentFileIndex,
+                                downloadOption
+                            );
+                            clearData();
+                        }}
+                    />
+                </div>
             </div>
             {showPopup && (
-                <AnonPopup 
-                    tags={anonTags} 
-                    onConfirm={handleConfirm} 
+                <AnonPopup
+                    tags={anonTags}
+                    onConfirm={handleConfirm}
                     onCancel={handleCancel} />
             )}
         </div>
