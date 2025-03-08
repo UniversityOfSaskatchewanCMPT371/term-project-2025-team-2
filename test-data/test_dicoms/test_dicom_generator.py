@@ -7,7 +7,6 @@ import os
 import argparse
 
 
-# TODO: refactor this to use createdicom() function
 def create_dicom_files():
     '''
     This function creates a number of DICOM files.
@@ -76,9 +75,7 @@ def create_dicom_files():
             ds.ContentCreatorsName = "NOT ANONYMOUS"
 
         # Save the DICOM file
-        ds.save_as(folder + dicom_filename)
-
-        print(f"DICOM file {dicom_filename} has been created successfully!")
+        createCustomDicom(ds, dicom_filename)
 
 
 if __name__ == "__main__":
