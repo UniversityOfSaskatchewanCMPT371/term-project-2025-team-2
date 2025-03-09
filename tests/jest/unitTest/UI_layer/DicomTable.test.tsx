@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import DicomTable from "@components/DicomData/TableComponents/DicomTable";
+import { DicomTable } from "@components/DicomData/TableComponents/DicomTable";
 import * as storeModule from "@components/State/Store";
-
 
 jest.mock("@components/State/Store", () => {
     const actual = jest.requireActual("@components/State/Store");

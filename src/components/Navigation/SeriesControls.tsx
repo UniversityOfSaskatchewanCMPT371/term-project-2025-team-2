@@ -12,7 +12,7 @@ import { useStore } from "../State/Store";
  * @param {SeriesControlsProps} props - Component props
  * @returns {JSX.Element} Rendered SeriesControls component
  */
-const SeriesControls: React.FC<SeriesControlsProps> = () => {
+export const SeriesControls: React.FC<SeriesControlsProps> = () => {
     const files = useStore((state) => state.files);
     const dicomData = useStore((state) => state.dicomData);
     const currentFileIndex = useStore((state) => state.currentFileIndex);
@@ -60,5 +60,3 @@ const SeriesControls: React.FC<SeriesControlsProps> = () => {
         </>
     );
 };
-
-export default SeriesControls;

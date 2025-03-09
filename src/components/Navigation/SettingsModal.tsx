@@ -1,7 +1,7 @@
 import React from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { GenButton } from "../utils/GenButton";
-import DownloadOption from "../utils/DownloadOption";
+import { DownloadOption } from "../utils/DownloadOption";
 import { SettingsModalProps } from "../../types/types";
 import { HiddenTagsOption } from "./HiddenTagsOption";
 import { ThemeSelector } from "./ThemeSelector";
@@ -20,7 +20,9 @@ import { useStore } from "../State/Store";
  * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered SettingsModal component
  */
-const SettingsModal: React.FC<SettingsModalProps> = ({ toggleModal }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({
+    toggleModal,
+}) => {
     const files = useStore((state) => state.files);
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
@@ -73,4 +75,3 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ toggleModal }) => {
     );
 };
 
-export default SettingsModal;

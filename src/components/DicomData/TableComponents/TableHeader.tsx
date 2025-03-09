@@ -5,7 +5,7 @@ import React from "react";
  * @component
  * @returns {JSX.Element} The rendered table header
  */
-const TableHeader: React.FC = () => (
+export const TableHeader: React.FC = () => (
     <thead>
         <tr className="text-wrap bg-primary">
             <th className="w-1/7 border px-4 py-2 text-primary-content">Tag</th>
@@ -18,5 +18,3 @@ const TableHeader: React.FC = () => (
         </tr>
     </thead>
 );
-
-export default TableHeader;

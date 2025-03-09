@@ -1,4 +1,4 @@
-import Search from "../../utils/Search";
+import { Search } from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
 import { AnonTag, TableControlsProps } from "../../../types/DicomTypes";
 import { AutoAnon, FormatData } from "../../Auto/AutoClean";
@@ -19,7 +19,7 @@ import { updateAllFiles } from "../../DicomData/UpdateAllFiles";
  * @precondition dicomData and files should not be empty
  * @returns {JSX.Element} The rendered controls section
  */
-const TableControls: React.FC<TableControlsProps> = ({
+export const TableControls: React.FC<TableControlsProps> = ({
     searchTerm,
     onSearchChange,
     onSave,
@@ -37,19 +37,20 @@ const TableControls: React.FC<TableControlsProps> = ({
     const downloadOption = useStore((state) => state.downloadOption);
     const series = useStore((state) => state.series);
 
-
     const tagDictionary = new TagDictionary();
 
-    console.assert(dicomData.length > 0, 'dicomData should not be empty');
-    console.assert(files.length > 0, 'files should not be empty');
+    console.assert(dicomData.length > 0, "dicomData should not be empty");
+    console.assert(files.length > 0, "files should not be empty");
 
     const handleAutoAnon = async () => {
         // format anon tags and show them
-        const newTagData: AnonTag[] = FormatData(dicomData[0]).map((tag: { tagId: string; tagName: string; newValue: string; }) => ({
-            tagId: tag.tagId,
-            tagName: tagDictionary.lookupTagName(tag.tagId),
-            newValue: tag.newValue
-        }));
+        const newTagData: AnonTag[] = FormatData(dicomData[0]).map(
+            (tag: { tagId: string; tagName: string; newValue: string }) => ({
+                tagId: tag.tagId,
+                tagName: tagDictionary.lookupTagName(tag.tagId),
+                newValue: tag.newValue,
+            })
+        );
         setTags(newTagData);
         setShowPopup(true);
     };
@@ -112,9 +113,9 @@ const TableControls: React.FC<TableControlsProps> = ({
                 </div>
             </div>
             {showPopup && (
-                <AnonPopup 
-                    tags={anonTags} 
-                    onConfirm={handleConfirm} 
+                <AnonPopup
+                    tags={anonTags}
+                    onConfirm={handleConfirm}
                     onCancel={handleCancel}
                     onUpdateTag={handleUpdateTag}
                 />
@@ -122,5 +123,3 @@ const TableControls: React.FC<TableControlsProps> = ({
         </div>
     );
 };
-
-export default TableControls;

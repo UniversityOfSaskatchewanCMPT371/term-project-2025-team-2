@@ -10,7 +10,12 @@ import { ModalProps } from "../../../types/types.ts";
  * @param text - Modal text
  * @returns rendered Modal component
  */
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
+export const Modal: React.FC<ModalProps> = ({
+    isOpen,
+    onClose,
+    title,
+    text,
+}) => {
     if (!isOpen) return null;
 
     return (
@@ -30,5 +35,3 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, text }) => {
         </div>
     );
 };
-
-export default Modal;

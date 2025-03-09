@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FileTableBody from "./FileTableBody.tsx";
-import Modal from "../utils/Modals/Modal.tsx";
+import { FileTableBody } from "./FileTableBody.tsx";
+import { Modal } from "../utils/Modals/Modal.tsx";
 import { FileTableProps } from "../../types/FileTypes.ts";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 
@@ -13,7 +13,7 @@ import { useStore } from "../State/Store.tsx";
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileTable component
  */
-const FileTable: React.FC<FileTableProps> = () => {
+export const FileTable: React.FC<FileTableProps> = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const files = useStore((state) => state.files);
@@ -52,5 +52,3 @@ const FileTable: React.FC<FileTableProps> = () => {
         </div>
     );
 };
-
-export default FileTable;
