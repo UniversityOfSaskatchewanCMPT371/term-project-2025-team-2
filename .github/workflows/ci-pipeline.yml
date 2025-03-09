@@ -51,7 +51,7 @@ jobs:
         run: npm run test:unit
 
       - name: Run Integration Tests
-        run: npm run test:integration && test:integration:playwright
+        run: npm run test:integration && npm run test:integration:playwright
 
       - name: Run Regression Tests
         run: npm run test:regression
