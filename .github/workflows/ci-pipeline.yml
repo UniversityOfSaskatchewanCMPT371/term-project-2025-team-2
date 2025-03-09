@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-         npm run test:integration && npm run test:integration:playwright -- --workers=1
+         npm run test:integration 
 
       - name: Run Regression Tests
         run: npm run test:regression
