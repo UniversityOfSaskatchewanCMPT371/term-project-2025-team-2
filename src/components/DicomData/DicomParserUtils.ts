@@ -46,7 +46,7 @@ export const parseDicomFile = (file: File): Promise<any> => {
  * @param dataSet - DICOM data set, parsed using dicom-parser
  * @returns dicomTags - Object containing the extracted DICOM tags
  */
-const extractDicomTags = (dataSet: any) => {
+export const extractDicomTags = (dataSet: any) => {
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
         logger.warn("Invalid DICOM dataset: No elements found.");
