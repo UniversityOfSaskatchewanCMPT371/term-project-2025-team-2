@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { jest } from "@jest/globals";
 import { parseDicomFile } from "@components/DicomData/DicomParserUtils";
-import FileUploader from "@components/FileHandling/FileUploader";
+import { FileUploader } from "@components/FileHandling/FileUploader";
 
 jest.mock("@components/DicomData/DicomParserUtils", () => ({
     parseDicomFile: jest.fn(() =>
@@ -40,7 +40,7 @@ describe("FileUploader Component Integration Tests", () => {
         const input = document.querySelector(
             'input[type="file"]'
         ) as HTMLInputElement;
-        expect(input).not.toBeNull(); 
+        expect(input).not.toBeNull();
 
         const file = new File(["mockDICOM"], "file1.dcm", {
             type: "application/dicom",
@@ -110,7 +110,7 @@ describe("FileUploader Component Integration Tests", () => {
         const input = document.querySelector(
             'input[type="file"]'
         ) as HTMLInputElement;
-        expect(input).not.toBeNull(); 
+        expect(input).not.toBeNull();
 
         fireEvent.change(input, { target: { files: [file] } });
 

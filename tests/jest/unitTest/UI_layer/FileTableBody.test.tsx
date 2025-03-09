@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FileTableBody from "@components/FileHandling/FileTableBody";
+import { FileTableBody } from "@components/FileHandling/FileTableBody";
 import * as store from "@components/State/Store";
 
 // Mock the Zustand store

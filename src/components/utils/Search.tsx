@@ -7,7 +7,10 @@ import { SearchProps } from "../../types/types";
  * @param onSearchChange - Function to handle search term change
  * @returns rendered Search component
  */
-const Search: React.FC<SearchProps> = ({ searchTerm, onSearchChange }) => {
+export const Search: React.FC<SearchProps> = ({
+    searchTerm,
+    onSearchChange,
+}) => {
     return (
         <div className="mb-4 flex items-center">
             <input
@@ -22,4 +25,3 @@ const Search: React.FC<SearchProps> = ({ searchTerm, onSearchChange }) => {
     );
 };
 
-export default Search;

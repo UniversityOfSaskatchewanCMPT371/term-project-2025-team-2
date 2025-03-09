@@ -13,7 +13,7 @@ import { useStore } from "../State/Store";
  * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered HiddenTagsOption component
  */
-const ThemeSelector: React.FC<ThemeSelectorProps> = () => {
+export const ThemeSelector: React.FC<ThemeSelectorProps> = () => {
     const toggleTheme = useStore((state) => state.toggleTheme);
     const currTheme = useStore((state) => state.theme);
 
@@ -51,4 +51,3 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = () => {
     );
 };
 
-export { ThemeSelector };

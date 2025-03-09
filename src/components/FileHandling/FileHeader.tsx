@@ -8,7 +8,10 @@ import { FileHeaderProps } from "../../types/FileTypes";
  * @param currentFileIndex - Index of the currently viewed file
  * @returns rendered FileHeader component
  */
-const FileHeader: React.FC<FileHeaderProps> = ({ files, currentFileIndex }) => {
+export const FileHeader: React.FC<FileHeaderProps> = ({
+    files,
+    currentFileIndex,
+}) => {
     if (files.length === 0) return null;
 
     return (
@@ -17,5 +20,3 @@ const FileHeader: React.FC<FileHeaderProps> = ({ files, currentFileIndex }) => {
         </h2>
     );
 };
-
-export default FileHeader;

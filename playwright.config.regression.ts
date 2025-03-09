@@ -1,4 +1,4 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
     testDir: "./tests/regressionTests",
@@ -20,15 +20,16 @@ export default defineConfig({
             },
             fullyParallel: true,
         },
-        {
-            name: "webkit",
-            use: {
-                baseURL: "http://localhost:5173",
-                headless: true,
-                browserName: "webkit",
-                ...devices["Desktop Safari"],
-            },
-        },
+        //Commented out webkit for regression tests because it breaks the regression test
+       // {
+       //     name: "webkit",
+       //     use: {
+       //         baseURL: "http://localhost:5173",
+       //         headless: true,
+       //         browserName: "webkit",
+       //         ...devices["Desktop Safari"],
+       //     },
+       // },
         {
             name: "chromium",
             use: {

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import FileTable from "@components/FileHandling/FileTable";
+import { FileTable } from "@components/FileHandling/FileTable";
 import * as store from "@components/State/Store";
 
 // Mock the Zustand store

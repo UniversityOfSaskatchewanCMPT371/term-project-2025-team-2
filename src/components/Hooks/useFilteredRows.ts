@@ -36,4 +36,3 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
     );
 };
 
-export default useFilteredRows;

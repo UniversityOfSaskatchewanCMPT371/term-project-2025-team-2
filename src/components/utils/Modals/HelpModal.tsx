@@ -8,7 +8,7 @@ import { HelpModalProps } from "../../../types/types";
  * @returns {JSX.Element} Rendered HelpModal component
  * @description Displays help information and documentation about the DICOM tag editor
  */
-const HelpModal: React.FC<HelpModalProps> = () => {
+export const HelpModal: React.FC<HelpModalProps> = () => {
     return (
         <dialog id="help_modal" className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
@@ -53,4 +53,3 @@ const HelpModal: React.FC<HelpModalProps> = () => {
     );
 };
 
-export default HelpModal;

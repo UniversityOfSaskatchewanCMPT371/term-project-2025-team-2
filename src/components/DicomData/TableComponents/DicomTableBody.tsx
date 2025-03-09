@@ -12,7 +12,7 @@ import { DicomTableBodyProps } from "../../../types/DicomTypes";
  * @param {function(string, string, boolean): void} props.onUpdateValue - Callback function to update tag values
  * @returns {React.FunctionComponent}
  */
-const DicomTableBody: React.FC<DicomTableBodyProps> = ({
+export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
     filteredRows,
     showHidden,
     onUpdateValue,
@@ -35,5 +35,3 @@ const DicomTableBody: React.FC<DicomTableBodyProps> = ({
         )}
     </tbody>
 );
-
-export default DicomTableBody;

@@ -6,9 +6,9 @@ import { downloadDicomFile } from "../DownloadFuncs";
 import { DicomTableProps } from "../../../types/DicomTypes";
 import { useFilteredRows } from "../../Hooks/useFilteredRows";
 import { createRows } from "./rowUtils";
-import TableHeader from "./TableHeader";
-import TableControls from "./TableControls";
-import DicomTableBody from "./DicomTableBody";
+import { TableHeader } from "./TableHeader";
+import { TableControls } from "./TableControls";
+import { DicomTableBody } from "./DicomTableBody";
 
 import { useStore } from "../../State/Store";
 
@@ -19,7 +19,7 @@ import { useStore } from "../../State/Store";
  * @returns {JSX.Element} The rendered DICOM table
  * @throws {Error} When no DICOM data is available
  */
-const DicomTable: React.FC<DicomTableProps> = () => {
+export const DicomTable: React.FC<DicomTableProps> = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const files = useStore((state) => state.files);
@@ -102,5 +102,3 @@ const DicomTable: React.FC<DicomTableProps> = () => {
         </div>
     );
 };
-
-export default DicomTable;

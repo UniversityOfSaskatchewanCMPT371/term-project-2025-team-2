@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import DicomTable from "@components/DicomData/TableComponents/DicomTable";
+import { DicomTable } from "@components/DicomData/TableComponents/DicomTable";
 import {
     createFile,
     downloadDicomFile,
@@ -23,7 +23,6 @@ jest.mock("@components/utils/Logger", () => ({
     debug: jest.fn(),
     warn: jest.fn(),
 }));
-
 
 jest.mock("@components/State/Store", () => {
     const actual = jest.requireActual("@components/State/Store");
@@ -92,4 +91,3 @@ describe("DicomTable - Integration Tests", () => {
         expect(logger.error).toHaveBeenCalledWith("No DICOM data available");
     });
 });
-

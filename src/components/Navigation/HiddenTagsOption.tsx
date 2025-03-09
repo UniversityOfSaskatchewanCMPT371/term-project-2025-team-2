@@ -9,7 +9,7 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
  * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered HiddenTagsOption component
  */
-const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
+export const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
     showHiddenTags,
     setShowHiddenTags,
 }) => {
@@ -39,5 +39,3 @@ const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
         </div>
     );
 };
-
-export { HiddenTagsOption };

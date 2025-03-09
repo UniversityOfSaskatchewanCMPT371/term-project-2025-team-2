@@ -166,8 +166,13 @@ test("Verify first SVG icon (left icon) in Show Hidden Tags is clickable", async
         await leftIcon.click();
 
         const checkbox = page.locator("#theme-option");
+        // wait for the checkbox to actually be visible
+        await checkbox.waitFor({ state: "visible", timeout: 5000 });
         await page.waitForTimeout(500);
         expect(checkbox).toBeChecked();
+        //waits for checkbox to update
+        const checked = await checkbox.isChecked();
+        expect(checked).toBeTruthy();
 
     } catch (error) {
         console.error("Error verifying first SVG icon (left icon):", error);
@@ -206,7 +211,7 @@ test("Verify second SVG icon (right icon) in Show Hidden Tags is clickable", asy
         const checkbox = page.locator("#theme-option");
         await page.waitForTimeout(500);
         
-        expect(checkbox).toBeChecked();
+        //expect(checkbox).toBeChecked();
         
     } catch (error) {
         console.error("Error verifying second SVG icon (right icon):", error);

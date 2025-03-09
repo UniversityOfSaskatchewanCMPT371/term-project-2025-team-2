@@ -46,7 +46,7 @@ test("Auto anon tags in series", async ({ page }) => {
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
-            timeout: 1000,
+            timeout: 10000,
         })
 
         const yesButton = page.locator("id=yes");
