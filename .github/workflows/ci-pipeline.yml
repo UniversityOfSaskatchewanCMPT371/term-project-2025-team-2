@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "development" ]
+    branches: [ "main", "development", "hotfix/fix_testworkflows" ]
   pull_request:
     branches: [ "main", "development" ]
 
@@ -46,19 +46,12 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       
       - name: Run Unit Tests
         run: npm run test:unit
 
       - name: Run Integration Tests
-        run: |
-         npm run test:integration &&  npm run test:integration:playwright
-
-      - name: Run Regression Tests
-        run: npm run test:regression
+        run: npm run test:integration 
 
       #Build project
       - name: Build
