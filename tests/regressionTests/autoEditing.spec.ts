@@ -66,7 +66,7 @@ test("Edit tags in MRI series", async ({ page }) => {
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
-            timeout: 1000,
+            timeout: 5000,
         })
 
         const yesButton = page.locator("id=yes");

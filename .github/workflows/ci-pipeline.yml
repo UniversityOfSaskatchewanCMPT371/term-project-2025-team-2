@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "development" ]
+    branches: [ "main", "development", "hotfix/fix_testworkflows" ]
   pull_request:
     branches: [ "main", "development" ]
 
@@ -18,10 +18,10 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [18]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -46,15 +46,13 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
-
-      #Installs playwright browsers with all its dependencies
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      #Run jest test
-      - name: Run browser test
-        run: npm run test
       
+      - name: Run Unit Tests
+        run: npm run test:unit
+
+      - name: Run Integration Tests
+        run: npm run test:integration 
+
       #Build project
       - name: Build
         run: npm run build
@@ -76,8 +74,3 @@ jobs:
       - name: Run Docker container
         run: |
           docker run -d -p 80:80 dicom-app
-      # Place holder for more actions
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.

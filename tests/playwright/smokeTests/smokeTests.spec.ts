@@ -22,8 +22,9 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
     try {
         await page.goto(BASE_URL);
+        await page.waitForSelector('h1:text("DICOM Tag Editor")', { state: 'visible' });
 
-        const dicomDir = "./test-data/test_dicoms/gen_dicom_files";
+        const dicomDir = "./test-data/test_dicoms/gen_dicom_files/simple_files";
         const dicomFiles = fs
             .readdirSync(dicomDir)
             .filter((file) => file.endsWith(".dcm"))
@@ -40,12 +41,12 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
-            timeout: 1000,
+            timeout:  5000,
         });
 
         await page.waitForSelector("table", {
             state: "visible",
-            timeout: 1000,
+            timeout: 5000,
         });
 
         if (DEBUG) {

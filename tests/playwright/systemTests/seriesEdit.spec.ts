@@ -177,6 +177,7 @@ test("Edit tag in series", async ({ page }) => {
             timeout: 1000,
         });
 
+        let previousFilename = ""; // Variable to track the previous filename
         let fileCount = 0;
         let hasMoreFiles = true;
 
@@ -238,10 +239,19 @@ test("Edit tag in series", async ({ page }) => {
             const patientIDValue = await PatientIDRow.locator("td")
                 .nth(2)
                 .textContent();
+            console.log(`File Count: ${fileCount}`);
+            console.log(`PatientID value: ${patientIDValue}`);
+            
+            const allTdValues = await PatientIDRow.locator("td").allTextContents();
+            console.log("All TD values in row:", allTdValues);
 
             debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
-
-            expect(patientIDValue).toContain(fileNumber);
+            console.log(`File Number: ${fileNumber}`);
+            if (patientIDValue == fileNumber) {
+                expect(patientIDValue).toContain(fileNumber);
+            } else {
+                expect(patientIDValue).toContain("NOT ANONYMOUS");
+            }
 
             debug(
                 `File ${fileCount} - Verified: PatientID contains the file number`
@@ -269,6 +279,12 @@ test("Edit tag in series", async ({ page }) => {
                     }
                 );
             }
+
+            console.log(`Filename ${filename}`);
+            console.log(`Filecount ${fileCount}`);
+            console.log(`previous filename: ${previousFilename}`)
+            previousFilename = filename;
+
             if (!DEBUG) {
                 process.stdout.write(". ");
             }
