@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-         npm run test:integration &&  npm run test:integration:playwright
+         npm run test:integration &&  xvfb-run npx playwright test tests/playwright/integrationTests --headed
 
       - name: Run Regression Tests
         run: npm run test:regression
