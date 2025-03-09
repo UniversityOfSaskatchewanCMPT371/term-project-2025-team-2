@@ -5,6 +5,18 @@
         { "path": "./tsconfig.node.json" }
     ],
     "compilerOptions": {
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": "src/",
+        "paths": {
+            "@components/*": ["components/*"],
+            "@utils/*": ["components/utils/*"],
+            "@navigation/*": ["components/Navigation/*"],
+            "@DicomData/*": ["components/DicomData/*"],
+            "@hooks/*": ["components/Hooks/*"],
+            "@FileHandling/*": ["components/FileHandling/*"],
+            "@state/*": ["components/State/*"],
+            "@types/*": ["types/*"],
+            "@auto/*": ["components/Auto/*"]
+        }
     }
 }

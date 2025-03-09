@@ -17,6 +17,7 @@ export default tseslint.config(
             "coverage/*",
             "build/*",
             "docs/*",
+            "tests/*",
         ],
     },
     {

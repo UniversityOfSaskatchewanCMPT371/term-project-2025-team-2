@@ -26,9 +26,39 @@ export interface DicomTags {
  * @property {any} DicomDataSet - Raw DICOM dataset information
  * @todo Replace 'any' with specific type for raw DICOM data
  */
-export interface DicomDataSet {
+export interface DicomData {
     tags: DicomTags;
     DicomDataSet: any;
+}
+
+/**
+ * A single DICOM file
+ * @interface {Object} DicomDataSet
+ * @property {Uint8Array} byteArray - The raw DICOM file data
+ * @property {any} byteArrayParser - The parser for the raw DICOM file data
+ * @property {element[]} elements - The DICOM elements in the file
+ * @property {any[]} warnings - Any warnings generated during parsing
+ */
+export interface DicomDataSet {
+    byteArray: Uint8Array;
+    byteArrayParser: any;
+    elements: element[];
+    warnings: any[];
+}
+
+/**
+ * An element in a DICOM dataset
+ * @interface {Object} element
+ * @property {string} tag - The DICOM tag
+ * @property {string} vr - The value representation of the tag
+ * @property {number} length - The length of the tag data
+ * @property {number} dataOffset - The offset of the tag data
+ */
+interface element {
+    tag: string;
+    vr: string;
+    length: number;
+    dataOffset: number;
 }
 
 /**
@@ -41,18 +71,7 @@ export interface DicomDataSet {
  * @property {function(): void} clearData - Function to clear all modifications
  * @property {boolean} showHiddenTags - Flag indicating if hidden tags should be shown
  */
-export interface DicomTableProps {
-    dicomData: DicomDataSet;
-    fileName: string;
-    updateTableData: (data: TableUpdateData) => void;
-    newTableData: Array<{
-        fileName: string;
-        tagId: string;
-        newValue: string;
-    }>;
-    clearData: () => void;
-    showHiddenTags: boolean;
-}
+export interface DicomTableProps {}
 
 /**
  * A row in the DICOM table view
@@ -146,4 +165,31 @@ export interface DicomTableBodyProps {
         newValue: string,
         deleteTag: boolean
     ) => void;
+}
+
+/**
+ * Tag data for anonymization
+ * @interface {Object} AnonTag
+ * @property {string} tagId - ID of the DICOM tag
+ * @property {string} tagName - Human-readable name of the tag
+ * @property {string} newValue - New value for the tag
+ */
+export interface AnonTag {
+    tagId: string;
+    tagName: string;
+    newValue: string;
+}
+
+/**
+ * Props for the AnonPopup component
+ * @interface {Object} AnonPopupProps
+ * @property {Array<AnonTag>} tags - List of tags to be anonymized
+ * @property {function(): void} onConfirm - Callback function for confirming the anonymization
+ * @property {function(): void} onCancel - Callback function for canceling the anonymization
+ */
+export interface AnonPopupProps {
+    tags: AnonTag[];
+    onConfirm: () => void;
+    onCancel: () => void;
+    onUpdateTag: (tagId: string, newValue: string) => void;
 }
