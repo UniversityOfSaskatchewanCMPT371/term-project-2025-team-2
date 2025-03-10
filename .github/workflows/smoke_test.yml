@@ -20,7 +20,7 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm install
-        
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
@@ -44,5 +44,7 @@ jobs:
      runs-on: ubuntu-latest
      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
      steps:
-        - run: echo 'The build failed'
+        - run: |
+           echo 'The build failed'
+           exit 1
     
