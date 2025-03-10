@@ -1,10 +1,6 @@
 name: System Test
 
 on:
-  push:
-    branches: [ "main", "development" ]
-  pull_request:
-    branches: [ "main", "development" ]
   workflow_run:
     workflows: [Smoke Tests]
     types: 
