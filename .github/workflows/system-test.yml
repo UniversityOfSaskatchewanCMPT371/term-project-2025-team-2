@@ -29,6 +29,19 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+      - name: Report Status to GitHub
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const conclusion = "${{ job.status }}" === "success" ? "success" : "failure";
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: "CI",
+              head_sha: "${{ github.sha }}",
+              status: "completed",
+              conclusion: conclusion
+            });
 
   smoke-failure:
      runs-on: ubuntu-latest
@@ -37,5 +50,19 @@ jobs:
         - run: |
             echo 'The smoke test workflow failed'
             exit 1
+        - name: Report Status to GitHub
+          uses: actions/github-script@v7
+          with:
+            script: |
+              const conclusion = "${{ job.status }}" === "success" ? "success" : "failure";
+              github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: "CI",
+                head_sha: "${{ github.sha }}",
+                status: "completed",
+                conclusion: conclusion
+              });
+            
 
 

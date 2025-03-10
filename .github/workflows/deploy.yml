@@ -10,7 +10,6 @@ on:
 jobs:
   #Deploy to github pages
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:

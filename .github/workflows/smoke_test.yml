@@ -27,6 +27,20 @@ jobs:
       - name: Run tests
         run: npm run test:smoke 
 
+      - name: Report Status to GitHub
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const conclusion = "${{ job.status }}" === "success" ? "success" : "failure";
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: "CI",
+              head_sha: "${{ github.sha }}",
+              status: "completed",
+              conclusion: conclusion
+            });
+
   build-failure:
      runs-on: ubuntu-latest
      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
@@ -34,4 +48,18 @@ jobs:
         - run: |
            echo 'The build failed'
            exit 1
+        - name: Report Status to GitHub
+          uses: actions/github-script@v7
+          with:
+            script: |
+              const conclusion = "${{ job.status }}" === "success" ? "success" : "failure";
+              github.rest.checks.create({
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+                 name: "CI",
+                 head_sha: "${{ github.sha }}",
+                 status: "completed",
+                 conclusion: conclusion
+              });
+             
     
