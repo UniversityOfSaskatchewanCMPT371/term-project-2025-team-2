@@ -200,7 +200,15 @@ def createTagUpdaterAllVRsTestFiles():
     filename = 'test_dicom_AllVRs_changeUS'
     createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
                       trange, numReferences, energyWindowNum-100, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
-    # TODO: Generate a modificationn of VR = FL, SL, SS
+    filename = 'test_dicom_AllVRs_changeFL'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness-5, pixelCoordinatesSetTrial, tidOffset)
+    filename = 'test_dicom_AllVRs_changeSL'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial-100, tidOffset)
+    filename = 'test_dicom_AllVRs_changeSS'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset+2)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

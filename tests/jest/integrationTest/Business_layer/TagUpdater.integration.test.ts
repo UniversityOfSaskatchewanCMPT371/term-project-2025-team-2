@@ -70,7 +70,7 @@ async function getDicomDataAndTest(filename: string, newValues: TableUpdateData[
      return updateFileData;
 }
 
-describe('TagUpdater unit tests', () => {
+describe('TagUpdater unit tests - simple dicoms', () => {
     let sampleDicomData: DicomData;
     beforeEach(async() => {
         // make a File from the test DICOM file
@@ -178,44 +178,93 @@ describe('TagUpdater unit tests', () => {
              //expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true); // TODO: this fails because paitient name is 'ANONYMOU'
          })
     });
+});
 
 
-    // TODO: Tests below fail due to tag not being in dicomData when tagUpdater tries to get tag.VR, tag undefined
+describe('TagUpdater unit tests - more dicom tag VRs', () => {
+    let sampleDicomData: DicomData;
+    beforeEach(async() => {
+        // make a File from the test DICOM file
+        const dicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/test_dicom_AllVRs.dcm', 'test_dicom_AllVRs.dcm');
+        if (dicomFile === null) {
+            console.error('Error reading file in TagUpdater unit tests');
+            return;
+        }
+        // parse dicom File
+        await parseDicomFile(dicomFile)
+        .then((dicomData) => {
+            sampleDicomData = dicomData;
+        })
+        .catch((error) => {
+            console.error('Error parsing DICOM file in TagUpdater unit tests:', error);
+        });
+
+    });
+
     test('Update 1 tag value with VR = FD', async() => {        
-        // let filename: string = 'test_dicom_AllVRs_changeFD.dcm';
-        // const newValues: TableUpdateData[] = [{
-        //     fileName: 'test_dicom_AllVRs.dcm',
-        //     tagId: 'X00081163',
-        //     newValue: '86232.111079',
-        //     delete: false
-        // }]
-        // await getDicomDataAndTest(filename, newValues, sampleDicomData);
+        let filename: string = 'test_dicom_AllVRs_changeFD.dcm';
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00081163',
+            newValue: '86232.111079',
+            delete: false
+        }]
+        await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
     test('Update 1 tag value with VR = UL', async() => {        
-        // let filename: string = 'test_dicom_AllVRs_changeUL.dcm';
-        // const newValues: TableUpdateData[] = [{
-        //     fileName: 'test_dicom_AllVRs.dcm',
-        //     tagId: 'X00041600',
-        //     newValue: '750675509',
-        //     delete: false
-        // }]
-        // await getDicomDataAndTest(filename, newValues, sampleDicomData);
+        let filename: string = 'test_dicom_AllVRs_changeUL.dcm';
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00041600',
+            newValue: '750675509',
+            delete: false
+        }]
+        await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
     test('Update 1 tag value with VR = US', async() => {        
-        // let filename: string = 'test_dicom_AllVRs_changeUS.dcm';
+        let filename: string = 'test_dicom_AllVRs_changeUS.dcm';
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00540308',
+            newValue: '300',
+            delete: false
+        }]
+        await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
+
+    test('Update 1 tag value with VR = FL', async() => {
+        let filename: string = 'test_dicom_AllVRs_changeFL.dcm';
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00109431',
+            newValue: '5.60060977935791',
+            delete: false
+        }]
+        await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
+    
+    // TODO: VRs are int32 and int16 values. Both these tests throw - RangeError: Offset is outside the bounds of the DataView
+    test('Update 1 tag value with VR = SL', async() => {
+        // let filename: string = 'test_dicom_AllVRs_changeSL.dcm';
         // const newValues: TableUpdateData[] = [{
         //     fileName: 'test_dicom_AllVRs.dcm',
-        //     tagId: 'X00540308',
-        //     newValue: '300',
+        //     tagId: 'X0040A29A',
+        //     newValue: '812',
         //     delete: false
         // }]
         // await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    // TODO: These tag values with these values are not shown correctly. Eg: a float is ")A". Good chance they'll also fail like the above
-    test('Update 1 tag value with VR = FL', async() => {   });
-    test('Update 1 tag value with VR = SL', async() => {   });
-    test('Update 1 tag value with VR = SL', async() => {   });
+    test('Update 1 tag value with VR = SS', async() => {
+        // let filename: string = 'test_dicom_AllVRs_changeSS.dcm';
+        // const newValues: TableUpdateData[] = [{
+        //     fileName: 'test_dicom_AllVRs.dcm',
+        //     tagId: 'X00286120',
+        //     newValue: '2',
+        //     delete: false
+        // }]
+        // await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
 });
