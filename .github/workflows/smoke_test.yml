@@ -3,7 +3,9 @@ name: Smoke Tests
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "development", "hotfix/status_check" ]
+    branches: [ "main", "development" ]
+  pull_request:
+    branches: [ "main", "development" ]
   workflow_run:
     workflows: 
         - CI
@@ -29,7 +31,7 @@ jobs:
 
       - name: Run tests
         run: npm run test:smoke 
-        
+
   build-failure:
      runs-on: ubuntu-latest
      if: ${{ github.event.workflow_run.conclusion == 'failure' }}

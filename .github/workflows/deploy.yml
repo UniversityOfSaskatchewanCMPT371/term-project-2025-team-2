@@ -1,11 +1,12 @@
 name: Deploy GHpages
 
 on: 
+  push:
+    branches: main
   workflow_run:
     workflows: [System Test]
     types: 
         - completed
-    branches: [main]
 
   workflow_dispatch:
 
