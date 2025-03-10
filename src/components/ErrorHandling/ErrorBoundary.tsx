@@ -1,5 +1,5 @@
 import React from "react";
-import Logger from "../utils/Logger";
+import logger from "../utils/Logger";
 import GenErrorPage from "./GenErrorPage";
 import { ErrorBoundaryProps } from "../../types/types";
 
@@ -8,7 +8,7 @@ import { ErrorBoundaryProps } from "../../types/types";
  * @param {ErrorBoundaryProps} { children, fallback }
  * @returns {JSX.Element} rendered ErrorBoundary component
  */
-class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     state = { hasError: false };
 
     static getDerivedStateFromError(error: any) {
@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     }
 
     componentDidCatch(error: any, errorInfo: any) {
-        Logger.error("Uncaught error:", error, errorInfo);
+        logger.error("Uncaught error:", error, errorInfo);
         console.error("Uncaught error:", error, errorInfo);
     }
 
@@ -33,5 +33,3 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
         return this.props.children;
     }
 }
-
-export default ErrorBoundary;

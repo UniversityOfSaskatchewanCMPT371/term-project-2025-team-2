@@ -79,6 +79,128 @@ def create_dicom_files():
 
         print(f"DICOM file {dicom_filename} has been created successfully!")
 
+def createdicom(newfilename, mediaSOPInstUID, pname, ptid, mod, studydate, seriesUID, studyUID, SOPInstUID, hasName, hasID):
+    # Create a new empty DICOM dataset
+    dicom_filename = newfilename + ".dcm"
+    ds = FileDataset(dicom_filename, {}, file_meta=pydicom.dataset.FileMetaDataset(), preamble=b"\0" * 128)
+
+    # Set file meta information (Mandatory for DICOM files)
+    ds.file_meta.MediaStorageSOPClassUID = pydicom.uid.ComputedRadiographyImageStorage
+    ds.file_meta.MediaStorageSOPInstanceUID = mediaSOPInstUID
+    ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+
+    # Set required DICOM metadata
+    if hasName:
+        ds.PatientName = pname
+    if hasID:
+        ds.PatientID = ptid
+    ds.Modality = mod
+    ds.StudyDate = studydate
+    ds.SeriesInstanceUID = seriesUID
+    ds.StudyInstanceUID = studyUID
+    ds.SOPInstanceUID = SOPInstUID
+    ds.SOPClassUID = pydicom.uid.ComputedRadiographyImageStorage
+
+    # Save the DICOM file
+    createCustomDicom(ds, dicom_filename)
+
+def createDicomAllVRs(newfilename, mediaSOPInstUID, pname, ptid, mod, studydate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset):
+       # Create a new empty DICOM dataset
+    dicom_filename = newfilename + ".dcm"
+    ds = FileDataset(dicom_filename, {}, file_meta=pydicom.dataset.FileMetaDataset(), preamble=b"\0" * 128)
+
+    # Set file meta information (Mandatory for DICOM files)
+    ds.file_meta.MediaStorageSOPClassUID = pydicom.uid.ComputedRadiographyImageStorage
+    ds.file_meta.MediaStorageSOPInstanceUID = mediaSOPInstUID
+    ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+
+    # Set required DICOM metadata
+    ds.PatientName = pname
+    ds.PatientID = ptid
+    ds.Modality = mod
+    ds.StudyDate = studydate
+    ds.SeriesInstanceUID = seriesUID
+    ds.StudyInstanceUID = studyUID
+    ds.SOPInstanceUID = SOPInstUID
+    ds.SOPClassUID = pydicom.uid.ComputedRadiographyImageStorage
+
+    # Tag values with other VRs
+    ds.TimeRange = trange                                   # FD
+    ds.NumberOfReferences = numReferences                   # UL
+    ds.EnergyWindowNumber = energyWindowNum                 # US
+    ds.ExaminedBodyThickness = examinedBodyThickness        # FL
+    ds.PixelCoordinatesSetTrial = pixelCoordinatesSetTrial  # SL
+    ds.TIDOffset = tidOffset                                # SS
+
+    # Save the DICOM file
+    createCustomDicom(ds, dicom_filename)
+
+def createCustomDicom(fileDataSet, newfilename):
+    folder = "./test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/"
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    fileDataSet.save_as(folder + newfilename)
+    print(f"DICOM file {newfilename} has been created successfully!")
+
+
+def createTagUpdaterTestFiles():
+     # Create a new DICOM file
+    mediaSOPInstUID = generate_uid()
+    patientname = "John Doe"
+    ptID = "0"
+    mod = "CT"
+    studyDate = datetime.datetime.now().strftime("%Y%m%d")
+    seriesUID = generate_uid()
+    studyUID = generate_uid()
+    SOPInstUID = generate_uid()
+    filename = 'test_dicom_tagUpdtest'
+    createdicom(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID, True, True)
+    
+    # Creating a variation of the same file
+    filename = "test_dicom_0_editName"
+    patientname = "ANONYMOUS"
+    createdicom(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID, True, True)
+    filename = "test_dicom_0_editNameID"
+    ptID = "1010"
+    createdicom(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID, True, True)
+    
+    # Create dicoms without patient name or id
+    filename = "test_dicom_0_noName"
+    ptID = "0"
+    createdicom(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID, False, True)
+    filename = "test_dicom_0_NameNoID"
+    patientname = "ANONYMOUS"
+    createdicom(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID, True, False)
+
+def createTagUpdaterAllVRsTestFiles():
+    mediaSOPInstUID = generate_uid()
+    patientname = "John Doe"
+    ptID = "0"
+    mod = "CT"
+    studyDate = datetime.datetime.now().strftime("%Y%m%d")
+    seriesUID = generate_uid()
+    studyUID = generate_uid()
+    SOPInstUID = generate_uid()
+    trange = 86231.111079                           # FD
+    numReferences = 750675506                       # UL
+    energyWindowNum = 400                           # US
+    examinedBodyThickness = 10.60060977935791       # FL
+    pixelCoordinatesSetTrial = 912                  # SL
+    tidOffset = 0                                   # SS
+    filename = 'test_dicom_AllVRs'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
+    filename = 'test_dicom_AllVRs_changeFD'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange + 1.0, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
+    filename = 'test_dicom_AllVRs_changeUL'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences+3, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
+    filename = 'test_dicom_AllVRs_changeUS'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum-100, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
+    # TODO: Generate a modificationn of VR = FL, SL, SS
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -90,3 +212,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     create_dicom_files()
+
+    ### For tagUpdater() tests ###
+    # createTagUpdaterTestFiles()
+    # createTagUpdaterAllVRsTestFiles()

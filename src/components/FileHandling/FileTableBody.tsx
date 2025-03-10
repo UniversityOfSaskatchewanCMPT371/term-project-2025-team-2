@@ -11,7 +11,7 @@ import { useStore } from "../State/Store.tsx";
  * @param onFileSelect - Function to handle file selection
  * @returns rendered FileList component
  */
-const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
+export const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
     const currentFileIndex = useStore((state) => state.currentFileIndex);
     const series = useStore((state) => state.series);
     const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
@@ -55,4 +55,3 @@ const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
     );
 };
 
-export default FileTableBody;

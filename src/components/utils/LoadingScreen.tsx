@@ -4,7 +4,7 @@ import { ArrowPathIcon } from "@heroicons/react/24/solid";
  *
  * @returns Loading screen component
  */
-const LoadingScreen = () => {
+export const LoadingScreen = () => {
     return (
         <div
             role="img"
@@ -17,4 +17,3 @@ const LoadingScreen = () => {
     );
 };
 
-export { LoadingScreen };

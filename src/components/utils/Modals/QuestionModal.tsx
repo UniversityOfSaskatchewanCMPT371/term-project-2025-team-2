@@ -5,7 +5,7 @@ import { QuestionModalProps } from "../../../types/types";
  * @param QuestionModalProps - props for QuestionModal component
  * @returns QuestionModal component
  */
-function QuestionModal({
+export function QuestionModal({
     setSeries,
     setIsOpen,
     title,
@@ -48,4 +48,3 @@ function QuestionModal({
     );
 }
 
-export default QuestionModal;

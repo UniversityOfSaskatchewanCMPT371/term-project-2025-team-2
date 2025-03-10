@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { SidebarProps } from "../../types/types";
-import FileTable from "../FileHandling/FileTable";
-import Header from "./Header";
-import SeriesControls from "./SeriesControls";
-import SettingsModal from "./SettingsModal";
-import HelpModal from "../utils/Modals/HelpModal";
+import { FileTable } from "../FileHandling/FileTable";
+import { Header } from "./Header";
+import { SeriesControls } from "./SeriesControls";
+import { SettingsModal } from "./SettingsModal";
+import { HelpModal } from "../utils/Modals/HelpModal";
 
 import { useStore } from "../State/Store";
 
@@ -15,7 +15,7 @@ import { useStore } from "../State/Store";
  * @param {boolean} props.isVisible - Flag indicating if the sidebar is visible
  * @returns {JSX.Element} Rendered Sidebar component
  */
-const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -42,4 +42,3 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
     );
 };
 
-export default Sidebar;
