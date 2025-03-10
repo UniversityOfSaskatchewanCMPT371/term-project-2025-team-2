@@ -211,16 +211,16 @@ def createTagUpdaterAllVRsTestFiles():
                       trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset+2)
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser(
-    #                 prog='gen test dicoms',
-    #                 description='generate test dicom files',
-    #                 epilog='Test dicom files generator')
-    # parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
-    # parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+                    prog='gen test dicoms',
+                    description='generate test dicom files',
+                    epilog='Test dicom files generator')
+    parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
+    parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
+    args = parser.parse_args()
 
-    # create_dicom_files()
+    create_dicom_files()
 
     ### For tagUpdater() tests ###
     # createTagUpdaterTestFiles()
-    createTagUpdaterAllVRsTestFiles()
+    # createTagUpdaterAllVRsTestFiles()
