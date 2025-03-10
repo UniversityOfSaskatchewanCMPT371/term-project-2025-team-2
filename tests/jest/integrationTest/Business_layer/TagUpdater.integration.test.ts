@@ -234,8 +234,37 @@ describe('TagUpdater unit tests - more dicom tag VRs', () => {
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    // TODO: These tag values with these values are not shown correctly. Eg: a float is ")A". Good chance they'll also fail like the above
-    test('Update 1 tag value with VR = FL', async() => {   });
-    test('Update 1 tag value with VR = SL', async() => {   });
-    test('Update 1 tag value with VR = SL', async() => {   });
+    test('Update 1 tag value with VR = FL', async() => {
+        let filename: string = 'test_dicom_AllVRs_changeFL.dcm';
+        const newValues: TableUpdateData[] = [{
+            fileName: 'test_dicom_AllVRs.dcm',
+            tagId: 'X00109431',
+            newValue: '5.60060977935791',
+            delete: false
+        }]
+        await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
+    
+    // TODO: VRs are int32 and int16 values. Both these tests throw - RangeError: Offset is outside the bounds of the DataView
+    test('Update 1 tag value with VR = SL', async() => {
+        // let filename: string = 'test_dicom_AllVRs_changeSL.dcm';
+        // const newValues: TableUpdateData[] = [{
+        //     fileName: 'test_dicom_AllVRs.dcm',
+        //     tagId: 'X0040A29A',
+        //     newValue: '812',
+        //     delete: false
+        // }]
+        // await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
+
+    test('Update 1 tag value with VR = SS', async() => {
+        // let filename: string = 'test_dicom_AllVRs_changeSS.dcm';
+        // const newValues: TableUpdateData[] = [{
+        //     fileName: 'test_dicom_AllVRs.dcm',
+        //     tagId: 'X00286120',
+        //     newValue: '2',
+        //     delete: false
+        // }]
+        // await getDicomDataAndTest(filename, newValues, sampleDicomData);
+    });
 });

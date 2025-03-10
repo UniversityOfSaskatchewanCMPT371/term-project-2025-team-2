@@ -200,19 +200,27 @@ def createTagUpdaterAllVRsTestFiles():
     filename = 'test_dicom_AllVRs_changeUS'
     createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
                       trange, numReferences, energyWindowNum-100, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset)
-    # TODO: Generate a modificationn of VR = FL, SL, SS
+    filename = 'test_dicom_AllVRs_changeFL'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness-5, pixelCoordinatesSetTrial, tidOffset)
+    filename = 'test_dicom_AllVRs_changeSL'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial-100, tidOffset)
+    filename = 'test_dicom_AllVRs_changeSS'
+    createDicomAllVRs(filename, mediaSOPInstUID, patientname, ptID, mod, studyDate, seriesUID, studyUID, SOPInstUID,
+                      trange, numReferences, energyWindowNum, examinedBodyThickness, pixelCoordinatesSetTrial, tidOffset+2)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-                    prog='gen test dicoms',
-                    description='generate test dicom files',
-                    epilog='Test dicom files generator')
-    parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
-    parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(
+    #                 prog='gen test dicoms',
+    #                 description='generate test dicom files',
+    #                 epilog='Test dicom files generator')
+    # parser.add_argument('-n', '--number', type=int, help='number of dicom files to generate', default=100)
+    # parser.add_argument('-a', '--maxanonymize', action='store_true', help='include all tags to anonymize in dicom files', default=False)
+    # args = parser.parse_args()
 
-    create_dicom_files()
+    # create_dicom_files()
 
     ### For tagUpdater() tests ###
     # createTagUpdaterTestFiles()
-    # createTagUpdaterAllVRsTestFiles()
+    createTagUpdaterAllVRsTestFiles()
