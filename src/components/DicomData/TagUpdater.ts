@@ -80,7 +80,8 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             const group = parseInt(tag.tagId.slice(1, 5), 16);
             const element = parseInt(tag.tagId.slice(5), 16);
 
-            tag.dataOffSet = dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+            tag.dataOffSet =
+                dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
 
             tagIdByte.set(
                 new Uint8Array([group, group >> 8, element, element >> 8])

@@ -28,7 +28,7 @@ describe("EmptyTableRow Component", () => {
         expect(tableRow).toBeInTheDocument();
 
         const cells = tableRow ? tableRow.querySelectorAll("td") : [];
-        expect(cells).toHaveLength(1); 
+        expect(cells).toHaveLength(1);
         if (cells.length > 0) {
             expect(cells[0]).toHaveAttribute("colspan", "3");
         }

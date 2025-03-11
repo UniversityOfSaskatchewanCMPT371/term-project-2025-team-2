@@ -54,4 +54,3 @@ export const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
         </tbody>
     );
 };
-

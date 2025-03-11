@@ -24,6 +24,9 @@ type Store = {
     sidebarVisible: boolean;
     setSidebarVisible: (visible: boolean) => void;
 
+    sidePanelVisible: boolean;
+    setSidePanelVisible: (visible: boolean) => void;
+
     showSeriesModal: boolean;
     setShowSeriesModal: (show: boolean) => void;
 
@@ -56,6 +59,9 @@ type Store = {
     editingTagId: string | null;
     setEditingTagId: (id: string | null) => void;
 
+    hideTagNumber: boolean;
+    setHideTagNumber: (hide: boolean) => void;
+
     clearData: () => void;
 };
 
@@ -79,8 +85,14 @@ export const useStore = create<Store>((set) => ({
     sidebarVisible: false,
     setSidebarVisible: (visible) => set({ sidebarVisible: visible }),
 
+    sidePanelVisible: false,
+    setSidePanelVisible: (visible) => set({ sidePanelVisible: visible }),
+
     showSeriesModal: false,
     setShowSeriesModal: (show) => set({ showSeriesModal: show }),
+
+    hideTagNumber: false,
+    setHideTagNumber: (hide) => set({ hideTagNumber: hide }),
 
     series: false,
     setSeries: (series) => set({ series }),

@@ -45,7 +45,7 @@ test("Edit tag in series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const yesButton = page.locator("id=yes");
         await expect(yesButton).toBeVisible();
@@ -72,7 +72,6 @@ test("Edit tag in series", async ({ page }) => {
             timeout: 500,
         });
 
-
         await expect(tagRow).toBeVisible({ timeout: 1000 });
 
         const editButton = tagRow.locator("svg.h-6.w-6").first();
@@ -92,7 +91,9 @@ test("Edit tag in series", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const setDownloadToggle = page.locator(`input[type="checkbox"]#download-option`);
+        const setDownloadToggle = page.locator(
+            `input[type="checkbox"]#download-option`
+        );
 
         await setDownloadToggle.click();
 
@@ -166,7 +167,7 @@ test("Edit tag in series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -241,8 +242,9 @@ test("Edit tag in series", async ({ page }) => {
                 .textContent();
             console.log(`File Count: ${fileCount}`);
             console.log(`PatientID value: ${patientIDValue}`);
-            
-            const allTdValues = await PatientIDRow.locator("td").allTextContents();
+
+            const allTdValues =
+                await PatientIDRow.locator("td").allTextContents();
             console.log("All TD values in row:", allTdValues);
 
             debug(`File ${fileCount} - PatientID value: ${patientIDValue}`);
@@ -282,7 +284,7 @@ test("Edit tag in series", async ({ page }) => {
 
             console.log(`Filename ${filename}`);
             console.log(`Filecount ${fileCount}`);
-            console.log(`previous filename: ${previousFilename}`)
+            console.log(`previous filename: ${previousFilename}`);
             previousFilename = filename;
 
             if (!DEBUG) {

@@ -22,25 +22,25 @@ const debug = (message: string) => {
     }
 };
 
-const tagsanon = [ 
-    "InstitutionName", 
-    "InstitutionAddress", 
-    "ReferringPhysicianName",   
-    "PerformingPhysicianName", 
-    "NameOfPhysiciansReadingStudy", 
-    "OperatorsName", 
-    "PatientName", 
-    "AdditionalPatientHistory",  
-    "OtherPatientIDs", 
-    "OtherPatientNames", 
-    "ClinicalTrialSponsorName", 
-    "ClinicalTrialSiteName", 
-    "ClinicalTrialCoordinatingCenterName", 
-    "ClinicalTrialProtocolEthicsCommitteeName", 
-    "ClinicalTrialProtocolEthicsCommitteeApprovalNumber",  
-    "EvaluatorName", 
-    "OrderCallbackPhoneNumber", 
-]
+const tagsanon = [
+    "InstitutionName",
+    "InstitutionAddress",
+    "ReferringPhysicianName",
+    "PerformingPhysicianName",
+    "NameOfPhysiciansReadingStudy",
+    "OperatorsName",
+    "PatientName",
+    "AdditionalPatientHistory",
+    "OtherPatientIDs",
+    "OtherPatientNames",
+    "ClinicalTrialSponsorName",
+    "ClinicalTrialSiteName",
+    "ClinicalTrialCoordinatingCenterName",
+    "ClinicalTrialProtocolEthicsCommitteeName",
+    "ClinicalTrialProtocolEthicsCommitteeApprovalNumber",
+    "EvaluatorName",
+    "OrderCallbackPhoneNumber",
+];
 
 test("Edit tags in MRI series", async ({ page }) => {
     try {
@@ -67,7 +67,7 @@ test("Edit tags in MRI series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const yesButton = page.locator("id=yes");
         await expect(yesButton).toBeVisible();
@@ -156,7 +156,7 @@ test("Edit tags in MRI series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const no1Button = page.locator("id=no");
         await expect(no1Button).toBeVisible();
@@ -181,8 +181,7 @@ test("Edit tags in MRI series", async ({ page }) => {
                 });
             }
 
-
-            for(const tag of tagsanon) {
+            for (const tag of tagsanon) {
                 const row = page
                     .locator("tr", {
                         has: page.locator("td", { hasText: tag }),
@@ -200,41 +199,37 @@ test("Edit tags in MRI series", async ({ page }) => {
                 if (!DEBUG) {
                     process.stdout.write(". ");
                 }
-            };
-        
+            }
 
-        const nextButton = page.getByRole("button", { name: /Next/i });
+            const nextButton = page.getByRole("button", { name: /Next/i });
 
-        const isDisabled = await nextButton.getAttribute("disabled");
+            const isDisabled = await nextButton.getAttribute("disabled");
 
-        if (isDisabled === "true" || isDisabled === "") {
-            debug(
-                "Next button is disabled. We have reached the last file."
-            );
-            hasMoreFiles = false;
-        } else {
+            if (isDisabled === "true" || isDisabled === "") {
+                debug(
+                    "Next button is disabled. We have reached the last file."
+                );
+                hasMoreFiles = false;
+            } else {
+                await nextButton.click();
+                debug("Clicked Next button");
 
-            await nextButton.click();
-            debug("Clicked Next button");
-
-            // Wait for the new file to be displayed
-            await page.waitForSelector(
-                "text=/Currently Viewing: .+\.dcm/",
-                {
-                    state: "visible",
-                    timeout: 2000,
-                }
-            );
+                // Wait for the new file to be displayed
+                await page.waitForSelector(
+                    "text=/Currently Viewing: .+\.dcm/",
+                    {
+                        state: "visible",
+                        timeout: 2000,
+                    }
+                );
+            }
+            if (!DEBUG) {
+                process.stdout.write(". ");
+            }
         }
-        if (!DEBUG) {
-            process.stdout.write(". ");
-        }
-    }
 
         console.log(`\nSuccessfully checked ${fileCount} files`);
-
     } catch (error) {
-
         console.error("\nTest failed:", error);
         throw error;
     }

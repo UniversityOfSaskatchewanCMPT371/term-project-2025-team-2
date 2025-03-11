@@ -37,6 +37,8 @@ export const TableControls: React.FC<TableControlsProps> = ({
     const downloadOption = useStore((state) => state.downloadOption);
     const series = useStore((state) => state.series);
 
+    const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
+
     const tagDictionary = new TagDictionary();
 
     console.assert(dicomData.length > 0, "dicomData should not be empty");
@@ -52,7 +54,8 @@ export const TableControls: React.FC<TableControlsProps> = ({
             })
         );
         setTags(newTagData);
-        setShowPopup(true);
+        // setShowPopup(true);
+        setSidePanelVisible(true);
     };
 
     const handleUpdateTag = (tagId: string, newValue: string) => {

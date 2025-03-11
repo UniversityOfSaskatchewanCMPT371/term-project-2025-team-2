@@ -8,7 +8,6 @@ jest.mock("dicom-parser", () => {
     };
 });
 
-
 jest.mock("../../../../src/tagDictionary/dictionary", () => ({
     TagDictionary: class {
         lookup(tag: string) {

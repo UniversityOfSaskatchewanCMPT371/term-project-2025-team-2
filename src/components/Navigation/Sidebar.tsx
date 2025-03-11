@@ -41,4 +41,3 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
         </div>
     );
 };
-

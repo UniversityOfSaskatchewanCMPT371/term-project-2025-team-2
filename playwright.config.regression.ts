@@ -21,15 +21,15 @@ export default defineConfig({
             fullyParallel: true,
         },
         //Commented out webkit for regression tests because it breaks the regression test
-       // {
-       //     name: "webkit",
-       //     use: {
-       //         baseURL: "http://localhost:5173",
-       //         headless: true,
-       //         browserName: "webkit",
-       //         ...devices["Desktop Safari"],
-       //     },
-       // },
+        // {
+        //     name: "webkit",
+        //     use: {
+        //         baseURL: "http://localhost:5173",
+        //         headless: true,
+        //         browserName: "webkit",
+        //         ...devices["Desktop Safari"],
+        //     },
+        // },
         {
             name: "chromium",
             use: {
