@@ -18,25 +18,6 @@ function createFileObj(path: string, name: string): File | null {
       }
 }
 
-function compareDicomTags(obj1: Record<string, any>, obj2: Record<string, any>): boolean {
-    let result: boolean = true;
-    Object.entries(obj1).map(([key, value1]) => {
-      const value2 = obj2[key];
-      let equal: boolean;
-      
-      if (value1 === null || value2 === null) {
-        equal = value1 === value2;
-      } else if (typeof value1 === 'object' && typeof value2 === 'object') {
-        equal = JSON.stringify(value1) === JSON.stringify(value2);
-      } else {
-        equal = value1 === value2;
-      }
-      result = result && equal;
-      //console.log(key, value1, value2, equal)
-    });
-    return result;
-}
-
 function extractTagsFromByteArray(fileData: Uint8Array) {
     try {
         const dataSet = dicomParser.parseDicom(fileData);
@@ -48,9 +29,7 @@ function extractTagsFromByteArray(fileData: Uint8Array) {
 }
 
 async function getDicomDataAndTest(filename: string, newValues: TableUpdateData[], sampleDicomData: DicomData): Promise<DicomData | undefined> {
-     // get the edited dicom file from pydicom generater
-     let expectedDicomData: DicomData;
-     
+     // get the edited dicom file from pydicom generater     
      const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/' + filename, filename);
      if (expectedDicomFile === null) {
          console.error('Error reading file in TagUpdater unit tests');
@@ -58,16 +37,7 @@ async function getDicomDataAndTest(filename: string, newValues: TableUpdateData[
      }
      // update initial dicom file with tag updater
      let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
-     
-     // Get dicom data from expected file and compare with updated file
-    let updateFileData: DicomData = { tags: {}, DicomDataSet: null };
-     await parseDicomFile(expectedDicomFile)
-     .then((dicomData) => {
-         expectedDicomData = dicomData;
-         updateFileData= extractTagsFromByteArray(updatedFileData);
-         expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true);
-     })
-     return updateFileData;
+     return extractTagsFromByteArray(updatedFileData);
 }
 
 describe('TagUpdater unit tests - simple dicoms', () => {
