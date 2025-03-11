@@ -116,15 +116,7 @@ describe('TagUpdater unit tests - simple dicoms', () => {
     });
 
     test('Modify a tag value and delete a different tag', async() => {
-         // get the edited dicom file from pydicom generater
-         let filename: string = 'test_dicom_0_NameNoID.dcm';
-         const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/' + filename, filename);
-         if (expectedDicomFile === null) {
-             console.error('Error reading file in TagUpdater unit tests');
-             return;
-         }
- 
-         // update initial dicom file with tag updater
+         let filename: string = 'test_dicom_0_NameNoID.dcm'; 
          const deleteTagId: string = 'X00100020';
          const newValues: TableUpdateData[] = [{
              fileName: 'test_dicom_tagUpdtest.dcm',
@@ -137,16 +129,13 @@ describe('TagUpdater unit tests - simple dicoms', () => {
              newValue: '0',
              delete: true
          }]
-         let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
-         
-         // Get dicom data from expected file and compare with updated file
-         await parseDicomFile(expectedDicomFile)
-         .then((dicomData) => {
-             //let expectedDicomData = dicomData;
-             dicomData = extractTagsFromByteArray(updatedFileData);
-             expect(dicomData.tags[deleteTagId]).toBe(undefined)
-             //expect(compareDicomTags(expectedDicomData.tags, dicomData.tags)).toBe(true); // TODO: this fails because paitient name is 'ANONYMOU'
-         })
+        const dicomData = await getDicomDataAndTest(filename, newValues, sampleDicomData);
+        if(dicomData) {
+            expect(dicomData.tags[deleteTagId]).toBe(undefined);
+        }
+        else {
+            expect(dicomData).toBeDefined();
+        }
     });
 });
 
