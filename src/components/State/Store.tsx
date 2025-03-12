@@ -57,6 +57,9 @@ type Store = {
     setHideTagNumber: (hide: boolean) => void;
 
     clearData: () => void;
+
+    fileParseErrorFileNames: string[];
+    setFileParseErrorFileNames: (fileNames: string[]) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -151,4 +154,7 @@ export const useStore = create<Store>((set) => ({
         set({ sidebarVisible: false });
         set({ series: false });
     },
+
+    fileParseErrorFileNames: [] as string[],
+    setFileParseErrorFileNames: (fileNames) => set({ fileParseErrorFileNames: fileNames }),
 }));

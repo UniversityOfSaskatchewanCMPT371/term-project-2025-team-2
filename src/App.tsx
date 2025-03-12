@@ -63,6 +63,9 @@ export const App: React.FC = () => {
 
     const clearData = useStore((state) => state.clearData);
 
+    const fileParseError = useStore((state) => state.fileParseErrorFileNames);
+    const setFileParseError = useStore((state) => state.setFileParseErrorFileNames);
+
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
     const sidebarRef = useRef<HTMLDivElement>(null);
@@ -257,9 +260,9 @@ export const App: React.FC = () => {
 
                 <Modal
                     isOpen={showErrorModal}
-                    onClose={() => setShowErrorModal(false)}
+                    onClose={() => {setShowErrorModal(false); setFileParseError([])}}
                     title="Error"
-                    text="File isn't a valid DICOM file."
+                    text={`File ${fileParseError} isn't a valid DICOM file.`}
                 />
 
                 {sidebarVisible && (

@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { parseDicomFile } from "../DicomData/DicomParserUtils.ts";
 import { FileUploaderProps } from "../../types/FileTypes.ts";
 import logger from "../utils/Logger";
+import { useStore } from "@components/State/Store.tsx";
 
 /**
  *
@@ -15,6 +16,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     clearData,
     toggleModal,
 }) => {
+    const setFileParseError = useStore((state) => state.setFileParseErrorFileNames);
+    const fileParseError = useStore((state) => state.fileParseErrorFileNames);
     /**
      *
      * @param e - Change event
@@ -41,6 +44,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         const promises = fileArray.map((file) =>
             parseDicomFile(file).catch((error) => {
                 // If any file fails, clear everything and trigger modal
+                setFileParseError([...fileParseError, file.name]);
                 logger.error(error);
                 toggleModal();
                 return null; // Ensure failed files do not break Promise.all
