@@ -138,7 +138,8 @@ describe("AutoClean Module", () => {
 
             expect(createFile).toHaveBeenCalledWith(
                 "dicom1.dcm",
-                expect.any(ArrayBuffer)
+                expect.any(ArrayBuffer),
+                true
             );
 
             expect(createZipFromFiles).toHaveBeenCalledWith([
@@ -177,7 +178,8 @@ describe("AutoClean Module", () => {
             expect((tagUpdater as jest.Mock).mock.calls.length).toBe(1);
             expect(createFile).toHaveBeenCalledWith(
                 "dicom1.dcm",
-                expect.any(ArrayBuffer)
+                expect.any(ArrayBuffer),
+                true
             );
             expect(createZipFromFiles).toHaveBeenCalled();
             expect(downloadDicomFile).toHaveBeenCalled();

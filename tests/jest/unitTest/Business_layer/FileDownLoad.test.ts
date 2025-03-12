@@ -90,7 +90,7 @@ describe("Download Functions", () => {
         const blobData = "sample content";
         const fileName = "original.dcm";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData,true);
 
         expect(newFile.name).toBe("original_edited.dcm");
         expect(newFile.content).toBeInstanceOf(Blob);
@@ -100,7 +100,7 @@ describe("Download Functions", () => {
         const blobData = "sample content";
         const fileName = "original";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData,true);
 
         expect(newFile.name).toBe("original_edited.dcm");
     });
@@ -109,7 +109,7 @@ describe("Download Functions", () => {
         const blobData = "sample content";
         const fileName = "original_edited.dcm";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData, true);
 
         expect(newFile.name).toBe("original_edited_edited.dcm");
     });
