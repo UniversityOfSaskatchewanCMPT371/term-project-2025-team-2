@@ -24,15 +24,14 @@ export const TableControls: React.FC<TableControlsProps> = ({
     onSave,
 }) => {
     const dicomData = useStore((state) => state.dicomData);
-    const files = useStore((state) => state.files);
     const setTags = useStore((state) => state.setTags);
 
     const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
 
     const tagDictionary = new TagDictionary();
 
-    assert(dicomData.length > 0, "dicomData should not be empty");
-    assert(files.length > 0, "files should not be empty");
+    // assert(dicomData.length > 0, "dicomData should not be empty");
+    assert(onSave !== null, "onSave should not be empty");
 
     const handleAutoAnon = async () => {
         // format anon tags and show them
