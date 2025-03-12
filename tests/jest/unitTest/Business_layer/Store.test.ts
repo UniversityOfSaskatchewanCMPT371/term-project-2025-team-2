@@ -46,8 +46,6 @@ beforeEach(() => {
             localStorage.getItem("showHiddenTags") ?? "false"
         ),
         tags: [],
-        showPopup: false,
-        editingTagId: null,
     });
 });
 
@@ -76,8 +74,6 @@ describe("Zustand Store", () => {
             JSON.parse(localStorage.getItem("showHiddenTags") ?? "false")
         );
         expect(state.tags).toEqual([]);
-        expect(state.showPopup).toBe(false);
-        expect(state.editingTagId).toBeNull();
     });
 
     test("setFiles updates files state", () => {
@@ -178,20 +174,6 @@ describe("Zustand Store", () => {
         const { setTags } = useStore.getState();
         setTags(sampleAnonTags);
         expect(useStore.getState().tags).toEqual(sampleAnonTags);
-    });
-
-    test("setShowPopup updates showPopup state", () => {
-        const { setShowPopup } = useStore.getState();
-        setShowPopup(true);
-        expect(useStore.getState().showPopup).toBe(true);
-    });
-
-    test("setEditingTagId updates editingTagId state", () => {
-        const { setEditingTagId } = useStore.getState();
-        setEditingTagId("tag123");
-        expect(useStore.getState().editingTagId).toBe("tag123");
-        setEditingTagId(null);
-        expect(useStore.getState().editingTagId).toBeNull();
     });
 
     test("clearData resets files, dicomData, currentFileIndex, loading, sidebarVisible, and series", () => {

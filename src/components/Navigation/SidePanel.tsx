@@ -1,25 +1,44 @@
 import { useStore } from "@components/State/Store";
 import { DicomTableRow } from "@components/DicomData/TableComponents/DicomTableRow";
+import { AutoAnon } from "@components/Auto/AutoClean";
 
+/**
+ * Side panel for showing and editing tags to be anonymized
+ * @component
+ * @returns {JSX.Element} The rendered side panel
+ */
 export const SidePanel = () => {
     const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
     const sidePanelVisible = useStore((state) => state.sidePanelVisible);
     const tags = useStore((state) => state.tags);
-    const updateTableData = useStore((state) => state.setNewTagValues);
     const files = useStore((state) => state.files);
-    const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const setTags = useStore((state) => state.setTags);
+    const dicomData = useStore((state) => state.dicomData);
+    const clearData = useStore((state) => state.clearData);
 
     const handleUpdateValue = (
         tagId: string,
         newValue: string,
         deleteTag: boolean
     ) => {
-        updateTableData({
-            fileName: files[currentFileIndex].name,
-            tagId,
-            newValue,
-            delete: deleteTag,
-        });
+        if (deleteTag) {
+            setTags(tags.filter((tag) => tag.tagId !== tagId));
+            return;
+        }
+        setTags(
+            tags.map((tag) => {
+                if (tag.tagId === tagId) {
+                    return { ...tag, newValue };
+                }
+                return tag;
+            })
+        );
+    };
+
+    const handleAutoAnon = async () => {
+        await AutoAnon(dicomData, files, tags);
+        clearData();
+        setSidePanelVisible(false);
     };
 
     return (
@@ -34,7 +53,7 @@ export const SidePanel = () => {
 
             <div className="mb-4 flex justify-around">
                 <button
-                    onClick={() => null}
+                    onClick={() => handleAutoAnon()}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
                     OK
@@ -46,9 +65,12 @@ export const SidePanel = () => {
                     Cancel
                 </button>
             </div>
-            <table className="m-4 mb-2 border bg-white text-lg text-gray-500">
+            <table className="m-4 mb-10 border bg-white text-lg text-gray-500">
                 <thead>
                     <tr className="text-wrap bg-primary">
+                        <th className="w-1/5 border px-4 py-2 text-primary-content">
+                            Tag ID
+                        </th>
                         <th className="w-1/4 border px-4 py-2 text-primary-content">
                             Tag Name
                         </th>
