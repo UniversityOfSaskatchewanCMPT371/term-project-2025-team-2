@@ -66,32 +66,33 @@ export const extractDicomTags = (dataSet: any) => {
 
         let value: any;
 
-        switch (vr) {
-            case "UL":
-                if (dataSet.elements[tag]) {
-                    value = dataSet.uint32(tag).toString();
-                } else {
-                    value = "N/A";
-                }
-
-                break;
-            case "OB":
-                value = dataSet.byteArray
-                    .slice(
-                        element.dataOffset,
-                        element.dataOffset + element.length
-                    )
-                    .toString();
-                break;
-            case "FD":
-                value = dataSet.double(tag).toString() || "N/A";
-                break;
-            case "US":
-                value = dataSet.uint16(tag).toString() || "N/A";
-                break;
-            default:
-                value = dataSet.string(tag) || "N/A";
-                break;
+         try {
+            switch (vr) {
+                case "UL":
+                    value = dataSet.uint32(tag)?.toString() || "N/A";
+                    break;
+                case "OB":
+                    if (element.dataOffset !== undefined && element.length !== undefined) {
+                        value = dataSet.byteArray
+                            ?.slice(element.dataOffset, element.dataOffset + element.length)
+                            ?.toString() || "N/A";
+                    } else {
+                        value = "N/A";
+                    }
+                    break;
+                case "FD":
+                    value = dataSet.double(tag)?.toString() || "N/A";
+                    break;
+                case "US":
+                    value = dataSet.uint16(tag)?.toString() || "N/A";
+                    break;
+                default:
+                    value = dataSet.string(tag) || "N/A";
+                    break;
+            }
+        } catch (error) {
+            logger.warn(`Error reading tag "${tagId}" with VR "${vr}":`, error);
+            value = "Error reading value";
         }
 
         if (element.items && element.items.length > 0) {
