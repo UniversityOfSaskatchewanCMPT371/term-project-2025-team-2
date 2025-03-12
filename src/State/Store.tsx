@@ -4,6 +4,10 @@ import { isSafari } from "react-device-detect";
 import { CustomFile } from "@file/Types/FileTypes";
 import { TableUpdateData, DicomData, AnonTag } from "../Features/DicomTagTable/Types/DicomTypes";
 
+/**
+ * Store for global state management
+ * @typedef Store
+*/
 type Store = {
     files: CustomFile[];
     setFiles: (files: CustomFile[]) => void;
@@ -62,6 +66,10 @@ type Store = {
     setFileParseErrorFileNames: (fileNames: string[]) => void;
 };
 
+/**
+ * Store for global state management
+ * @type {Store}
+ */
 export const useStore = create<Store>((set) => ({
     files: [] as CustomFile[],
     setFiles: (files) => set({ files }),

@@ -1,7 +1,10 @@
 import React from "react";
 
 /**
- *
+ * Footer component
+ * @component
+ * @precondition - Footer component expects no props
+ * @postcondition - Footer component renders a footer with information
  * @returns rendered Footer component
  * @description Footer component to display footer information
  */

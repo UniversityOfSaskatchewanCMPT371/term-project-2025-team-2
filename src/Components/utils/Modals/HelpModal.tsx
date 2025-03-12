@@ -5,6 +5,8 @@ import { HelpModalProps } from "../../../types/types";
 /**
  * HelpModal component for displaying help documentation
  * @component
+ * @precondition HelpModal component expects no props
+ * @postcondition HelpModal component renders a modal with help information
  * @returns {JSX.Element} Rendered HelpModal component
  * @description Displays help information and documentation about the DICOM tag editor
  */

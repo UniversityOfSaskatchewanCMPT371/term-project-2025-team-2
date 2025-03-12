@@ -9,7 +9,10 @@ import { CustomFile } from "../../FileHandling/Types/FileTypes";
 import { AnonTag } from "../../DicomTagTable/Types/DicomTypes";
 
 /**
+ * Formate the data to be used in the tagUpdater function
  * @description format the data to be used in the tagUpdater function
+ * @precondition dicomData must be an object
+ * @postcondition formatted data is returned
  * @param dicomData
  * @returns formatted data
  */
@@ -40,8 +43,10 @@ export function FormatData(dicomData: any) {
 }
 
 /**
- *
+ * Auto anonymize the dicom files
  * @description auto anonymize the dicom files
+ * @precondition dicomData must be an array of objects, files must be an array of objects
+ * @postcondition new files are created and downloaded
  * @param dicomData
  * @param files
  * @returns none

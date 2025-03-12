@@ -6,7 +6,11 @@ import logger from "../../../Logger/Logger.ts";
 import { useStore } from "@state/Store.tsx";
 
 /**
- *
+ * FileUploader component
+ * @component
+ * @description - Component for uploading files
+ * @precondition - FileUploader component expects the following props
+ * @precondition - onFileUpload - Function to handle file upload
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */

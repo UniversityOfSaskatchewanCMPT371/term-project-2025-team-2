@@ -2,7 +2,10 @@ import React from "react";
 import { SearchProps } from "../../types/types";
 
 /**
- *
+ * Search component for filtering tags
+ * @component
+ * @precondition Search component expects the following props
+ * @postcondition Search component renders a search input
  * @param searchTerm - Current search term
  * @param onSearchChange - Function to handle search term change
  * @returns rendered Search component

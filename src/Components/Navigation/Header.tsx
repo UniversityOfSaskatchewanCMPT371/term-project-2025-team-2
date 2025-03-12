@@ -5,6 +5,8 @@ import { HeaderProps } from "../../types/types";
 /**
  * Header component for the sidebar
  * @component
+ * @precondition Header component expects the following props
+ * @postcondition Header component renders a header for the sidebar
  * @param {HeaderProps} props - Component props
  * @param {() => void} props.toggleModal - Function to toggle the settings modal
  * @returns {JSX.Element} Rendered Header component

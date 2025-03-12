@@ -1,6 +1,8 @@
 /**
  * createRows function
- * @component
+ * @description Function to create rows for the DICOM table
+ * @precondition - createRows function expects the following parameters
+ * @precondition - dicomData - DICOM data object
  * @param dicomData
  * @param fileName
  * @param newTableData

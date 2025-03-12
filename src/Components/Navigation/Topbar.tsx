@@ -4,7 +4,10 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { TopbarProps } from "../../types/types";
 
 /**
- *
+ * Topbar component for the application
+ * @component
+ * @precondition Topbar component expects the following props
+ * @postcondition Topbar component renders a topbar for the application
  * @param toggleSidebar - Function to toggle sidebar visibility
  * @param toggleTheme - Function to toggle theme
  * @param sidebarButtonRef - Ref for the sidebar button

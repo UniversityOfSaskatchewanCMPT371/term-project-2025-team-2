@@ -6,6 +6,14 @@ import { useStore } from "@state/Store";
 import { DownloadOptionProps } from "../../types/types";
 import { assert } from "../../DataFunctions/assert";
 
+/**
+ * Download option component
+ * @component
+ * @precondition DownloadOption component expects the following props
+ * @postcondition DownloadOption component renders a toggle to switch between downloading individual files and a zip file
+ * @param {DownloadOptionProps} props - Component props
+ * @returns {JSX.Element} Rendered DownloadOption component
+ */
 export const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const safari = isSafari;
     const files = useStore((state) => state.files);

@@ -7,6 +7,10 @@ import { DocumentIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@state/Store.tsx";
 
 /**
+ * FileTable component - renders a table of files
+ * @component
+ * @precondition FileTable component expects no props
+ * @postcondition Renders a table of files
  * @description FileTable component - renders a table of files
  * @param files - Array of files
  * @param currentFileIndex - Index of the currently viewed file
