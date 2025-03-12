@@ -109,7 +109,7 @@ export const useStore = create<Store>((set) => ({
 
     downloadOption: isSafari
         ? "zip"
-        : (localStorage.getItem("downloadOption") ?? "single"),
+        : (localStorage.getItem("downloadOption") ?? "zip"),
 
     setDownloadOption: (option) => {
         set({ downloadOption: option });

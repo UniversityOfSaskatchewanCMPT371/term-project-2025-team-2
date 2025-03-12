@@ -54,13 +54,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     showHiddenTags={showHiddenTags}
                     setShowHiddenTags={setShowHiddenTags}
                 />
-
-                {files.length > 1 && (
-                    <>
-                        <p>Download Option</p>
-                        <DownloadOption />
-                    </>
-                )}
+                
+                <p>Download Option</p>
+                <DownloadOption />
 
                 <GenButton
                     onClick={toggleModal}
