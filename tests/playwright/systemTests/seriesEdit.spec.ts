@@ -88,18 +88,6 @@ test("Edit tag in series", async ({ page }) => {
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
-        const settingsButton = page.locator("svg.size-6.cursor-pointer");
-        await settingsButton.click();
-
-        const setDownloadToggle = page.locator(
-            `input[type="checkbox"]#download-option`
-        );
-
-        await setDownloadToggle.click();
-
-        const closeButton = page.locator('button:has-text("Close")').first();
-        await closeButton.click();
-
         await page.waitForSelector(
             'button:has-text("Apply Edits to All Files")',
             {
