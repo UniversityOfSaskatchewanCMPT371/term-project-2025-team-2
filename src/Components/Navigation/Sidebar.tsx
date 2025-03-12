@@ -11,8 +11,10 @@ import { useStore } from "@state/Store";
 /**
  * Main Sidebar component for file management and settings
  * @component
+ * @precondition Sidebar component expects the following props
+ * @postcondition Sidebar component renders a sidebar for file management and settings
  * @param {SidebarProps} props - Component props
- * @param {boolean} props.isVisible - Flag indicating if the sidebar is visible
+ * @param {boolean} props.isVisible - Flag indicating if the sidebar is visible, true/false
  * @returns {JSX.Element} Rendered Sidebar component
  */
 export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {

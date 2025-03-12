@@ -11,13 +11,10 @@ import { useStore } from "@state/Store";
 /**
  * SettingsModal component for managing application settings
  * @component
+ * @precondition SettingsModal component expects the following props
+ * @postcondition SettingsModal component renders a modal to manage application settings
  * @param {SettingsModalProps} props - Component props
  * @param {() => void} props.toggleModal - Function to toggle the modal visibility
- * @param {File[]} props.files - Array of file objects
- * @param {(option: string) => void} props.setDownloadOption - Function to set the download option
- * @param {string} props.downloadOption - Currently selected download option
- * @param {boolean} props.showHiddenTags - Flag indicating if hidden tags are shown
- * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
  * @returns {JSX.Element} Rendered SettingsModal component
  */
 export const SettingsModal: React.FC<SettingsModalProps> = ({

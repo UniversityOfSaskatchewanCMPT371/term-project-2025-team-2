@@ -1,12 +1,15 @@
 import JSZip from "jszip";
 import { FileData } from "../../Features/FileHandling/Types/FileTypes";
+import { assert } from "../assert";
 
 /**
  * Creates a ZIP file containing multiple files
+ * @description - Create a zip file from multiple files
+ * @precondition - The files array must contain objects with a name and content
+ * @postcondition - The ZIP file is created and returned as a Blob
  * @param files - Array of files with name and content
  * @returns Promise resolving to the ZIP file as a Blob
  */
-
 export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     try {
         const zip = new JSZip();
@@ -25,17 +28,27 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
             },
         });
 
+        assert(zipBlob !== null);
+
         return zipBlob;
     } catch (error) {
         throw new Error(`Failed to create ZIP: ${error}`);
     }
-} /**
+} 
+
+/**
+ * Downloads a file as a Blob
  * @description - Download the dicom file, single file
+ * @precondition - The file object must have a name and content
+ * @postcondition - The file is downloaded to the user's device
  * @param blobData - The dicom data object, byteArray
  * @param fileName - string name of the file
  */
-
 export async function downloadDicomFile(newFile: FileData) {
+
+    // assert(newFile.content !== null);
+    // assert(newFile.name !== null);
+
     const url = window.URL.createObjectURL(newFile.content);
 
     const link = document.createElement("a");
@@ -47,13 +60,17 @@ export async function downloadDicomFile(newFile: FileData) {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
 }
+
 /**
+ * Create a new file object
  * @description - Create a new file object
+ * @precondition - The blobData must be a valid Blob, fileName must be a string, isEdited must be a boolean
+ * @postcondition - The file object is created and returned
  * @param fileName - string name of the file
  * @param blobData - The dicom data object, byteArray
+ * @param isEdited - boolean flag indicating if the file has been edited
  * @returns - object with name and content of the file
  */
-
 export function createFile(fileName: string, blobData: any, isEdited: boolean) {
     const blob = new Blob([blobData], {
         type: "application/dicom",

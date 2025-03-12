@@ -1,6 +1,7 @@
 import dicomParser from "dicom-parser";
 import { TagDictionary } from "../TagDictionary/dictionary";
 import logger from "../../Logger/Logger";
+import { assert } from "../assert";
 
 const tagDictionary = new TagDictionary();
 
@@ -105,6 +106,8 @@ export const extractDicomTags = (dataSet: any) => {
             dicomTags[tagId] = { tagId, tagName, value };
         }
     });
+
+    assert(Object.keys(dicomTags).length > 0, "No DICOM tags found in dataset.");
 
     return { tags: dicomTags, DicomDataSet: dataSet };
 };

@@ -7,6 +7,10 @@ import { useStore } from "@state/Store";
 /**
  * handleClick function
  * @description - Allows user to input new value for the row
+ * @precondition - User clicks on the edit button
+ * @postcondition - User can input new value for the row
+ * @param setIsEditing - setEditing state
+ * @returns void
  */
 const handleClick = (
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,6 +20,10 @@ const handleClick = (
 
 /**
  * DicomTableRow component
+ * @component
+ * @description - Renders a single row in the DICOM table
+ * @precondition - DicomTableRow component expects the following props
+ * @postcondition - Renders a single row in the DICOM table
  * @param DicomTableRowProps - row, index, onUpdateValue, nested, updated, level
  * @returns rendered DicomTableRow component
  */

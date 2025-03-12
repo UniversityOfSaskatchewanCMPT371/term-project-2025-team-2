@@ -1,4 +1,5 @@
 /**
+ * Tags to be anonymized data type
  * @description - Interface for Tag to be anonymized
  * @interface tagIdAnon
  * @type {tagIdAnon}
@@ -11,6 +12,7 @@ interface tagIdAnon {
 }
 
 /**
+ * Test Tags to be anonymized
  * @description - Test Tag to be anonymized
  * @type {tagIdAnon[]}
  * @returns {tagIdAnon[]}
@@ -20,6 +22,7 @@ export const Test_TagsAnon: tagIdAnon[] = [
 ];
 
 /**
+ * Tags to be anonymized
  * @description - Tags to be anonymized
  * @type {tagIdAnon[]}
  * @returns {tagIdAnon[]}

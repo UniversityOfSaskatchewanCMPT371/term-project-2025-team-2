@@ -9,6 +9,9 @@ import { updateAllFiles } from "../../../DataFunctions/DicomData/UpdateAllFiles"
 /**
  * Controls component for the DICOM table
  * @component
+ * @description Controls component for the DICOM table
+ * @precondition dicomData and files should not be empty
+ * @postcondition Renders the controls section
  * @param {Object} props - The component props
  * @param {string} props.searchTerm - Current search term
  * @param {function(string): void} props.onSearchChange - Callback for search term changes

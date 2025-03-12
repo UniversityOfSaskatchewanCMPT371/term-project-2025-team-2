@@ -5,7 +5,10 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { useStore } from "@state/Store.tsx";
 
 /**
- *
+ * FileTableBody component - renders the body of the file table
+ * @component
+ * @precondition FileTableBody component expects the following props
+ * @postcondition Renders the body of the file table
  * @param files - Array of files
  * @param currentFileIndex - Index of the currently viewed file
  * @param onFileSelect - Function to handle file selection

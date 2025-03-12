@@ -8,9 +8,9 @@ import { useStore } from "@state/Store";
 /**
  * Hidden tags option component
  * @component
- * @param {HiddenTagsProps} props - Component props
- * @param {boolean} props.showHiddenTags - Flag indicating if hidden tags are shown
- * @param {(set: boolean) => void} props.setShowHiddenTags - Function to set the visibility of hidden tags
+ * @precondition HiddenTagsOption component expects the following props
+ * @postcondition HiddenTagsOption component renders a toggle to show/hide hidden tags
+ * @param {ThemeSelectorProps} props - Component props
  * @returns {JSX.Element} Rendered HiddenTagsOption component
  */
 export const ThemeSelector: React.FC<ThemeSelectorProps> = () => {

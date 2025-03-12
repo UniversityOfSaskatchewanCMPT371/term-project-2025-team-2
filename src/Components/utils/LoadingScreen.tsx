@@ -1,7 +1,10 @@
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 /**
- *
+ * Loading screen component
+ * @component
+ * @precondition Loading screen component expects no props
+ * @postcondition Loading screen component renders a loading screen
  * @returns Loading screen component
  */
 export const LoadingScreen = () => {

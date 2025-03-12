@@ -3,9 +3,26 @@ import { createZipFromFiles } from "./DownloadFuncs";
 import { tagUpdater } from "./TagUpdater";
 import { getSingleFileTagEdits } from "./TagUpdater";
 
+/**
+ * Update all files with new tag values
+ * @description - Update all files with new tag values
+ * @precondition - The dicom data must be an array of objects, 
+ * series must be a boolean,
+ * newTagValues must be an object, 
+ * files must be an array of objects, 
+ * currentFileIndex must be a number, 
+ * downloadOption must be a string
+ * @postcondition - The files are updated with the new tag values and downloaded
+ * @param dicomData - The dicom data object
+ * @param series - boolean if the dicom data is a series
+ * @param newTagValues - The new tag values
+ * @param files - The files to update
+ * @param currentFileIndex - The index of the current file
+ * @param downloadOption - The download option
+ */
 export const updateAllFiles = async (
     dicomData: any[],
-    series: any,
+    series: boolean,
     newTagValues: any,
     files: { name: string }[],
     currentFileIndex: number,

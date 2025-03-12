@@ -1,8 +1,11 @@
 import React from "react";
 import { useStore } from "@state/Store";
+
 /**
  * Table header component for DICOM data
  * @component
+ * @precondition TableHeader component expects no props
+ * @postcondition Renders the table header for the DICOM data
  * @returns {JSX.Element} The rendered table header
  */
 export const TableHeader: React.FC = () => {

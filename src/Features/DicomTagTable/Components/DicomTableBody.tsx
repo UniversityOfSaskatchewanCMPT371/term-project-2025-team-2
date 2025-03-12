@@ -6,6 +6,9 @@ import { DicomTableBodyProps } from "../Types/DicomTypes";
 /**
  * DICOM table body component
  * @component
+ * @description Body of the DICOM table
+ * @precondition DicomTableBody component expects the following props
+ * @precondition filteredRows - Filtered list of DICOM tag rows
  * @param {DicomTableBodyProps} props
  * @param {Array<TableRow>} props.filteredRows - Filtered list of DICOM tag rows
  * @param {boolean} props.showHidden - Whether to show hidden tags

@@ -3,7 +3,10 @@ import { GenButton } from "../GenButton.tsx";
 import { ModalProps } from "../../../types/types.ts";
 
 /**
- *
+ * Modal component for displaying modal dialogs
+ * @component
+ * @precondition Modal component expects the following props
+ * @postcondition Modal component renders a modal dialog
  * @param isOpen - Boolean to determine if modal is open
  * @param onClose - Function to handle modal close
  * @param title - Modal title

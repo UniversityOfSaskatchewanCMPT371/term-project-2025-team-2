@@ -9,7 +9,8 @@ import { useStore } from "@state/Store";
 /**
  * SeriesControls component for managing series-related functionality
  * @component
- * @param {SeriesControlsProps} props - Component props
+ * @precondition SeriesControls component expects the following props
+ * @postcondition SeriesControls component renders a series controls component
  * @returns {JSX.Element} Rendered SeriesControls component
  */
 export const SeriesControls: React.FC<SeriesControlsProps> = () => {

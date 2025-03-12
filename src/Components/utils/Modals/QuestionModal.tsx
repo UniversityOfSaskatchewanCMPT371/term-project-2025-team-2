@@ -1,8 +1,15 @@
 import { QuestionModalProps } from "../../../types/types";
 
 /**
- *
- * @param QuestionModalProps - props for QuestionModal component
+ * QuestionModal component for displaying a question modal dialog
+ * @component
+ * @precondition QuestionModal component expects the following props
+ * @postcondition QuestionModal component renders a question modal dialog
+ * @param {QuestionModalProps} - props for QuestionModal component
+ * @param {boolean} props.setSeries - Function to set the series
+ * @param {boolean} props.setIsOpen - Function to set the modal open state
+ * @param {string} props.title - Modal title
+ * @param {string} props.text - Modal text
  * @returns QuestionModal component
  */
 export function QuestionModal({

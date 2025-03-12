@@ -2,7 +2,10 @@ import React from "react";
 import { GenButtonProps } from "../../types/types";
 
 /**
- *
+ * General button component
+ * @component
+ * @precondition GenButton component expects the following props
+ * @postcondition GenButton component renders a button
  * @param onClick - Function to handle button click
  * @param disabled - Boolean to determine if button is disabled
  * @param label - Button label

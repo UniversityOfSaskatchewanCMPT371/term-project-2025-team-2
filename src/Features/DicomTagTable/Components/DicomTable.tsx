@@ -15,6 +15,9 @@ import { useStore } from "@state/Store";
 /**
  * Main DICOM table component
  * @component
+ * @description Main DICOM table component
+ * @precondition File to be uploaded and parsed
+ * @postcondition Renders the DICOM table component
  * @param {DicomTableProps} props - The component props
  * @returns {JSX.Element} The rendered DICOM table
  * @throws {Error} When no DICOM data is available

@@ -5,6 +5,8 @@ import { AutoAnon } from "@auto/Functions/AutoClean";
 /**
  * Side panel for showing and editing tags to be anonymized
  * @component
+ * @precondition SidePanel component expects the following props
+ * @postcondition SidePanel component renders a side panel for showing and editing tags to be anonymized
  * @returns {JSX.Element} The rendered side panel
  */
 export const SidePanel = () => {

@@ -3,7 +3,10 @@ import { GenButton } from "../utils/GenButton";
 import { FileNavigationProps } from "../../Features/FileHandling/Types/FileTypes";
 
 /**
- *
+ * File navigation component
+ * @component
+ * @precondition - FileNavigation component expects the following props
+ * @postcondition - FileNavigation component renders a navigation bar to navigate between files
  * @param currentFileIndex - Index of the currently viewed file
  * @param fileCount - Total number of files
  * @param onPrevFile - Function to handle previous file navigation

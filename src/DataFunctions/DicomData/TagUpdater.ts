@@ -44,7 +44,10 @@ const lengthOffset = 6;
 import dicomParser from "dicom-parser";
 
 /**
- *
+ * Update the tags in a dicom file
+ * @description - Update the tags in a dicom file
+ * @precondition - The dicomData must be a valid dicom object, newTagData must be a valid array of tag objects
+ * @postcondition - The dicomData object will be updated with the new tag values
  * @param dicomData - The dicom data object
  * @param newTagData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
@@ -98,7 +101,10 @@ export function tagUpdater(dicomData: any, newTagData: any) {
 }
 
 /**
+ * Insert a new tag into dicom file
  * @description insert a new tag into dicom file
+ * @precondition - The dicomData must be a valid dicom object, tagToAdd must be a valid tag object, newTag must be a valid byte array
+ * @postcondition - The dicomData object will be updated with the new tag
  * @param dicomData - raw dicom data set
  * @param tagToAdd - parsed tag data to add to dicom
  * @param newTag - bytearray to insert into dicom file
@@ -123,7 +129,10 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
 }
 
 /**
+ * Remove a tag from a file
  * @description remove a tag from a file
+ * @precondition - The dicomData must be a valid dicom object, tagToRemove must be a valid tag object
+ * @postcondition - The dicomData object will be updated with the tag removed
  * @param dicomData - raw dicom data set
  * @param tagToRemove - tag to be removed
  * @returns byte array with tag removed
@@ -143,10 +152,13 @@ export function removeTag(dicomData: any, tagToRemove: any) {
 }
 
 /**
- *
- * @param bufffer1
- * @param buffer2
- * @returns
+ * Concatenate two byte arrays
+ * @description concatenate two byte arrays
+ * @precondition - The buffer1 and buffer2 must be valid byte arrays
+ * @postcondition - The two byte arrays will be concatenated
+ * @param bufffer1 - first byte array
+ * @param buffer2 - second byte array
+ * @returns concatenated byte array
  */
 function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
     const concatedBuffer = new Uint8Array(bufffer1.length + buffer2.length);
@@ -156,6 +168,10 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
 }
 
 /**
+ * Create a tag byte array
+ * @description create a tag byte array
+ * @precondition - The tagName and tag must be valid byte arrays
+ * @postcondition - The tag byte array will be created
  * @param tagName tag's group and element in bytearray
  * @param tag dicom entry to be written to bytearray
  * @description creates a bytearray representing the tag
@@ -265,6 +281,7 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
 }
 
 /**
+ * Write a number to a byte array
  * @param num - number to be converted to bytearray
  * @param type - type of number to be converted
  * @param arrayLength - length of the array
@@ -309,7 +326,9 @@ function writeTypedNumber(
 }
 
 /**
- *
+ * Write a VR to a byte array
+ * @precondition - The vr must be a valid 2 character string
+ * @postcondition - The vr will be written to a byte array, ascii
  * @param vr - the 2 character vr
  * @returns byte array of vr value
  */
@@ -322,6 +341,9 @@ function writeVRArray(vr: string) {
 }
 
 /**
+ * Get the length of a tag's value
+ * @precondition - The tag must be a valid tag object
+ * @postcondition - The length of the tag's value will be calculated
  * @param tag - tag to be written to bytearray
  * @description gets the length of the tag's value
  * @return length of the tag's value
@@ -357,7 +379,10 @@ function getValueLength(tag: any) {
 }
 
 /**
+ * Get the tags for a single file, filtered by the file name
  * @description - Get the tags for a single file, filtered by the file name
+ * @precondition - The newTags must be a valid array of tag objects, fileName must be a valid string
+ * @postcondition - The tags edited for a single file will be returned
  * @param newTags
  * @param fileName
  * @returns - object tags edited for a single file
