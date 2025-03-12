@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { DicomTable } from "@components/DicomData/TableComponents/DicomTable";
-import * as storeModule from "@components/State/Store";
+import { DicomTable } from "../../../../src/Features/DicomTagTable/Components/DicomTable";
+import * as storeModule from "../../../../src/State/Store";
 
-jest.mock("@components/State/Store", () => {
-    const actual = jest.requireActual("@components/State/Store");
+jest.mock("../../../../src/State/Store", () => {
+    const actual = jest.requireActual("../../../../src/State/Store");
     return {
         ...actual,
         useStore: jest.fn(),

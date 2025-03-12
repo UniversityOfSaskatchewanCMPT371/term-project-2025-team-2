@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Topbar } from "@components/Navigation/Topbar";
+import { Topbar } from "../../../../src/Components/Navigation/Topbar";
 
 jest.mock("react-tooltip", () => ({
     Tooltip: () => <div>Tooltip</div>,

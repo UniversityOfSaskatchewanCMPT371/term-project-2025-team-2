@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { FileNavigation } from "@components/Navigation/FileNavigation";
+import { FileNavigation } from "../../../../src/Components/Navigation/FileNavigation";
 
 describe("FileNavigation", () => {
     const mockOnPrevFile = jest.fn();

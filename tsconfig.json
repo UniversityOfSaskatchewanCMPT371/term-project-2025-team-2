@@ -8,15 +8,14 @@
         "jsx": "react-jsx",
         "baseUrl": "src/",
         "paths": {
-            "@components/*": ["components/*"],
-            "@utils/*": ["components/utils/*"],
-            "@navigation/*": ["components/Navigation/*"],
-            "@DicomData/*": ["components/DicomData/*"],
-            "@hooks/*": ["components/Hooks/*"],
-            "@FileHandling/*": ["components/FileHandling/*"],
-            "@state/*": ["components/State/*"],
-            "@types/*": ["types/*"],
-            "@auto/*": ["components/Auto/*"]
+            "@components/*": ["Components/*"],
+            "@utils/*": ["Components/utils/*"],
+            "@navigation/*": ["Components/Navigation/*"],
+            "@dicom/*": ["Features/DicomTagTable*"],
+            "@hooks/*": ["Hooks/*"],
+            "@fileHandling/*": ["Features/FileHandling/*"],
+            "@state/*": ["State/*"],
+            "@auto/*": ["Features/AutoAnonymize/*"]
         }
     }
 }

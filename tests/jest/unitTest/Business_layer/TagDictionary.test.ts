@@ -1,5 +1,5 @@
-import { TagDictionary } from "../../../../src/tagDictionary/dictionary";
-import { standardDataElements } from "../../../../src/tagDictionary/standardDataElements";
+import { TagDictionary } from "../../../../src/DataFunctions/TagDictionary/dictionary";
+import { standardDataElements } from "../../../../src/DataFunctions/TagDictionary/standardDataElements";
 
 describe("TagDictionary", () => {
     let tagDictionary: TagDictionary;
