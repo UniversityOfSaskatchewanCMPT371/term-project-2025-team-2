@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import GenErrorPage from "@components/ErrorHandling/GenErrorPage";
+import GenErrorPage from "../../../../src/Components/ErrorHandling/GenErrorPage";
 
 // GenErrorPage Tests
 describe("GenErrorPage Component", () => {

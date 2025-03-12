@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Sidebar } from "@components/Navigation/Sidebar";
-import { Topbar } from "@navigation/Topbar";
-import { FileUploader } from "./components/FileHandling/FileUploader";
-import { DicomTable } from "./components/DicomData/TableComponents/DicomTable";
-import { FileNavigation } from "./components/Navigation/FileNavigation";
-import { FileHeader } from "./components/FileHandling/FileHeader";
-import { CustomFile as CustomFile } from "./types/FileTypes";
-import { Footer } from "./components/Navigation/Footer";
-import { QuestionModal } from "./components/utils/Modals/QuestionModal";
-import { Modal } from "./components/utils/Modals/Modal";
-import logger from "./components/utils/Logger";
-import { LoadingScreen } from "./components/utils/LoadingScreen";
-import { SidePanel } from "@components/Navigation/SidePanel";
+import { Topbar } from "@components/Navigation/Topbar";
+import { FileUploader } from "./Features/FileHandling/Components/FileUploader";
+import { DicomTable } from "./Features/DicomTagTable/Components/DicomTable";
+import { FileNavigation } from "@components/Navigation/FileNavigation";
+import { FileHeader } from "./Features/FileHandling/Components/FileHeader";
+import { CustomFile as CustomFile } from "./Features/FileHandling/Types/FileTypes";
+import { Footer } from "@components/Navigation/Footer";
+import { QuestionModal } from "./Components/utils/Modals/QuestionModal";
+import { Modal } from "@components/utils/Modals/Modal";
+import logger from "./Logger/Logger";
+import { LoadingScreen } from "@components/utils/LoadingScreen";
+import { SidePanel } from "@auto/Components/AutoConfirmPanel";
 
-import { useStore } from "./components/State/Store";
-import { DicomData } from "./types/DicomTypes";
+import { useStore } from "@state/Store";
+import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 
 /**
  * @description Main App Function

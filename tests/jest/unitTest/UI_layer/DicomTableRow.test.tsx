@@ -5,7 +5,7 @@ import {
     waitFor,
     act,
 } from "@testing-library/react";
-import { DicomTableRow } from "@components/DicomData/TableComponents/DicomTableRow";
+import { DicomTableRow } from "../../../../src/Features/DicomTagTable/Components/DicomTableRow";
 
 const mockOnUpdateValue = jest.fn();
 

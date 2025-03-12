@@ -109,21 +109,17 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
-            "@components": path.resolve(__dirname, "./src/components"),
-            "@hooks": path.resolve(__dirname, "./src/components/Hooks"),
-            "@utils": path.resolve(__dirname, "./src/components/utils"),
+            "@components": path.resolve(__dirname, "./src/Components"),
+            "@hooks": path.resolve(__dirname, "./src/Hooks"),
+            "@utils": path.resolve(__dirname, "./src/Components/utils"),
             "@navigation": path.resolve(
                 __dirname,
-                "./src/components/Navigation"
+                "./src/Components/Navigation"
             ),
-            "@DicomData": path.resolve(__dirname, "./src/components/DicomData"),
-            "@FileHandling": path.resolve(
-                __dirname,
-                "./src/components/FileHandling"
-            ),
-            "@state": path.resolve(__dirname, "./src/components/State"),
-            "@types": path.resolve(__dirname, "./src/types"),
-            "@auto": path.resolve(__dirname, "./src/components/Auto"),
+            "@dicom": path.resolve(__dirname, "./src/Features/DicomTagTable"),
+            "@state": path.resolve(__dirname, "./src/State"),
+            "@auto": path.resolve(__dirname, "./src/Features/AutoAnonymize"),
+            "@file": path.resolve(__dirname, "./src/Features/FileHandling"),
         },
     },
 });

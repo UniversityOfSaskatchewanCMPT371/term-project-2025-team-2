@@ -1,15 +1,15 @@
-import { updateAllFiles } from "@components/DicomData/UpdateAllFiles";
+import { updateAllFiles } from "../../../../src/DataFunctions/DicomData/UpdateAllFiles";
 import {
     createFile,
     downloadDicomFile,
     createZipFromFiles,
-} from "@components/DicomData/DownloadFuncs";
+} from "../../../../src/DataFunctions/DicomData/DownloadFuncs";
 import {
     tagUpdater,
     getSingleFileTagEdits,
-} from "@components/DicomData/TagUpdater";
+} from "../../../../src/DataFunctions/DicomData/TagUpdater";
 
-jest.mock("@components/DicomData/DownloadFuncs", () => ({
+jest.mock("../../../../src/DataFunctions/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn((name, content) => ({ name, content })),
     downloadDicomFile: jest.fn(),
     createZipFromFiles: jest.fn(
@@ -17,7 +17,7 @@ jest.mock("@components/DicomData/DownloadFuncs", () => ({
     ),
 }));
 
-jest.mock("@components/DicomData/TagUpdater", () => ({
+jest.mock("../../../../src/DataFunctions/DicomData/TagUpdater", () => ({
     tagUpdater: jest.fn(
         (dicomDataSet, edits) =>
             `updated(${dicomDataSet}, ${JSON.stringify(edits)})`
