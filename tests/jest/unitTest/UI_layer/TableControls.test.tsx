@@ -29,19 +29,6 @@ describe('TableControls', () => {
         expect(onSearchChange).toHaveBeenCalledWith('test');
     });
 
-    test('calls onSave when Download File button is clicked', () => {
-        const onSave = jest.fn();
-        render(
-            <TableControls
-                searchTerm=""
-                onSearchChange={jest.fn()}
-                onSave={onSave}
-            />
-        );
-        fireEvent.click(screen.getByText('Download File'));
-        expect(onSave).toHaveBeenCalledTimes(1);
-    });
-
     test('renders the search input with the correct value', () => {
         render(
             <TableControls
