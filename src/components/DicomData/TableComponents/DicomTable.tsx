@@ -68,6 +68,16 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
      * @returns {void}
      */
     const updateFile = () => {
+        const currentFileName = files[currentFileIndex].name;
+        const isFileEdited = newTagValues.some(
+            (tag) => tag.fileName === currentFileName
+        );
+    
+        if (!isFileEdited) {
+            logger.warn(`No edits found for "${currentFileName}", skipping download.`);
+            return;
+        }
+    
         const updatedDicomData = tagUpdater(
             dicomData[currentFileIndex].DicomDataSet,
             newTagValues
@@ -75,10 +85,11 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
         const blob = new Blob([updatedDicomData], {
             type: "application/dicom",
         });
-        const newFile = createFile(fileName, blob);
+        const newFile = createFile(currentFileName, blob);
         downloadDicomFile(newFile);
         clearData();
     };
+    
 
     return (
         <div key={fileName} className="mt-8">
