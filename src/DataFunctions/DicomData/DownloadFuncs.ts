@@ -1,5 +1,6 @@
 import JSZip from "jszip";
 import { FileData } from "../../Features/FileHandling/Types/FileTypes";
+import { assert } from "../assert";
 
 /**
  * Creates a ZIP file containing multiple files
@@ -25,6 +26,8 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
             },
         });
 
+        assert(zipBlob !== null);
+
         return zipBlob;
     } catch (error) {
         throw new Error(`Failed to create ZIP: ${error}`);
@@ -36,6 +39,10 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
  */
 
 export async function downloadDicomFile(newFile: FileData) {
+
+    // assert(newFile.content !== null);
+    // assert(newFile.name !== null);
+
     const url = window.URL.createObjectURL(newFile.content);
 
     const link = document.createElement("a");

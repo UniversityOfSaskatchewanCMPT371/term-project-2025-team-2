@@ -15,6 +15,8 @@ import { SidePanel } from "@auto/Components/AutoConfirmPanel";
 
 import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
+import { assert } from "./DataFunctions/assert";
+
 
 /**
  * @description Main App Function
@@ -179,6 +181,9 @@ export const App: React.FC = () => {
         if (newFiles.length > 1) {
             setShowSeiresModal(true);
         }
+
+        assert(newFiles.length === newDicomData.length);
+        assert(currentFileIndex === 0);
     };
 
     // File navigation - move to next file
@@ -186,6 +191,7 @@ export const App: React.FC = () => {
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
+        assert(currentFileIndex < files.length);
     };
 
     // File navigation - move to previous file
@@ -193,6 +199,7 @@ export const App: React.FC = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
+        assert(currentFileIndex >= 0);
     };
 
     // main render
@@ -279,3 +286,6 @@ export const App: React.FC = () => {
         </div>
     );
 };
+
+
+

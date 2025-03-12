@@ -53,10 +53,10 @@ describe("Download Functions", () => {
     it("should handle missing content in downloadDicomFile gracefully", () => {
         const fileData: FileData = {
             name: "testFile.dcm",
-            content: null as any, // Simulating missing content
+            content: null as any, 
         };
 
-        expect(() => downloadDicomFile(fileData)).not.toThrow(); // No error expected, just a no-op
+        expect(() => downloadDicomFile(fileData)).not.toThrow(); 
     });
 
     it("should handle missing name in downloadDicomFile gracefully", () => {
@@ -65,7 +65,7 @@ describe("Download Functions", () => {
             content: new Blob(["test content"], { type: "application/dicom" }),
         };
 
-        expect(() => downloadDicomFile(fileData)).not.toThrow(); // No error expected, just a no-op
+        expect(() => downloadDicomFile(fileData)).not.toThrow(); 
     });
 
     it("should create a zip file from files", async () => {
@@ -83,7 +83,7 @@ describe("Download Functions", () => {
     it("should handle empty file list in createZipFromFiles gracefully", async () => {
         const zipBlob = await createZipFromFiles([]);
 
-        expect(zipBlob).toBeInstanceOf(Blob); // Instead of rejecting, just return an empty ZIP
+        expect(zipBlob).toBeInstanceOf(Blob); 
     });
 
     it("should create a new DICOM file object with correct name", () => {

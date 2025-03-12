@@ -4,6 +4,7 @@ import { isSafari } from "react-device-detect";
 
 import { useStore } from "@state/Store";
 import { DownloadOptionProps } from "../../types/types";
+import { assert } from "../../DataFunctions/assert";
 
 export const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const safari = isSafari;
@@ -22,8 +23,13 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
             return;
         }
 
-        if (event.target.checked) setDownloadOption("zip");
-        else setDownloadOption("single");
+        if (event.target.checked) {
+            setDownloadOption("zip");
+        } else {
+            setDownloadOption("single");
+        }
+
+        assert(downloadOption === "zip" || downloadOption === "single");
     };
 
     return (
@@ -40,10 +46,10 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
                         files.length > MAXSINGLEFILESDOWNLOAD
                             ? "Too many files - Zip Only"
                             : safari
-                              ? "Not supported in Safari"
-                              : downloadOption === "zip"
-                                ? "Switch to Individual Files"
-                                : "Switch to Zip File"
+                                ? "Not supported in Safari"
+                                : downloadOption === "zip"
+                                    ? "Switch to Individual Files"
+                                    : "Switch to Zip File"
                     }
                     data-tooltip-place="top"
                 />
