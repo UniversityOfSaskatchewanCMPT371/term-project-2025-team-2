@@ -54,14 +54,18 @@ export async function downloadDicomFile(newFile: FileData) {
  * @returns - object with name and content of the file
  */
 
-export function createFile(fileName: string, blobData: any) {
+export function createFile(fileName: string, blobData: any, isEdited: boolean) {
     const blob = new Blob([blobData], {
         type: "application/dicom",
     });
 
-    const newFileName = fileName.includes(".dcm")
+    const baseName = fileName.endsWith(".dcm")
         ? fileName.slice(0, -4)
         : fileName;
 
-    return { name: newFileName + "_edited.dcm", content: blob };
+    const finalName = isEdited
+        ? `${baseName}_edited.dcm`
+        : `${baseName}.dcm`;
+
+    return { name: finalName, content: blob };
 }

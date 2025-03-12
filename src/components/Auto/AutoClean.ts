@@ -68,7 +68,7 @@ export const AutoAnon = async (
 
         const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
 
-        newFiles.push(createFile(files[index].name, updatedFile));
+        newFiles.push(createFile(files[index].name, updatedFile, true));
     });
 
     const zipFile = await createZipFromFiles(newFiles);

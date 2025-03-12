@@ -15,29 +15,32 @@ export const updateAllFiles = async (
 
     if (series) {
         dicomData.forEach((dicom: any, index: number) => {
-            const updatedFile = tagUpdater(
-                dicom.DicomDataSet,
-                getSingleFileTagEdits(
-                    newTagValues,
-                    files[currentFileIndex].name
-                )
-            );
+            const fileName = files[index].name;
+            const fileEdits = getSingleFileTagEdits(newTagValues, files[currentFileIndex].name);
+            const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
+
+            const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);
+            const file = createFile(fileName, updatedFile, isEdited);
+
             if (downloadOption === "single") {
-                downloadDicomFile(createFile(files[index].name, updatedFile));
+                downloadDicomFile(file);
             } else {
-                newFiles.push(createFile(files[index].name, updatedFile));
+                newFiles.push(file);
             }
         });
     } else {
         dicomData.forEach((dicom, index) => {
-            const updatedFile = tagUpdater(
-                dicom.DicomDataSet,
-                getSingleFileTagEdits(newTagValues, files[index].name)
-            );
+            const fileName = files[index].name;
+            const fileEdits = getSingleFileTagEdits(newTagValues, fileName);
+            const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
+
+            const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);
+            const file = createFile(fileName, updatedFile, isEdited);
+
             if (downloadOption === "single") {
-                downloadDicomFile(createFile(files[index].name, updatedFile));
+                downloadDicomFile(file);
             } else {
-                newFiles.push(createFile(files[index].name, updatedFile));
+                newFiles.push(file);
             }
         });
     }
