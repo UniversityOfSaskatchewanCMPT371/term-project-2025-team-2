@@ -57,4 +57,3 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
         </div>
     );
 };
-

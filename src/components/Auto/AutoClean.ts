@@ -46,8 +46,11 @@ export function FormatData(dicomData: any) {
  * @param files
  * @returns none
  */
-export const AutoAnon = async (dicomData: any[], files: CustomFile[], anonTags: AnonTag[]) => {
-   
+export const AutoAnon = async (
+    dicomData: any[],
+    files: CustomFile[],
+    anonTags: AnonTag[]
+) => {
     const newFiles: any = [];
 
     dicomData.forEach((dicom: any, index: number) => {
@@ -55,7 +58,9 @@ export const AutoAnon = async (dicomData: any[], files: CustomFile[], anonTags: 
 
         // Update the formatted data with the new values from anonTags
         anonTags.forEach((anonTag) => {
-            const tagIndex = formatedData.findIndex((tag: any) => tag.tagId === anonTag.tagId);
+            const tagIndex = formatedData.findIndex(
+                (tag: any) => tag.tagId === anonTag.tagId
+            );
             if (tagIndex !== -1) {
                 formatedData[tagIndex].newValue = anonTag.newValue;
             }

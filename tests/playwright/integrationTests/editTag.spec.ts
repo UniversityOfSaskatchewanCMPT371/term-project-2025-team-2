@@ -19,7 +19,6 @@ test("Edit a DICOM tag and save file", async ({ page }) => {
             .filter({ hasText: "SOPClassUID" })
             .first();
 
-
         const editButton = tagRow.locator("svg.h-6.w-6").first();
         await expect(editButton).toBeVisible();
         await editButton.click();
@@ -35,7 +34,6 @@ test("Edit a DICOM tag and save file", async ({ page }) => {
         });
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
-
     } catch (error) {
         console.error("Error editing DICOM tag:", error);
         throw error;

@@ -1,9 +1,8 @@
 import { Search } from "../../utils/Search";
 import { GenButton } from "../../utils/GenButton";
 import { AnonTag, TableControlsProps } from "../../../types/DicomTypes";
-import { AutoAnon, FormatData } from "../../Auto/AutoClean";
+import { FormatData } from "../../Auto/AutoClean";
 import { useStore } from "../../State/Store";
-import { AnonPopup } from "./AnonPopup";
 import { TagDictionary } from "../../../tagDictionary/dictionary";
 import { updateAllFiles } from "../../DicomData/UpdateAllFiles";
 
@@ -26,16 +25,15 @@ export const TableControls: React.FC<TableControlsProps> = ({
 }) => {
     const dicomData = useStore((state) => state.dicomData);
     const files = useStore((state) => state.files);
-    const anonTags = useStore((state) => state.tags);
     const setTags = useStore((state) => state.setTags);
     const clearData = useStore((state) => state.clearData);
-    const showPopup = useStore((state) => state.showPopup);
-    const setShowPopup = useStore((state) => state.setShowPopup);
 
     const currentFileIndex = useStore((state) => state.currentFileIndex);
     const newTagValues = useStore((state) => state.newTagValues);
     const downloadOption = useStore((state) => state.downloadOption);
     const series = useStore((state) => state.series);
+
+    const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
 
     const tagDictionary = new TagDictionary();
 
@@ -52,26 +50,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
             })
         );
         setTags(newTagData);
-        setShowPopup(true);
-    };
-
-    const handleUpdateTag = (tagId: string, newValue: string) => {
-        // update tags after user input
-        const updatedTags = anonTags.map((tag: AnonTag) =>
-            tag.tagId === tagId ? { ...tag, newValue } : tag
-        );
-        setTags(updatedTags);
-    };
-
-    const handleConfirm = async () => {
-        // anonymize tags
-        await AutoAnon(dicomData, files, anonTags);
-        setShowPopup(false);
-        clearData();
-    };
-
-    const handleCancel = () => {
-        setShowPopup(false);
+        setSidePanelVisible(true);
     };
 
     return (
@@ -112,14 +91,6 @@ export const TableControls: React.FC<TableControlsProps> = ({
                     />
                 </div>
             </div>
-            {showPopup && (
-                <AnonPopup
-                    tags={anonTags}
-                    onConfirm={handleConfirm}
-                    onCancel={handleCancel}
-                    onUpdateTag={handleUpdateTag}
-                />
-            )}
         </div>
     );
 };

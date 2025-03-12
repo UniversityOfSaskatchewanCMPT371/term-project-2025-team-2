@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../../../types/DicomTypes";
+import { useStore } from "../../State/Store";
 
 /**
  * handleClick function
@@ -31,6 +32,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
     const [deleteTag, setDeleteTag] = useState<boolean>(false);
+    const hideTagNumber = useStore((state) => state.hideTagNumber);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -63,30 +65,33 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 key={index + row.tagId}
                 className={`hover:bg-blue-600 ${deleteTag && "outline -outline-offset-4 outline-red-600"}`}
             >
-                <td
-                    className={`break-all border px-4 py-2 ${
-                        nested
-                            ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
-                            : ""
-                    }`}
-                    style={{
-                        paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
-                    }}
-                >
-                    {typeof row.value !== "string" && (
-                        <span
-                            className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
-                            onClick={toggleExpand}
-                            style={{ width: "20px" }}
-                        >
-                            {isExpanded ? "▼" : "▶"}
-                        </span>
-                    )}
-                    {nested && (
-                        <span className="mr-2 inline-block h-2 w-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></span>
-                    )}
-                    {row.tagId}
-                </td>
+                {hideTagNumber ? null : (
+                    <td
+                        className={`break-all border px-4 py-2 ${
+                            nested
+                                ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
+                                : ""
+                        }`}
+                        style={{
+                            paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
+                        }}
+                    >
+                        {typeof row.value !== "string" && (
+                            <span
+                                className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
+                                onClick={toggleExpand}
+                                style={{ width: "20px" }}
+                            >
+                                {isExpanded ? "▼" : "▶"}
+                            </span>
+                        )}
+                        {nested && (
+                            <span className="mr-2 inline-block h-2 w-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></span>
+                        )}
+                        {row.tagId}
+                    </td>
+                )}
+
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
                 <td className="break-all border px-4 py-2">
                     {typeof row.value === "string" ||

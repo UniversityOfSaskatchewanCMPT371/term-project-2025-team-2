@@ -8,7 +8,9 @@ import { FileData } from "types/FileTypes";
 jest.mock("jszip", () => {
     return jest.fn().mockImplementation(() => ({
         file: jest.fn(),
-        generateAsync: jest.fn().mockResolvedValue(new Blob([], { type: "application/zip" })),
+        generateAsync: jest
+            .fn()
+            .mockResolvedValue(new Blob([], { type: "application/zip" })),
     }));
 });
 
@@ -39,7 +41,9 @@ describe("Download Functions", () => {
 
         downloadDicomFile(fileData);
 
-        expect(global.URL.createObjectURL).toHaveBeenCalledWith(fileData.content);
+        expect(global.URL.createObjectURL).toHaveBeenCalledWith(
+            fileData.content
+        );
         expect(document.createElement).toHaveBeenCalledWith("a");
         expect(document.body.appendChild).toHaveBeenCalled();
         expect(document.body.removeChild).toHaveBeenCalled();

@@ -41,7 +41,7 @@ test("Upload dicoms and verify file name matches tags displayed", async ({
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();

@@ -12,7 +12,9 @@ test("Click delete tag button state check", async ({ page }) => {
         await page.goto(BASE_URL);
 
         const fileInput = page.locator('input[type="file"].hidden');
-        await fileInput.setInputFiles("./test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm");
+        await fileInput.setInputFiles(
+            "./test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm"
+        );
 
         await page.waitForSelector("table", {
             state: "visible",
@@ -34,7 +36,6 @@ test("Click delete tag button state check", async ({ page }) => {
 
         const undoDeleteIcon = tagRow.locator('svg[aria-label="Undo Delete"]');
         await expect(undoDeleteIcon).toBeVisible();
-
     } catch (error) {
         console.error("Error verifying delete functionality:", error);
         throw error;

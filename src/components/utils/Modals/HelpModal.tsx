@@ -52,4 +52,3 @@ export const HelpModal: React.FC<HelpModalProps> = () => {
         </dialog>
     );
 };
-

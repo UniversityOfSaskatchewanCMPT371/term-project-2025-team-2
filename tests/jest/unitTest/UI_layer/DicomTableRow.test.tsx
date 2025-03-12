@@ -47,17 +47,17 @@ describe("DicomTableRow", () => {
         await act(async () => {
             setup();
         });
-        const editIcon = screen.getByLabelText("Edit Tag"); 
+        const editIcon = screen.getByLabelText("Edit Tag");
         fireEvent.click(editIcon);
 
-        expect(screen.getByRole("textbox")).toBeInTheDocument(); 
+        expect(screen.getByRole("textbox")).toBeInTheDocument();
     });
 
     test("shows the delete tooltip when hovering over the delete icon", async () => {
         await act(async () => {
             setup();
         });
-        const deleteIcon = screen.getByLabelText("Delete Tag"); 
+        const deleteIcon = screen.getByLabelText("Delete Tag");
         fireEvent.mouseOver(deleteIcon);
 
         await waitFor(() => {

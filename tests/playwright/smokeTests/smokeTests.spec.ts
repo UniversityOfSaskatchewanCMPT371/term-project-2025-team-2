@@ -22,7 +22,9 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
     try {
         await page.goto(BASE_URL);
-        await page.waitForSelector('h1:text("DICOM Tag Editor")', { state: 'visible' });
+        await page.waitForSelector('h1:text("DICOM Tag Editor")', {
+            state: "visible",
+        });
 
         const dicomDir = "./test-data/test_dicoms/gen_dicom_files/simple_files";
         const dicomFiles = fs
@@ -41,7 +43,7 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
-            timeout:  5000,
+            timeout: 5000,
         });
 
         await page.waitForSelector("table", {
@@ -92,12 +94,10 @@ test("Upload dicom and verify file name matches tag displayed", async ({
         debug(
             `File ${dicomFiles[0]} - Verified: PatientID contains the file number`
         );
-
     } catch (error) {
         console.error("Test failed:", error);
         throw error;
     }
-
 });
 
 test("Toggle sidebar", async ({ page }) => {
@@ -113,8 +113,7 @@ test("Toggle sidebar", async ({ page }) => {
         await page.waitForSelector("text=Files", {
             state: "visible",
             timeout: 2000,
-        })
-
+        });
     } catch (error) {
         console.error("Error toggling sidebar:", error);
         throw error;

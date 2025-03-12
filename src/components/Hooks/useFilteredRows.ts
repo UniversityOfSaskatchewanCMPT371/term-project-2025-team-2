@@ -35,4 +35,3 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
         [rows, searchTerm]
     );
 };
-
