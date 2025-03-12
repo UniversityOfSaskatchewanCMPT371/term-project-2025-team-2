@@ -18,7 +18,7 @@
     "test:integration:playwright": "playwright test -c playwright.config.integration.ts",
     "test:regression": "playwright test -c playwright.config.regression.ts",
     "playwright": "NODE_NO_WARNINGS=1 playwright test",
-    "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/regressionTests/autoEditing.spec.ts"
+    "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/playwright/regressionTests/autoEditing.spec.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
