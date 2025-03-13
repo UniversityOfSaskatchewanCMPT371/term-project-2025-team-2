@@ -4,23 +4,40 @@ import { useState } from "react";
 
 export const NewTagRow = () => {
 
-    const [tagId, setTagId] = useState("");
-    const [tagName, setTagName] = useState("");
-    const [tagValue, setTagValue] = useState("");
+    const [tagId, setTagId] = useState<string>("");
+    const [tagName, setTagName] = useState<string>("");
+    const [tagValue, setTagValue] = useState<string>("");
 
     const updateTableData = useStore((state) => state.setNewTagValues);
+    const setShowAlert = useStore((state) => state.setShowAlert);
+    const setAlertMsg = useStore((state)=> state.setAlertMsg)
+    const setShowAddTag = useStore((state) => state.setShowAddTag);
 
     const handleUpdateValue = (
         tagId: string,
         newValue: string,
         deleteTag: boolean
     ) => {
+        if(tagId.length !== 7 || isNaN(parseInt(tagId))){
+            setAlertMsg("Tag ID has to be 7 numbers")
+            setShowAlert(true);
+        }
+        if(tagValue.length < 1){
+            setAlertMsg("Tag Value can't be empty")
+            setShowAlert(true);
+        }
+
         updateTableData({
             fileName: "test",
             tagId,
             newValue,
             delete: deleteTag,
         });
+
+        setTagId("");
+        setTagName("");
+        setTagValue("");
+        setShowAddTag(false);
     }
     
     return (
@@ -60,5 +77,4 @@ export const NewTagRow = () => {
             </td>
         </tr>
     )
-
 };

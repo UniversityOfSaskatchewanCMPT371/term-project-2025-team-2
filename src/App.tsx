@@ -12,6 +12,7 @@ import { Modal } from "@components/utils/Modals/Modal";
 import logger from "./Logger/Logger";
 import { LoadingScreen } from "@components/utils/LoadingScreen";
 import { SidePanel } from "@auto/Components/AutoConfirmPanel";
+import { AlertHeader } from "@components/utils/alertHeader";
 
 import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
@@ -61,6 +62,8 @@ export const App: React.FC = () => {
     const showHiddenTags = useStore((state) => state.showHiddenTags);
 
     const theme = useStore((state) => state.theme);
+
+    const showAlert = useStore((state)=> state.showAlert);
 
     const clearData = useStore((state) => state.clearData);
 
@@ -206,6 +209,11 @@ export const App: React.FC = () => {
     // main render
     return (
         <div className="flex min-h-screen flex-col">
+
+
+            {showAlert ? <AlertHeader /> : null}
+           
+
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
@@ -287,6 +295,7 @@ export const App: React.FC = () => {
             <Footer />
 
             {loading && <LoadingScreen />}
+
         </div>
     );
 };

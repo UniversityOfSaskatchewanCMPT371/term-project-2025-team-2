@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logger from "../../../Logger/Logger";
 import { tagUpdater } from "../../../DataFunctions/DicomData/TagUpdater";
 import { createFile } from "../../../DataFunctions/DicomData/DownloadFuncs";
@@ -25,6 +25,7 @@ import { useStore } from "@state/Store";
 export const DicomTable: React.FC<DicomTableProps> = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
+
     const files = useStore((state) => state.files);
     const dicomData = useStore((state) => state.dicomData);
     const currentFileIndex = useStore((state) => state.currentFileIndex);
@@ -35,16 +36,24 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
 
     const fileName = files[currentFileIndex].name;
 
+    const [rows, setRows] = useState(createRows(dicomData[currentFileIndex], fileName, newTagValues));
+
     if (Object.keys(dicomData[currentFileIndex].tags).length === 0) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
 
-    const rows = createRows(
-        dicomData[currentFileIndex],
-        fileName,
-        newTagValues
-    );
+    // const rows = createRows(
+    //     dicomData[currentFileIndex],
+    //     fileName,
+    //     newTagValues
+    // );
+
+    useEffect(() => {
+        if (newTagValues.length > 1) {
+            setRows((prev) => [...prev, { tagId: newTagValues[0].tagId, tagName: "name", value: newTagValues[0].newValue, hidden: false, updated: true }])
+        }
+    }, [newTagValues])
 
     const filteredRows = useFilteredRows(rows, searchTerm);
 

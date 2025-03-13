@@ -71,6 +71,12 @@ type Store = {
 
     addTag: boolean;
     setShowAddTag: (show: boolean) => void;
+
+    showAlert: boolean;
+    setShowAlert: (show: boolean) => void;
+
+    alertMsg: string;
+    setAlertMsg: (msg: string) => void;
 };
 
 /**
@@ -176,4 +182,11 @@ export const useStore = create<Store>((set) => ({
 
     addTag: false,
     setShowAddTag: (show) => set({ addTag: show }),
+
+    showAlert: false,
+    setShowAlert: (show) => set({showAlert: show}),
+
+    alertMsg: "Alert",
+    setAlertMsg: (msg) => set({ alertMsg: msg})
+
 }));
