@@ -1,7 +1,7 @@
 import React from "react";
 import { GenButton } from "../utils/GenButton";
 import { FileNavigationProps } from "../../Features/FileHandling/Types/FileTypes";
-
+import { Tooltip } from "react-tooltip";
 /**
  * File navigation component
  * @component
@@ -21,16 +21,38 @@ export const FileNavigation: React.FC<FileNavigationProps> = ({
 }) => {
     return (
         <div className="mt-4 flex justify-between">
-            <GenButton
-                onClick={onPrevFile}
-                disabled={currentFileIndex === 0}
-                label="Previous"
-            />
-            <GenButton
-                onClick={onNextFile}
-                disabled={currentFileIndex === fileCount - 1}
-                label="Next"
-            />
+            <div
+                data-tooltip-id="prev-button-tooltip"
+                data-tooltip-content={
+                    currentFileIndex === 0
+                        ? "On first file"
+                        : "Move to previous file"
+                }
+                data-tooltip-place="right"
+            >
+                <GenButton
+                    onClick={onPrevFile}
+                    disabled={currentFileIndex === 0}
+                    label="Previous"
+                />
+            </div>
+            <div
+                data-tooltip-id="next-button-tooltip"
+                data-tooltip-content={
+                    currentFileIndex === fileCount - 1
+                        ? "On last file"
+                        : "Move to next file"
+                }
+                data-tooltip-place="left"
+            >
+                <GenButton
+                    onClick={onNextFile}
+                    disabled={currentFileIndex === fileCount - 1}
+                    label="Next"
+                />
+            </div>
+            <Tooltip id="prev-button-tooltip" />
+            <Tooltip id="next-button-tooltip" />
         </div>
     );
 };
