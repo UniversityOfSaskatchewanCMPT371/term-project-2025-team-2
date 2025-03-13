@@ -66,18 +66,23 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         const insertTag = {
             tagId: tag.tagId,
             value: tag.newValue,
-            vr: dicomData.elements[tag.tagId.toLowerCase()].vr || "NO",
+            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "NO",
             dataOffSet:
-                dicomData.elements[tag.tagId.toLowerCase()].dataOffset || 0,
+                dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
             length: tag.newValue.length,
             delete: tag.delete,
+            add: tag.add,
         };
         newTags.push(insertTag);
     });
 
     newTags.forEach((tag: any) => {
+        console.log("tag", tag);
         if (tag.delete) {
             data = removeTag(dicomData, tag);
+        } else if(tag.add || tag.dataOffSet == 0){
+            data = addTag(dicomData, tag);
+            console.log("data", data);
         } else {
             const tagIdByte = new Uint8Array(groupLen + elementLen);
             const group = parseInt(tag.tagId.slice(1, 5), 16);
@@ -98,6 +103,36 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     });
 
     return data;
+}
+
+function addTag(dicomData: any, tag: any){
+    const tagIdByte = new Uint8Array(groupLen + elementLen);
+    const group = parseInt(tag.tagId.slice(1, 5), 16);
+    const element = parseInt(tag.tagId.slice(5), 16);
+    console.log(dicomData);
+
+    tagIdByte.set(
+        new Uint8Array([group, group >> 8, element, element >> 8])
+    );
+    const newTag = createTag(tagIdByte, tag, true);
+    console.log("newTag", newTag);
+    console.log("dicomData", dicomData.elements);
+
+    // for(let i = 0; i < dicomData.elements.length; i++){
+        // if(dicomData.elements[i].tag.slice(1,6) < tag.tagId.slice(1,6)){
+            const first = dicomData.byteArray.slice(0, dicomData.elements["x00080008"].dataOffSet);
+            const last = dicomData.byteArray.slice(dicomData.elements["x00080008"].dataOffSet);
+
+            const buf1 = concatBuffers(first, newTag);
+            const newArray = concatBuffers(buf1, last);
+
+            console.log("newArray", newArray);
+
+           // const newData = dicomParser.parseDicom(newArray);
+
+            return newArray;
+        // }
+    // }
 }
 
 /**
