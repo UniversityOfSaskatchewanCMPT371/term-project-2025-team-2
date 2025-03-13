@@ -68,6 +68,9 @@ type Store = {
 
     fileParseErrorFileNames: string[];
     setFileParseErrorFileNames: (fileNames: string[]) => void;
+
+    addTag: boolean;
+    setShowAddTag: (show: boolean) => void;
 };
 
 /**
@@ -170,4 +173,7 @@ export const useStore = create<Store>((set) => ({
     fileParseErrorFileNames: [] as string[],
     setFileParseErrorFileNames: (fileNames) =>
         set({ fileParseErrorFileNames: fileNames }),
+
+    addTag: false,
+    setShowAddTag: (show) => set({ addTag: show }),
 }));
