@@ -3,7 +3,10 @@ import {
     parseDicomFile,
     extractDicomTags,
 } from "../../../../src/DataFunctions/DicomData/DicomParserUtils";
-import { DicomData, TableUpdateData } from "../../../../src/Features/DicomTagTable/Types/DicomTypes";
+import {
+    DicomData,
+    TableUpdateData,
+} from "../../../../src/Features/DicomTagTable/Types/DicomTypes";
 import dicomParser from "dicom-parser";
 
 function createFileObj(path: string, name: string): File | null {
@@ -30,19 +33,29 @@ function extractTagsFromByteArray(fileData: Uint8Array) {
     }
 }
 
-async function getDicomDataAndTest(filename: string, newValues: TableUpdateData[], sampleDicomData: DicomData): Promise<DicomData | undefined> {
-     // get the edited dicom file from pydicom generater     
-     const expectedDicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/' + filename, filename);
-     if (expectedDicomFile === null) {
-         console.error('Error reading file in TagUpdater unit tests');
-         return undefined;
-     }
-     // update initial dicom file with tag updater
-     let updatedFileData: Uint8Array = tagUpdater(sampleDicomData.DicomDataSet, newValues);
-     return extractTagsFromByteArray(updatedFileData);
+async function getDicomDataAndTest(
+    filename: string,
+    newValues: TableUpdateData[],
+    sampleDicomData: DicomData
+): Promise<DicomData | undefined> {
+    // get the edited dicom file from pydicom generater
+    const expectedDicomFile = createFileObj(
+        "test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/" + filename,
+        filename
+    );
+    if (expectedDicomFile === null) {
+        console.error("Error reading file in TagUpdater unit tests");
+        return undefined;
+    }
+    // update initial dicom file with tag updater
+    let updatedFileData: Uint8Array = tagUpdater(
+        sampleDicomData.DicomDataSet,
+        newValues
+    );
+    return extractTagsFromByteArray(updatedFileData);
 }
 
-describe('TagUpdater unit tests - simple dicoms', () => {
+describe("TagUpdater unit tests - simple dicoms", () => {
     let sampleDicomData: DicomData;
     beforeEach(async () => {
         // make a File from the test DICOM file
@@ -135,97 +148,115 @@ describe('TagUpdater unit tests - simple dicoms', () => {
         }
     });
 
-    test('Modify a tag value and delete a different tag', async() => {
-         let filename: string = 'test_dicom_0_NameNoID.dcm'; 
-         const deleteTagId: string = 'X00100020';
-         const newValues: TableUpdateData[] = [{
-             fileName: 'test_dicom_tagUpdtest.dcm',
-             tagId: 'X00100010',
-             newValue: 'ANONYMOUS',
-             delete: false
-         }, {
-             fileName: 'test_dicom_tagUpdtest.dcm',
-             tagId: deleteTagId,
-             newValue: '0',
-             delete: true
-         }]
-        const dicomData = await getDicomDataAndTest(filename, newValues, sampleDicomData);
-        if(dicomData) {
+    test("Modify a tag value and delete a different tag", async () => {
+        let filename: string = "test_dicom_0_NameNoID.dcm";
+        const deleteTagId: string = "X00100020";
+        const newValues: TableUpdateData[] = [
+            {
+                fileName: "test_dicom_tagUpdtest.dcm",
+                tagId: "X00100010",
+                newValue: "ANONYMOUS",
+                delete: false,
+            },
+            {
+                fileName: "test_dicom_tagUpdtest.dcm",
+                tagId: deleteTagId,
+                newValue: "0",
+                delete: true,
+            },
+        ];
+        const dicomData = await getDicomDataAndTest(
+            filename,
+            newValues,
+            sampleDicomData
+        );
+        if (dicomData) {
             expect(dicomData.tags[deleteTagId]).toBe(undefined);
-        }
-        else {
+        } else {
             expect(dicomData).toBeDefined();
         }
     });
 });
 
-
-describe('TagUpdater unit tests - more dicom tag VRs', () => {
+describe("TagUpdater unit tests - more dicom tag VRs", () => {
     let sampleDicomData: DicomData;
-    beforeEach(async() => {
+    beforeEach(async () => {
         // make a File from the test DICOM file
-        const dicomFile = createFileObj('test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/test_dicom_AllVRs.dcm', 'test_dicom_AllVRs.dcm');
+        const dicomFile = createFileObj(
+            "test-data/test_dicoms/gen_dicom_files/tagUpdater_testing/test_dicom_AllVRs.dcm",
+            "test_dicom_AllVRs.dcm"
+        );
         if (dicomFile === null) {
-            console.error('Error reading file in TagUpdater unit tests');
+            console.error("Error reading file in TagUpdater unit tests");
             return;
         }
         // parse dicom File
         await parseDicomFile(dicomFile)
-        .then((dicomData) => {
-            sampleDicomData = dicomData;
-        })
-        .catch((error) => {
-            console.error('Error parsing DICOM file in TagUpdater unit tests:', error);
-        });
-
+            .then((dicomData) => {
+                sampleDicomData = dicomData;
+            })
+            .catch((error) => {
+                console.error(
+                    "Error parsing DICOM file in TagUpdater unit tests:",
+                    error
+                );
+            });
     });
 
-    test('Update 1 tag value with VR = FD', async() => {        
-        let filename: string = 'test_dicom_AllVRs_changeFD.dcm';
-        const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_AllVRs.dcm',
-            tagId: 'X00081163',
-            newValue: '86232.111079',
-            delete: false
-        }]
+    test("Update 1 tag value with VR = FD", async () => {
+        let filename: string = "test_dicom_AllVRs_changeFD.dcm";
+        const newValues: TableUpdateData[] = [
+            {
+                fileName: "test_dicom_AllVRs.dcm",
+                tagId: "X00081163",
+                newValue: "86232.111079",
+                delete: false,
+            },
+        ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    test('Update 1 tag value with VR = UL', async() => {        
-        let filename: string = 'test_dicom_AllVRs_changeUL.dcm';
-        const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_AllVRs.dcm',
-            tagId: 'X00041600',
-            newValue: '750675509',
-            delete: false
-        }]
+    test("Update 1 tag value with VR = UL", async () => {
+        let filename: string = "test_dicom_AllVRs_changeUL.dcm";
+        const newValues: TableUpdateData[] = [
+            {
+                fileName: "test_dicom_AllVRs.dcm",
+                tagId: "X00041600",
+                newValue: "750675509",
+                delete: false,
+            },
+        ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    test('Update 1 tag value with VR = US', async() => {        
-        let filename: string = 'test_dicom_AllVRs_changeUS.dcm';
-        const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_AllVRs.dcm',
-            tagId: 'X00540308',
-            newValue: '300',
-            delete: false
-        }]
+    test("Update 1 tag value with VR = US", async () => {
+        let filename: string = "test_dicom_AllVRs_changeUS.dcm";
+        const newValues: TableUpdateData[] = [
+            {
+                fileName: "test_dicom_AllVRs.dcm",
+                tagId: "X00540308",
+                newValue: "300",
+                delete: false,
+            },
+        ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    test('Update 1 tag value with VR = FL', async() => {
-        let filename: string = 'test_dicom_AllVRs_changeFL.dcm';
-        const newValues: TableUpdateData[] = [{
-            fileName: 'test_dicom_AllVRs.dcm',
-            tagId: 'X00109431',
-            newValue: '5.60060977935791',
-            delete: false
-        }]
+    test("Update 1 tag value with VR = FL", async () => {
+        let filename: string = "test_dicom_AllVRs_changeFL.dcm";
+        const newValues: TableUpdateData[] = [
+            {
+                fileName: "test_dicom_AllVRs.dcm",
+                tagId: "X00109431",
+                newValue: "5.60060977935791",
+                delete: false,
+            },
+        ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
-    
+
     // TODO: VRs are int32 and int16 values. Both these tests throw - RangeError: Offset is outside the bounds of the DataView
-    test('Update 1 tag value with VR = SL', async() => {
+    test("Update 1 tag value with VR = SL", async () => {
         // let filename: string = 'test_dicom_AllVRs_changeSL.dcm';
         // const newValues: TableUpdateData[] = [{
         //     fileName: 'test_dicom_AllVRs.dcm',
@@ -236,7 +267,7 @@ describe('TagUpdater unit tests - more dicom tag VRs', () => {
         // await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });
 
-    test('Update 1 tag value with VR = SS', async() => {
+    test("Update 1 tag value with VR = SS", async () => {
         // let filename: string = 'test_dicom_AllVRs_changeSS.dcm';
         // const newValues: TableUpdateData[] = [{
         //     fileName: 'test_dicom_AllVRs.dcm',

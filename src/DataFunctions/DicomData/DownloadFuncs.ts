@@ -34,7 +34,7 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     } catch (error) {
         throw new Error(`Failed to create ZIP: ${error}`);
     }
-} 
+}
 
 /**
  * Downloads a file as a Blob
@@ -45,7 +45,6 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
  * @param fileName - string name of the file
  */
 export async function downloadDicomFile(newFile: FileData) {
-
     // assert(newFile.content !== null);
     // assert(newFile.name !== null);
 
@@ -80,9 +79,7 @@ export function createFile(fileName: string, blobData: any, isEdited: boolean) {
         ? fileName.slice(0, -4)
         : fileName;
 
-    const finalName = isEdited
-        ? `${baseName}_edited.dcm`
-        : `${baseName}.dcm`;
+    const finalName = isEdited ? `${baseName}_edited.dcm` : `${baseName}.dcm`;
 
     return { name: finalName, content: blob };
 }

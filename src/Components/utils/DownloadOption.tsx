@@ -54,10 +54,10 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
                         files.length > MAXSINGLEFILESDOWNLOAD
                             ? "Too many files - Zip Only"
                             : safari
-                                ? "Not supported in Safari"
-                                : downloadOption === "zip"
-                                    ? "Switch to Individual Files"
-                                    : "Switch to Zip File"
+                              ? "Not supported in Safari"
+                              : downloadOption === "zip"
+                                ? "Switch to Individual Files"
+                                : "Switch to Zip File"
                     }
                     data-tooltip-place="top"
                 />

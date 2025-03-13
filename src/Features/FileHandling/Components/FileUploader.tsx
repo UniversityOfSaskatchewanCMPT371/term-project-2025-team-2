@@ -20,7 +20,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     clearData,
     toggleModal,
 }) => {
-    const setFileParseError = useStore((state) => state.setFileParseErrorFileNames);
+    const setFileParseError = useStore(
+        (state) => state.setFileParseErrorFileNames
+    );
     const fileParseError = useStore((state) => state.fileParseErrorFileNames);
     /**
      *

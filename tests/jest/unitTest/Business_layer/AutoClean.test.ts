@@ -1,5 +1,8 @@
 // tests/jest/unitTest/Business_layer/AutoClean.test.ts
-import { FormatData, AutoAnon } from "../../../../src/Features/AutoAnonymize/Functions/AutoClean";
+import {
+    FormatData,
+    AutoAnon,
+} from "../../../../src/Features/AutoAnonymize/Functions/AutoClean";
 import { CustomFile } from "../../../../src/Features/FileHandling/Types/FileTypes";
 import { AnonTag } from "../../../../src/Features/DicomTagTable/Types/DicomTypes";
 

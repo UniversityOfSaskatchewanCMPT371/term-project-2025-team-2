@@ -27,6 +27,6 @@ export default {
         "/node_modules/",
         "/tests/playwright/",
         "/tests/smokeTests/smokeTests.spec.ts",
-        "/tests/playwright/regressionTests/autoEditing.spec.ts"
+        "/tests/playwright/regressionTests/autoEditing.spec.ts",
     ],
 };

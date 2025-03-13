@@ -20,7 +20,6 @@ import { useStore } from "@state/Store";
 export const SettingsModal: React.FC<SettingsModalProps> = ({
     toggleModal,
 }) => {
-    const files = useStore((state) => state.files);
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
 
@@ -54,7 +53,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     showHiddenTags={showHiddenTags}
                     setShowHiddenTags={setShowHiddenTags}
                 />
-                
+
                 <p>Download Option</p>
                 <DownloadOption />
 

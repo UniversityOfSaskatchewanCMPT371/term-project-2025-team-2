@@ -1,46 +1,49 @@
 import { assert } from "../../../../src/DataFunctions/assert";
-import logger from "../../../../src/Logger/Logger"; 
+import logger from "../../../../src/Logger/Logger";
 
-jest.mock("../../../../src/Logger/Logger"); 
+jest.mock("../../../../src/Logger/Logger");
 
 describe("assert function", () => {
-  afterEach(() => {
-    jest.clearAllMocks(); 
-  });
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
-  it("should not throw an error when condition is true", () => {
-    const condition = true;
-    const message = "This should not log or throw";
+    it("should not throw an error when condition is true", () => {
+        const condition = true;
+        const message = "This should not log or throw";
 
-    expect(() => assert(condition, message)).not.toThrow();
+        expect(() => assert(condition, message)).not.toThrow();
 
-    expect(logger.error).not.toHaveBeenCalled();
-  });
+        expect(logger.error).not.toHaveBeenCalled();
+    });
 
-  it("should throw an error when condition is false", () => {
-    const condition = false;
-    const message = "This should log and throw an error";
+    it("should throw an error when condition is false", () => {
+        const condition = false;
+        const message = "This should log and throw an error";
 
-    expect(() => assert(condition, message)).toThrow(new Error(message));
+        expect(() => assert(condition, message)).toThrow(new Error(message));
 
-    expect(logger.error).toHaveBeenCalledWith(message);
-  });
+        expect(logger.error).toHaveBeenCalledWith(message);
+    });
 
-  it("should throw an error with default message when no message is provided", () => {
-    const condition = false;
+    it("should throw an error with default message when no message is provided", () => {
+        const condition = false;
 
-    expect(() => assert(condition)).toThrowError(new Error("Assertion failed"));
+        expect(() => assert(condition)).toThrowError(
+            new Error("Assertion failed")
+        );
 
-    expect(logger.error).toHaveBeenCalledWith("Assertion failed");
-  });
+        expect(logger.error).toHaveBeenCalledWith("Assertion failed");
+    });
 
-  it("should throw an error with custom message when condition is false", () => {
-    const condition = false;
-    const customMessage = "Custom failure message";
+    it("should throw an error with custom message when condition is false", () => {
+        const condition = false;
+        const customMessage = "Custom failure message";
 
-    expect(() => assert(condition, customMessage)).toThrowError(new Error(customMessage));
+        expect(() => assert(condition, customMessage)).toThrowError(
+            new Error(customMessage)
+        );
 
-    expect(logger.error).toHaveBeenCalledWith(customMessage);
-  });
+        expect(logger.error).toHaveBeenCalledWith(customMessage);
+    });
 });
-
