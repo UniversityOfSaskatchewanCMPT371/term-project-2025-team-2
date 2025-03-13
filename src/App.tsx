@@ -63,7 +63,7 @@ export const App: React.FC = () => {
 
     const theme = useStore((state) => state.theme);
 
-    const showAlert = useStore((state)=> state.showAlert);
+    const showAlert = useStore((state) => state.showAlert);
 
     const clearData = useStore((state) => state.clearData);
 
@@ -209,10 +209,7 @@ export const App: React.FC = () => {
     // main render
     return (
         <div className="flex min-h-screen flex-col">
-
-
             {showAlert ? <AlertHeader /> : null}
-           
 
             <Topbar
                 toggleSidebar={toggleSidebar}
@@ -295,7 +292,6 @@ export const App: React.FC = () => {
             <Footer />
 
             {loading && <LoadingScreen />}
-
         </div>
     );
 };

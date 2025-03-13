@@ -31,11 +31,17 @@ export const createRows = (
         })
     );
 
-    newTableData.forEach((tag)=>{
-        if(tag.add && tag.fileName === fileName){
-            data.push({tagId: tag.tagId, tagName: "name", value: tag.newValue, hidden: false, updated:false})
+    newTableData.forEach((tag) => {
+        if (tag.add && tag.fileName === fileName) {
+            data.push({
+                tagId: tag.tagId,
+                tagName: "name",
+                value: tag.newValue,
+                hidden: false,
+                updated: false,
+            });
         }
-    })
-    
+    });
+
     return data;
 };

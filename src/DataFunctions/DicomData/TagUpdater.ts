@@ -77,12 +77,10 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     });
 
     newTags.forEach((tag: any) => {
-        console.log("tag", tag);
         if (tag.delete) {
             data = removeTag(dicomData, tag);
-        } else if(tag.add || tag.dataOffSet == 0){
+        } else if (tag.add) {
             data = addTag(dicomData, tag);
-            console.log("data", data);
         } else {
             const tagIdByte = new Uint8Array(groupLen + elementLen);
             const group = parseInt(tag.tagId.slice(1, 5), 16);
@@ -97,41 +95,41 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             const newTag = createTag(tagIdByte, tag, true);
             data = insertTag(dicomData, tag, newTag);
         }
+
         const newData = dicomParser.parseDicom(data);
-        dicomData.byteArray = newData.byteArray;
-        dicomData.elements = newData.elements;
+        dicomData = newData;
+        // dicomData.byteArray = newData.byteArray;
+        // dicomData.elements = newData.elements;
     });
 
     return data;
 }
 
-function addTag(dicomData: any, tag: any){
+function addTag(dicomData: any, tag: any) {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
     const element = parseInt(tag.tagId.slice(5), 16);
-    console.log(dicomData);
 
-    tagIdByte.set(
-        new Uint8Array([group, group >> 8, element, element >> 8])
-    );
+    tagIdByte.set(new Uint8Array([group, group >> 8, element, element >> 8]));
     const newTag = createTag(tagIdByte, tag, true);
-    console.log("newTag", newTag);
-    console.log("dicomData", dicomData.elements);
 
     // for(let i = 0; i < dicomData.elements.length; i++){
-        // if(dicomData.elements[i].tag.slice(1,6) < tag.tagId.slice(1,6)){
-            const first = dicomData.byteArray.slice(0, dicomData.elements["x00080008"].dataOffSet);
-            const last = dicomData.byteArray.slice(dicomData.elements["x00080008"].dataOffSet);
+    // if(dicomData.elements[i].tag.slice(1,6) < tag.tagId.slice(1,6)){
+    const first = dicomData.byteArray.slice(
+        0,
+        dicomData.elements["x00080008"].dataOffSet
+    );
+    const last = dicomData.byteArray.slice(
+        dicomData.elements["x00080008"].dataOffSet
+    );
 
-            const buf1 = concatBuffers(first, newTag);
-            const newArray = concatBuffers(buf1, last);
+    const buf1 = concatBuffers(first, newTag);
+    const newArray = concatBuffers(buf1, last);
 
-            console.log("newArray", newArray);
+    // const newData = dicomParser.parseDicom(newArray);
 
-           // const newData = dicomParser.parseDicom(newArray);
-
-            return newArray;
-        // }
+    return newArray;
+    // }
     // }
 }
 
@@ -157,9 +155,6 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const buf1 = concatBuffers(first, newtag);
     const newArray = concatBuffers(buf1, last);
 
-    // console.log("new tag", newtag);
-    // console.log("old tag", dicomByteArray.slice(tagToAdd.dataOffSet - 10, tagToAdd.dataOffSet + dicomData.elements[tagToAdd.tagId.toLowerCase()].length+4));
-
     return newArray;
 }
 
@@ -172,7 +167,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
  * @param tagToRemove - tag to be removed
  * @returns byte array with tag removed
  */
-export function removeTag(dicomData: any, tagToRemove: any) {
+function removeTag(dicomData: any, tagToRemove: any) {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);

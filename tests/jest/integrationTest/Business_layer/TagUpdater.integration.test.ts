@@ -261,7 +261,6 @@ describe("TagUpdater unit tests - more dicom tag VRs", () => {
                 delete: false,
                 add: false,
             },
-
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
     });

@@ -75,7 +75,6 @@ export const TableControls: React.FC<TableControlsProps> = ({
                         disabled={false}
                     />
                 </div>
-
             </div>
         </div>
     );

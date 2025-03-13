@@ -26,8 +26,7 @@ export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
 
     return (
         <tbody>
-
-            {addTag ? (<NewTagRow />) : null}
+            {addTag ? <NewTagRow /> : null}
 
             {filteredRows.length > 0 ? (
                 filteredRows.map((row, index) =>
@@ -45,5 +44,5 @@ export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
                 <EmptyTableRow />
             )}
         </tbody>
-    )
+    );
 };

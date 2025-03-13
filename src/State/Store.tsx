@@ -184,9 +184,8 @@ export const useStore = create<Store>((set) => ({
     setShowAddTag: (show) => set({ addTag: show }),
 
     showAlert: false,
-    setShowAlert: (show) => set({showAlert: show}),
+    setShowAlert: (show) => set({ showAlert: show }),
 
     alertMsg: "Alert",
-    setAlertMsg: (msg) => set({ alertMsg: msg})
-
+    setAlertMsg: (msg) => set({ alertMsg: msg }),
 }));

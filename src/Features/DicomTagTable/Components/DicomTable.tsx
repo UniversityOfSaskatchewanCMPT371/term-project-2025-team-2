@@ -25,7 +25,6 @@ import { useStore } from "@state/Store";
 export const DicomTable: React.FC<DicomTableProps> = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
-
     const files = useStore((state) => state.files);
     const dicomData = useStore((state) => state.dicomData);
     const currentFileIndex = useStore((state) => state.currentFileIndex);
@@ -36,30 +35,16 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
 
     const fileName = files[currentFileIndex].name;
 
-    // const [rows, setRows] = useState(createRows(dicomData[currentFileIndex], fileName, newTagValues));
-
     if (Object.keys(dicomData[currentFileIndex].tags).length === 0) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
-console.log(newTagValues)
-    let rows = createRows(
+
+    const rows = createRows(
         dicomData[currentFileIndex],
         fileName,
         newTagValues
     );
-
-    // useEffect(() => {
-    //     setRows( createRows(dicomData[currentFileIndex], fileName, newTagValues));
-    //     if (newTagValues.length > 0) {
-    //         setRows((prev) => [
-    //             ...prev,
-    //             {tagId: newTagValues[0].tagId, tagName: "new", value: newTagValues[0].newValue, hidden: false, updated: true},
-    //         ]);
-    //     }
-    //     console.log(currentFileIndex);
-    // }, [currentFileIndex]);
-
 
     const filteredRows = useFilteredRows(rows, searchTerm);
 
