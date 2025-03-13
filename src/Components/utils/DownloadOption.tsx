@@ -21,7 +21,7 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const downloadOption = useStore((state) => state.downloadOption);
     const setDownloadOption = useStore((state) => state.setDownloadOption);
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (safari) {
             // Safari does not support downloading multiple files at once
             return;

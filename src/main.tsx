@@ -22,7 +22,7 @@ const updateSW = registerSW({
     onRegistered() {
         logger.debug("Service Worker has been registered");
     },
-    onRegisterError(error: any) {
+    onRegisterError(error: Error) {
         logger.debug("Service Worker registration failed:", error);
     },
 });
