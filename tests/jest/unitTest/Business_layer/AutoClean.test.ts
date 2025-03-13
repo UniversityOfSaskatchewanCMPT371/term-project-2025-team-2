@@ -2,12 +2,12 @@
 import {
     FormatData,
     AutoAnon,
-} from "../../../../src/Features/AutoAnonymize/Functions/AutoClean";
-import { CustomFile } from "../../../../src/Features/FileHandling/Types/FileTypes";
-import { AnonTag } from "../../../../src/Features/DicomTagTable/Types/DicomTypes";
+} from "@features/AutoAnonymize/Functions/AutoClean";
+import { CustomFile } from "@features/FileHandling/Types/FileTypes";
+import { AnonTag } from "@features/DicomTagTable/Types/DicomTypes";
 
 // Mock the TagsAnon module to supply known tag values for testing.
-jest.mock("../../../../src/Features/AutoAnonymize/Functions/TagsAnon", () => ({
+jest.mock("@features/AutoAnonymize/Functions/TagsAnon", () => ({
     TagsAnon: [
         { tagId: "0010,0010", value: "Anonymous" },
         { tagId: "0010,0020", value: "12345" },
@@ -15,7 +15,7 @@ jest.mock("../../../../src/Features/AutoAnonymize/Functions/TagsAnon", () => ({
 }));
 
 // Mock tagUpdater.
-jest.mock("../../../../src/DataFunctions/DicomData/TagUpdater", () => ({
+jest.mock("@dataFunctions/DicomData/TagUpdater", () => ({
     tagUpdater: jest.fn((_: any, __: any) => {
         // Return a mock updated file (for example, an ArrayBuffer)
         return new ArrayBuffer(10);
@@ -23,7 +23,7 @@ jest.mock("../../../../src/DataFunctions/DicomData/TagUpdater", () => ({
 }));
 
 // Mock DownloadFuncs.
-jest.mock("../../../../src/DataFunctions/DicomData/DownloadFuncs", () => ({
+jest.mock("@dataFunctions/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn((name: string, content: any) => ({ name, content })),
     createZipFromFiles: jest.fn((_: any[]) =>
         Promise.resolve(new ArrayBuffer(20))
@@ -31,12 +31,12 @@ jest.mock("../../../../src/DataFunctions/DicomData/DownloadFuncs", () => ({
     downloadDicomFile: jest.fn(),
 }));
 
-import { tagUpdater } from "../../../../src/DataFunctions/DicomData/TagUpdater";
+import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
 import {
     createFile,
     createZipFromFiles,
     downloadDicomFile,
-} from "../../../../src/DataFunctions/DicomData/DownloadFuncs";
+} from "@dataFunctions/DicomData/DownloadFuncs";
 
 describe("AutoClean Module", () => {
     describe("FormatData", () => {

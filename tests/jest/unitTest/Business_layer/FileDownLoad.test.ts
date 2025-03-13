@@ -2,8 +2,8 @@ import {
     createZipFromFiles,
     downloadDicomFile,
     createFile,
-} from "../../../../src/DataFunctions/DicomData/DownloadFuncs";
-import { FileData } from "../../../../src/Features/FileHandling/Types/FileTypes";
+} from "@dataFunctions/DicomData/DownloadFuncs";
+import { FileData } from "@features/FileHandling/Types/FileTypes";
 
 jest.mock("jszip", () => {
     return jest.fn().mockImplementation(() => ({

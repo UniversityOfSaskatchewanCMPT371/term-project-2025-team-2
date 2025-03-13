@@ -1,4 +1,4 @@
-import { useStore } from "../../../../src/State/Store";
+import { useStore } from "@state/Store";
 import { isSafari } from "react-device-detect";
 
 const sampleFiles = [{ name: "file1.dcm" }];

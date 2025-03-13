@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ThemeSelector } from "../../../../src/Components/Navigation/ThemeSelector";
-import * as storeModule from "../../../../src/State/Store";
+import { ThemeSelector } from "@components/Navigation/ThemeSelector";
+import * as storeModule from "@state/Store";
 
-jest.mock("../../../../src/State/Store", () => {
-    const actualStore = jest.requireActual("../../../../src/State/Store");
+jest.mock("@state/Store", () => {
+    const actualStore = jest.requireActual("@state/Store");
     return {
         ...actualStore,
         useStore: jest.fn(),

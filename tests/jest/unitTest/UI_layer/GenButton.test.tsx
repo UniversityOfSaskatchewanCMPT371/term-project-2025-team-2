@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import { GenButton } from "../../../../src/Components/utils/GenButton";
+import { GenButton } from "@components/utils/GenButton";
 import "@testing-library/jest-dom";
 
 describe("GenButton component", () => {

@@ -1,13 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { DownloadOption } from "../../../../src/Components/utils/DownloadOption";
-import * as storeModule from "../../../../src/State/Store";
+import { DownloadOption } from "@components/utils/DownloadOption";
+import * as storeModule from "@state/Store";
 
 jest.mock("react-tooltip", () => ({
     Tooltip: () => <div>Mocked Tooltip</div>,
 }));
 
-jest.mock("../../../../src/State/Store", () => {
-    const actual = jest.requireActual("../../../../src/State/Store");
+jest.mock("@state/Store", () => {
+    const actual = jest.requireActual("@state/Store");
     return {
         ...actual,
         useStore: jest.fn(),
