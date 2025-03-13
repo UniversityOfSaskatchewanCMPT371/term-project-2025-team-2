@@ -11,6 +11,7 @@ import { TableControls } from "./TableControls";
 import { DicomTableBody } from "./DicomTableBody";
 
 import { useStore } from "@state/Store";
+import { preview } from "vite";
 
 /**
  * Main DICOM table component
@@ -36,24 +37,30 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
 
     const fileName = files[currentFileIndex].name;
 
-    const [rows, setRows] = useState(createRows(dicomData[currentFileIndex], fileName, newTagValues));
+    // const [rows, setRows] = useState(createRows(dicomData[currentFileIndex], fileName, newTagValues));
 
     if (Object.keys(dicomData[currentFileIndex].tags).length === 0) {
         logger.error("No DICOM data available");
         return <div>No data available</div>;
     }
+console.log(newTagValues)
+    let rows = createRows(
+        dicomData[currentFileIndex],
+        fileName,
+        newTagValues
+    );
 
-    // const rows = createRows(
-    //     dicomData[currentFileIndex],
-    //     fileName,
-    //     newTagValues
-    // );
+    // useEffect(() => {
+    //     setRows( createRows(dicomData[currentFileIndex], fileName, newTagValues));
+    //     if (newTagValues.length > 0) {
+    //         setRows((prev) => [
+    //             ...prev,
+    //             {tagId: newTagValues[0].tagId, tagName: "new", value: newTagValues[0].newValue, hidden: false, updated: true},
+    //         ]);
+    //     }
+    //     console.log(currentFileIndex);
+    // }, [currentFileIndex]);
 
-    useEffect(() => {
-        if (newTagValues.length > 1) {
-            setRows((prev) => [...prev, { tagId: newTagValues[0].tagId, tagName: "name", value: newTagValues[0].newValue, hidden: false, updated: true }])
-        }
-    }, [newTagValues])
 
     const filteredRows = useFilteredRows(rows, searchTerm);
 
@@ -73,6 +80,7 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
             tagId,
             newValue,
             delete: deleteTag,
+            add: false,
         });
     };
 

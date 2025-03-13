@@ -12,6 +12,8 @@ export const NewTagRow = () => {
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state)=> state.setAlertMsg)
     const setShowAddTag = useStore((state) => state.setShowAddTag);
+    const files = useStore((state) => state.files);
+    const currentFileIndex = useStore((state) => state.currentFileIndex);
 
     const handleUpdateValue = (
         tagId: string,
@@ -28,10 +30,11 @@ export const NewTagRow = () => {
         }
 
         updateTableData({
-            fileName: "test",
-            tagId,
+            fileName: files[currentFileIndex].name,
+            tagId: "X" + tagId,
             newValue,
             delete: deleteTag,
+            add: true,
         });
 
         setTagId("");
