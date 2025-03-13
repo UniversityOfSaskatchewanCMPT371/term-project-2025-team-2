@@ -17,7 +17,6 @@ import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 import { assert } from "./DataFunctions/assert";
 
-
 /**
  * @description Main App Function
  * @returns rendered App component
@@ -66,7 +65,9 @@ export const App: React.FC = () => {
     const clearData = useStore((state) => state.clearData);
 
     const fileParseError = useStore((state) => state.fileParseErrorFileNames);
-    const setFileParseError = useStore((state) => state.setFileParseErrorFileNames);
+    const setFileParseError = useStore(
+        (state) => state.setFileParseErrorFileNames
+    );
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -267,7 +268,10 @@ export const App: React.FC = () => {
 
                 <Modal
                     isOpen={showErrorModal}
-                    onClose={() => {setShowErrorModal(false); setFileParseError([])}}
+                    onClose={() => {
+                        setShowErrorModal(false);
+                        setFileParseError([]);
+                    }}
                     title="Error"
                     text={`File ${fileParseError} isn't a valid DICOM file.`}
                 />
@@ -286,6 +290,3 @@ export const App: React.FC = () => {
         </div>
     );
 };
-
-
-

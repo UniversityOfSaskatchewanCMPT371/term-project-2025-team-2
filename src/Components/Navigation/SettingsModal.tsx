@@ -20,7 +20,6 @@ import { useStore } from "@state/Store";
 export const SettingsModal: React.FC<SettingsModalProps> = ({
     toggleModal,
 }) => {
-    const files = useStore((state) => state.files);
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
 
@@ -55,12 +54,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     setShowHiddenTags={setShowHiddenTags}
                 />
 
-                {files.length > 1 && (
-                    <>
-                        <p>Download Option</p>
-                        <DownloadOption />
-                    </>
-                )}
+                <p>Download Option</p>
+                <DownloadOption />
 
                 <GenButton
                     onClick={toggleModal}

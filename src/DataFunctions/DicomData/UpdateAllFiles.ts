@@ -6,11 +6,11 @@ import { getSingleFileTagEdits } from "./TagUpdater";
 /**
  * Update all files with new tag values
  * @description - Update all files with new tag values
- * @precondition - The dicom data must be an array of objects, 
+ * @precondition - The dicom data must be an array of objects,
  * series must be a boolean,
- * newTagValues must be an object, 
- * files must be an array of objects, 
- * currentFileIndex must be a number, 
+ * newTagValues must be an object,
+ * files must be an array of objects,
+ * currentFileIndex must be a number,
  * downloadOption must be a string
  * @postcondition - The files are updated with the new tag values and downloaded
  * @param dicomData - The dicom data object
@@ -33,7 +33,10 @@ export const updateAllFiles = async (
     if (series) {
         dicomData.forEach((dicom: any, index: number) => {
             const fileName = files[index].name;
-            const fileEdits = getSingleFileTagEdits(newTagValues, files[currentFileIndex].name);
+            const fileEdits = getSingleFileTagEdits(
+                newTagValues,
+                files[currentFileIndex].name
+            );
             const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
 
             const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);

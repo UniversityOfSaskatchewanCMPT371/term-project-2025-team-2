@@ -67,16 +67,23 @@ export const extractDicomTags = (dataSet: any) => {
 
         let value: any;
 
-         try {
+        try {
             switch (vr) {
                 case "UL":
                     value = dataSet.uint32(tag)?.toString() || "N/A";
                     break;
                 case "OB":
-                    if (element.dataOffset !== undefined && element.length !== undefined) {
-                        value = dataSet.byteArray
-                            ?.slice(element.dataOffset, element.dataOffset + element.length)
-                            ?.toString() || "N/A";
+                    if (
+                        element.dataOffset !== undefined &&
+                        element.length !== undefined
+                    ) {
+                        value =
+                            dataSet.byteArray
+                                ?.slice(
+                                    element.dataOffset,
+                                    element.dataOffset + element.length
+                                )
+                                ?.toString() || "N/A";
                     } else {
                         value = "N/A";
                     }
@@ -107,7 +114,10 @@ export const extractDicomTags = (dataSet: any) => {
         }
     });
 
-    assert(Object.keys(dicomTags).length > 0, "No DICOM tags found in dataset.");
+    assert(
+        Object.keys(dicomTags).length > 0,
+        "No DICOM tags found in dataset."
+    );
 
     return { tags: dicomTags, DicomDataSet: dataSet };
 };

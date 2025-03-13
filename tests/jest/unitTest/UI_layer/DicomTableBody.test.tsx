@@ -1,13 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import { DicomTableBody } from "../../../../src/Features/DicomTagTable/Components/DicomTableBody";
 
-jest.mock("../../../../src/Features/DicomTagTable/Components/DicomTableRow", () => ({
-    DicomTableRow: jest.fn(() => <tr data-testid="dicom-table-row"></tr>),
-}));
-jest.mock("../../../../src/Features/DicomTagTable/Components/EmptyTableRow", () => ({
-    __esModule: true,
-    default: jest.fn(() => <tr data-testid="empty-table-row"></tr>),
-}));
+jest.mock(
+    "../../../../src/Features/DicomTagTable/Components/DicomTableRow",
+    () => ({
+        DicomTableRow: jest.fn(() => <tr data-testid="dicom-table-row"></tr>),
+    })
+);
+jest.mock(
+    "../../../../src/Features/DicomTagTable/Components/EmptyTableRow",
+    () => ({
+        __esModule: true,
+        default: jest.fn(() => <tr data-testid="empty-table-row"></tr>),
+    })
+);
 
 const mockOnUpdateValue = jest.fn();
 

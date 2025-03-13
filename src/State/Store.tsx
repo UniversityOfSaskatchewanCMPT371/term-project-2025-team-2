@@ -2,12 +2,16 @@ import { create } from "zustand";
 import { isSafari } from "react-device-detect";
 
 import { CustomFile } from "@file/Types/FileTypes";
-import { TableUpdateData, DicomData, AnonTag } from "../Features/DicomTagTable/Types/DicomTypes";
+import {
+    TableUpdateData,
+    DicomData,
+    AnonTag,
+} from "../Features/DicomTagTable/Types/DicomTypes";
 
 /**
  * Store for global state management
  * @typedef Store
-*/
+ */
 type Store = {
     files: CustomFile[];
     setFiles: (files: CustomFile[]) => void;
@@ -109,7 +113,7 @@ export const useStore = create<Store>((set) => ({
 
     downloadOption: isSafari
         ? "zip"
-        : (localStorage.getItem("downloadOption") ?? "single"),
+        : (localStorage.getItem("downloadOption") ?? "zip"),
 
     setDownloadOption: (option) => {
         set({ downloadOption: option });
@@ -164,5 +168,6 @@ export const useStore = create<Store>((set) => ({
     },
 
     fileParseErrorFileNames: [] as string[],
-    setFileParseErrorFileNames: (fileNames) => set({ fileParseErrorFileNames: fileNames }),
+    setFileParseErrorFileNames: (fileNames) =>
+        set({ fileParseErrorFileNames: fileNames }),
 }));
