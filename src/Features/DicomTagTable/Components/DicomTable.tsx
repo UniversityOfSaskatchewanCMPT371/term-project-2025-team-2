@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import logger from "../../../Logger/Logger";
 import { tagUpdater } from "../../../DataFunctions/DicomData/TagUpdater";
 import { createFile } from "../../../DataFunctions/DicomData/DownloadFuncs";
@@ -11,7 +11,6 @@ import { TableControls } from "./TableControls";
 import { DicomTableBody } from "./DicomTableBody";
 
 import { useStore } from "@state/Store";
-import { preview } from "vite";
 
 /**
  * Main DICOM table component

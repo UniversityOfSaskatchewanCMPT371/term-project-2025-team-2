@@ -20,12 +20,17 @@ export const NewTagRow = () => {
         newValue: string,
         deleteTag: boolean
     ) => {
+        setShowAddTag(false);
         if(tagId.length !== 7 || isNaN(parseInt(tagId))){
             setAlertMsg("Tag ID has to be 7 numbers")
             setShowAlert(true);
         }
         if(tagValue.length < 1){
             setAlertMsg("Tag Value can't be empty")
+            setShowAlert(true);
+        }
+        if(tagName.length < 1){
+            setAlertMsg("Tag Name can't be empty")
             setShowAlert(true);
         }
 
