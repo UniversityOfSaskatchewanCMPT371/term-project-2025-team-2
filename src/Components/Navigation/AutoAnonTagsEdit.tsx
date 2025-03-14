@@ -1,6 +1,5 @@
 import { useStore } from "@state/Store";
 import { DicomTableRow } from "../../Features/DicomTagTable/Components/DicomTableRow";
-import { TagsAnon } from "@auto/Functions/TagsAnon";
 
 /**
  * Side panel for showing and editing tags to be anonymized
@@ -19,25 +18,38 @@ export const AutoAnonTagsEdit = () => {
 
     const tagsToAnon = useStore((state) => state.tagsToAnon);
     const setTagsToAnon = useStore((state) => state.setTagsToAnon);
+    const resetTagsAnon = useStore((state) => state.resetTagsAnon);
 
-    const handleUpdateValue = (tagId: string, newValue: string, deleteTag: boolean) => {
-       console.log(tagId, newValue, deleteTag);
-       setTagsToAnon((prevTags) => {
-           const newTags = prevTags.map((tag) => {
-               if (tag.tagId === tagId) {
-                   return { ...tag, value: newValue };
-               }
-               return tag;
-           });
-           return newTags;
-       });
+    let tagChanges: any = [];
+
+    const addChanges = (tagId: string, newValue: string, deleteTag: boolean) => {
+        tagChanges.push({ tagId, newValue, deleteTag });
+    };
+
+    const handleUpdateValue = () => {
+        const temp = [...tagsToAnon];
+
+        tagChanges.forEach((change: any) => {
+            if(change.deleteTag) {
+                temp.splice(
+                    temp.findIndex((tag: any) => tag.tagId === change.tagId),
+                    1
+                );
+            }
+            else {
+                temp[temp.findIndex((tag: any) => tag.tagId === change.tagId)].value = change.newValue;
+            }
+            
+        });
+
+        tagChanges = [];
+        setTagsToAnon(temp);
     };
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
-                autoAnonTagsEditPanelVisible ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${autoAnonTagsEditPanelVisible ? "translate-x-0" : "translate-x-full"
+                }`}
         >
             <div className="mb-5 ml-4 mt-24 text-xl font-bold text-blue-400">
                 Tags in Anonymize List
@@ -45,16 +57,22 @@ export const AutoAnonTagsEdit = () => {
 
             <div className="mb-4 flex justify-around">
                 <button
-                    onClick={() => setAutoAnonTagsEditPanelVisible(false)}
+                    onClick={() => {setAutoAnonTagsEditPanelVisible(false); handleUpdateValue();}}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
                     Save
                 </button>
                 <button
-                    onClick={() => setAutoAnonTagsEditPanelVisible(false)}
+                    onClick={() => {setAutoAnonTagsEditPanelVisible(false); tagChanges = [];}}
                     className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
                     Cancel
+                </button>
+                <button
+                    onClick={() => {tagChanges=[]; resetTagsAnon();}}
+                    className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
+                >
+                    Reset Tags
                 </button>
             </div>
             <table className="m-4 mb-10 border bg-white text-lg text-gray-500 mb-24">
@@ -72,7 +90,7 @@ export const AutoAnonTagsEdit = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {TagsAnon.map((tag, index) => (
+                    {tagsToAnon.length > 0 ? tagsToAnon.map((tag, index) => (
                         <DicomTableRow
                             key={index + tag.tagId}
                             row={{
@@ -82,10 +100,10 @@ export const AutoAnonTagsEdit = () => {
                             }}
                             index={index}
                             nested={false}
-                            onUpdateValue={handleUpdateValue}
+                            onUpdateValue={addChanges}
                             updated={false}
                         />
-                    ))}
+                    )): null}
                 </tbody>
             </table>
         </div>

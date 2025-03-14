@@ -1,4 +1,3 @@
-import { TagsAnon } from "./TagsAnon";
 import { tagUpdater } from "../../../DataFunctions/DicomData/TagUpdater";
 import {
     createFile,
@@ -16,10 +15,10 @@ import { AnonTag } from "../../DicomTagTable/Types/DicomTypes";
  * @param dicomData
  * @returns formatted data
  */
-export function FormatData(dicomData: any) {
+export function FormatData(dicomData: any, tagsToAnon: any[]) {
     const newDicomData: any = [];
 
-    TagsAnon.forEach((tag: any) => {
+    tagsToAnon.forEach((tag: any) => {
         if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
             return;
         }
@@ -54,12 +53,13 @@ export function FormatData(dicomData: any) {
 export const AutoAnon = async (
     dicomData: any[],
     files: CustomFile[],
-    anonTags: AnonTag[]
+    anonTags: AnonTag[],
+    tagsToAnon: any[]
 ) => {
     const newFiles: any = [];
 
     dicomData.forEach((dicom: any, index: number) => {
-        const formatedData = FormatData(dicom);
+        const formatedData = FormatData(dicom, tagsToAnon);
 
         // Update the formatted data with the new values from anonTags
         anonTags.forEach((anonTag) => {

@@ -91,8 +91,9 @@ type Store = {
     allowEditLockedTags: boolean;
     setAllowEditLockedTags: (allowEdit: boolean) => void;
 
-    tagsToAnon: tagIdAnon[];
-    setTagsToAnon: (tags: tagIdAnon[]) => void;
+    tagsToAnon: any[];
+    setTagsToAnon: (tags: any) => void;
+    resetTagsAnon: () => void;
 };
 
 /**
@@ -213,11 +214,13 @@ export const useStore = create<Store>((set) => ({
     setAutoAnonTagsEditPanelVisible: (visible) =>
         set({ autoAnonTagsEditPanelVisible: visible }),
 
-    tagsToAnon: JSON.parse(
-        localStorage.getItem("TagsAutoList") ?? JSON.stringify(TagsAnon)
-    ),
+    tagsToAnon: JSON.parse(localStorage.getItem("TagsAutoList") ?? JSON.stringify(TagsAnon)),
     setTagsToAnon: (tags) => {
         set({ tagsToAnon: tags })
         localStorage.setItem("TagsAutoList", JSON.stringify(tags));
     },
+    resetTagsAnon: () => {
+        set({ tagsToAnon: TagsAnon });
+        localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
+    }
 }));

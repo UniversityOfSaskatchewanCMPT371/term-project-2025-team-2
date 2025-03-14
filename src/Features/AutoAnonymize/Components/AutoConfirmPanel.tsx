@@ -17,6 +17,7 @@ export const SidePanel = () => {
     const setTags = useStore((state) => state.setTags);
     const dicomData = useStore((state) => state.dicomData);
     const clearData = useStore((state) => state.clearData);
+    const tagsToAnon = useStore((state) => state.tagsToAnon);
 
     const handleUpdateValue = (
         tagId: string,
@@ -38,7 +39,7 @@ export const SidePanel = () => {
     };
 
     const handleAutoAnon = async () => {
-        await AutoAnon(dicomData, files, tags);
+        await AutoAnon(dicomData, files, tags, tagsToAnon);
         clearData();
         setSidePanelVisible(false);
     };

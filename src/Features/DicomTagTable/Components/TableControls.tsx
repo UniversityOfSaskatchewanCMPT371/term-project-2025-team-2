@@ -29,6 +29,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
     const setShowAddTag = useStore((state) => state.setShowAddTag);
 
     const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
+    const tagsToAnon = useStore((state) => state.tagsToAnon);
 
     const tagDictionary = new TagDictionary();
 
@@ -37,7 +38,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
 
     const handleAutoAnon = async () => {
         // format anon tags and show them
-        const newTagData: AnonTag[] = FormatData(dicomData[0]).map(
+        const newTagData: AnonTag[] = FormatData(dicomData[0], tagsToAnon).map(
             (tag: { tagId: string; tagName: string; newValue: string }) => ({
                 tagId: tag.tagId,
                 tagName: tagDictionary.lookupTagName(tag.tagId),
