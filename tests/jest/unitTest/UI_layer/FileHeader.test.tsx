@@ -32,5 +32,4 @@ describe("FileHeader Component", () => {
         const fileText = screen.getByText("Showing File: 1 of 2");
         expect(fileText).toBeInTheDocument();
     });
-
 });

@@ -13,7 +13,7 @@ export const createRows = (
     fileName: string,
     newTableData: any[]
 ) => {
-    return Object.entries(dicomData.tags).map(
+    const data = Object.entries(dicomData.tags).map(
         ([tagId, tagData]: [string, any]) => ({
             tagId,
             tagName: tagData.tagName,
@@ -30,4 +30,18 @@ export const createRows = (
                 : false,
         })
     );
+
+    newTableData.forEach((tag) => {
+        if (tag.add && tag.fileName === fileName) {
+            data.push({
+                tagId: tag.tagId,
+                tagName: "name",
+                value: tag.newValue,
+                hidden: false,
+                updated: false,
+            });
+        }
+    });
+
+    return data;
 };

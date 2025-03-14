@@ -8,18 +8,21 @@ const sampleTag1 = {
     tagId: "T1",
     newValue: "value1",
     delete: false,
+    add: false,
 };
 const sampleTag2 = {
     fileName: "file1",
     tagId: "T1",
     newValue: "value2",
     delete: false,
+    add: false,
 };
 const sampleTag = {
     fileName: "file1",
     tagId: "T1",
     newValue: "value1",
     delete: false,
+    add: false,
 };
 
 const sampleAnonTags = [

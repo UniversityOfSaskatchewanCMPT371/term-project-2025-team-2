@@ -45,6 +45,7 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
         fileName,
         newTagValues
     );
+
     const filteredRows = useFilteredRows(rows, searchTerm);
 
     /**
@@ -63,6 +64,7 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
             tagId,
             newValue,
             delete: deleteTag,
+            add: false,
         });
     };
 

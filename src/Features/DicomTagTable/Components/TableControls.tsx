@@ -25,6 +25,8 @@ export const TableControls: React.FC<TableControlsProps> = ({
 }) => {
     const dicomData = useStore((state) => state.dicomData);
     const setTags = useStore((state) => state.setTags);
+    const addTag = useStore((state) => state.addTag);
+    const setShowAddTag = useStore((state) => state.setShowAddTag);
 
     const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
 
@@ -62,6 +64,14 @@ export const TableControls: React.FC<TableControlsProps> = ({
                     <GenButton
                         onClick={handleAutoAnon}
                         label="Auto Anon"
+                        disabled={false}
+                    />
+                </div>
+
+                <div className="ml-4">
+                    <GenButton
+                        onClick={() => setShowAddTag(!addTag)}
+                        label="Add Tag"
                         disabled={false}
                     />
                 </div>

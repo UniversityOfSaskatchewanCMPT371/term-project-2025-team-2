@@ -129,6 +129,7 @@ export interface TableUpdateData {
     tagId: string;
     newValue: string;
     delete: boolean;
+    add: boolean;
 }
 
 /**

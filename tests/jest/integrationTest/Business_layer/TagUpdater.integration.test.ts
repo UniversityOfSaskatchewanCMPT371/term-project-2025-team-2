@@ -98,6 +98,7 @@ describe("TagUpdater unit tests - simple dicoms", () => {
                 tagId: "X00100010",
                 newValue: "ANONYMOUS",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
@@ -114,12 +115,14 @@ describe("TagUpdater unit tests - simple dicoms", () => {
                 tagId: "X00100010",
                 newValue: "ANONYMOUS",
                 delete: false,
+                add: false,
             },
             {
                 fileName: "test_dicom_tagUpdtest.dcm",
                 tagId: "X00100020",
                 newValue: "1010",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
@@ -134,6 +137,7 @@ describe("TagUpdater unit tests - simple dicoms", () => {
                 tagId: deleteTagId,
                 newValue: "John Doe",
                 delete: true,
+                add: false,
             },
         ];
         const dicomData = await getDicomDataAndTest(
@@ -157,12 +161,14 @@ describe("TagUpdater unit tests - simple dicoms", () => {
                 tagId: "X00100010",
                 newValue: "ANONYMOUS",
                 delete: false,
+                add: false,
             },
             {
                 fileName: "test_dicom_tagUpdtest.dcm",
                 tagId: deleteTagId,
                 newValue: "0",
                 delete: true,
+                add: false,
             },
         ];
         const dicomData = await getDicomDataAndTest(
@@ -211,6 +217,7 @@ describe("TagUpdater unit tests - more dicom tag VRs", () => {
                 tagId: "X00081163",
                 newValue: "86232.111079",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
@@ -224,6 +231,7 @@ describe("TagUpdater unit tests - more dicom tag VRs", () => {
                 tagId: "X00041600",
                 newValue: "750675509",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
@@ -237,6 +245,7 @@ describe("TagUpdater unit tests - more dicom tag VRs", () => {
                 tagId: "X00540308",
                 newValue: "300",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
@@ -250,6 +259,7 @@ describe("TagUpdater unit tests - more dicom tag VRs", () => {
                 tagId: "X00109431",
                 newValue: "5.60060977935791",
                 delete: false,
+                add: false,
             },
         ];
         await getDicomDataAndTest(filename, newValues, sampleDicomData);
