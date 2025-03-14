@@ -7,6 +7,7 @@ import {
 import { CustomFile } from "../../FileHandling/Types/FileTypes";
 import { AnonTag } from "../../DicomTagTable/Types/DicomTypes";
 import { useStore } from "@state/Store";
+import logger from "../../../Logger/Logger";
 
 /**
  * Formate the data to be used in the tagUpdater function
