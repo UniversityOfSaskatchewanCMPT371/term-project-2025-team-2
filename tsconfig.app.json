@@ -36,8 +36,8 @@
             "@state/*": ["State/*"],
             "@auto/*": ["Features/AutoAnonymize/*"],
             "@dataFunctions/*": ["DataFunctions/*"],
-            "@features/*": ["Features/*"],  
-            "@logger/*": ["Logger/*"], 
+            "@features/*": ["Features/*"],
+            "@logger/*": ["Logger/*"]
         }
     },
     "include": ["src", "types"]
