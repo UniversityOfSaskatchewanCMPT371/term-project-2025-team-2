@@ -83,7 +83,7 @@ export const AutoAnon = async (
         const zipFile = await createZipFromFiles(newFiles);
         downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
     } catch (err) {
-        console.error("Auto anonymization failed:", err);
+        logger.error("Auto anonymization failed:", err);
     } finally {
         setLoading(false);
     }
