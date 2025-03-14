@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { isSafari } from "react-device-detect";
+import { TagsAnon } from "@auto/Functions/TagsAnon";
 
 import { CustomFile } from "@file/Types/FileTypes";
 import {
@@ -7,6 +8,12 @@ import {
     DicomData,
     AnonTag,
 } from "../Features/DicomTagTable/Types/DicomTypes";
+
+// interface tagIdAnon {
+//     tagId: string;
+//     name: string;
+//     value: string;
+// }
 
 /**
  * Store for global state management
@@ -34,6 +41,9 @@ type Store = {
 
     sidePanelVisible: boolean;
     setSidePanelVisible: (visible: boolean) => void;
+
+    autoAnonTagsEditPanelVisible: boolean;
+    setAutoAnonTagsEditPanelVisible: (visible: boolean) => void;
 
     showSeriesModal: boolean;
     setShowSeriesModal: (show: boolean) => void;
@@ -80,6 +90,10 @@ type Store = {
 
     allowEditLockedTags: boolean;
     setAllowEditLockedTags: (allowEdit: boolean) => void;
+
+    tagsToAnon: any[];
+    setTagsToAnon: (tags: any) => void;
+    resetTagsAnon: () => void;
 };
 
 /**
@@ -195,4 +209,20 @@ export const useStore = create<Store>((set) => ({
     allowEditLockedTags: false,
     setAllowEditLockedTags: (allowEdit) =>
         set({ allowEditLockedTags: allowEdit }),
+
+    autoAnonTagsEditPanelVisible: false,
+    setAutoAnonTagsEditPanelVisible: (visible) =>
+        set({ autoAnonTagsEditPanelVisible: visible }),
+
+    tagsToAnon: JSON.parse(
+        localStorage.getItem("TagsAutoList") ?? JSON.stringify(TagsAnon)
+    ),
+    setTagsToAnon: (tags) => {
+        set({ tagsToAnon: tags });
+        localStorage.setItem("TagsAutoList", JSON.stringify(tags));
+    },
+    resetTagsAnon: () => {
+        set({ tagsToAnon: TagsAnon });
+        localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
+    },
 }));

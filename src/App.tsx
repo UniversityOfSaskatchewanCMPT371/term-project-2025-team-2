@@ -18,6 +18,8 @@ import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 import { assert } from "./DataFunctions/assert";
 
+import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
+
 /**
  * @description Main App Function
  * @returns rendered App component
@@ -288,6 +290,7 @@ export const App: React.FC = () => {
                 )}
 
                 <SidePanel />
+                <AutoAnonTagsEdit />
             </div>
             <Footer />
 

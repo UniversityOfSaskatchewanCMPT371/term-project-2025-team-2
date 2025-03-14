@@ -6,6 +6,11 @@ import {
 import { CustomFile } from "@features/FileHandling/Types/FileTypes";
 import { AnonTag } from "@features/DicomTagTable/Types/DicomTypes";
 
+const tagsAnon = [
+    { tagId: "0010,0010", value: "Anonymous" },
+    { tagId: "0010,0020", value: "12345" },
+];
+
 // Mock the TagsAnon module to supply known tag values for testing.
 jest.mock("@features/AutoAnonymize/Functions/TagsAnon", () => ({
     TagsAnon: [
@@ -50,7 +55,7 @@ describe("AutoClean Module", () => {
                 },
             };
 
-            const result = FormatData(sampleDicomData);
+            const result = FormatData(sampleDicomData, tagsAnon);
 
             expect(result).toHaveLength(2);
             expect(result[0]).toEqual({
@@ -80,7 +85,7 @@ describe("AutoClean Module", () => {
                 },
             };
 
-            const result = FormatData(sampleDicomData);
+            const result = FormatData(sampleDicomData, tagsAnon);
 
             expect(result).toHaveLength(1);
             expect(result[0].tagId).toBe("0010,0010");
@@ -95,7 +100,7 @@ describe("AutoClean Module", () => {
                 },
             };
 
-            const result = FormatData(sampleDicomData);
+            const result = FormatData(sampleDicomData, tagsAnon);
 
             expect(result[0].vr).toBe("NO");
         });
@@ -128,7 +133,12 @@ describe("AutoClean Module", () => {
                 },
             ];
 
-            await AutoAnon(sampleDicomDataArray, sampleFiles, sampleAnonTags);
+            await AutoAnon(
+                sampleDicomDataArray,
+                sampleFiles,
+                sampleAnonTags,
+                tagsAnon
+            );
 
             expect((tagUpdater as jest.Mock).mock.calls.length).toBe(1);
 
@@ -176,7 +186,12 @@ describe("AutoClean Module", () => {
                 },
             ];
 
-            await AutoAnon(sampleDicomDataArray, sampleFiles, sampleAnonTags);
+            await AutoAnon(
+                sampleDicomDataArray,
+                sampleFiles,
+                sampleAnonTags,
+                tagsAnon
+            );
 
             expect((tagUpdater as jest.Mock).mock.calls.length).toBe(1);
             expect(createFile).toHaveBeenCalledWith(
