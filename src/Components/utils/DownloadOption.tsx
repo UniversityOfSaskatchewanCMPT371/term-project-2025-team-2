@@ -42,7 +42,7 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
 
     return (
         <div>
-            <label className="label mb-4 cursor-pointer">
+            <label className="label mb-2 cursor-pointer">
                 <input
                     className="toggle toggle-info"
                     type="checkbox"

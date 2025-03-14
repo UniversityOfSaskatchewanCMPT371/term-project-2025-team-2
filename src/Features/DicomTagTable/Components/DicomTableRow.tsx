@@ -4,6 +4,17 @@ import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../Types/DicomTypes";
 import { useStore } from "@state/Store";
 
+const lockEditingTags: any = [
+    "X00080016",
+    "X00080018",
+    "X00200032",
+    "X00200037",
+    "X0025101B",
+    "X00431028",
+    "X00431029",
+    "X0043102A",
+];
+
 /**
  * handleClick function
  * @description - Allows user to input new value for the row
@@ -40,7 +51,9 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
     const [deleteTag, setDeleteTag] = useState<boolean>(false);
+
     const hideTagNumber = useStore((state) => state.hideTagNumber);
+    const allowEditLockedTags = useStore((state) => state.allowEditLockedTags);
 
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
@@ -122,43 +135,54 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                     <span>{newValue}</span>
                                 )}
                             </div>
-                            <div
-                                className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => handleClick(toggleEditing)}
-                            >
-                                <PencilSquareIcon
-                                    className="h-6 w-6"
-                                    data-testid="edit-tag-button"
-                                    data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
-                                    data-tooltip-content="Edit Tag Value"
-                                    data-tooltip-place="top"
-                                    aria-label="Edit Tag"
-                                />
-                                <Tooltip
-                                    id={`${row.tagId}-editTag-button-tooltip`}
-                                />
-                            </div>
-                            <div
-                                className="flex cursor-pointer justify-end hover:text-accent"
-                                onClick={() => toggleDelete()}
-                            >
-                                <XCircleIcon
-                                    className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
-                                    data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
-                                    data-tooltip-content={
-                                        deleteTag
-                                            ? "Undo Delete"
-                                            : "To Be Deleted"
-                                    }
-                                    data-tooltip-place="left"
-                                    aria-label={
-                                        deleteTag ? "Undo Delete" : "Delete Tag"
-                                    }
-                                />
-                                <Tooltip
-                                    id={`${row.tagId}-deleteTag-button-tooltip`}
-                                />
-                            </div>
+                            {lockEditingTags.includes(row.tagId) &&
+                            !allowEditLockedTags ? (
+                                ""
+                            ) : (
+                                <>
+                                    <div
+                                        className="flex cursor-pointer justify-end hover:text-accent"
+                                        onClick={() =>
+                                            handleClick(toggleEditing)
+                                        }
+                                    >
+                                        <PencilSquareIcon
+                                            className="h-6 w-6"
+                                            data-testid="edit-tag-button"
+                                            data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
+                                            data-tooltip-content="Edit Tag Value"
+                                            data-tooltip-place="top"
+                                            aria-label="Edit Tag"
+                                        />
+                                        <Tooltip
+                                            id={`${row.tagId}-editTag-button-tooltip`}
+                                        />
+                                    </div>
+                                    <div
+                                        className="flex cursor-pointer justify-end hover:text-accent"
+                                        onClick={() => toggleDelete()}
+                                    >
+                                        <XCircleIcon
+                                            className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                            data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
+                                            data-tooltip-content={
+                                                deleteTag
+                                                    ? "Undo Delete"
+                                                    : "To Be Deleted"
+                                            }
+                                            data-tooltip-place="left"
+                                            aria-label={
+                                                deleteTag
+                                                    ? "Undo Delete"
+                                                    : "Delete Tag"
+                                            }
+                                        />
+                                        <Tooltip
+                                            id={`${row.tagId}-deleteTag-button-tooltip`}
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </div>
                     ) : (
                         ""

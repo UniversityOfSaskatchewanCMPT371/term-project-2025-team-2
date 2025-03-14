@@ -77,6 +77,9 @@ type Store = {
 
     alertMsg: string;
     setAlertMsg: (msg: string) => void;
+
+    allowEditLockedTags: boolean;
+    setAllowEditLockedTags: (allowEdit: boolean) => void;
 };
 
 /**
@@ -188,4 +191,8 @@ export const useStore = create<Store>((set) => ({
 
     alertMsg: "Alert",
     setAlertMsg: (msg) => set({ alertMsg: msg }),
+
+    allowEditLockedTags: false,
+    setAllowEditLockedTags: (allowEdit) =>
+        set({ allowEditLockedTags: allowEdit }),
 }));
