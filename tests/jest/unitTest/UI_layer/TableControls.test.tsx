@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TableControls } from "../../../../src/Features/DicomTagTable/Components/TableControls";
+import { TableControls } from "@features/DicomTagTable/Components/TableControls";
 import "@testing-library/jest-dom";
 
 describe("TableControls", () => {

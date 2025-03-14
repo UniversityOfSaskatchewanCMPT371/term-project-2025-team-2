@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import EmptyTableRow from "../../../../src/Features/DicomTagTable/Components/EmptyTableRow";
+import EmptyTableRow from "@features/DicomTagTable/Components/EmptyTableRow";
 
 describe("EmptyTableRow Component", () => {
     test("renders correctly with the appropriate message", () => {

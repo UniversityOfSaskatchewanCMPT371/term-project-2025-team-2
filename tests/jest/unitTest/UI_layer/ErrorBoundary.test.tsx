@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import logger from "../../../../src/Logger/Logger";
-import { ErrorBoundary } from "../../../../src/Components/ErrorHandling/ErrorBoundary";
+import logger from "@logger/Logger";
+import { ErrorBoundary } from "@components/ErrorHandling/ErrorBoundary";
 
-jest.mock("../../../../src/Logger/Logger", () => ({
+jest.mock("@logger/Logger", () => ({
     error: jest.fn(),
 }));
 
-jest.mock("../../../../src/Components/ErrorHandling/GenErrorPage", () => ({
+jest.mock("@components/ErrorHandling/GenErrorPage", () => ({
     __esModule: true,
     default: () => <div data-testid="gen-error-page">Error Page</div>,
 }));

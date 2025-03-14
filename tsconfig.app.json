@@ -34,7 +34,10 @@
             "@hooks/*": ["Hooks/*"],
             "@file/*": ["Features/FileHandling/*"],
             "@state/*": ["State/*"],
-            "@auto/*": ["Features/AutoAnonymize/*"]
+            "@auto/*": ["Features/AutoAnonymize/*"],
+            "@dataFunctions/*": ["DataFunctions/*"],
+            "@features/*": ["Features/*"],  
+            "@logger/*": ["Logger/*"], 
         }
     },
     "include": ["src", "types"]

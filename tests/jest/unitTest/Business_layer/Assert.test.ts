@@ -1,7 +1,7 @@
-import { assert } from "../../../../src/DataFunctions/assert";
-import logger from "../../../../src/Logger/Logger";
+import { assert } from "@dataFunctions/assert";
+import logger from "@logger/Logger";
 
-jest.mock("../../../../src/Logger/Logger");
+jest.mock("@logger/Logger");
 
 describe("assert function", () => {
     afterEach(() => {
