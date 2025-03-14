@@ -20,8 +20,8 @@ export const NewTagRow = () => {
         deleteTag: boolean
     ) => {
         setShowAddTag(false);
-        if (tagId.length !== 7 || isNaN(parseInt(tagId))) {
-            setAlertMsg("Tag ID has to be 7 numbers");
+        if (tagId.length !== 8 || isNaN(parseInt(tagId))) {
+            setAlertMsg("Tag ID has to be 8 numbers");
             setShowAlert(true);
         }
         if (tagValue.length < 1) {

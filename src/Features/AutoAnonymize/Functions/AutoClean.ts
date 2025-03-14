@@ -60,7 +60,7 @@ export const AutoAnon = async (
 ) => {
     const newFiles: any = [];
     const { setLoading } = useStore.getState();
-    
+
     try {
         setLoading(true);
         dicomData.forEach((dicom: any, index: number) => {
@@ -76,7 +76,10 @@ export const AutoAnon = async (
                 }
             });
 
-            const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formattedData);
+            const updatedFile = tagUpdater(
+                dicomData[0].DicomDataSet,
+                formattedData
+            );
 
             newFiles.push(createFile(files[index].name, updatedFile, true));
         });
