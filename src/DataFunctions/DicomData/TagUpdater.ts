@@ -66,7 +66,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         const insertTag = {
             tagId: tag.tagId,
             value: tag.newValue,
-            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "NO",
+            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
             dataOffSet:
                 dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
             length: tag.newValue.length,
@@ -98,8 +98,6 @@ export function tagUpdater(dicomData: any, newTagData: any) {
 
         const newData = dicomParser.parseDicom(data);
         dicomData = newData;
-        // dicomData.byteArray = newData.byteArray;
-        // dicomData.elements = newData.elements;
     });
 
     return data;
@@ -113,24 +111,9 @@ function addTag(dicomData: any, tag: any) {
     tagIdByte.set(new Uint8Array([group, group >> 8, element, element >> 8]));
     const newTag = createTag(tagIdByte, tag, true);
 
-    // for(let i = 0; i < dicomData.elements.length; i++){
-    // if(dicomData.elements[i].tag.slice(1,6) < tag.tagId.slice(1,6)){
-    const first = dicomData.byteArray.slice(
-        0,
-        dicomData.elements["x00080008"].dataOffSet
-    );
-    const last = dicomData.byteArray.slice(
-        dicomData.elements["x00080008"].dataOffSet
-    );
-
-    const buf1 = concatBuffers(first, newTag);
-    const newArray = concatBuffers(buf1, last);
-
-    // const newData = dicomParser.parseDicom(newArray);
+    const newArray = concatBuffers(dicomData.byteArray, newTag);
 
     return newArray;
-    // }
-    // }
 }
 
 /**
