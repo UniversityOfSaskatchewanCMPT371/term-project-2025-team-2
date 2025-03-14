@@ -6,6 +6,8 @@ import {
 } from "../../../DataFunctions/DicomData/DownloadFuncs";
 import { CustomFile } from "../../FileHandling/Types/FileTypes";
 import { AnonTag } from "../../DicomTagTable/Types/DicomTypes";
+import { useStore } from "@state/Store";
+import logger from "../../../Logger/Logger";
 
 /**
  * Formate the data to be used in the tagUpdater function
@@ -57,25 +59,33 @@ export const AutoAnon = async (
     tagsToAnon: any[]
 ) => {
     const newFiles: any = [];
+    const { setLoading } = useStore.getState();
+    
+    try {
+        setLoading(true);
+        dicomData.forEach((dicom: any, index: number) => {
+            const formattedData = FormatData(dicom, tagsToAnon);
 
-    dicomData.forEach((dicom: any, index: number) => {
-        const formatedData = FormatData(dicom, tagsToAnon);
+            // Update the formatted data with the new values from anonTags
+            anonTags.forEach((anonTag) => {
+                const tagIndex = formattedData.findIndex(
+                    (tag: any) => tag.tagId === anonTag.tagId
+                );
+                if (tagIndex !== -1) {
+                    formattedData[tagIndex].newValue = anonTag.newValue;
+                }
+            });
 
-        // Update the formatted data with the new values from anonTags
-        anonTags.forEach((anonTag) => {
-            const tagIndex = formatedData.findIndex(
-                (tag: any) => tag.tagId === anonTag.tagId
-            );
-            if (tagIndex !== -1) {
-                formatedData[tagIndex].newValue = anonTag.newValue;
-            }
+            const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formattedData);
+
+            newFiles.push(createFile(files[index].name, updatedFile, true));
         });
 
-        const updatedFile = tagUpdater(dicomData[0].DicomDataSet, formatedData);
-
-        newFiles.push(createFile(files[index].name, updatedFile, true));
-    });
-
-    const zipFile = await createZipFromFiles(newFiles);
-    downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
+        const zipFile = await createZipFromFiles(newFiles);
+        downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
+    } catch (err) {
+        logger.error("Auto anonymization failed:", err);
+    } finally {
+        setLoading(false);
+    }
 };
