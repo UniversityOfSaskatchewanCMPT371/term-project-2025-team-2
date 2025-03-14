@@ -17,7 +17,7 @@ Name, Study Date, etc.), and modify the tag values. This application runs
 entirely in the browser, using **React**, **Vite**, **TailwindCSS**, and
 **DaisyUI** for a modern and responsive user interface.
 
-[GitHub Pages](https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/)
+The application served from GitHub Pages: [GitHub Pages](https://universityofsaskatchewancmpt371.github.io/term-project-2025-team-2/)
 
 ## Features
 
