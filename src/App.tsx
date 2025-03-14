@@ -66,6 +66,8 @@ export const App: React.FC = () => {
     const theme = useStore((state) => state.theme);
 
     const showAlert = useStore((state) => state.showAlert);
+    const setShowAlert = useStore((state) => state.setShowAlert);
+    const alertRef = useRef<HTMLDivElement>(null);
 
     const clearData = useStore((state) => state.clearData);
 
@@ -104,6 +106,23 @@ export const App: React.FC = () => {
                 !sidebarButtonRef.current.contains(event.target as Node)
             ) {
                 setSidebarVisible(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
+
+    // Close sidebar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                alertRef.current &&
+                !alertRef.current.contains(event.target as Node)
+            ) {
+                setShowAlert(false);
             }
         };
 
@@ -211,7 +230,11 @@ export const App: React.FC = () => {
     // main render
     return (
         <div className="flex min-h-screen flex-col">
-            {showAlert ? <AlertHeader /> : null}
+            {showAlert ? (
+                <div ref={alertRef}>
+                    <AlertHeader />
+                </div>
+            ) : null}
 
             <Topbar
                 toggleSidebar={toggleSidebar}
