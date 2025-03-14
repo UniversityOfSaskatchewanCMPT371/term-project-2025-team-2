@@ -33,6 +33,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{matrix.node-version}}
+      
+      - name: Cache node modules
+        uses: actions/cache@v4
+        env: 
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored with ~/.npm
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-
+
 
       #Install dependencies
       - name: Install dependencies
@@ -46,6 +58,7 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
+      
       
       - name: Run Unit Tests
         run: npm run test:unit
