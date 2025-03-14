@@ -9,8 +9,6 @@ import { ThemeSelector } from "./ThemeSelector";
 import { useStore } from "@state/Store";
 import { EditOption } from "@components/utils/EditOption";
 
-import {AutoAnonTagsEdit} from "@components/Navigation/AutoAnonTagsEdit";
-
 /**
  * SettingsModal component for managing application settings
  * @component
@@ -66,11 +64,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <EditOption />
 
                 <GenButton
-                    onClick={() => {setAutoAnonTagsEditPanelVisible(true)}}
+                    onClick={() => {
+                        setAutoAnonTagsEditPanelVisible(true);
+                    }}
                     disabled={false}
                     label="Show Side Panel"
                 />
-                
 
                 <GenButton
                     onClick={toggleModal}

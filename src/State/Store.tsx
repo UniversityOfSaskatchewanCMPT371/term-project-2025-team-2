@@ -9,11 +9,11 @@ import {
     AnonTag,
 } from "../Features/DicomTagTable/Types/DicomTypes";
 
-interface tagIdAnon {
-    tagId: string;
-    name: string;
-    value: string;
-}
+// interface tagIdAnon {
+//     tagId: string;
+//     name: string;
+//     value: string;
+// }
 
 /**
  * Store for global state management
@@ -214,13 +214,15 @@ export const useStore = create<Store>((set) => ({
     setAutoAnonTagsEditPanelVisible: (visible) =>
         set({ autoAnonTagsEditPanelVisible: visible }),
 
-    tagsToAnon: JSON.parse(localStorage.getItem("TagsAutoList") ?? JSON.stringify(TagsAnon)),
+    tagsToAnon: JSON.parse(
+        localStorage.getItem("TagsAutoList") ?? JSON.stringify(TagsAnon)
+    ),
     setTagsToAnon: (tags) => {
-        set({ tagsToAnon: tags })
+        set({ tagsToAnon: tags });
         localStorage.setItem("TagsAutoList", JSON.stringify(tags));
     },
     resetTagsAnon: () => {
         set({ tagsToAnon: TagsAnon });
         localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
-    }
+    },
 }));
