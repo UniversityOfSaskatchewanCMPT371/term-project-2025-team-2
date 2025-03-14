@@ -9,6 +9,8 @@ import { ThemeSelector } from "./ThemeSelector";
 import { useStore } from "@state/Store";
 import { EditOption } from "@components/utils/EditOption";
 
+import {AutoAnonTagsEdit} from "@components/Navigation/AutoAnonTagsEdit";
+
 /**
  * SettingsModal component for managing application settings
  * @component
@@ -23,6 +25,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
+    const setAutoAnonTagsEditPanelVisible = useStore(
+        (state) => state.setAutoAnonTagsEditPanelVisible
+    );
 
     return (
         <div
@@ -59,6 +64,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
                 <p>Editing Locked Tags</p>
                 <EditOption />
+
+                <GenButton
+                    onClick={() => {setAutoAnonTagsEditPanelVisible(true)}}
+                    disabled={false}
+                    label="Show Side Panel"
+                />
+                
 
                 <GenButton
                     onClick={toggleModal}
