@@ -1,4 +1,4 @@
-import { GenErrorPageProps } from "../../types/types";
+import { GenErrorPageProps } from "@type/types";
 import { GenButton } from "../utils/GenButton";
 /**
  * GenErrorPage

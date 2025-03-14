@@ -1,10 +1,10 @@
-import { Search } from "../../../Components/utils/Search";
-import { GenButton } from "../../../Components/utils/GenButton";
+import { Search } from "@components/utils/Search";
+import { GenButton } from "@components/utils/GenButton";
 import { AnonTag, TableControlsProps } from "../Types/DicomTypes";
-import { FormatData } from "../../AutoAnonymize/Functions/AutoClean";
+import { FormatData } from "@features/AutoAnonymize/Functions/AutoClean";
 import { useStore } from "@state/Store";
-import { TagDictionary } from "../../../DataFunctions/TagDictionary/dictionary";
-import { assert } from "../../../DataFunctions/assert";
+import { TagDictionary } from "@dataFunctions/TagDictionary/dictionary";
+import { assert } from "@dataFunctions/assert";
 
 /**
  * Controls component for the DICOM table

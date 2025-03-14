@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import logger from "../../../Logger/Logger";
-import { tagUpdater } from "../../../DataFunctions/DicomData/TagUpdater";
-import { createFile } from "../../../DataFunctions/DicomData/DownloadFuncs";
-import { downloadDicomFile } from "../../../DataFunctions/DicomData/DownloadFuncs";
+import logger from "@logger/Logger";
+import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
+import { createFile } from "@dataFunctions/DicomData/DownloadFuncs";
+import { downloadDicomFile } from "@dataFunctions/DicomData/DownloadFuncs";
 import { DicomTableProps } from "../Types/DicomTypes";
-import { useFilteredRows } from "../../../Hooks/useFilteredRows";
+import { useFilteredRows } from "@hooks/useFilteredRows";
 import { createRows } from "../Functions/rowUtils";
 import { TableHeader } from "./TableHeader";
 import { TableControls } from "./TableControls";

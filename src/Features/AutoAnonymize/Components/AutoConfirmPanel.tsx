@@ -1,5 +1,5 @@
 import { useStore } from "@state/Store";
-import { DicomTableRow } from "../../DicomTagTable/Components/DicomTableRow";
+import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow";
 import { AutoAnon } from "@auto/Functions/AutoClean";
 
 /**

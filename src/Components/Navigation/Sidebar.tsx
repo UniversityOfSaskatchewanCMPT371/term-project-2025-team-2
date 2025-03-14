@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { SidebarProps } from "../../types/types";
-import { FileTable } from "../../Features/FileHandling/Components/FileTable";
+import { SidebarProps } from "@type/types";
+import { FileTable } from "@features/FileHandling/Components/FileTable";
 import { Header } from "./Header";
 import { SeriesControls } from "./SeriesControls";
 import { SettingsModal } from "./SettingsModal";

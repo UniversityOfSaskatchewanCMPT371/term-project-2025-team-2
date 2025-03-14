@@ -1,9 +1,9 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { GenButton } from "../utils/GenButton";
-import { SeriesControlsProps } from "../../types/types";
+import { SeriesControlsProps } from "@type/types";
 
-import { updateAllFiles } from "../../DataFunctions/DicomData/UpdateAllFiles";
+import { updateAllFiles } from "@dataFunctions/DicomData/UpdateAllFiles";
 import { useStore } from "@state/Store";
 
 /**

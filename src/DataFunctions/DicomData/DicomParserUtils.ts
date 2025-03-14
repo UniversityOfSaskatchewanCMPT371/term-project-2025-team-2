@@ -1,6 +1,6 @@
 import dicomParser from "dicom-parser";
 import { TagDictionary } from "../TagDictionary/dictionary";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { assert } from "../assert";
 
 const tagDictionary = new TagDictionary();

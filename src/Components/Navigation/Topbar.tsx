@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { TopbarProps } from "../../types/types";
+import { TopbarProps } from "@type/types";
 
 /**
  * Topbar component for the application
