@@ -1,13 +1,13 @@
-import { tagUpdater } from "../../../DataFunctions/DicomData/TagUpdater";
+import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
 import {
     createFile,
     createZipFromFiles,
     downloadDicomFile,
-} from "../../../DataFunctions/DicomData/DownloadFuncs";
-import { CustomFile } from "../../FileHandling/Types/FileTypes";
-import { AnonTag } from "../../DicomTagTable/Types/DicomTypes";
+} from "@dataFunctions/DicomData/DownloadFuncs";
+import { CustomFile } from "@features/FileHandling/Types/FileTypes";
+import { AnonTag } from "@features/DicomTagTable/Types/DicomTypes";
 import { useStore } from "@state/Store";
-import logger from "../../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Formate the data to be used in the tagUpdater function

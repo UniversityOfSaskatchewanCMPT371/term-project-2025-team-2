@@ -1,5 +1,5 @@
 import React from "react";
-import { GenButtonProps } from "../../types/types";
+import { GenButtonProps } from "@type/types";
 
 /**
  * General button component

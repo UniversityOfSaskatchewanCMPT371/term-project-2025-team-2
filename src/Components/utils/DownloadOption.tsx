@@ -3,8 +3,8 @@ import { Tooltip } from "react-tooltip";
 import { isSafari } from "react-device-detect";
 
 import { useStore } from "@state/Store";
-import { DownloadOptionProps } from "../../types/types";
-import { assert } from "../../DataFunctions/assert";
+import { DownloadOptionProps } from "@type/types";
+import { assert } from "@dataFunctions/assert";
 
 /**
  * Download option component

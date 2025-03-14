@@ -1,6 +1,6 @@
 import React from "react";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { HeaderProps } from "../../types/types";
+import { HeaderProps } from "@type/types";
 
 /**
  * Header component for the sidebar

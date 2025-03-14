@@ -1,5 +1,5 @@
 import { useStore } from "@state/Store";
-import { DicomTableRow } from "../../Features/DicomTagTable/Components/DicomTableRow";
+import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow";
 import { useState } from "react";
 /**
  * Side panel for showing and editing tags to be anonymized

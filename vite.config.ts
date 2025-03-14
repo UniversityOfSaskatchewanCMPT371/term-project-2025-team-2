@@ -120,6 +120,10 @@ export default defineConfig({
             "@state": path.resolve(__dirname, "./src/State"),
             "@auto": path.resolve(__dirname, "./src/Features/AutoAnonymize"),
             "@file": path.resolve(__dirname, "./src/Features/FileHandling"),
+            "@features": path.resolve(__dirname, "./src/Features"),
+            "@dataFunctions": path.resolve(__dirname, "./src/DataFunctions"),
+            "@logger": path.resolve(__dirname, "./src/Logger"),
+            "@type": path.resolve(__dirname, "./src/types"),
         },
     },
 });

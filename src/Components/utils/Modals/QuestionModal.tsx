@@ -1,4 +1,4 @@
-import { QuestionModalProps } from "../../../types/types";
+import { QuestionModalProps } from "@type/types";
 
 /**
  * QuestionModal component for displaying a question modal dialog

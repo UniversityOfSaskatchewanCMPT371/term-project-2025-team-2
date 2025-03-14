@@ -1,5 +1,5 @@
 import React from "react";
-import { SearchProps } from "../../types/types";
+import { SearchProps } from "@type/types";
 
 /**
  * Search component for filtering tags

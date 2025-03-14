@@ -1,7 +1,7 @@
 import React, { ErrorInfo } from "react";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import GenErrorPage from "./GenErrorPage";
-import { ErrorBoundaryProps } from "../../types/types";
+import { ErrorBoundaryProps } from "@type/types";
 
 /**
  * ErrorBoundary

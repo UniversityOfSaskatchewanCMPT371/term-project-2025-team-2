@@ -1,6 +1,6 @@
 import React from "react";
 import { GenButton } from "../utils/GenButton";
-import { FileNavigationProps } from "../../Features/FileHandling/Types/FileTypes";
+import { FileNavigationProps } from "@features/FileHandling/Types/FileTypes";
 import { Tooltip } from "react-tooltip";
 /**
  * File navigation component

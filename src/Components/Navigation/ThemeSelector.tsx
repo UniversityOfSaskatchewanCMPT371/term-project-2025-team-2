@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Tooltip } from "react-tooltip";
-import { ThemeSelectorProps } from "../../types/types";
+import { ThemeSelectorProps } from "@type/types";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
 import { useStore } from "@state/Store";

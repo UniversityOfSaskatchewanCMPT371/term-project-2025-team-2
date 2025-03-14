@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { FileData } from "../../Features/FileHandling/Types/FileTypes";
+import { FileData } from "@features/FileHandling/Types/FileTypes";
 import { assert } from "../assert";
 
 /**
