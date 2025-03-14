@@ -37,7 +37,8 @@
             "@auto/*": ["Features/AutoAnonymize/*"],
             "@dataFunctions/*": ["DataFunctions/*"],
             "@features/*": ["Features/*"],
-            "@logger/*": ["Logger/*"]
+            "@logger/*": ["Logger/*"],
+            "@type/*": ["types/*"]
         }
     },
     "include": ["src", "types"]
