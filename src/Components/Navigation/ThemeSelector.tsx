@@ -27,7 +27,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = () => {
     return (
         <div>
             <p>Set Theme</p>
-            <label className="mb-4cursor-pointer label">
+            <label className="label mb-2 cursor-pointer">
                 <MoonIcon className="size-6" />
                 <input
                     className="toggle toggle-info"

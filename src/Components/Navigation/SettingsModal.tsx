@@ -7,6 +7,7 @@ import { HiddenTagsOption } from "./HiddenTagsOption";
 import { ThemeSelector } from "./ThemeSelector";
 
 import { useStore } from "@state/Store";
+import { EditOption } from "@components/utils/EditOption";
 
 /**
  * SettingsModal component for managing application settings
@@ -48,7 +49,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
 
                 <ThemeSelector />
-
                 <HiddenTagsOption
                     showHiddenTags={showHiddenTags}
                     setShowHiddenTags={setShowHiddenTags}
@@ -56,6 +56,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
                 <p>Download Option</p>
                 <DownloadOption />
+
+                <p>Editing Locked Tags</p>
+                <EditOption />
 
                 <GenButton
                     onClick={toggleModal}

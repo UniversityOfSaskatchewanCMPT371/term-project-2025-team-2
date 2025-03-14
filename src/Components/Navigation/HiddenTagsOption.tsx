@@ -18,7 +18,7 @@ export const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
     return (
         <div>
             <p>Show Hidden Tags</p>
-            <label className="mb-4cursor-pointer label">
+            <label className="label mb-2 cursor-pointer">
                 <EyeSlashIcon className="size-6" />
                 <input
                     className="toggle toggle-info"
