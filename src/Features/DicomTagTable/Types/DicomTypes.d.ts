@@ -6,6 +6,7 @@
  * @property {boolean} [hidden] - Optional flag indicating if the tag should be hidden in the UI
  */
 export interface DicomTag {
+    tagId: string;
     tagName: string;
     value: string | DicomTag[];
     hidden?: boolean;
