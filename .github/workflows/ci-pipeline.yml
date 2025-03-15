@@ -86,9 +86,7 @@ jobs:
   smoke_test:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: mcr.microsoft.com/playwright:v1.18.0 
-
+    
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
