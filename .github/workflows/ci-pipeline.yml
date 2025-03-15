@@ -82,19 +82,22 @@ jobs:
       #Build project
       - name: Build
         run: npm run build
-  
-  smoke_test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Run Smoke Test
+      
+      - name: Smoke test
         run: npm run test:smoke
+  
+  #smoke_test:
+  #  runs-on: ubuntu-latest
+  #  needs: build
+
+  #  steps:
+  #    - name: Run Smoke Test
+  #      run: npm run test:smoke
 
   #Builds Docker image in ubuntu for nginx
   build_docker:
     runs-on: ubuntu-latest
-    needs: smoke_test
+    needs: build
 
     steps:
       - name: Checkout code
