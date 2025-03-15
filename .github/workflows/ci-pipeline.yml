@@ -77,7 +77,7 @@ jobs:
         run: npm run test:unit
 
       - name: Run Integration Tests
-        run: npm run test:integration 
+        run: npm run test:integration && npm run test:integration:playwright
 
       #Build project
       - name: Build
