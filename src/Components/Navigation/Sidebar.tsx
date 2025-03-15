@@ -5,7 +5,7 @@ import { Header } from "./Header";
 import { SeriesControls } from "./SeriesControls";
 import { SettingsModal } from "./SettingsModal";
 import { HelpModal } from "../utils/Modals/HelpModal";
-
+import logger from "../../Logger/Logger";
 import { useStore } from "@state/Store";
 
 /**
@@ -22,6 +22,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     const files = useStore((state) => state.files);
+
+    logger.debug("Rendering Sidebar");
 
     return (
         <div

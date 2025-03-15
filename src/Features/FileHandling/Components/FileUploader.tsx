@@ -1,9 +1,9 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils.ts";
+import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 import { FileUploaderProps } from "../Types/FileTypes";
-import logger from "@logger/Logger.ts";
-import { useStore } from "@state/Store.tsx";
+import logger from "@logger/Logger";
+import { useStore } from "@state/Store";
 
 /**
  * FileUploader component
@@ -46,9 +46,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         clearData();
         loading(true);
 
+        logger.info(`Processing ${fileArray.length} files`);
+
         // Map each file to a Promise that resolves with its parsed data
         const promises = fileArray.map((file) =>
             parseDicomFile(file).catch((error) => {
+                logger.error(`Error parsing file: ${file.name}`);
                 // If any file fails, clear everything and trigger modal
                 setFileParseError([...fileParseError, file.name]);
                 logger.error(error);
@@ -81,6 +84,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      * Handles file drop event
      */
     const onDrop = (acceptedFiles: File[]) => {
+        logger.info(`Accepted ${acceptedFiles.length} files`);
         clearData();
         loading(true);
         processFiles(acceptedFiles);

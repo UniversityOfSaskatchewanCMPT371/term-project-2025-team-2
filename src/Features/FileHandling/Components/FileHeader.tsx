@@ -1,5 +1,6 @@
 import React from "react";
 import { FileHeaderProps } from "../Types/FileTypes";
+import logger from "@logger/Logger";
 
 /**
  * File header component
@@ -16,6 +17,8 @@ export const FileHeader: React.FC<FileHeaderProps> = ({
     currentFileIndex,
 }) => {
     if (files.length === 0) return null;
+
+    logger.debug("Rendering FileHeader component");
 
     return (
         <div className="flex-col-2 flex items-center justify-between">

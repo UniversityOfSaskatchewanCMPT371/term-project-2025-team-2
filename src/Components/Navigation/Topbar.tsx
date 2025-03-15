@@ -2,6 +2,7 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { TopbarProps } from "@type/types";
+import logger from "../../Logger/Logger";
 
 /**
  * Topbar component for the application
@@ -22,6 +23,8 @@ export const Topbar: React.FC<TopbarProps> = ({
     onInstallClick,
     showInstallButton,
 }) => {
+    logger.debug("Rendering Topbar component");
+
     return (
         <div className="sticky top-0 z-20 w-full bg-base-100/80 shadow-md backdrop-blur-sm">
             <div className="relative flex items-center justify-between px-6 py-4">

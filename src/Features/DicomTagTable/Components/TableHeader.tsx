@@ -1,5 +1,6 @@
 import React from "react";
 import { useStore } from "@state/Store";
+import logger from "@logger/Logger";
 
 /**
  * Table header component for DICOM data
@@ -11,6 +12,7 @@ import { useStore } from "@state/Store";
 export const TableHeader: React.FC = () => {
     const hideTagNumber = useStore((state) => state.hideTagNumber);
 
+    logger.debug("Rendering TableHeader component");
     return (
         <thead>
             <tr className="text-wrap bg-primary">

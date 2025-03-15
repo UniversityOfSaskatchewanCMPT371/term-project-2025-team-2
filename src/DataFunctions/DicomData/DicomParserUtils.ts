@@ -14,6 +14,8 @@ const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
  * @description - Parses a DICOM file and extracts the DICOM tags
  */
 export const parseDicomFile = (file: File): Promise<any> => {
+    logger.info("Parsing DICOM file: ", file.name);
+
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -48,6 +50,9 @@ export const parseDicomFile = (file: File): Promise<any> => {
  * @returns dicomTags - Object containing the extracted DICOM tags
  */
 export const extractDicomTags = (dataSet: any) => {
+    logger.info("Extracting DICOM tags from dataset.");
+    logger.debug("Data set:", dataSet);
+
     const dicomTags: any = {};
     if (!dataSet || !dataSet.elements) {
         logger.warn("Invalid DICOM dataset: No elements found.");
@@ -63,6 +68,9 @@ export const extractDicomTags = (dataSet: any) => {
         if (!vr) {
             // If VR is not found, use the VR from the dictionary
             vr = vrTagDict;
+            logger.debug(
+                `VR not found for tag "${tagId}". Using VR from dictionary: ${vr}`
+            );
         }
 
         let value: any;

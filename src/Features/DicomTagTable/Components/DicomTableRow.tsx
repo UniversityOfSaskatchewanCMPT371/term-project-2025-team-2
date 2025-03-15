@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../Types/DicomTypes";
 import { useStore } from "@state/Store";
+import logger from "@logger/Logger";
 
 const lockEditingTags: any = [
     "X00080016",
@@ -58,6 +59,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
         setEdited(true);
+        logger.debug(`Changed value to ${e.target.value}`);
     };
 
     const handleBlur = () => {
@@ -67,18 +69,26 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
+        logger.debug(`Toggled expand for tag with tagId: ${row.tagId}`);
     };
 
     const toggleEditing = () => {
         setIsEditing(!isEditing);
+        logger.debug(`Toggled editing for tag with tagId: ${row.tagId}`);
     };
 
     const toggleDelete = () => {
         setDeleteTag((preValue) => !preValue);
         const tempDeletetag = !deleteTag;
 
+        logger.debug(
+            `Delete set to ${tempDeletetag}, tag with tagId: ${row.tagId}`
+        );
+
         onUpdateValue(row.tagId, newValue, tempDeletetag);
     };
+
+    logger.debug("Rendering DicomTableRow component");
 
     return (
         <React.Fragment key={index + row.tagId + row.value}>
@@ -90,7 +100,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                     <td
                         className={`break-all border px-4 py-2 ${
                             nested
-                                ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
+                                ? `bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-black dark:bg-blue-500`
                                 : ""
                         }`}
                         style={{
@@ -99,7 +109,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                     >
                         {typeof row.value !== "string" && (
                             <span
-                                className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
+                                className="mr-2 inline-block cursor-pointer text-blue-600 transition-colors hover:text-blue-200"
                                 onClick={toggleExpand}
                                 style={{ width: "20px" }}
                             >

@@ -1,6 +1,8 @@
 import { Tooltip } from "react-tooltip";
 import { HiddenTagsProps } from "@type/types";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
+import logger from "../../Logger/Logger";
+
 /**
  * Hidden tags option component
  * @component
@@ -15,6 +17,8 @@ export const HiddenTagsOption: React.FC<HiddenTagsProps> = ({
     showHiddenTags,
     setShowHiddenTags,
 }) => {
+    logger.debug("Rendering HiddenTagsOption component");
+
     return (
         <div>
             <p>Show Hidden Tags</p>

@@ -2,6 +2,8 @@ import React from "react";
 import { GenButton } from "../utils/GenButton";
 import { FileNavigationProps } from "@features/FileHandling/Types/FileTypes";
 import { Tooltip } from "react-tooltip";
+import logger from "../../Logger/Logger";
+
 /**
  * File navigation component
  * @component
@@ -19,6 +21,8 @@ export const FileNavigation: React.FC<FileNavigationProps> = ({
     onPrevFile,
     onNextFile,
 }) => {
+    logger.debug("Rendering FileNavigation component");
+
     return (
         <div className="mt-4 flex justify-between">
             <div

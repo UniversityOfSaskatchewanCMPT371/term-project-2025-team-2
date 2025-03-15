@@ -5,6 +5,7 @@ import { FormatData } from "@features/AutoAnonymize/Functions/AutoClean";
 import { useStore } from "@state/Store";
 import { TagDictionary } from "@dataFunctions/TagDictionary/dictionary";
 import { assert } from "@dataFunctions/assert";
+import logger from "@logger/Logger";
 
 /**
  * Controls component for the DICOM table
@@ -37,6 +38,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
     assert(onSave !== null, "onSave should not be empty");
 
     const handleAutoAnon = async () => {
+        logger.info("Auto Anonymizing tags");
         // format anon tags and show them
         const newTagData: AnonTag[] = FormatData(dicomData[0], tagsToAnon).map(
             (tag: { tagId: string; tagName: string; newValue: string }) => ({
@@ -45,9 +47,12 @@ export const TableControls: React.FC<TableControlsProps> = ({
                 newValue: tag.newValue,
             })
         );
+        logger.debug(`Anonymizing tags: ${newTagData}`);
         setTags(newTagData);
         setSidePanelVisible(true);
     };
+
+    logger.debug("Rendering TableControls component");
 
     return (
         <div className="flex-col-2 flex">

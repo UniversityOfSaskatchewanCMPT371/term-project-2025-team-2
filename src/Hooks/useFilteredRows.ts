@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import logger from "@logger/Logger";
 
 /**
  * Custom hook for filtering DICOM table rows
@@ -10,6 +11,9 @@ import { useMemo } from "react";
  * @returns {TableRow[]} Filtered array of table rows
  */
 export const useFilteredRows = (rows: any[], searchTerm: string) => {
+    logger.debug(`Filtering rows with search term: ${searchTerm}`);
+    logger.debug(`Rows length: ${rows.length}`);
+
     return useMemo(
         () =>
             rows.filter(
