@@ -110,7 +110,7 @@ jobs:
       - name: Install Playwright Browsers
         if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
-        
+
       - name: Cache node modules
         id: cacheStepnode
         uses: actions/cache@v4
@@ -127,6 +127,9 @@ jobs:
       - name: Install dependencies
         if: steps.cacheStepnode.outputs.cache-hit != 'true'
         run: npm install
+
+      - name: Set HOME environment variable
+        run: echo "HOME=/root" >> $GITHUB_ENV
       
       - name: Run Smoke Test
         run: npm run test:smoke
