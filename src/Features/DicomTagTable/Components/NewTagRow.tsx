@@ -77,6 +77,7 @@ export const NewTagRow = () => {
                         onChange={(e) => setTagValue(e.target.value)}
                     />
                     <CheckCircleIcon
+                        data-testid="CheckCircleIcon"
                         className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
                         onClick={() =>
                             handleUpdateValue(tagId, tagValue, false)

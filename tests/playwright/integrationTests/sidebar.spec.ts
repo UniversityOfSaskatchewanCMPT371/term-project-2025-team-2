@@ -248,7 +248,7 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
 
         const tagRow = page
             .locator("tr")
-            .filter({ hasText: "SOPClassUID" })
+            .filter({ hasText: "X00080020" })
             .first();
         await expect(tagRow).toBeVisible();
 
