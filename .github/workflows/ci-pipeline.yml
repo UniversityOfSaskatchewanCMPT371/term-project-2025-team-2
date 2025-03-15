@@ -87,8 +87,6 @@ jobs:
   smoke_test:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: mcr.microsoft.com/playwright:v1.18.0 
       
     steps:
       - uses: actions/checkout@v4
@@ -119,17 +117,17 @@ jobs:
           key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             playwright-browsers-${{ runner.os }}-
-            
-      - name: Set HOME environment variable
-        run: echo "HOME=/root" >> $GITHUB_ENV
-      
+                  
       - name: Install Playwright Browsers
         if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libwoff2-1 libwoff2-dev
+      
       - name: Run Smoke Test
         run: npm run test:smoke
-        
+
   #Builds Docker image in ubuntu for nginx
   build_docker:
     runs-on: ubuntu-latest
