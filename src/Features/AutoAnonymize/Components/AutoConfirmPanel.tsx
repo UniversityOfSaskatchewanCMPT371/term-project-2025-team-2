@@ -4,6 +4,7 @@ import { AutoAnon } from "@auto/Functions/AutoClean";
 import { useState } from "react";
 import { DicomTag } from "@dicom//Types/DicomTypes";
 import { TagsAnon } from "@auto/Functions/TagsAnon";
+import logger from "../../../Logger/Logger";
 
 /**
  * Side panel for showing and editing tags to be anonymized
@@ -28,6 +29,8 @@ export const SidePanel = () => {
         deleteTag: boolean
     ) => {
         if (deleteTag) {
+            logger.debug(`Deleting tag with tagId: ${tagId}`);
+
             setTags(tags.filter((tag) => tag.tagId !== tagId));
             return;
         }
@@ -42,6 +45,8 @@ export const SidePanel = () => {
     };
 
     const handleAutoAnon = async () => {
+        logger.debug("Auto Anonymizing tags");
+
         await AutoAnon(dicomData, files, tags, tagsToAnon);
         clearData();
         setSidePanelVisible(false);
@@ -74,9 +79,12 @@ export const SidePanel = () => {
             ) {
                 setPII([...PII, tag]);
                 setFoundPII(true);
+                logger.info(`Potential PII found: ${tag.value}`);
             }
         });
     };
+
+    logger.info("Rendering AutoConfirmPanel component");
 
     return (
         <div
@@ -118,7 +126,7 @@ export const SidePanel = () => {
                     <div className="mb-5 ml-4 text-xl font-bold text-error">
                         Potential PII Found in File
                     </div>
-                    <table className="m-4 mb-10 border text-lg text-base-content bg-base-100">
+                    <table className="m-4 mb-10 border bg-base-100 text-lg text-base-content">
                         <thead>
                             <tr className="text-wrap bg-error">
                                 <th className="w-1/5 border px-4 py-2 text-primary-content">
@@ -151,7 +159,7 @@ export const SidePanel = () => {
                 </div>
             ) : null}
 
-            <table className="m-4 mb-10 border text-lg text-base-content bg-base-100">
+            <table className="m-4 mb-10 border bg-base-100 text-lg text-base-content">
                 <thead>
                     <tr className="text-wrap bg-primary">
                         <th className="w-1/5 border px-4 py-2 text-primary-content">

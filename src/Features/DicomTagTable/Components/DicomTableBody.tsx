@@ -1,9 +1,10 @@
 import React from "react";
 import { DicomTableRow } from "./DicomTableRow";
-import EmptyTableRow from "./EmptyTableRow";
+import { EmptyTableRow } from "./EmptyTableRow";
 import { DicomTableBodyProps } from "../Types/DicomTypes";
 import { NewTagRow } from "./NewTagRow";
 import { useStore } from "@state/Store";
+import logger from "@logger/Logger";
 
 /**
  * DICOM table body component
@@ -23,6 +24,8 @@ export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
     onUpdateValue,
 }) => {
     const addTag = useStore((state) => state.addTag);
+
+    logger.debug("Rendering DicomTableBody component");
 
     return (
         <tbody>

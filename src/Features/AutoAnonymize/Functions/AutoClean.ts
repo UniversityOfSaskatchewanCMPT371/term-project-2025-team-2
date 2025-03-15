@@ -20,6 +20,8 @@ import logger from "@logger/Logger";
 export function FormatData(dicomData: any, tagsToAnon: any[]) {
     const newDicomData: any = [];
 
+    logger.debug(`Formatting data for auto anonymization - ${dicomData}`);
+
     tagsToAnon.forEach((tag: any) => {
         if (!dicomData.DicomDataSet.elements[tag.tagId.toLowerCase()]) {
             return;
@@ -60,6 +62,8 @@ export const AutoAnon = async (
 ) => {
     const newFiles: any = [];
     const { setLoading } = useStore.getState();
+
+    logger.debug("Auto anonymizing DICOM files");
 
     try {
         setLoading(true);

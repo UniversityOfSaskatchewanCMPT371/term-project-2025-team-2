@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 import { FileData } from "@features/FileHandling/Types/FileTypes";
 import { assert } from "../assert";
+import logger from "../../Logger/Logger";
 
 /**
  * Creates a ZIP file containing multiple files
@@ -11,6 +12,9 @@ import { assert } from "../assert";
  * @returns Promise resolving to the ZIP file as a Blob
  */
 export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
+    logger.info("Creating ZIP file from files");
+    logger.debug(`Number of files: ${files.length}`);
+
     try {
         const zip = new JSZip();
 
@@ -28,10 +32,13 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
             },
         });
 
+        logger.debug(`ZIP file created: ${zipBlob.size} bytes`);
+
         assert(zipBlob !== null);
 
         return zipBlob;
     } catch (error) {
+        logger.error(`Failed to create ZIP: ${error}`);
         throw new Error(`Failed to create ZIP: ${error}`);
     }
 }
@@ -47,6 +54,8 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
 export async function downloadDicomFile(newFile: FileData) {
     // assert(newFile.content !== null);
     // assert(newFile.name !== null);
+
+    logger.info("Downloading DICOM file: ", newFile.name);
 
     const url = window.URL.createObjectURL(newFile.content);
 
@@ -71,6 +80,8 @@ export async function downloadDicomFile(newFile: FileData) {
  * @returns - object with name and content of the file
  */
 export function createFile(fileName: string, blobData: any, isEdited: boolean) {
+    logger.debug("Creating file object: ", fileName);
+
     const blob = new Blob([blobData], {
         type: "application/dicom",
     });
@@ -80,6 +91,8 @@ export function createFile(fileName: string, blobData: any, isEdited: boolean) {
         : fileName;
 
     const finalName = isEdited ? `${baseName}_edited.dcm` : `${baseName}.dcm`;
+
+    logger.debug("File created: ", finalName);
 
     return { name: finalName, content: blob };
 }

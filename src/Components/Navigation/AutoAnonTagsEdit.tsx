@@ -3,6 +3,8 @@ import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow"
 import { useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { GenButton } from "@components/utils/GenButton";
+import logger from "../../Logger/Logger";
+
 /**
  * Side panel for showing and editing tags to be anonymized
  * @component
@@ -29,22 +31,23 @@ export const AutoAnonTagsEdit = () => {
     const [tagValue, setTagValue] = useState<string>("");
     const [showAddTag, setShowAddTag] = useState<boolean>(false);
 
+    const [reset, setReset] = useState(0); // used to force a re-render of the table
+
     let tagChanges: any = [];
-    const [reset, setReset] = useState(0);
 
     const addChanges = (
         tagId: string,
         newValue: string,
         deleteTag: boolean
     ) => {
+        logger.debug(`Adding tag change: ${tagId} ${newValue} ${deleteTag}`);
+
         tagChanges.push({ tagId, newValue, deleteTag });
     };
 
-    const addtag = (
-        tagId: string,
-        tagName: string,
-        tagValue: string,
-    ) => {
+    const addtag = (tagId: string, tagName: string, tagValue: string) => {
+        logger.info(`Adding tag: ${tagId} ${tagName} ${tagValue}`);
+
         setShowAddTag(false);
         if (tagId.length !== 8 || isNaN(parseInt(tagId))) {
             setAlertMsg("Tag ID has to be 8 numbers");
@@ -74,6 +77,8 @@ export const AutoAnonTagsEdit = () => {
     };
 
     const handleUpdateValue = () => {
+        logger.debug("Updating tag values");
+
         const temp = [...tagsToAnon];
 
         tagChanges.forEach((change: any) => {
@@ -96,13 +101,14 @@ export const AutoAnonTagsEdit = () => {
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${autoAnonTagsEditPanelVisible
-                ? "translate-x-0"
-                : "translate-x-full"
-                }`}
+            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
+                autoAnonTagsEditPanelVisible
+                    ? "translate-x-0"
+                    : "translate-x-full"
+            }`}
         >
-            <div className="flex justify-between items-center mt-24 mr-8 mb-5">
-                <div className=" ml-4 text-xl font-bold text-blue-400">
+            <div className="mb-5 mr-8 mt-24 flex items-center justify-between">
+                <div className="ml-4 text-xl font-bold text-blue-400">
                     Tags in Anonymize List
                 </div>
                 <GenButton
@@ -177,7 +183,9 @@ export const AutoAnonTagsEdit = () => {
                                         type="text"
                                         className="w-full"
                                         placeholder="Tag ID"
-                                        onChange={(e) => setTagId(e.target.value)}
+                                        onChange={(e) =>
+                                            setTagId(e.target.value)
+                                        }
                                     />
                                 </div>
                             </td>
@@ -193,9 +201,11 @@ export const AutoAnonTagsEdit = () => {
                                 <div className="flex-col-2 flex">
                                     <input
                                         type="text"
-                                        className="w-full mr-4"
+                                        className="mr-4 w-full"
                                         placeholder="Tag Value"
-                                        onChange={(e) => setTagValue(e.target.value)}
+                                        onChange={(e) =>
+                                            setTagValue(e.target.value)
+                                        }
                                     />
                                     <CheckCircleIcon
                                         data-testid="CheckCircleIcon"
@@ -206,23 +216,24 @@ export const AutoAnonTagsEdit = () => {
                                     />
                                 </div>
                             </td>
-                        </tr>) : null}
+                        </tr>
+                    ) : null}
 
                     {tagsToAnon.length > 0
                         ? tagsToAnon.map((tag, index) => (
-                            <DicomTableRow
-                                key={index + tag.tagId + reset}
-                                row={{
-                                    tagId: tag.tagId,
-                                    tagName: tag.name,
-                                    value: tag.value,
-                                }}
-                                index={index + reset}
-                                nested={false}
-                                onUpdateValue={addChanges}
-                                updated={false}
-                            />
-                        ))
+                              <DicomTableRow
+                                  key={index + tag.tagId + reset}
+                                  row={{
+                                      tagId: tag.tagId,
+                                      tagName: tag.name,
+                                      value: tag.value,
+                                  }}
+                                  index={index + reset}
+                                  nested={false}
+                                  onUpdateValue={addChanges}
+                                  updated={false}
+                              />
+                          ))
                         : null}
                 </tbody>
             </table>

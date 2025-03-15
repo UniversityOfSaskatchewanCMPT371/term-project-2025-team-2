@@ -37,7 +37,7 @@ test("Add tag and verify", async ({ page }) => {
 
         await expect(institutionNameRow).toBeVisible({ timeout: 5000 });
 
-        const addButton = page.getByRole("button", { name: /Add Tag/i });
+        const addButton = page.getByRole("button", { name: /Add Tag/i }).nth(0);
         await expect(addButton).toBeVisible({ timeout: 5000 });
         await addButton.click();
 

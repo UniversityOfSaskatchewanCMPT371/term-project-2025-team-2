@@ -2,6 +2,7 @@ import { createFile, downloadDicomFile } from "./DownloadFuncs";
 import { createZipFromFiles } from "./DownloadFuncs";
 import { tagUpdater } from "./TagUpdater";
 import { getSingleFileTagEdits } from "./TagUpdater";
+import logger from "../../Logger/Logger";
 
 /**
  * Update all files with new tag values
@@ -31,6 +32,8 @@ export const updateAllFiles = async (
     const newFiles: any = [];
 
     if (series) {
+        logger.info("Updating all files in series");
+
         dicomData.forEach((dicom: any, index: number) => {
             const fileName = files[index].name;
             const fileEdits = getSingleFileTagEdits(
@@ -49,6 +52,8 @@ export const updateAllFiles = async (
             }
         });
     } else {
+        logger.info("Updating single file");
+
         dicomData.forEach((dicom, index) => {
             const fileName = files[index].name;
             const fileEdits = getSingleFileTagEdits(newTagValues, fileName);
@@ -66,6 +71,8 @@ export const updateAllFiles = async (
     }
 
     if (downloadOption === "zip") {
+        logger.info("Creating ZIP file");
+
         const zipFile = await createZipFromFiles(newFiles);
         downloadDicomFile({ name: "updateDicoms.zip", content: zipFile });
     }
