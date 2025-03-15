@@ -111,6 +111,19 @@ jobs:
       if: steps.cacheStepnode.outputs.cache-hit != 'true'
       run: npm install
 
+    - name: Cache Playwright browsers
+      id: cacheStepPlaywright
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          playwright-browsers-${{ runner.os }}-
+
+    - name: Install Playwright Browsers
+      if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
+
     - name: Run Smoke Test
       run: npm run test:smoke
 
