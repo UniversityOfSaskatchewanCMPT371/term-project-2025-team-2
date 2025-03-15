@@ -88,6 +88,23 @@ jobs:
     needs: build
 
     steps:
+    - name: Cache node modules
+      id: cacheStepnode
+      uses: actions/cache@v4
+      with:
+        # npm cache files are stored with ~/.npm
+        path: |
+         ~/.npm
+         node_modules
+        key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-
+
+    #Install dependencies (if no cache hit)
+    - name: Install dependencies
+      if: steps.cacheStepnode.outputs.cache-hit != 'true'
+      run: npm install
+
     - name: Cache Playwright browsers
       id: cacheStepPlaywright
       uses: actions/cache@v4
