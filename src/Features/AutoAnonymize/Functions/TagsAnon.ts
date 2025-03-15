@@ -126,7 +126,6 @@ export const TagsAnon: tagIdAnon[] = [
     },
     { tagId: "X00140104", name: "Secondary Reviewer Name", value: "ANONYMOUS" },
     { tagId: "X00142006", name: "Evaluator Name", value: "ANONYMOUS" },
-    { tagId: "X00321032", name: "Requesting Physician", value: "ANONYMOUS" },
     {
         tagId: "X00400006",
         name: "Scheduled Performing Physician's Name",
