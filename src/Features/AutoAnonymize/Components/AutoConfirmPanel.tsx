@@ -118,7 +118,7 @@ export const SidePanel = () => {
                     <div className="mb-5 ml-4 text-xl font-bold text-error">
                         Potential PII Found in File
                     </div>
-                    <table className="m-4 mb-10 border bg-white text-lg text-gray-500">
+                    <table className="m-4 mb-10 border text-lg text-base-content bg-base-100">
                         <thead>
                             <tr className="text-wrap bg-error">
                                 <th className="w-1/5 border px-4 py-2 text-primary-content">
@@ -151,7 +151,7 @@ export const SidePanel = () => {
                 </div>
             ) : null}
 
-            <table className="m-4 mb-10 border bg-white text-lg text-gray-500">
+            <table className="m-4 mb-10 border text-lg text-base-content bg-base-100">
                 <thead>
                     <tr className="text-wrap bg-primary">
                         <th className="w-1/5 border px-4 py-2 text-primary-content">
