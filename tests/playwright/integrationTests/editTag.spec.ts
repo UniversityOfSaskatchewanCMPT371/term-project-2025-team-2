@@ -16,7 +16,7 @@ test("Edit a DICOM tag and save file", async ({ page }) => {
 
         const tagRow = page
             .locator("tr")
-            .filter({ hasText: "SOPClassUID" })
+            .filter({ hasText: "X00080020" })
             .first();
 
         const editButton = tagRow.locator("svg.h-6.w-6").first();
