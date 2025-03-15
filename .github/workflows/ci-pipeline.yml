@@ -95,9 +95,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: Install dependencies
+        run: npm install
       - name: Run Smoke Test
         run: npm run test:smoke
-        
+
   #Builds Docker image in ubuntu for nginx
   build_docker:
     runs-on: ubuntu-latest
