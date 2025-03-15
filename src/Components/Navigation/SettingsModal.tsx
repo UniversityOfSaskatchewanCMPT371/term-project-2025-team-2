@@ -63,13 +63,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <p>Editing Locked Tags</p>
                 <EditOption />
 
-                <GenButton
-                    onClick={() => {
-                        setAutoAnonTagsEditPanelVisible(true);
-                    }}
-                    disabled={false}
-                    label="Show Side Panel"
-                />
+                <div className="mb-4">
+                    <GenButton
+                        onClick={() => {
+                            setAutoAnonTagsEditPanelVisible(true);
+                        }}
+                        disabled={false}
+                        label="Edit Auto-Anon Tags"
+                    />
+                </div>
 
                 <GenButton
                     onClick={toggleModal}

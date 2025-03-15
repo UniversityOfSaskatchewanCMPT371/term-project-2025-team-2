@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@state/Store";
 import { useState } from "react";
 
@@ -72,13 +72,13 @@ export const NewTagRow = () => {
                 <div className="flex-col-2 flex">
                     <input
                         type="text"
-                        className="w-full"
+                        className="w-full mr-4"
                         placeholder="Tag Value"
                         onChange={(e) => setTagValue(e.target.value)}
                     />
                     <CheckCircleIcon
                         data-testid="CheckCircleIcon"
-                        className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
+                        className="h-6 w-6 cursor-pointer hover:scale-110 text-gray-500 hover:text-success"
                         onClick={() =>
                             handleUpdateValue(tagId, tagValue, false)
                         }
