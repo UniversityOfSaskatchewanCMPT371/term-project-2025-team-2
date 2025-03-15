@@ -86,7 +86,9 @@ jobs:
   smoke_test:
     runs-on: ubuntu-latest
     needs: build
-    
+    container:
+      image: mcr.microsoft.com/playwright:v1.18.0 
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -117,6 +119,9 @@ jobs:
         key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           playwright-browsers-${{ runner.os }}-
+      
+    - name: Set HOME environment variable
+      run: echo "HOME=/root" >> $GITHUB_ENV
 
     - name: Install Playwright Browsers
       if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
