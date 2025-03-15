@@ -88,6 +88,10 @@ jobs:
     needs: build
 
     steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
     - name: Cache node modules
       id: cacheStepnode
       uses: actions/cache@v4
