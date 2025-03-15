@@ -122,9 +122,6 @@ jobs:
       if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
       run: npx playwright install --with-deps
 
-    - name: Install missing dependencies for WebKit
-      run: sudo apt-get install -y libwoff2-2 libwoff2-dev
-
     - name: Run Smoke Test
       run: npm run test:smoke
 
