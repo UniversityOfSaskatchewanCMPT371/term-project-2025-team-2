@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import { GenButton } from "../utils/GenButton";
 import { SeriesControlsProps } from "@type/types";
-
+import logger from "../../Logger/Logger";
 import { updateAllFiles } from "@dataFunctions/DicomData/UpdateAllFiles";
 import { useStore } from "@state/Store";
 
@@ -23,12 +23,16 @@ export const SeriesControls: React.FC<SeriesControlsProps> = () => {
     const seriesToggle = useStore((state) => state.toggleSeries);
     const clearData = useStore((state) => state.clearData);
 
+    logger.debug("Rendering SeriesControls");
+
     return (
         <>
             <GenButton
                 label={series ? "Apply Edits to All Files" : "Save All Files"}
                 disabled={false}
                 onClick={() => {
+                    logger.debug("Applying edits to all files button clicked");
+
                     updateAllFiles(
                         dicomData,
                         series,

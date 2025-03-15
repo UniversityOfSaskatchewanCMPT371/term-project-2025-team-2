@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import { ThemeSelectorProps } from "@type/types";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-
+import logger from "../../Logger/Logger";
 import { useStore } from "@state/Store";
 
 /**
@@ -19,10 +19,16 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = () => {
 
     // Set theme on load
     useEffect(() => {
+        logger.info(`Setting theme from ${currTheme}`);
+
         localStorage.setItem("theme", currTheme!);
         const localTheme = localStorage.getItem("theme");
         document.querySelector("html")?.setAttribute("data-theme", localTheme!);
+
+        logger.info(`Theme set to ${localTheme}`);
     }, [currTheme]);
+
+    logger.debug("Rendering ThemeSelector component");
 
     return (
         <div>

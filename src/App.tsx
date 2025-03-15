@@ -85,6 +85,10 @@ export const App: React.FC = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
+    logger.info("App: App component rendered");
+    logger.info(`App: Theme loaded as to ${theme}`);
+    logger.info(`App: Show hidden tags loaded as to ${showHiddenTags}`);
+
     // Save theme on change, set theme on load
     useEffect(() => {
         localStorage.setItem("theme", theme);
@@ -107,6 +111,7 @@ export const App: React.FC = () => {
             ) {
                 setSidebarVisible(false);
             }
+            logger.info("App: Sidebar closed clicking outside");
         };
 
         document.addEventListener("mousedown", handleClickOutside);
@@ -187,6 +192,7 @@ export const App: React.FC = () => {
         newFiles: CustomFile[],
         newDicomData: DicomData[]
     ) => {
+        logger.info("App: File upload started");
         setFiles(newFiles);
         setDicomData(newDicomData);
         setCurrentFileIndex(0);
@@ -213,6 +219,7 @@ export const App: React.FC = () => {
 
     // File navigation - move to next file
     const nextFile = () => {
+        logger.debug(`App: Next file button clicked: ${currentFileIndex}`);
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
@@ -221,6 +228,7 @@ export const App: React.FC = () => {
 
     // File navigation - move to previous file
     const prevFile = () => {
+        logger.debug(`App: Previous file button clicked: ${currentFileIndex}`);
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }

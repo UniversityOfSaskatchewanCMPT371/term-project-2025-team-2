@@ -1,8 +1,12 @@
 import React from "react";
 import { useStore } from "@state/Store";
+import logger from "../../Logger/Logger";
 
 export const AlertHeader: React.FC = () => {
     const alertMsg = useStore((state) => state.alertMsg);
+
+    logger.debug("Rendering AlertHeader");
+    logger.debug(`Alert message: ${alertMsg}`);
 
     return (
         <div className="fixed left-0 top-0 z-50 flex w-full items-center justify-center bg-black bg-opacity-50">

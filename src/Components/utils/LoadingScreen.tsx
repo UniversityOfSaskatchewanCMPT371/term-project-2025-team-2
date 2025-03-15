@@ -1,4 +1,5 @@
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import logger from "../../Logger/Logger";
 
 /**
  * Loading screen component
@@ -8,6 +9,7 @@ import { ArrowPathIcon } from "@heroicons/react/24/solid";
  * @returns Loading screen component
  */
 export const LoadingScreen = () => {
+    logger.debug("Rendering LoadingScreen component");
     return (
         <div
             role="img"
