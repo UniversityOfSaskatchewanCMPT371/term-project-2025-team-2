@@ -1,6 +1,6 @@
 import React from "react";
 import { SearchProps } from "@type/types";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Search component for filtering tags
