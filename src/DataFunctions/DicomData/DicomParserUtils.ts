@@ -2,6 +2,7 @@ import dicomParser from "dicom-parser";
 import { TagDictionary } from "../TagDictionary/dictionary";
 import logger from "@logger/Logger";
 import { assert } from "../assert";
+import { DicomData, DicomTags} from "@dicom//Types/DicomTypes";
 
 const tagDictionary = new TagDictionary();
 
@@ -13,7 +14,7 @@ const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
  * @returns - Promise that resolves with the parsed DICOM data
  * @description - Parses a DICOM file and extracts the DICOM tags
  */
-export const parseDicomFile = (file: File): Promise<any> => {
+export const parseDicomFile = (file: File): Promise<DicomData> => {
     logger.info("Parsing DICOM file: ", file.name);
 
     return new Promise((resolve, reject) => {
@@ -49,17 +50,17 @@ export const parseDicomFile = (file: File): Promise<any> => {
  * @param dataSet - DICOM data set, parsed using dicom-parser
  * @returns dicomTags - Object containing the extracted DICOM tags
  */
-export const extractDicomTags = (dataSet: any) => {
+export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
     logger.info("Extracting DICOM tags from dataset.");
     logger.debug("Data set:", dataSet);
 
-    const dicomTags: any = {};
+    const dicomTags: DicomTags = {};
     if (!dataSet || !dataSet.elements) {
         logger.warn("Invalid DICOM dataset: No elements found.");
-        return dicomTags;
+        return { tags: dicomTags, DicomDataSet: dataSet };
     }
 
-    Object.keys(dataSet.elements).forEach((tag: any) => {
+    Object.keys(dataSet.elements).forEach((tag: string) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
         const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
@@ -73,7 +74,7 @@ export const extractDicomTags = (dataSet: any) => {
             );
         }
 
-        let value: any;
+        let value: number | string;
 
         try {
             switch (vr) {
@@ -112,7 +113,7 @@ export const extractDicomTags = (dataSet: any) => {
         }
 
         if (element.items && element.items.length > 0) {
-            const nestedTags = extractDicomTags(element.items[0].dataSet);
+            const nestedTags = element.items[0].dataSet ? extractDicomTags(element.items[0].dataSet) : {};
 
             dicomTags[tagId] = { tagId, tagName, value: nestedTags };
         } else if (hiddenTags.includes(tagId)) {

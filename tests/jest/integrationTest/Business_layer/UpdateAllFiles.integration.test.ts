@@ -9,6 +9,14 @@ import {
     getSingleFileTagEdits,
 } from "@dataFunctions/DicomData/TagUpdater";
 
+interface TableUpdateData {
+    fileName: string;
+    tagId: string;
+    newValue: string;
+    delete: boolean;
+    add: boolean;
+}
+
 jest.mock("@dataFunctions/DicomData/DownloadFuncs", () => ({
     createFile: jest.fn((name, content) => ({ name, content })),
     downloadDicomFile: jest.fn(),
@@ -26,16 +34,19 @@ jest.mock("@dataFunctions/DicomData/TagUpdater", () => ({
 }));
 
 describe("updateAllFiles", () => {
-    let dicomData: { DicomDataSet: string }[];
+    let dicomData: { DicomDataSet: string, tags: {} }[];
     let files: { name: string }[];
     let currentFileIndex: number;
-    let newTagValues: Record<string, unknown>;
+    let newTagValues: TableUpdateData[];
 
     beforeEach(() => {
-        dicomData = [{ DicomDataSet: "dicom1" }, { DicomDataSet: "dicom2" }];
+        dicomData = [{ DicomDataSet: "dicom1", tags: {}}, { DicomDataSet: "dicom2", tags: {} }];
         files = [{ name: "file1.dcm" }, { name: "file2.dcm" }];
         currentFileIndex = 0;
-        newTagValues = {};
+        newTagValues = [
+            { fileName: "file1.dcm", tagId: "tag1", newValue: "new1", delete: false, add: false },
+            { fileName: "file2.dcm", tagId: "tag2", newValue: "new2", delete: false, add: false },
+        ];
 
         jest.clearAllMocks(); // Reset mocks before each test
     });
