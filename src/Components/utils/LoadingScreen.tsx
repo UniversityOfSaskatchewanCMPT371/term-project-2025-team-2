@@ -1,5 +1,5 @@
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Loading screen component

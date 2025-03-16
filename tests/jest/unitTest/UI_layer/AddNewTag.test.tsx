@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { NewTagRow } from "../../../../src/Features/DicomTagTable/Components/NewTagRow";
+import { NewTagRow } from "@features/DicomTagTable/Components/NewTagRow";
 import * as storeModule from "@state/Store";
 
 jest.mock("@state/Store", () => {

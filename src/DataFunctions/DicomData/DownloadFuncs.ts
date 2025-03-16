@@ -1,7 +1,7 @@
 import JSZip from "jszip";
 import { FileData } from "@features/FileHandling/Types/FileTypes";
 import { assert } from "../assert";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Creates a ZIP file containing multiple files

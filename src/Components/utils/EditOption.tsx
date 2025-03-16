@@ -1,6 +1,6 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
 /**

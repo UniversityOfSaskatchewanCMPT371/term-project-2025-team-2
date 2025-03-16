@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { isSafari } from "react-device-detect";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 import { DownloadOptionProps } from "@type/types";
 import { assert } from "@dataFunctions/assert";
