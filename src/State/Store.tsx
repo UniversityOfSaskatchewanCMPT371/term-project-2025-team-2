@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { isSafari } from "react-device-detect";
 import { TagsAnon } from "@auto/Functions/TagsAnon";
-
+import logger from "@logger/Logger";
 import { CustomFile } from "@file/Types/FileTypes";
 import {
     TableUpdateData,
@@ -87,6 +87,9 @@ type Store = {
 
     alertMsg: string;
     setAlertMsg: (msg: string) => void;
+
+    alterType: string;
+    setAlterType: (type: string) => void;
 
     allowEditLockedTags: boolean;
     setAllowEditLockedTags: (allowEdit: boolean) => void;
@@ -205,6 +208,19 @@ export const useStore = create<Store>((set) => ({
 
     alertMsg: "Alert",
     setAlertMsg: (msg) => set({ alertMsg: msg }),
+
+    alterType: "alert-error",
+    setAlterType: (type) => {
+        set({
+            alterType:
+                type !== "alert-error" &&
+                type !== "alert-success" &&
+                type !== "alert-warning"
+                    ? "alert-error"
+                    : type,
+        });
+        logger.debug(`Alert type: ${type}`);
+    },
 
     allowEditLockedTags: false,
     setAllowEditLockedTags: (allowEdit) =>

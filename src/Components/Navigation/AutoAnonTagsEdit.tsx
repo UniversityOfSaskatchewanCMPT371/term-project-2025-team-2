@@ -25,6 +25,7 @@ export const AutoAnonTagsEdit = () => {
     const resetTagsAnon = useStore((state) => state.resetTagsAnon);
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state) => state.setAlertMsg);
+    const setAlertType = useStore((state) => state.setAlterType);
 
     const [tagId, setTagId] = useState<string>("");
     const [tagName, setTagName] = useState<string>("");
@@ -48,18 +49,23 @@ export const AutoAnonTagsEdit = () => {
     const addtag = (tagId: string, tagName: string, tagValue: string) => {
         logger.info(`Adding tag: ${tagId} ${tagName} ${tagValue}`);
 
-        setShowAddTag(false);
         if (tagId.length !== 8 || isNaN(parseInt(tagId))) {
+            setAlertType("alert-error");
             setAlertMsg("Tag ID has to be 8 numbers");
             setShowAlert(true);
+            return;
         }
         if (tagValue.length < 1) {
+            setAlertType("alert-error");
             setAlertMsg("Tag Value can't be empty");
             setShowAlert(true);
+            return;
         }
         if (tagName.length < 1) {
+            setAlertType("alert-error");
             setAlertMsg("Tag Name can't be empty");
             setShowAlert(true);
+            return;
         }
 
         const temp = [...tagsToAnon];
@@ -78,6 +84,7 @@ export const AutoAnonTagsEdit = () => {
 
     const handleUpdateValue = () => {
         logger.debug("Updating tag values");
+        setShowAddTag(false);
 
         const temp = [...tagsToAnon];
 
@@ -97,6 +104,10 @@ export const AutoAnonTagsEdit = () => {
         setReset((prev) => prev + 1);
         tagChanges = [];
         setTagsToAnon(temp);
+
+        setAlertMsg("Updates Saved");
+        setAlertType("alert-success");
+        setShowAlert(true);
     };
 
     return (
@@ -135,7 +146,7 @@ export const AutoAnonTagsEdit = () => {
                     }}
                     className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
-                    Add Tag
+                    {showAddTag ? "Close Add Tag" : "Add Tag"}
                 </button>
                 <button
                     onClick={() => {
@@ -183,6 +194,7 @@ export const AutoAnonTagsEdit = () => {
                                         type="text"
                                         className="w-full"
                                         placeholder="Tag ID"
+                                        maxLength={8}
                                         onChange={(e) =>
                                             setTagId(e.target.value)
                                         }

@@ -23,12 +23,17 @@ test("Remove tag from auto list", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const editButton = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
         await page.waitForTimeout(500);
 
-        const tagRow = page.locator("tr").filter({ hasText: "X00080050" }).first();
+        const tagRow = page
+            .locator("tr")
+            .filter({ hasText: "X00080050" })
+            .first();
 
         const removeTagButton = tagRow.locator("svg.h-6.w-6").nth(1);
         await expect(removeTagButton).toBeVisible();
@@ -37,7 +42,7 @@ test("Remove tag from auto list", async ({ page }) => {
         const saveButton = page.getByRole("button", {
             name: /Save/i,
         });
-        
+
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
 
@@ -46,7 +51,7 @@ test("Remove tag from auto list", async ({ page }) => {
         const closeButton = page.getByRole("button", { name: /Close/i });
         await expect(closeButton).toBeVisible({ timeout: 1000 });
         await closeButton.click();
-        
+
         await page.waitForTimeout(200);
 
         await sidebarToggleButton.waitFor();
@@ -55,14 +60,15 @@ test("Remove tag from auto list", async ({ page }) => {
         await settingsButton.click();
 
         await page.waitForTimeout(500);
-        const editButton2 = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton2 = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
 
         await page.waitForTimeout(500);
 
         await expect(page.locator("td:has-text('X00080050')")).toHaveCount(0);
-
     } catch (error) {
         console.error("Test failed:", error);
         throw error;
