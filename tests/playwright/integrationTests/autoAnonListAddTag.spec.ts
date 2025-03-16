@@ -23,7 +23,9 @@ test("Add tag to auto list", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const editButton = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
         await page.waitForTimeout(500);
@@ -62,17 +64,20 @@ test("Add tag to auto list", async ({ page }) => {
         await settingsButton.click();
 
         await page.waitForTimeout(500);
-        const editButton2 = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton2 = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
 
         await page.waitForTimeout(500);
 
-        const newTagRow = page.locator("tr").filter({ hasText: "X00080007" }).first();
+        const newTagRow = page
+            .locator("tr")
+            .filter({ hasText: "X00080007" })
+            .first();
 
         expect(newTagRow).not.toBe(null);
-
-
     } catch (error) {
         console.error("Test failed:", error);
         throw error;

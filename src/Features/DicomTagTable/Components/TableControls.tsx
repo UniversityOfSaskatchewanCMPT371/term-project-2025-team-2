@@ -77,7 +77,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
                 <div className="ml-4">
                     <GenButton
                         onClick={() => setShowAddTag(!addTag)}
-                        label="Add Tag"
+                        label={addTag ? "Close Add Tag" : "Add Tag"}
                         disabled={false}
                     />
                 </div>

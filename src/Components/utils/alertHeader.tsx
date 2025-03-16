@@ -1,16 +1,26 @@
 import React from "react";
 import { useStore } from "@state/Store";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
+/**
+ * Alert Header
+ * @component
+ * @description Alert header
+ * @precondition AlertHeader component expects no props
+ * @postcondition AlertHeader component renders an alert header
+ * @returns {JSX.Element} The rendered alert header
+ */
 export const AlertHeader: React.FC = () => {
     const alertMsg = useStore((state) => state.alertMsg);
+    const alertType = useStore((state) => state.alterType);
 
     logger.debug("Rendering AlertHeader");
     logger.debug(`Alert message: ${alertMsg}`);
+    logger.debug(`Alert type: ${alertType}`);
 
     return (
         <div className="fixed left-0 top-0 z-50 flex w-full items-center justify-center bg-black bg-opacity-50">
-            <div role="alert" className="alert alert-error">
+            <div role="alert" className={`alert ${alertType}`}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 shrink-0 stroke-current"

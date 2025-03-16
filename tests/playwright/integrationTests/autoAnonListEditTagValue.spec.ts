@@ -23,7 +23,9 @@ test("Edit tag value in auto list", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const editButton = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
         await page.waitForTimeout(500);
@@ -43,7 +45,7 @@ test("Edit tag value in auto list", async ({ page }) => {
         const saveButton = page.getByRole("button", {
             name: /Save/i,
         });
-        
+
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
 
@@ -52,7 +54,7 @@ test("Edit tag value in auto list", async ({ page }) => {
         const closeButton = page.getByRole("button", { name: /Close/i });
         await expect(closeButton).toBeVisible({ timeout: 1000 });
         await closeButton.click();
-        
+
         await page.waitForTimeout(200);
 
         await sidebarToggleButton.waitFor();
@@ -61,16 +63,20 @@ test("Edit tag value in auto list", async ({ page }) => {
         await settingsButton.click();
 
         await page.waitForTimeout(500);
-        const editButton2 = page.getByRole("button", { name: /Edit Auto-Anon Tag/i });
+        const editButton2 = page.getByRole("button", {
+            name: /Edit Auto-Anon Tag/i,
+        });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
 
         await page.waitForTimeout(500);
 
-        const newTagRow = page.locator("tr").filter({ hasText: "X0008" }).first();
+        const newTagRow = page
+            .locator("tr")
+            .filter({ hasText: "X0008" })
+            .first();
 
         await expect(newTagRow.locator("td").nth(2)).toContainText("New Value");
-
     } catch (error) {
         console.error("Test failed:", error);
         throw error;

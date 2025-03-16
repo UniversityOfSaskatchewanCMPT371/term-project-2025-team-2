@@ -22,6 +22,7 @@ export const NewTagRow = () => {
     const setShowAddTag = useStore((state) => state.setShowAddTag);
     const files = useStore((state) => state.files);
     const currentFileIndex = useStore((state) => state.currentFileIndex);
+    const setAlertType = useStore((state) => state.setAlterType);
 
     const handleUpdateValue = (
         tagId: string,
@@ -30,21 +31,26 @@ export const NewTagRow = () => {
     ) => {
         logger.debug(`Adding new tag with: ${tagId}, ${newValue}`);
 
-        setShowAddTag(false);
         if (tagId.length !== 8 || isNaN(parseInt(tagId))) {
             logger.debug(`New tag ID is not 8 numbers: ${tagId}`);
+            setAlertType("alert-error");
             setAlertMsg("Tag ID has to be 8 numbers");
             setShowAlert(true);
+            return;
         }
         if (tagValue.length < 1) {
             logger.debug("New tag value is empty");
+            setAlertType("alert-error");
             setAlertMsg("Tag Value can't be empty");
             setShowAlert(true);
+            return;
         }
         if (tagName.length < 1) {
             logger.debug("New tag name is empty");
+            setAlertType("alert-error");
             setAlertMsg("Tag Name can't be empty");
             setShowAlert(true);
+            return;
         }
 
         updateTableData({
@@ -59,6 +65,10 @@ export const NewTagRow = () => {
         setTagName("");
         setTagValue("");
         setShowAddTag(false);
+
+        setAlertMsg("Tag: " + tagId + " added successfully");
+        setAlertType("alert-success");
+        setShowAlert(true);
     };
 
     logger.debug("Rendering NewTagRow component");
@@ -72,6 +82,7 @@ export const NewTagRow = () => {
                         type="text"
                         className="w-full"
                         placeholder="Tag ID"
+                        maxLength={8}
                         onChange={(e) => setTagId(e.target.value)}
                     />
                 </div>
