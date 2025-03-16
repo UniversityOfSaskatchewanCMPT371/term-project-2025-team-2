@@ -30,20 +30,28 @@ export const SeriesControls: React.FC<SeriesControlsProps> = () => {
             <GenButton
                 label={series ? "Apply Edits to All Files" : "Save All Files"}
                 disabled={false}
-                onClick={() => {
-                    logger.debug("Applying edits to all files button clicked");
+                onClick={async () => {
+                    logger.debug("Apply edits button clicked");
+                    useStore.getState().setLoading(true);
 
-                    updateAllFiles(
-                        dicomData,
-                        series,
-                        newTagValues,
-                        files,
-                        currentFileIndex,
-                        downloadOption
-                    );
-                    clearData();
+                    try {
+                        await updateAllFiles(
+                            dicomData,
+                            series,
+                            newTagValues,
+                            files,
+                            currentFileIndex,
+                            downloadOption
+                        );
+                        clearData();
+                    } catch (err) {
+                        logger.error("Failed to update files", err);
+                    } finally {
+                        useStore.getState().setLoading(false);
+                    }
                 }}
             />
+
             <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
                 <button
                     onClick={seriesToggle}

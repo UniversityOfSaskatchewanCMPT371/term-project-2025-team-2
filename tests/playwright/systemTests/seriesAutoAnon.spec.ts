@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import * as fs from "fs";
 
-import { TagsAnon } from "../../../src/Features/AutoAnonymize/Functions/TagsAnon";
+import { TagsAnon } from "@features/AutoAnonymize/Functions/TagsAnon";
 
 import AdmZip from "adm-zip";
 import { promisify } from "util";

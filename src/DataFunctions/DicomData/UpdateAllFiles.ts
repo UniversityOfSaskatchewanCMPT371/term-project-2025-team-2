@@ -2,8 +2,9 @@ import { createFile, downloadDicomFile } from "./DownloadFuncs";
 import { createZipFromFiles } from "./DownloadFuncs";
 import { tagUpdater } from "./TagUpdater";
 import { getSingleFileTagEdits } from "./TagUpdater";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { DicomData, DicomTag } from "@dicom//Types/DicomTypes";
+
 
 /**
  * Update all files with new tag values

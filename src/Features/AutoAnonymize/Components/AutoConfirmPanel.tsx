@@ -4,7 +4,7 @@ import { AutoAnon } from "@auto/Functions/AutoClean";
 import { useState } from "react";
 import { DicomTag } from "@dicom//Types/DicomTypes";
 import { TagsAnon } from "@auto/Functions/TagsAnon";
-import logger from "../../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Side panel for showing and editing tags to be anonymized

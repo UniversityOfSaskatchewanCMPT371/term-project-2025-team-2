@@ -1,5 +1,5 @@
 import { standardDataElements } from "./standardDataElements";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * TagDictionary class
