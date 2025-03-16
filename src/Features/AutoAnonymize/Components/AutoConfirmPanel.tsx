@@ -22,6 +22,7 @@ export const SidePanel = () => {
     const dicomData = useStore((state) => state.dicomData);
     const clearData = useStore((state) => state.clearData);
     const tagsToAnon = useStore((state) => state.tagsToAnon);
+    const [reset, setReset] = useState<number>(0);
 
     const handleUpdateValue = (
         tagId: string,
@@ -52,6 +53,9 @@ export const SidePanel = () => {
         setSidePanelVisible(false);
         setFoundPII(false);
         setPII([]);
+        setReset((prev)=>prev++);
+        setTags([]);
+        
     };
 
     const regex = new RegExp(/^[A-Za-z]+(?: [A-Za-z]+)?$/);
@@ -108,6 +112,8 @@ export const SidePanel = () => {
                         setSidePanelVisible(false);
                         setFoundPII(false);
                         setPII([]);
+                        setTags([]);
+                        setReset((prev)=>prev++);
                     }}
                     className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
@@ -143,7 +149,7 @@ export const SidePanel = () => {
                         <tbody>
                             {PII.map((tag, index) => (
                                 <DicomTableRow
-                                    key={index + tag.tagId}
+                                    key={index + tag.tagId + reset}
                                     row={{
                                         tagId: tag.tagId,
                                         tagName: tag.tagName,
