@@ -26,16 +26,16 @@ jest.mock("@dataFunctions/DicomData/TagUpdater", () => ({
 }));
 
 describe("updateAllFiles", () => {
-    let dicomData: { DicomDataSet: string }[];
+    let dicomData: { DicomDataSet: string, tags: {} }[];
     let files: { name: string }[];
     let currentFileIndex: number;
-    let newTagValues: Record<string, unknown>;
+    let newTagValues: {tagId: string, tagName: string, value: string};
 
     beforeEach(() => {
-        dicomData = [{ DicomDataSet: "dicom1" }, { DicomDataSet: "dicom2" }];
+        dicomData = [{ DicomDataSet: "dicom1", tags: {}}, { DicomDataSet: "dicom2", tags: {} }];
         files = [{ name: "file1.dcm" }, { name: "file2.dcm" }];
         currentFileIndex = 0;
-        newTagValues = {};
+        newTagValues = { tagId: "00100010", tagName: "PatientName", value: "John Doe" };
 
         jest.clearAllMocks(); // Reset mocks before each test
     });

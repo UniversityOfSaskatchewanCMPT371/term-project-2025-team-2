@@ -87,7 +87,7 @@ describe("Download Functions", () => {
     });
 
     it("should create a new DICOM file object with correct name", () => {
-        const blobData = "sample content";
+        const blobData = "sample content" as unknown as Blob;
         const fileName = "original.dcm";
 
         const newFile = createFile(fileName, blobData, true);
@@ -97,7 +97,7 @@ describe("Download Functions", () => {
     });
 
     it("should create a file without .dcm extension correctly", () => {
-        const blobData = "sample content";
+        const blobData = "sample content" as unknown as Blob;
         const fileName = "original";
 
         const newFile = createFile(fileName, blobData, true);
@@ -106,7 +106,7 @@ describe("Download Functions", () => {
     });
 
     it("should create a file that is already edited", () => {
-        const blobData = "sample content";
+        const blobData = "sample content" as unknown as Blob;
         const fileName = "original_edited.dcm";
 
         const newFile = createFile(fileName, blobData, true);

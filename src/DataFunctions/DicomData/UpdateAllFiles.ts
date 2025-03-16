@@ -3,6 +3,7 @@ import { createZipFromFiles } from "./DownloadFuncs";
 import { tagUpdater } from "./TagUpdater";
 import { getSingleFileTagEdits } from "./TagUpdater";
 import logger from "../../Logger/Logger";
+import { DicomData, DicomTag } from "@dicom//Types/DicomTypes";
 
 /**
  * Update all files with new tag values
@@ -22,9 +23,9 @@ import logger from "../../Logger/Logger";
  * @param downloadOption - The download option
  */
 export const updateAllFiles = async (
-    dicomData: any[],
+    dicomData: DicomData[],
     series: boolean,
-    newTagValues: any,
+    newTagValues: DicomTag,
     files: { name: string }[],
     currentFileIndex: number,
     downloadOption: string
@@ -34,7 +35,7 @@ export const updateAllFiles = async (
     if (series) {
         logger.info("Updating all files in series");
 
-        dicomData.forEach((dicom: any, index: number) => {
+        dicomData.forEach((dicom: DicomData, index: number) => {
             const fileName = files[index].name;
             const fileEdits = getSingleFileTagEdits(
                 newTagValues,

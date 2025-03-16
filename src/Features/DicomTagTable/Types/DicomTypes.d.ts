@@ -8,7 +8,7 @@
 export interface DicomTag {
     tagId: string;
     tagName: string;
-    value: string | DicomTag[];
+    value: string | DicomTag[] | any;
     hidden?: boolean;
 }
 
@@ -45,6 +45,10 @@ export interface DicomDataSet {
     byteArrayParser: any;
     elements: element[];
     warnings: any[];
+    uint16: (tag: string) => number;
+    uint32: (tag: string) => number;
+    double: (tag: string) => number;
+    string: (tag: string) => string;
 }
 
 /**
@@ -60,6 +64,8 @@ interface element {
     vr: string;
     length: number;
     dataOffset: number;
+    items?: element[];
+    dataSet: DicomDataSet;
 }
 
 /**
