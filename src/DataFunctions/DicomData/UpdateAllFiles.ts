@@ -2,8 +2,8 @@ import { createFile, downloadDicomFile } from "./DownloadFuncs";
 import { createZipFromFiles } from "./DownloadFuncs";
 import { tagUpdater } from "./TagUpdater";
 import { getSingleFileTagEdits } from "./TagUpdater";
-import logger from "@logger/Logger";
-import { DicomData, DicomTag } from "@dicom//Types/DicomTypes";
+import logger from "../../Logger/Logger";
+import { DicomData, TableUpdateData } from "@dicom//Types/DicomTypes";
 
 
 /**
@@ -26,7 +26,7 @@ import { DicomData, DicomTag } from "@dicom//Types/DicomTypes";
 export const updateAllFiles = async (
     dicomData: DicomData[],
     series: boolean,
-    newTagValues: DicomTag,
+    newTagValues: TableUpdateData[],
     files: { name: string }[],
     currentFileIndex: number,
     downloadOption: string
