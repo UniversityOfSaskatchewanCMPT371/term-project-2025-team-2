@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import EmptyTableRow from "@components/DicomData/TableComponents/EmptyTableRow";
+import EmptyTableRow from "@features/DicomTagTable/Components/EmptyTableRow";
 
 describe("EmptyTableRow Component", () => {
     test("renders correctly with the appropriate message", () => {
@@ -28,7 +28,7 @@ describe("EmptyTableRow Component", () => {
         expect(tableRow).toBeInTheDocument();
 
         const cells = tableRow ? tableRow.querySelectorAll("td") : [];
-        expect(cells).toHaveLength(1); 
+        expect(cells).toHaveLength(1);
         if (cells.length > 0) {
             expect(cells[0]).toHaveAttribute("colspan", "3");
         }

@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import logger from "@components/utils/Logger";
+import logger from "@logger/Logger";
 import { ErrorBoundary } from "@components/ErrorHandling/ErrorBoundary";
 
-jest.mock("@components/utils/Logger", () => ({
+jest.mock("@logger/Logger", () => ({
     error: jest.fn(),
 }));
 

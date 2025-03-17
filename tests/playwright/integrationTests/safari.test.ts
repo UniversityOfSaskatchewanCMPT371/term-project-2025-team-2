@@ -25,10 +25,10 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const yesButton = page.locator("id=yes");
         await expect(yesButton).toBeVisible();
@@ -77,10 +77,10 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const yesButton = page.locator("id=yes");
         await expect(yesButton).toBeVisible();
@@ -102,10 +102,10 @@ test.describe("Safari DownloadOption Component", () => {
 
         const checkbox = page.locator("#download-option");
 
-        await expect(checkbox).not.toBeChecked();
+        await expect(checkbox).toBeChecked();
 
         await checkbox.click();
-        await expect(checkbox).toBeChecked();
+        await expect(checkbox).not.toBeChecked();
 
         await browser.close();
     });

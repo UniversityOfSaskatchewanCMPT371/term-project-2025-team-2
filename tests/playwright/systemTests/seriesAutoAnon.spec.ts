@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import * as fs from "fs";
 
-import { TagsAnon } from "@auto/TagsAnon";
+import { TagsAnon } from "../../../src/Features/AutoAnonymize/Functions/TagsAnon";
 
 import AdmZip from "adm-zip";
 import { promisify } from "util";
@@ -47,7 +47,7 @@ test("Auto anon tags in series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 10000,
-        })
+        });
 
         const yesButton = page.locator("id=yes");
         await expect(yesButton).toBeVisible();
@@ -138,7 +138,7 @@ test("Auto anon tags in series", async ({ page }) => {
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 5000,
-        })
+        });
 
         const no1Button = page.locator("id=no");
         await expect(no1Button).toBeVisible();
@@ -153,8 +153,7 @@ test("Auto anon tags in series", async ({ page }) => {
         let hasMoreFiles = true;
 
         while (hasMoreFiles) {
-            
-            if(fileCount > 5) {
+            if (fileCount > 5) {
                 break;
             }
 
@@ -178,17 +177,17 @@ test("Auto anon tags in series", async ({ page }) => {
 
                     await expect(row).toBeVisible({ timeout: 100 });
 
-
-                    const rowValue = await row.locator("td").nth(2).textContent();
+                    const rowValue = await row
+                        .locator("td")
+                        .nth(2)
+                        .textContent();
 
                     debug(`File ${fileCount} - ${tag.name} value: ${rowValue}`);
 
                     expect(rowValue).toContain(tag.value);
                 } catch (error) {
                     // console.error(`File ${fileCount}`);
-
                 }
-
             }
 
             const nextButton = page.getByRole("button", { name: /Next/i });
@@ -201,7 +200,6 @@ test("Auto anon tags in series", async ({ page }) => {
                 );
                 hasMoreFiles = false;
             } else {
-
                 await nextButton.click();
                 debug("Clicked Next button");
 
@@ -221,7 +219,6 @@ test("Auto anon tags in series", async ({ page }) => {
 
         console.log(`\nSuccessfully checked ${fileCount} files`);
     } catch (error) {
-
         console.error("\nTest failed:", error);
         throw error;
     }

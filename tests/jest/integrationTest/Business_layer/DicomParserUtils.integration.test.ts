@@ -1,4 +1,4 @@
-import { parseDicomFile } from "@components/DicomData/DicomParserUtils";
+import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 import { jest } from "@jest/globals";
 
@@ -86,13 +86,13 @@ describe("DicomParserUtils Integration Tests", () => {
                     ],
                 },
             },
-            byteArray: new Uint8Array(128), 
+            byteArray: new Uint8Array(128),
             string: jest.fn(() => null),
         };
 
         (dicomParser.parseDicom as jest.Mock).mockReturnValue(mockDataset);
 
-        const result = await parseDicomFile(mockFile); 
+        const result = await parseDicomFile(mockFile);
 
         expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
             tagId: "00080100",
@@ -110,9 +110,9 @@ describe("DicomParserUtils Integration Tests", () => {
     test("extracts values from multiple DICOM tags", async () => {
         const mockDataset = {
             elements: {
-                "00100010": { vr: "PN" }, 
-                "00100020": { vr: "LO" }, 
-                "00100030": { vr: "DA" }, 
+                "00100010": { vr: "PN" },
+                "00100020": { vr: "LO" },
+                "00100030": { vr: "DA" },
             },
             string: jest.fn((tag) => {
                 if (tag === "00100010") return "Aladin Alihodzic";

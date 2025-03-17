@@ -13,10 +13,10 @@ test("Navigate between uploaded files", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -43,13 +43,12 @@ test("Navigate between uploaded files", async ({ page }) => {
             state: "visible",
             timeout: 1000,
         });
-        
+
         await page.click('button:has-text("Previous")');
         await page.waitForSelector("text=Currently Viewing: CR000000.dcm", {
             state: "visible",
             timeout: 5000,
         });
-
     } catch (error) {
         console.error("Error navigating between files:", error);
         throw error;

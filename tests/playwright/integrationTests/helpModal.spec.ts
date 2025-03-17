@@ -29,7 +29,6 @@ test("Verify question mark icon is clickable", async ({ page }) => {
 
         const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
-
     } catch (error) {
         console.error("Error verifying question mark icon:", error);
         throw error;
@@ -44,7 +43,7 @@ test("Verify GitHub link is clickable", async ({ page }) => {
             .locator('button >> svg[data-slot="icon"]')
             .first();
         await sidebarToggleButton.waitFor();
-        await sidebarToggleButton.click(); 
+        await sidebarToggleButton.click();
 
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
@@ -72,7 +71,6 @@ test("Verify GitHub link is clickable", async ({ page }) => {
         expect(href).toBe(
             "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
         );
-
     } catch (error) {
         console.error("Error verifying GitHub link:", error);
         throw error;
@@ -125,7 +123,6 @@ test("Verify GitHub link opens correct URL", async ({ page }) => {
         expect(actualUrl).toBe(
             "https://github.com/UniversityOfSaskatchewanCMPT371/term-project-2025-team-2"
         );
-
     } catch (error) {
         console.error("Error verifying GitHub link URL:", error);
         throw error;

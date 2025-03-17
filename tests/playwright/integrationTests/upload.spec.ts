@@ -14,7 +14,6 @@ test("Upload DICOM file", async ({ page }) => {
             state: "visible",
             timeout: 2000,
         });
-
     } catch (error) {
         console.error("Error during file upload:", error);
         throw error;
@@ -27,7 +26,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 
         const fileInput = page.locator('input[type="file"].hidden');
         await fileInput.setInputFiles("./test-data/CR000001.dcm");
-        
+
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
             timeout: 5000,
@@ -39,7 +38,6 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
             })
             .first();
         await expect(sopClassUID).toBeVisible();
-
     } catch (error) {
         console.error("Error viewing DICOM tags:", error);
         throw error;

@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Sidebar } from "@components/Navigation/Sidebar";
-import { Topbar } from "@navigation/Topbar";
-import { FileUploader } from "./components/FileHandling/FileUploader";
-import { DicomTable } from "./components/DicomData/TableComponents/DicomTable";
-import { FileNavigation } from "./components/Navigation/FileNavigation";
-import { FileHeader } from "./components/FileHandling/FileHeader";
-import { CustomFile as CustomFile } from "./types/FileTypes";
-import { Footer } from "./components/Navigation/Footer";
-import { QuestionModal } from "./components/utils/Modals/QuestionModal";
-import { Modal } from "./components/utils/Modals/Modal";
-import logger from "./components/utils/Logger";
-import { LoadingScreen } from "./components/utils/LoadingScreen";
+import { Topbar } from "@components/Navigation/Topbar";
+import { FileUploader } from "./Features/FileHandling/Components/FileUploader";
+import { DicomTable } from "./Features/DicomTagTable/Components/DicomTable";
+import { FileNavigation } from "@components/Navigation/FileNavigation";
+import { FileHeader } from "./Features/FileHandling/Components/FileHeader";
+import { CustomFile as CustomFile } from "./Features/FileHandling/Types/FileTypes";
+import { Footer } from "@components/Navigation/Footer";
+import { QuestionModal } from "./Components/utils/Modals/QuestionModal";
+import { Modal } from "@components/utils/Modals/Modal";
+import logger from "./Logger/Logger";
+import { LoadingScreen } from "@components/utils/LoadingScreen";
+import { SidePanel } from "@auto/Components/AutoConfirmPanel";
+import { AlertHeader } from "@components/utils/alertHeader";
 
+import { useStore } from "@state/Store";
+import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
+import { assert } from "./DataFunctions/assert";
 
-import { useStore } from "./components/State/Store";
-import { DicomData } from "./types/DicomTypes";
+import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
 
 /**
  * @description Main App Function
@@ -61,7 +65,16 @@ export const App: React.FC = () => {
 
     const theme = useStore((state) => state.theme);
 
+    const showAlert = useStore((state) => state.showAlert);
+    const setShowAlert = useStore((state) => state.setShowAlert);
+    const alertRef = useRef<HTMLDivElement>(null);
+
     const clearData = useStore((state) => state.clearData);
+
+    const fileParseError = useStore((state) => state.fileParseErrorFileNames);
+    const setFileParseError = useStore(
+        (state) => state.setFileParseErrorFileNames
+    );
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -93,6 +106,23 @@ export const App: React.FC = () => {
                 !sidebarButtonRef.current.contains(event.target as Node)
             ) {
                 setSidebarVisible(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
+
+    // Close sidebar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                alertRef.current &&
+                !alertRef.current.contains(event.target as Node)
+            ) {
+                setShowAlert(false);
             }
         };
 
@@ -176,6 +206,9 @@ export const App: React.FC = () => {
         if (newFiles.length > 1) {
             setShowSeiresModal(true);
         }
+
+        assert(newFiles.length === newDicomData.length);
+        assert(currentFileIndex === 0);
     };
 
     // File navigation - move to next file
@@ -183,6 +216,7 @@ export const App: React.FC = () => {
         if (currentFileIndex < files.length - 1) {
             setCurrentFileIndex(currentFileIndex + 1);
         }
+        assert(currentFileIndex < files.length);
     };
 
     // File navigation - move to previous file
@@ -190,11 +224,18 @@ export const App: React.FC = () => {
         if (currentFileIndex > 0) {
             setCurrentFileIndex(currentFileIndex - 1);
         }
+        assert(currentFileIndex >= 0);
     };
 
     // main render
     return (
         <div className="flex min-h-screen flex-col">
+            {showAlert ? (
+                <div ref={alertRef}>
+                    <AlertHeader />
+                </div>
+            ) : null}
+
             <Topbar
                 toggleSidebar={toggleSidebar}
                 sidebarVisible={sidebarVisible}
@@ -217,7 +258,6 @@ export const App: React.FC = () => {
                             files={files}
                             currentFileIndex={currentFileIndex}
                         />
-                        
                     </>
 
                     {files.length > 1 && !series ? (
@@ -228,7 +268,6 @@ export const App: React.FC = () => {
                             onNextFile={nextFile}
                         />
                     ) : null}
-                    
 
                     {files.length > 0 && dicomData.length > 0 && (
                         <div>
@@ -259,9 +298,12 @@ export const App: React.FC = () => {
 
                 <Modal
                     isOpen={showErrorModal}
-                    onClose={() => setShowErrorModal(false)}
+                    onClose={() => {
+                        setShowErrorModal(false);
+                        setFileParseError([]);
+                    }}
                     title="Error"
-                    text="File isn't a valid DICOM file."
+                    text={`File ${fileParseError} isn't a valid DICOM file.`}
                 />
 
                 {sidebarVisible && (
@@ -269,13 +311,13 @@ export const App: React.FC = () => {
                         <Sidebar isVisible={sidebarVisible} />
                     </div>
                 )}
+
+                <SidePanel />
+                <AutoAnonTagsEdit />
             </div>
             <Footer />
 
             {loading && <LoadingScreen />}
         </div>
-
-
     );
 };
-

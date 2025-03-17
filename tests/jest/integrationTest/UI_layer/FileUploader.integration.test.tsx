@@ -7,10 +7,10 @@ import {
     act,
 } from "@testing-library/react";
 import { jest } from "@jest/globals";
-import { parseDicomFile } from "@components/DicomData/DicomParserUtils";
-import { FileUploader } from "@components/FileHandling/FileUploader";
+import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
+import { FileUploader } from "@features/FileHandling/Components/FileUploader";
 
-jest.mock("@components/DicomData/DicomParserUtils", () => ({
+jest.mock("@dataFunctions/DicomData/DicomParserUtils", () => ({
     parseDicomFile: jest.fn(() =>
         Promise.resolve({ mockMetadata: "mocked DICOM data" })
     ),

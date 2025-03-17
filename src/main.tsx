@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
-import { ErrorBoundary } from "./components/ErrorHandling/ErrorBoundary";
+import { ErrorBoundary } from "./Components/ErrorHandling/ErrorBoundary.tsx";
 import { registerSW } from "virtual:pwa-register";
-import logger from "./components/utils/Logger";
+import logger from "./Logger/Logger.ts";
 import "react-tooltip/dist/react-tooltip.css";
 
 // Register service worker with auto-update
@@ -22,7 +22,7 @@ const updateSW = registerSW({
     onRegistered() {
         logger.debug("Service Worker has been registered");
     },
-    onRegisterError(error: any) {
+    onRegisterError(error: Error) {
         logger.debug("Service Worker registration failed:", error);
     },
 });

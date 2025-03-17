@@ -12,7 +12,6 @@ test("Toggle sidebar", async ({ page }) => {
             .first();
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
-
     } catch (error) {
         console.error("Error toggling sidebar:", error);
         throw error;
@@ -29,10 +28,10 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -72,7 +71,6 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
             timeout: 1000,
         });
         await page.click('button:has-text("Save All Files")');
-
     } catch (error) {
         console.error("Error saving changes using sidebar:", error);
         throw error;
@@ -91,10 +89,10 @@ test("Testing edit individually and series button in sidebar", async ({
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -122,7 +120,6 @@ test("Testing edit individually and series button in sidebar", async ({
             .first();
         await expect(editAsSeriesButton).toBeVisible();
         await editAsSeriesButton.click();
-
     } catch (error) {
         console.error(
             "Error testing edit individually and series buttons:",
@@ -142,10 +139,10 @@ test("Navigating from files from sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -185,7 +182,6 @@ test("Navigating from files from sidebar", async ({ page }) => {
         await expect(
             page.locator("text=Currently Viewing: CR000001.dcm")
         ).toBeVisible();
-
     } catch (error) {
         console.error("Error navigating between files from sidebar:", error);
         throw error;
@@ -202,10 +198,10 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForSelector("text=Edit Files",{
+        await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
-        })
+        });
 
         const noButton = page.locator("id=no");
         await expect(noButton).toBeVisible();
@@ -269,7 +265,6 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
         });
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
-
     } catch (error) {
         console.error("Error updating file through sidebar:", error);
         throw error;

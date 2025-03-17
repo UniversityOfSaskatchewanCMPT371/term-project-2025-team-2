@@ -1,11 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ThemeSelector } from "@components/Navigation/ThemeSelector";
-import * as storeModule from "@components/State/Store";
+import * as storeModule from "@state/Store";
 
-jest.mock("@components/State/Store", () => {
-    const actualStore = jest.requireActual(
-        "@components/State/Store"
-    );
+jest.mock("@state/Store", () => {
+    const actualStore = jest.requireActual("@state/Store");
     return {
         ...actualStore,
         useStore: jest.fn(),
@@ -51,7 +49,7 @@ describe("ThemeSelector", () => {
 
         expect(screen.getByText("Set Theme")).toBeInTheDocument();
         const checkbox = screen.getByTestId("checkbox");
-        expect(checkbox).toBeChecked(); 
+        expect(checkbox).toBeChecked();
     });
 
     it("renders tooltip content based on the current theme", () => {
@@ -63,9 +61,8 @@ describe("ThemeSelector", () => {
             "Switch to Dark"
         );
 
-        mockStore.theme = "night"; 
+        mockStore.theme = "night";
         render(<ThemeSelector />);
-
 
         expect(tooltip).toHaveAttribute(
             "data-tooltip-content",
@@ -100,7 +97,7 @@ describe("ThemeSelector", () => {
         render(<ThemeSelector />);
 
         const checkbox = screen.getByTestId("checkbox");
-        expect(checkbox).not.toBeChecked(); 
+        expect(checkbox).not.toBeChecked();
 
         fireEvent.click(checkbox);
 

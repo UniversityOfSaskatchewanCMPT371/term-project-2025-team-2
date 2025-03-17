@@ -2,13 +2,15 @@ import {
     createZipFromFiles,
     downloadDicomFile,
     createFile,
-} from "@components/DicomData/DownloadFuncs";
-import { FileData } from "types/FileTypes";
+} from "@dataFunctions/DicomData/DownloadFuncs";
+import { FileData } from "@features/FileHandling/Types/FileTypes";
 
 jest.mock("jszip", () => {
     return jest.fn().mockImplementation(() => ({
         file: jest.fn(),
-        generateAsync: jest.fn().mockResolvedValue(new Blob([], { type: "application/zip" })),
+        generateAsync: jest
+            .fn()
+            .mockResolvedValue(new Blob([], { type: "application/zip" })),
     }));
 });
 
@@ -39,7 +41,9 @@ describe("Download Functions", () => {
 
         downloadDicomFile(fileData);
 
-        expect(global.URL.createObjectURL).toHaveBeenCalledWith(fileData.content);
+        expect(global.URL.createObjectURL).toHaveBeenCalledWith(
+            fileData.content
+        );
         expect(document.createElement).toHaveBeenCalledWith("a");
         expect(document.body.appendChild).toHaveBeenCalled();
         expect(document.body.removeChild).toHaveBeenCalled();
@@ -49,10 +53,10 @@ describe("Download Functions", () => {
     it("should handle missing content in downloadDicomFile gracefully", () => {
         const fileData: FileData = {
             name: "testFile.dcm",
-            content: null as any, // Simulating missing content
+            content: null as any,
         };
 
-        expect(() => downloadDicomFile(fileData)).not.toThrow(); // No error expected, just a no-op
+        expect(() => downloadDicomFile(fileData)).not.toThrow();
     });
 
     it("should handle missing name in downloadDicomFile gracefully", () => {
@@ -61,7 +65,7 @@ describe("Download Functions", () => {
             content: new Blob(["test content"], { type: "application/dicom" }),
         };
 
-        expect(() => downloadDicomFile(fileData)).not.toThrow(); // No error expected, just a no-op
+        expect(() => downloadDicomFile(fileData)).not.toThrow();
     });
 
     it("should create a zip file from files", async () => {
@@ -79,14 +83,14 @@ describe("Download Functions", () => {
     it("should handle empty file list in createZipFromFiles gracefully", async () => {
         const zipBlob = await createZipFromFiles([]);
 
-        expect(zipBlob).toBeInstanceOf(Blob); // Instead of rejecting, just return an empty ZIP
+        expect(zipBlob).toBeInstanceOf(Blob);
     });
 
     it("should create a new DICOM file object with correct name", () => {
         const blobData = "sample content";
         const fileName = "original.dcm";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData, true);
 
         expect(newFile.name).toBe("original_edited.dcm");
         expect(newFile.content).toBeInstanceOf(Blob);
@@ -96,7 +100,7 @@ describe("Download Functions", () => {
         const blobData = "sample content";
         const fileName = "original";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData, true);
 
         expect(newFile.name).toBe("original_edited.dcm");
     });
@@ -105,7 +109,7 @@ describe("Download Functions", () => {
         const blobData = "sample content";
         const fileName = "original_edited.dcm";
 
-        const newFile = createFile(fileName, blobData);
+        const newFile = createFile(fileName, blobData, true);
 
         expect(newFile.name).toBe("original_edited_edited.dcm");
     });

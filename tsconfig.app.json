@@ -27,15 +27,18 @@
         "types": ["jest", "node", "@testing-library/jest-dom"],
         "baseUrl": "src/",
         "paths": {
-            "@components/*": ["components/*"],
-            "@utils/*": ["components/utils/*"],
-            "@navigation/*": ["components/Navigation/*"],
-            "@DicomData/*": ["components/DicomData/*"],
-            "@hooks/*": ["components/Hooks/*"],
-            "@FileHandling/*": ["components/FileHandling/*"],
-            "@state/*": ["components/State/*"],
-            "@types/*": ["types/*"],
-            "@auto/*": ["components/Auto/*"]
+            "@components/*": ["Components/*"],
+            "@utils/*": ["Components/utils/*"],
+            "@navigation/*": ["Components/Navigation/*"],
+            "@dicom/*": ["Features/DicomTagTable*"],
+            "@hooks/*": ["Hooks/*"],
+            "@file/*": ["Features/FileHandling/*"],
+            "@state/*": ["State/*"],
+            "@auto/*": ["Features/AutoAnonymize/*"],
+            "@dataFunctions/*": ["DataFunctions/*"],
+            "@features/*": ["Features/*"],
+            "@logger/*": ["Logger/*"],
+            "@type/*": ["types/*"]
         }
     },
     "include": ["src", "types"]
