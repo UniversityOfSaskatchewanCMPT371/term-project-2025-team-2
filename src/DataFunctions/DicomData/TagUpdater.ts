@@ -10,6 +10,14 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+const DEBUG = false;
+
+const debug = (message: string) => {
+    if (DEBUG) {
+        console.log(message);
+    }
+};
+
 enum NUMBERS {
     "FD",
     "FL",
@@ -42,6 +50,7 @@ const vrOffset = 4;
 const lengthOffset = 6;
 
 import dicomParser from "dicom-parser";
+import logger from "@logger/Logger"
 
 /**
  * Update the tags in a dicom file
@@ -62,6 +71,8 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         return newDicomData;
     }
 
+    debug("filteredTags: " + JSON.stringify(filteredTags));
+
     filteredTags.forEach((tag: any) => {
         const insertTag = {
             tagId: tag.tagId,
@@ -74,6 +85,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             add: tag.add,
         };
         newTags.push(insertTag);
+        debug("insertTag: " + JSON.stringify(insertTag));
     });
 
     newTags.forEach((tag: any) => {
@@ -94,15 +106,30 @@ export function tagUpdater(dicomData: any, newTagData: any) {
             );
             const newTag = createTag(tagIdByte, tag, true);
             data = insertTag(dicomData, tag, newTag);
+
+            debug("newTag: " + JSON.stringify(newTag));
         }
 
         const newData = dicomParser.parseDicom(data);
         dicomData = newData;
     });
 
-    return data;
+    const valid = verifyArrayBuffer(data);
+
+    if (valid) {
+        return data;
+    }
+
+    throw new Error("File Update Failed");
 }
 
+
+/**
+ * 
+ * @param dicomData 
+ * @param tag 
+ * @returns 
+ */
 function addTag(dicomData: any, tag: any) {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
@@ -112,6 +139,8 @@ function addTag(dicomData: any, tag: any) {
     const newTag = createTag(tagIdByte, tag, true);
 
     const newArray = concatBuffers(dicomData.byteArray, newTag);
+
+    debug("newTag: " + newArray.map((byte: any) => byte.toString(10)).join(" "));
 
     return newArray;
 }
@@ -132,11 +161,13 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToAdd.dataOffSet +
-            dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+        dicomData.elements[tagToAdd.tagId.toLowerCase()].length
     );
 
     const buf1 = concatBuffers(first, newtag);
     const newArray = concatBuffers(buf1, last);
+
+    debug("Insert at " + tagToAdd.dataOffSet);
 
     return newArray;
 }
@@ -156,10 +187,12 @@ function removeTag(dicomData: any, tagToRemove: any) {
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToRemove.dataOffSet +
-            dicomData.elements[tagToRemove.tagId.toLowerCase()].length
+        dicomData.elements[tagToRemove.tagId.toLowerCase()].length
     );
 
     const newArray = concatBuffers(first, last);
+
+    debug("Remove at " + tagToRemove.dataOffSet);
 
     return newArray;
 }
@@ -199,17 +232,19 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     const tagLength =
         valueOffset === longHeaderLen
             ? writeTypedNumber(
-                  valueLength,
-                  "uint32",
-                  longHeaderLengthLen,
-                  littleEndian
-              )
+                valueLength,
+                "uint32",
+                longHeaderLengthLen,
+                littleEndian
+            )
             : writeTypedNumber(valueLength, "uint16", lengthLen, littleEndian);
 
     const newTag = new Uint8Array(valueLength + valueOffset);
     newTag.set(tagName);
     newTag.set(tagVR, vrOffset);
     newTag.set(tagLength, lengthOffset);
+
+    debug("Tag VR: " + tag.vr);
 
     switch (tag.vr) {
         case "FD":
@@ -315,7 +350,7 @@ function writeTypedNumber(
             view.setUint16(0, num, littleEndian);
             break;
         case "uint32":
-            view.setUint16(0, num, littleEndian);
+            view.setUint32(0, num, littleEndian);
             break;
         case "int8":
             view.setInt8(0, num);
@@ -350,6 +385,8 @@ function writeVRArray(vr: string) {
     for (let i = 0; i < 2; i++) {
         vrArray[i] = vr.charCodeAt(i);
     }
+
+    debug("VR: " + vrArray);
     return vrArray;
 }
 
@@ -387,6 +424,8 @@ function getValueLength(tag: any) {
     } else if (tag.tagVR === "AT") {
         return 4;
     } else {
+        debug("Tag value length: " + tag.value.length);
+
         return tag.value.length;
     }
 }
@@ -402,4 +441,25 @@ function getValueLength(tag: any) {
  */
 export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
+}
+
+/** 
+ * Verify that the data is an array buffer
+ * @description - Verify that the data is an array buffer
+ * @precondition - The data must be a valid array buffer
+ * @postcondition - The data will be verified as an array buffer
+ * @param data - The data to be verified
+ * @returns - True if the data is an array buffer, false otherwise
+*/
+function verifyArrayBuffer(data: any) {
+    try {
+        dicomParser.parseDicom(data);
+        logger.info("Valid array buffer");
+        debug("Valid array buffer");
+        return true;
+    } catch (e) {
+        logger.error("Error parsing new array: " + e);
+        debug("Error parsing new array: " + e);
+        return false;
+    }
 }
