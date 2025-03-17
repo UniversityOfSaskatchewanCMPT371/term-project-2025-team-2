@@ -94,13 +94,13 @@ describe("DicomParserUtils Integration Tests", () => {
 
         const result = await parseDicomFile(mockFile);
 
-        expect(result.tags["0040A730"].value.tags["00080100"]).toEqual({
+        expect(result.tags["0040A730"].value[0].tags["00080100"]).toEqual({
             tagId: "00080100",
             tagName: "Unknown",
             value: "12345",
         });
 
-        expect(result.tags["0040A730"].value.tags["00080102"]).toEqual({
+        expect(result.tags["0040A730"].value[0].tags["00080102"]).toEqual({
             tagId: "00080102",
             tagName: "Unknown",
             value: "LOINC",
