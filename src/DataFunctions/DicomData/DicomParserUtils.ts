@@ -113,11 +113,13 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
         }
 
         if (element.items && element.items.length > 0) {
-            const nestedTags = element.items[0].dataSet ? extractDicomTags(element.items[0].dataSet) : {};
+            const nestedTags = element.items
+                .map((item) => item.dataSet ? extractDicomTags(item.dataSet) : null)
+                .filter((item) => item !== null);
 
             dicomTags[tagId] = { tagId, tagName, value: nestedTags };
         } else if (hiddenTags.includes(tagId)) {
-            dicomTags[tagId] = { tagId, tagName, value: value, hidden: true };
+            dicomTags[tagId] = { tagId, tagName, value, hidden: true };
         } else {
             dicomTags[tagId] = { tagId, tagName, value };
         }
