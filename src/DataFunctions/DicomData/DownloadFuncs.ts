@@ -2,6 +2,7 @@ import JSZip from "jszip";
 import { FileData } from "@features/FileHandling/Types/FileTypes";
 import { assert } from "../assert";
 import logger from "@logger/Logger";
+import { useStore } from "@state/Store";
 
 /**
  * Creates a ZIP file containing multiple files, preserving folder structure
@@ -15,66 +16,59 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     logger.info("Creating ZIP file from files");
     logger.debug(`Number of files: ${files.length}`);
 
+    const { setLoadingMsg } = useStore.getState();
+
     try {
         const zip = new JSZip();
 
-        // Group files by folder to ensure they go in the same directory
         const folderMap = new Map<string, FileData[]>();
-        
-        // First, organize files by folder
+
         files.forEach((file) => {
-            let folderPath = ""; // Default to root
-            
+            let folderPath = "";
+
             if (file.path) {
-                // Use explicit path property if available
                 folderPath = file.path;
-            } else if (file.name.includes('/')) {
-                // Extract path from filename if it contains path separators
-                const parts = file.name.split('/');
-                parts.pop(); // Remove the actual filename
-                folderPath = parts.join('/');
+            } else if (file.name.includes("/")) {
+                const parts = file.name.split("/");
+                parts.pop();
+                folderPath = parts.join("/");
             }
-            
-            // Initialize folder array if it doesn't exist
+
             if (!folderMap.has(folderPath)) {
                 folderMap.set(folderPath, []);
             }
-            
-            // Add file to its folder group
+
             folderMap.get(folderPath)?.push(file);
         });
-        
-        // Now add each file to the ZIP, grouped by folder
+
         folderMap.forEach((folderFiles, folderPath) => {
             folderFiles.forEach((file) => {
-                // Get just the filename without any path
+                setLoadingMsg(`Ziping file: ${file.name}`);
                 let fileName = file.name;
-                if (file.name.includes('/')) {
-                    fileName = file.name.split('/').pop() || file.name;
+                if (file.name.includes("/")) {
+                    fileName = file.name.split("/").pop() || file.name;
                 }
-                
-                // Construct the full path in the ZIP
+
                 let fullPath = fileName;
                 if (folderPath) {
-                    // Normalize folder path and combine with filename
-                    const normalizedPath = folderPath.endsWith('/') ? 
-                        folderPath : 
-                        `${folderPath}/`;
+                    const normalizedPath = folderPath.endsWith("/")
+                        ? folderPath
+                        : `${folderPath}/`;
                     fullPath = normalizedPath + fileName;
                 }
-                
-                // Add the file to the ZIP
+
                 zip.file(fullPath, file.content);
             });
         });
 
-        // Generate the ZIP file
+        setLoadingMsg("Generating ZIP file");
         const zipBlob = await zip.generateAsync({
             type: "blob",
-            compression: "DEFLATE",
-            compressionOptions: {
-                level: 6, // Compression level (1-9)
-            },
+            // creates smaller file, but alot slower
+            // compression: "DEFLATE",
+            // compressionOptions: {
+            //     level: 6,
+            // },
         });
 
         logger.debug(`ZIP file created: ${zipBlob.size} bytes`);
@@ -95,9 +89,6 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
  * @param fileName - string name of the file
  */
 export async function downloadDicomFile(newFile: FileData) {
-    // assert(newFile.content !== null);
-    // assert(newFile.name !== null);
-
     logger.info("Downloading DICOM file: ", newFile.name);
 
     const url = window.URL.createObjectURL(newFile.content);

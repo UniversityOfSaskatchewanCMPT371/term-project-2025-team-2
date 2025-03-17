@@ -72,8 +72,10 @@ export const AutoAnon = async (
 
     try {
         dicomData.forEach((dicom: any, index: number) => {
-            setLoadingMsg(`Anonymizing file ${index + 1} of ${dicomData.length}`);
-            
+            setLoadingMsg(
+                `Anonymizing file ${index + 1} of ${dicomData.length}`
+            );
+
             const formattedData = FormatData(dicom, tagsToAnon);
 
             anonTags.forEach((anonTag) => {
@@ -86,43 +88,42 @@ export const AutoAnon = async (
             });
 
             const updatedFile = tagUpdater(dicom.DicomDataSet, formattedData);
-            
+
             const originalFile = files[index];
             const fileName = originalFile.name;
-            
+
             let filePath = "";
             if (dicom.filePath) {
                 filePath = dicom.filePath;
-                
-                const parts = filePath.split('/');
+
+                const parts = filePath.split("/");
                 parts.pop();
-                filePath = parts.join('/');
+                filePath = parts.join("/");
             } else {
-                for (const [folder, folderFiles] of Object.entries(folderStructure)) {
-                    const matchingFile = folderFiles.find(f => f.name === fileName);
+                for (const [folder, folderFiles] of Object.entries(
+                    folderStructure
+                )) {
+                    const matchingFile = folderFiles.find(
+                        (f) => f.name === fileName
+                    );
                     if (matchingFile) {
-                        filePath = folder === 'root' ? '' : folder;
+                        filePath = folder === "root" ? "" : folder;
                         break;
                     }
                 }
             }
-            
-            const fileWithPath = createFile(
-                fileName,
-                updatedFile,
-                true
-            );
-            
+
+            const fileWithPath = createFile(fileName, updatedFile, true);
+
             fileWithPath.path = filePath;
-            
+
             structuredFiles.push(fileWithPath);
         });
 
         setLoadingMsg("Creating ZIP file");
         const zipFile = await createZipFromFiles(structuredFiles);
-        
+
         downloadDicomFile({ name: "anonymized_dicoms.zip", content: zipFile });
-        
     } catch (err) {
         logger.error("Auto anonymization failed:", err);
     } finally {

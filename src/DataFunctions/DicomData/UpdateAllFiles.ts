@@ -51,12 +51,12 @@ export const updateAllFiles = async (
             const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
 
             const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);
-            
+
             // Create file object
             const file = createFile(fileName, updatedFile, isEdited);
-            
+
             // Set the correct file path information
-            const filePath = determineFilePath( fileName, fileStructure);
+            const filePath = determineFilePath(fileName, fileStructure);
             file.path = filePath;
 
             if (downloadOption === "single") {
@@ -74,10 +74,10 @@ export const updateAllFiles = async (
             const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
 
             const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);
-            
+
             // Create file object
             const file = createFile(fileName, updatedFile, isEdited);
-            
+
             // Set the correct file path information
             const filePath = determineFilePath(fileName, fileStructure);
             file.path = filePath;
@@ -107,8 +107,8 @@ export const updateAllFiles = async (
  * @returns The path for the file
  */
 function determineFilePath(
-    // dicom: DicomData, 
-    fileName: string, 
+    // dicom: DicomData,
+    fileName: string,
     fileStructure: Record<string, File[]>
 ): string {
     // // First check if dicom has path information
@@ -118,16 +118,16 @@ function determineFilePath(
     //     pathParts.pop(); // Remove filename
     //     return pathParts.join('/');
     // }
-    
+
     // If no path in dicom data, look it up in the folder structure
     for (const [folder, folderFiles] of Object.entries(fileStructure)) {
         // Check if this folder contains the file
-        const matchingFile = folderFiles.find(f => f.name === fileName);
+        const matchingFile = folderFiles.find((f) => f.name === fileName);
         if (matchingFile) {
-            return folder === 'root' ? '' : folder;
+            return folder === "root" ? "" : folder;
         }
     }
-    
+
     // Default to root if no folder info found
-    return '';
+    return "";
 }

@@ -78,7 +78,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      * @returns void
      */
     const processFiles = (
-        fileArray: File[], 
+        fileArray: File[],
         existingFileStructure?: Record<string, File[]>
     ) => {
         clearData();
@@ -86,7 +86,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
         logger.info(`Processing ${fileArray.length} files`);
 
-        const fileStructureTemp: Record<string, File[]> = existingFileStructure || {};
+        const fileStructureTemp: Record<string, File[]> =
+            existingFileStructure || {};
 
         if (!existingFileStructure) {
             fileArray.forEach((file) => {
@@ -100,7 +101,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
                 fileStructureTemp[dir].push(file);
             });
-            
+
             logger.debug("Folder structure preserved from input selection");
         } else {
             logger.debug("Using provided folder structure");
@@ -135,7 +136,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
         Promise.all(promises)
             .then((dicomDataArray) => {
-                const validData = dicomDataArray.filter((data) => data !== null);
+                const validData = dicomDataArray.filter(
+                    (data) => data !== null
+                );
                 if (dicomDataArray.every((data) => data !== null)) {
                     onFileUpload(fileArray, validData);
                 } else {
@@ -164,7 +167,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         clearData();
         loading(true);
         currentFile = 0;
-        
+
         try {
             await processEntries(acceptedFiles);
         } catch (error) {
@@ -181,23 +184,27 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      */
     const processEntries = async (files: File[]) => {
         const fileStructureTemp: Record<string, File[]> = {
-            "root": [...files]
+            root: [...files],
         };
-        
-        logger.debug('Drag and drop detected - placing all files in root folder');
+
+        logger.debug(
+            "Drag and drop detected - placing all files in root folder"
+        );
         logger.debug(`Total files: ${files.length}`);
-        
+
         files.forEach((file, index) => {
-            Object.defineProperty(file, 'webkitRelativePath', {
+            Object.defineProperty(file, "webkitRelativePath", {
                 value: `root/${file.name}`,
-                writable: true
+                writable: true,
             });
-            
+
             if (index < 3) {
-                logger.debug(`Sample file ${index}: ${file.name}, size: ${file.size}`);
+                logger.debug(
+                    `Sample file ${index}: ${file.name}, size: ${file.size}`
+                );
             }
         });
-        
+
         processFiles(files, fileStructureTemp);
     };
 

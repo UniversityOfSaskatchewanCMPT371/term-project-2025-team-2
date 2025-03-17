@@ -51,11 +51,10 @@ export const SidePanel = () => {
     };
 
     const handleAutoAnon = async () => {
-
         logger.debug("Auto Anonymizing tags");
 
         await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
-        
+
         clearData();
         setSidePanelVisible(false);
         setFoundPII(false);
