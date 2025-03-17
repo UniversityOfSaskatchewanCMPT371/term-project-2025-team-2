@@ -35,6 +35,9 @@ jobs:
         if: steps.cacheStepnode.outputs.cache-hit != 'true'
         run: npm install
 
+      - name: Set HOME environment variable
+        run: echo "HOME=/root" >> $GITHUB_ENV
+
       - name: Run System Tests
         run: xvfb-run npx playwright test tests/playwright/systemTests --headed --workers=1
 
