@@ -2,7 +2,7 @@ import dicomParser from "dicom-parser";
 import { TagDictionary } from "../TagDictionary/dictionary";
 import logger from "@logger/Logger";
 import { assert } from "../assert";
-import { DicomData, DicomTags} from "@dicom//Types/DicomTypes";
+import { DicomData, DicomTags } from "@dicom//Types/DicomTypes";
 
 const tagDictionary = new TagDictionary();
 
@@ -114,7 +114,9 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
 
         if (element.items && element.items.length > 0) {
             const nestedTags = element.items
-                .map((item) => item.dataSet ? extractDicomTags(item.dataSet) : null)
+                .map((item) =>
+                    item.dataSet ? extractDicomTags(item.dataSet) : null
+                )
                 .filter((item) => item !== null);
 
             dicomTags[tagId] = { tagId, tagName, value: nestedTags };

@@ -103,8 +103,6 @@ type Store = {
 
     fileStructure: Record<string, File[]>;
     setFileStructure: (struture: Record<string, File[]>) => void;
-
-    
 };
 
 /**
@@ -125,7 +123,7 @@ export const useStore = create<Store>((set) => ({
     setLoading: (loading) => set({ loading }),
 
     loadingMsg: "",
-    setLoadingMsg: (msg) => set({loadingMsg: msg}),
+    setLoadingMsg: (msg) => set({ loadingMsg: msg }),
 
     showErrorModal: false,
     showError: () => set({ showErrorModal: true }),
@@ -254,5 +252,7 @@ export const useStore = create<Store>((set) => ({
     },
 
     fileStructure: {},
-    setFileStructure: (structure) => {set({fileStructure: structure})}
+    setFileStructure: (structure) => {
+        set({ fileStructure: structure });
+    },
 }));

@@ -35,11 +35,11 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
                     //                 .includes(searchTerm.toLowerCase())
                     //     )
                     //     :
-                        row.value
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                    // )
+                    row.value
+                        .toString()
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                // )
             ),
         [rows, searchTerm]
     );

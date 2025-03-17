@@ -81,10 +81,7 @@ export const AutoAnon = async (
                 }
             });
 
-            const updatedFile = tagUpdater(
-                dicom.DicomDataSet,
-                formattedData
-            );
+            const updatedFile = tagUpdater(dicom.DicomDataSet, formattedData);
 
             newFiles.push(createFile(files[index].name, updatedFile, true));
         });

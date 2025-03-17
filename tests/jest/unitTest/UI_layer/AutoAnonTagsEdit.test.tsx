@@ -102,12 +102,14 @@ describe("AutoAnonTagsEdit", () => {
             setAlertType: mockSetAlertType,
         };
 
-        ((storeModule.useStore as unknown) as jest.Mock).mockImplementation((selector) => {
-            if (typeof selector === 'function') {
-                return selector(testMockState);
+        (storeModule.useStore as unknown as jest.Mock).mockImplementation(
+            (selector) => {
+                if (typeof selector === "function") {
+                    return selector(testMockState);
+                }
+                return testMockState;
             }
-            return testMockState;
-        });
+        );
 
         render(<AutoAnonTagsEdit />);
 
@@ -144,7 +146,10 @@ describe("AutoAnonTagsEdit", () => {
         });
 
         if (mockSetTagsToAnon.mock.calls.length > 0) {
-            console.log("Actual value passed to setTagsToAnon:", JSON.stringify(mockSetTagsToAnon.mock.calls[0][0]));
+            console.log(
+                "Actual value passed to setTagsToAnon:",
+                JSON.stringify(mockSetTagsToAnon.mock.calls[0][0])
+            );
         }
     });
 

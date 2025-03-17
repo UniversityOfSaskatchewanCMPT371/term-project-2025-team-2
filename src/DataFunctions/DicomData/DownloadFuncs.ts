@@ -79,7 +79,11 @@ export async function downloadDicomFile(newFile: FileData) {
  * @param isEdited - boolean flag indicating if the file has been edited
  * @returns - object with name and content of the file
  */
-export function createFile(fileName: string, blobData: Blob, isEdited: boolean) {
+export function createFile(
+    fileName: string,
+    blobData: Blob,
+    isEdited: boolean
+) {
     logger.debug("Creating file object: ", fileName);
 
     const blob = new Blob([blobData], {

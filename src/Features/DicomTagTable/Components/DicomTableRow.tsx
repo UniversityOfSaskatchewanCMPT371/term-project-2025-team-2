@@ -92,7 +92,6 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         onUpdateValue(row.tagId, newValue, tempDeletetag);
     };
 
-
     logger.debug("Rendering DicomTableRow component");
 
     return (
@@ -229,10 +228,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                         );
                     }
                     // Case 2: row.value is a single nested tag object
-                    if (
-                        typeof row.value === "object" &&
-                        row.value?.tags
-                    ) {
+                    if (typeof row.value === "object" && row.value?.tags) {
                         return Object.values(row.value.tags).map(
                             (nested: any) => (
                                 <DicomTableRow
@@ -252,4 +248,3 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         </React.Fragment>
     );
 };
-

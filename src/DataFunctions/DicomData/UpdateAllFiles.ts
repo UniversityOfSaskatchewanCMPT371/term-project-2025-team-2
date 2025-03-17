@@ -5,7 +5,6 @@ import { getSingleFileTagEdits } from "./TagUpdater";
 import logger from "../../Logger/Logger";
 import { DicomData, TableUpdateData } from "@dicom//Types/DicomTypes";
 
-
 /**
  * Update all files with new tag values
  * @description - Update all files with new tag values

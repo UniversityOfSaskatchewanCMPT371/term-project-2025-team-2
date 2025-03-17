@@ -53,9 +53,8 @@ export const SidePanel = () => {
         setSidePanelVisible(false);
         setFoundPII(false);
         setPII([]);
-        setReset((prev)=>prev++);
+        setReset((prev) => prev++);
         setTags([]);
-        
     };
 
     const regex = new RegExp(/^[A-Za-z]+(?: [A-Za-z]+)?$/);
@@ -113,7 +112,7 @@ export const SidePanel = () => {
                         setFoundPII(false);
                         setPII([]);
                         setTags([]);
-                        setReset((prev)=>prev++);
+                        setReset((prev) => prev++);
                     }}
                     className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
