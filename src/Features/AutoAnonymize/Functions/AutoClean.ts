@@ -67,6 +67,7 @@ export const AutoAnon = async (
 
     try {
         setLoading(true);
+
         dicomData.forEach((dicom: any, index: number) => {
             const formattedData = FormatData(dicom, tagsToAnon);
 
@@ -81,7 +82,7 @@ export const AutoAnon = async (
             });
 
             const updatedFile = tagUpdater(
-                dicomData[0].DicomDataSet,
+                dicom.DicomDataSet,
                 formattedData
             );
 
