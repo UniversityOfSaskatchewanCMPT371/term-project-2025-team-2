@@ -12,7 +12,7 @@ import logger from "@logger/Logger";
  */
 export const AlertHeader: React.FC = () => {
     const alertMsg = useStore((state) => state.alertMsg);
-    const alertType = useStore((state) => state.alterType);
+    const alertType = useStore((state) => state.alertType);
 
     logger.debug("Rendering AlertHeader");
     logger.debug(`Alert message: ${alertMsg}`);

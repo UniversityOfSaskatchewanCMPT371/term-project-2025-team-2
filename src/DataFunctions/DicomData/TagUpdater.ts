@@ -50,7 +50,7 @@ const vrOffset = 4;
 const lengthOffset = 6;
 
 import dicomParser from "dicom-parser";
-import logger from "@logger/Logger"
+import logger from "@logger/Logger";
 
 /**
  * Update the tags in a dicom file
@@ -65,7 +65,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
-    let data;
+    let data: any;
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -94,20 +94,26 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         } else if (tag.add) {
             data = addTag(dicomData, tag);
         } else {
-            const tagIdByte = new Uint8Array(groupLen + elementLen);
-            const group = parseInt(tag.tagId.slice(1, 5), 16);
-            const element = parseInt(tag.tagId.slice(5), 16);
+            try {
+                const tagIdByte = new Uint8Array(groupLen + elementLen);
+                const group = parseInt(tag.tagId.slice(1, 5), 16);
+                const element = parseInt(tag.tagId.slice(5), 16);
 
-            tag.dataOffSet =
-                dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+                tag.dataOffSet =
+                    dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
 
-            tagIdByte.set(
-                new Uint8Array([group, group >> 8, element, element >> 8])
-            );
-            const newTag = createTag(tagIdByte, tag, true);
-            data = insertTag(dicomData, tag, newTag);
+                tagIdByte.set(
+                    new Uint8Array([group, group >> 8, element, element >> 8])
+                );
+                const newTag = createTag(tagIdByte, tag, true);
+                data = insertTag(dicomData, tag, newTag);
 
-            debug("newTag: " + JSON.stringify(newTag));
+                debug("newTag: " + JSON.stringify(newTag));
+            } catch (error) {
+                logger.error(
+                    `Tag: ${tag.tagId} doesn't exisit in file ${error}`
+                );
+            }
         }
 
         const newData = dicomParser.parseDicom(data);
@@ -123,12 +129,11 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     throw new Error("File Update Failed");
 }
 
-
 /**
- * 
- * @param dicomData 
- * @param tag 
- * @returns 
+ *
+ * @param dicomData
+ * @param tag
+ * @returns
  */
 function addTag(dicomData: any, tag: any) {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
@@ -140,7 +145,9 @@ function addTag(dicomData: any, tag: any) {
 
     const newArray = concatBuffers(dicomData.byteArray, newTag);
 
-    debug("newTag: " + newArray.map((byte: any) => byte.toString(10)).join(" "));
+    debug(
+        "newTag: " + newArray.map((byte: any) => byte.toString(10)).join(" ")
+    );
 
     return newArray;
 }
@@ -161,7 +168,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToAdd.dataOffSet +
-        dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+            dicomData.elements[tagToAdd.tagId.toLowerCase()].length
     );
 
     const buf1 = concatBuffers(first, newtag);
@@ -187,7 +194,7 @@ function removeTag(dicomData: any, tagToRemove: any) {
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
     const last = dicomByteArray.slice(
         tagToRemove.dataOffSet +
-        dicomData.elements[tagToRemove.tagId.toLowerCase()].length
+            dicomData.elements[tagToRemove.tagId.toLowerCase()].length
     );
 
     const newArray = concatBuffers(first, last);
@@ -232,11 +239,11 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
     const tagLength =
         valueOffset === longHeaderLen
             ? writeTypedNumber(
-                valueLength,
-                "uint32",
-                longHeaderLengthLen,
-                littleEndian
-            )
+                  valueLength,
+                  "uint32",
+                  longHeaderLengthLen,
+                  littleEndian
+              )
             : writeTypedNumber(valueLength, "uint16", lengthLen, littleEndian);
 
     const newTag = new Uint8Array(valueLength + valueOffset);
@@ -443,14 +450,14 @@ export function getSingleFileTagEdits(newTags: any, fileName: string) {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
-/** 
+/**
  * Verify that the data is an array buffer
  * @description - Verify that the data is an array buffer
  * @precondition - The data must be a valid array buffer
  * @postcondition - The data will be verified as an array buffer
  * @param data - The data to be verified
  * @returns - True if the data is an array buffer, false otherwise
-*/
+ */
 function verifyArrayBuffer(data: any) {
     try {
         dicomParser.parseDicom(data);
