@@ -73,7 +73,9 @@ describe("updateAllFiles", () => {
             newTagValues,
             files,
             currentFileIndex,
-            "single"
+            "single",
+            {},
+            () => {}
         );
 
         expect(tagUpdater).toHaveBeenCalledTimes(2);
@@ -89,7 +91,9 @@ describe("updateAllFiles", () => {
             newTagValues,
             files,
             currentFileIndex,
-            "zip"
+            "zip",
+            {},
+            () => {}
         );
 
         expect(tagUpdater).toHaveBeenCalledTimes(2);
@@ -109,7 +113,9 @@ describe("updateAllFiles", () => {
             newTagValues,
             files,
             currentFileIndex,
-            "single"
+            "single",
+            {},
+            () => {}
         );
 
         expect(tagUpdater).toHaveBeenCalledTimes(2);
@@ -125,7 +131,9 @@ describe("updateAllFiles", () => {
             newTagValues,
             files,
             currentFileIndex,
-            "single"
+            "single",
+            {},
+            () => {}
         );
 
         expect(tagUpdater).not.toHaveBeenCalled();

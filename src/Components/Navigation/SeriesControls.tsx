@@ -23,6 +23,8 @@ export const SeriesControls: React.FC<SeriesControlsProps> = () => {
     const seriesToggle = useStore((state) => state.toggleSeries);
     const clearData = useStore((state) => state.clearData);
 
+    const fileStructure = useStore((state) => state.fileStructure);
+
     logger.debug("Rendering SeriesControls");
 
     return (
@@ -41,7 +43,9 @@ export const SeriesControls: React.FC<SeriesControlsProps> = () => {
                             newTagValues,
                             files,
                             currentFileIndex,
-                            downloadOption
+                            downloadOption,
+                            fileStructure,
+                            useStore.getState().setLoadingMsg
                         );
                         clearData();
                     } catch (err) {

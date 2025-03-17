@@ -22,15 +22,22 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
                 const tagId = (row.tagId ?? "").toString().toLowerCase();
                 const tagName = (row.tagName ?? "").toString().toLowerCase();
 
-                const matchesTag = tagId.includes(lowerSearchTerm) || tagName.includes(lowerSearchTerm);
+                const matchesTag =
+                    tagId.includes(lowerSearchTerm) ||
+                    tagName.includes(lowerSearchTerm);
 
                 const matchesNested =
                     Array.isArray(row.value) &&
                     row.value.some((nestedRow: any) => {
-                        const nestedTagId = (nestedRow?.tagId ?? "").toString().toLowerCase();
-                        const nestedTagName = (nestedRow?.tagName ?? "").toString().toLowerCase();
+                        const nestedTagId = (nestedRow?.tagId ?? "")
+                            .toString()
+                            .toLowerCase();
+                        const nestedTagName = (nestedRow?.tagName ?? "")
+                            .toString()
+                            .toLowerCase();
                         return (
-                            nestedTagId.includes(lowerSearchTerm) || nestedTagName.includes(lowerSearchTerm)
+                            nestedTagId.includes(lowerSearchTerm) ||
+                            nestedTagName.includes(lowerSearchTerm)
                         );
                     });
 

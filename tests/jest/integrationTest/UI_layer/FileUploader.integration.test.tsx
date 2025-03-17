@@ -94,7 +94,7 @@ describe("FileUploader Component Integration Tests", () => {
             tags: {},
             DicomDataSet: {},
             fileName: "file1.dcm",
-            filePath: "",
+            filePath: "root/file1.dcm",
             mockMetadata: "mocked DICOM data",
         };
 

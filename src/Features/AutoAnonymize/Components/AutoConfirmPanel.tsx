@@ -22,7 +22,12 @@ export const SidePanel = () => {
     const dicomData = useStore((state) => state.dicomData);
     const clearData = useStore((state) => state.clearData);
     const tagsToAnon = useStore((state) => state.tagsToAnon);
+    const setLoading = useStore((state) => state.setLoading);
+    const setLoadingMsg = useStore((state) => state.setLoadingMsg);
+
     const [reset, setReset] = useState<number>(0);
+
+    const fileStructure = useStore((state) => state.fileStructure);
 
     const handleUpdateValue = (
         tagId: string,
@@ -48,7 +53,8 @@ export const SidePanel = () => {
     const handleAutoAnon = async () => {
         logger.debug("Auto Anonymizing tags");
 
-        await AutoAnon(dicomData, files, tags, tagsToAnon);
+        await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
+
         clearData();
         setSidePanelVisible(false);
         setFoundPII(false);
@@ -101,7 +107,11 @@ export const SidePanel = () => {
 
             <div className="mb-4 flex justify-around">
                 <button
-                    onClick={() => handleAutoAnon()}
+                    onClick={() => {
+                        setLoading(true);
+                        setLoadingMsg("Anonymizing tags...");
+                        handleAutoAnon();
+                    }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
                     OK
