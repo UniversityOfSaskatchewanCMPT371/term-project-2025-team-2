@@ -17,7 +17,7 @@ describe("FileUploader Component Unit Tests", () => {
 
         expect(
             screen.getByText(
-                "Drag and drop DICOM files here, or click the button below to select files"
+                "Drag and drop DICOM files or folders here, or click the buttons below to select"
             )
         ).toBeInTheDocument();
 

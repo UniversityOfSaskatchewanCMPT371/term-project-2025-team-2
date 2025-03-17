@@ -32,6 +32,9 @@ type Store = {
     loading: boolean;
     setLoading: (loading: boolean) => void;
 
+    loadingMsg: string;
+    setLoadingMsg: (msg: string) => void;
+
     showErrorModal: boolean;
     showError: () => void;
     setShowErrorModal: (show: boolean) => void;
@@ -88,8 +91,8 @@ type Store = {
     alertMsg: string;
     setAlertMsg: (msg: string) => void;
 
-    alterType: string;
-    setAlterType: (type: string) => void;
+    alertType: string;
+    setAlertType: (type: string) => void;
 
     allowEditLockedTags: boolean;
     setAllowEditLockedTags: (allowEdit: boolean) => void;
@@ -97,6 +100,11 @@ type Store = {
     tagsToAnon: any[];
     setTagsToAnon: (tags: any) => void;
     resetTagsAnon: () => void;
+
+    fileStructure: Record<string, File[]>;
+    setFileStructure: (struture: Record<string, File[]>) => void;
+
+    
 };
 
 /**
@@ -115,6 +123,9 @@ export const useStore = create<Store>((set) => ({
 
     loading: false,
     setLoading: (loading) => set({ loading }),
+
+    loadingMsg: "",
+    setLoadingMsg: (msg) => set({loadingMsg: msg}),
 
     showErrorModal: false,
     showError: () => set({ showErrorModal: true }),
@@ -209,10 +220,10 @@ export const useStore = create<Store>((set) => ({
     alertMsg: "Alert",
     setAlertMsg: (msg) => set({ alertMsg: msg }),
 
-    alterType: "alert-error",
-    setAlterType: (type) => {
+    alertType: "alert-error",
+    setAlertType: (type) => {
         set({
-            alterType:
+            alertType:
                 type !== "alert-error" &&
                 type !== "alert-success" &&
                 type !== "alert-warning"
@@ -241,4 +252,7 @@ export const useStore = create<Store>((set) => ({
         set({ tagsToAnon: TagsAnon });
         localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
     },
+
+    fileStructure: {},
+    setFileStructure: (structure) => {set({fileStructure: structure})}
 }));

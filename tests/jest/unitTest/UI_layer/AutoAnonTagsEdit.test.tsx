@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
 import * as storeModule from "@state/Store";
 
@@ -69,84 +69,84 @@ describe("AutoAnonTagsEdit", () => {
         expect(screen.getByPlaceholderText("Tag Value")).toBeInTheDocument();
     });
 
-    // test("validates and adds a tag", async () => {
-    //     jest.resetAllMocks();
+    test("validates and adds a tag", async () => {
+        jest.resetAllMocks();
 
-    //     const mockSetAlertMsg = jest.fn();
-    //     const mockSetShowAlert = jest.fn();
-    //     const mockSetAlertType = jest.fn();
-    //     const mockSetTagsToAnon = jest.fn();
+        const mockSetAlertMsg = jest.fn();
+        const mockSetShowAlert = jest.fn();
+        const mockSetAlertType = jest.fn();
+        const mockSetTagsToAnon = jest.fn();
 
-    //     const testMockState = {
-    //         ...mockState,
-    //         files: [{ name: "test.dcm" }],
-    //         dicomData: [
-    //             {
-    //                 tags: [
-    //                     { tagId: "tag1", tagName: "tag1", value: "value1" },
-    //                     { tagId: "tag2", tagName: "tag2", value: "value2" },
-    //                 ],
-    //                 DicomDataSet: "dicomData",
-    //             },
-    //         ],
-    //         currentFileIndex: 0,
-    //         newTagValues: [{ tag1: "value2" }],
-    //         showHiddenTags: false,
-    //         autoAnonTagsEditPanelVisible: true,
-    //         tagsToAnon: [],
-    //         setAutoAnonTagsEditPanelVisible: jest.fn(),
-    //         setTagsToAnon: mockSetTagsToAnon,
-    //         resetTagsAnon: jest.fn(),
-    //         setAlertMsg: mockSetAlertMsg,
-    //         setShowAlert: mockSetShowAlert,
-    //         setAlertType: mockSetAlertType,
-    //     };
+        const testMockState = {
+            ...mockState,
+            files: [{ name: "test.dcm" }],
+            dicomData: [
+                {
+                    tags: [
+                        { tagId: "tag1", tagName: "tag1", value: "value1" },
+                        { tagId: "tag2", tagName: "tag2", value: "value2" },
+                    ],
+                    DicomDataSet: "dicomData",
+                },
+            ],
+            currentFileIndex: 0,
+            newTagValues: [{ tag1: "value2" }],
+            showHiddenTags: false,
+            autoAnonTagsEditPanelVisible: true,
+            tagsToAnon: [],
+            setAutoAnonTagsEditPanelVisible: jest.fn(),
+            setTagsToAnon: mockSetTagsToAnon,
+            resetTagsAnon: jest.fn(),
+            setAlertMsg: mockSetAlertMsg,
+            setShowAlert: mockSetShowAlert,
+            setAlertType: mockSetAlertType,
+        };
 
-    //     ((storeModule.useStore as unknown) as jest.Mock).mockImplementation((selector) => {
-    //         if (typeof selector === 'function') {
-    //             return selector(testMockState);
-    //         }
-    //         return testMockState;
-    //     });
+        ((storeModule.useStore as unknown) as jest.Mock).mockImplementation((selector) => {
+            if (typeof selector === 'function') {
+                return selector(testMockState);
+            }
+            return testMockState;
+        });
 
-    //     render(<AutoAnonTagsEdit />);
+        render(<AutoAnonTagsEdit />);
 
-    //     const addTagButton = screen.getByText("Add Tag");
-    //     fireEvent.click(addTagButton);
+        const addTagButton = screen.getByText("Add Tag");
+        fireEvent.click(addTagButton);
 
-    //     const tagIdInput = screen.getByPlaceholderText("Tag ID");
-    //     const tagNameInput = screen.getByPlaceholderText("Tag Name");
-    //     const tagValueInput = screen.getByPlaceholderText("Tag Value");
+        const tagIdInput = screen.getByPlaceholderText("Tag ID");
+        const tagNameInput = screen.getByPlaceholderText("Tag Name");
+        const tagValueInput = screen.getByPlaceholderText("Tag Value");
 
-    //     fireEvent.change(tagIdInput, { target: { value: "123" } });
-    //     fireEvent.change(tagNameInput, { target: { value: "Test Tag" } });
-    //     fireEvent.change(tagValueInput, { target: { value: "Test Value" } });
+        fireEvent.change(tagIdInput, { target: { value: "123" } });
+        fireEvent.change(tagNameInput, { target: { value: "Test Tag" } });
+        fireEvent.change(tagValueInput, { target: { value: "Test Value" } });
 
-    //     const checkCircleIcon = screen.getByTestId("CheckCircleIcon");
-    //     fireEvent.click(checkCircleIcon);
+        const checkCircleIcon = screen.getByTestId("CheckCircleIcon");
+        fireEvent.click(checkCircleIcon);
 
-    //     await waitFor(() => {
-    //         // expect(mockSetAlertMsg).toHaveBeenCalledWith("Tag ID has to be 8 numbers");
-    //         // expect(mockSetShowAlert).toHaveBeenCalledWith(true);
-    //     });
+        await waitFor(() => {
+            // expect(mockSetAlertMsg).toHaveBeenCalledWith("Tag ID has to be 8 numbers");
+            // expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+        });
 
-    //     mockSetAlertMsg.mockClear();
-    //     mockSetShowAlert.mockClear();
+        mockSetAlertMsg.mockClear();
+        mockSetShowAlert.mockClear();
 
-    //     fireEvent.change(tagIdInput, { target: { value: "12345678" } });
-    //     fireEvent.change(tagNameInput, { target: { value: "Test Tag" } });
-    //     fireEvent.change(tagValueInput, { target: { value: "Test Value" } });
+        fireEvent.change(tagIdInput, { target: { value: "12345678" } });
+        fireEvent.change(tagNameInput, { target: { value: "Test Tag" } });
+        fireEvent.change(tagValueInput, { target: { value: "Test Value" } });
 
-    //     fireEvent.click(checkCircleIcon);
+        fireEvent.click(checkCircleIcon);
 
-    //     await waitFor(() => {
-    //         expect(mockSetTagsToAnon).toHaveBeenCalled();
-    //     });
+        await waitFor(() => {
+            expect(mockSetTagsToAnon).toHaveBeenCalled();
+        });
 
-    //     if (mockSetTagsToAnon.mock.calls.length > 0) {
-    //         console.log("Actual value passed to setTagsToAnon:", JSON.stringify(mockSetTagsToAnon.mock.calls[0][0]));
-    //     }
-    // });
+        if (mockSetTagsToAnon.mock.calls.length > 0) {
+            console.log("Actual value passed to setTagsToAnon:", JSON.stringify(mockSetTagsToAnon.mock.calls[0][0]));
+        }
+    });
 
     test("disables Save button when no tags to anonymize", () => {
         render(<AutoAnonTagsEdit />);

@@ -22,7 +22,7 @@ export const NewTagRow = () => {
     const setShowAddTag = useStore((state) => state.setShowAddTag);
     const files = useStore((state) => state.files);
     const currentFileIndex = useStore((state) => state.currentFileIndex);
-    const setAlertType = useStore((state) => state.setAlterType);
+    const setAlertType = useStore((state) => state.setAlertType);
 
     const handleUpdateValue = (
         tagId: string,

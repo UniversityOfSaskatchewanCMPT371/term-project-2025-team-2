@@ -39,7 +39,7 @@ test("Edit tag in series", async ({ page }) => {
             throw new Error("No DICOM files found in the directory");
         }
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles(dicomFiles);
 
         await page.waitForSelector("text=Edit Files", {

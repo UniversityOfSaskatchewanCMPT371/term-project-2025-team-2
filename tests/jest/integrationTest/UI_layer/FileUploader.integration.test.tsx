@@ -93,6 +93,9 @@ describe("FileUploader Component Integration Tests", () => {
             Value: "198",
             tags: {},
             DicomDataSet: {},
+            fileName: "file1.dcm",
+            filePath: "",
+            mockMetadata: "mocked DICOM data",
         };
 
         mockedParseDicomFile.mockResolvedValue(dicomMetadata);

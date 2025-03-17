@@ -65,7 +65,7 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     const newTags: any = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
-    let data;
+    let data: any;
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -94,20 +94,24 @@ export function tagUpdater(dicomData: any, newTagData: any) {
         } else if (tag.add) {
             data = addTag(dicomData, tag);
         } else {
-            const tagIdByte = new Uint8Array(groupLen + elementLen);
-            const group = parseInt(tag.tagId.slice(1, 5), 16);
-            const element = parseInt(tag.tagId.slice(5), 16);
+            try {
+                const tagIdByte = new Uint8Array(groupLen + elementLen);
+                const group = parseInt(tag.tagId.slice(1, 5), 16);
+                const element = parseInt(tag.tagId.slice(5), 16);
 
-            tag.dataOffSet =
-                dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+                tag.dataOffSet =
+                    dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
 
-            tagIdByte.set(
-                new Uint8Array([group, group >> 8, element, element >> 8])
-            );
-            const newTag = createTag(tagIdByte, tag, true);
-            data = insertTag(dicomData, tag, newTag);
+                tagIdByte.set(
+                    new Uint8Array([group, group >> 8, element, element >> 8])
+                );
+                const newTag = createTag(tagIdByte, tag, true);
+                data = insertTag(dicomData, tag, newTag);
 
-            debug("newTag: " + JSON.stringify(newTag));
+                debug("newTag: " + JSON.stringify(newTag));
+            } catch (error) {
+                logger.error(`Tag: ${tag.tagId} doesn't exisit in file`);
+            }
         }
 
         const newData = dicomParser.parseDicom(data);

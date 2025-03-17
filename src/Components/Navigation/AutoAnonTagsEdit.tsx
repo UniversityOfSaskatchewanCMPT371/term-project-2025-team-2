@@ -25,7 +25,7 @@ export const AutoAnonTagsEdit = () => {
     const resetTagsAnon = useStore((state) => state.resetTagsAnon);
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state) => state.setAlertMsg);
-    const setAlertType = useStore((state) => state.setAlterType);
+    const setAlertType = useStore((state) => state.setAlertType);
 
     const [tagId, setTagId] = useState<string>("");
     const [tagName, setTagName] = useState<string>("");

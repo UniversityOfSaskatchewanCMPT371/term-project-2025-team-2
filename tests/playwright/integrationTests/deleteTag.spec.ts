@@ -11,7 +11,7 @@ test("Click delete tag button state check", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles(
             "./test-data/test_dicoms/gen_dicom_files/test_dicom_0.dcm"
         );
