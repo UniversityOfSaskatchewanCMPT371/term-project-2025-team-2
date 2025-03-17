@@ -4,11 +4,11 @@ import { assert } from "../assert";
 import logger from "@logger/Logger";
 
 /**
- * Creates a ZIP file containing multiple files
- * @description - Create a zip file from multiple files
- * @precondition - The files array must contain objects with a name and content
- * @postcondition - The ZIP file is created and returned as a Blob
- * @param files - Array of files with name and content
+ * Creates a ZIP file containing multiple files, preserving folder structure
+ * @description - Create a zip file from multiple files while maintaining folder structure
+ * @precondition - The files array must contain objects with name, content, and optional path
+ * @postcondition - The ZIP file is created with preserved folder structure and returned as a Blob
+ * @param files - Array of files with name, content, and optional path
  * @returns Promise resolving to the ZIP file as a Blob
  */
 export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
@@ -18,9 +18,54 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     try {
         const zip = new JSZip();
 
-        // Add each file to the ZIP
+        // Group files by folder to ensure they go in the same directory
+        const folderMap = new Map<string, FileData[]>();
+        
+        // First, organize files by folder
         files.forEach((file) => {
-            zip.file(file.name, file.content);
+            let folderPath = ""; // Default to root
+            
+            if (file.path) {
+                // Use explicit path property if available
+                folderPath = file.path;
+            } else if (file.name.includes('/')) {
+                // Extract path from filename if it contains path separators
+                const parts = file.name.split('/');
+                parts.pop(); // Remove the actual filename
+                folderPath = parts.join('/');
+            }
+            
+            // Initialize folder array if it doesn't exist
+            if (!folderMap.has(folderPath)) {
+                folderMap.set(folderPath, []);
+            }
+            
+            // Add file to its folder group
+            folderMap.get(folderPath)?.push(file);
+        });
+        
+        // Now add each file to the ZIP, grouped by folder
+        folderMap.forEach((folderFiles, folderPath) => {
+            folderFiles.forEach((file) => {
+                // Get just the filename without any path
+                let fileName = file.name;
+                if (file.name.includes('/')) {
+                    fileName = file.name.split('/').pop() || file.name;
+                }
+                
+                // Construct the full path in the ZIP
+                let fullPath = fileName;
+                if (folderPath) {
+                    // Normalize folder path and combine with filename
+                    const normalizedPath = folderPath.endsWith('/') ? 
+                        folderPath : 
+                        `${folderPath}/`;
+                    fullPath = normalizedPath + fileName;
+                }
+                
+                // Add the file to the ZIP
+                zip.file(fullPath, file.content);
+            });
         });
 
         // Generate the ZIP file
@@ -33,9 +78,7 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
         });
 
         logger.debug(`ZIP file created: ${zipBlob.size} bytes`);
-
         assert(zipBlob !== null);
-
         return zipBlob;
     } catch (error) {
         logger.error(`Failed to create ZIP: ${error}`);
@@ -98,5 +141,5 @@ export function createFile(
 
     logger.debug("File created: ", finalName);
 
-    return { name: finalName, content: blob };
+    return { name: finalName, content: blob, path: "" };
 }

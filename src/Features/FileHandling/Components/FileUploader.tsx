@@ -5,7 +5,6 @@ import { FileUploaderProps } from "../Types/FileTypes";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
-// Add this at the top of your file, after your imports
 interface DirectoryInputHTMLAttributes
     extends React.InputHTMLAttributes<HTMLInputElement> {
     webkitdirectory?: string;
@@ -39,7 +38,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const setAlertType = useStore((state) => state.setAlertType);
     const setShowAlert = useStore((state) => state.setShowAlert);
 
-    // Create refs for the file inputs
     const fileInputRef = useRef<HTMLInputElement>(null);
     const directoryInputRef = useRef<HTMLInputElement>(null);
 
@@ -74,52 +72,52 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      * Processes array of files while preserving folder structure
      * @description - Parses DICOM files and maintains folder structure information
      * @param fileArray - Array of File objects to process
+     * @param existingFileStructure - Optional existing file structure to use
      * @precondition - fileArray must contain valid File objects
      * @postcondition - Files are parsed, structure is saved, and results are passed to onFileUpload
      * @returns void
      */
-    const processFiles = (fileArray: File[]) => {
+    const processFiles = (
+        fileArray: File[], 
+        existingFileStructure?: Record<string, File[]>
+    ) => {
         clearData();
         loading(true);
 
         logger.info(`Processing ${fileArray.length} files`);
 
-        // Store files by their path to maintain structure
-        const fileStructureTemp: Record<string, File[]> = {};
+        const fileStructureTemp: Record<string, File[]> = existingFileStructure || {};
 
-        // Group files by directory
-        fileArray.forEach((file) => {
-            // Get the file's relative path from webkitRelativePath
+        if (!existingFileStructure) {
+            fileArray.forEach((file) => {
+                const path = (file as any).webkitRelativePath || "";
+                const directory = path.split("/").slice(0, -1).join("/");
+                const dir = directory || "root";
 
-            const path = (file as any).webkitRelativePath || "";
-            const directory = path.split("/").slice(0, -1).join("/");
+                if (!fileStructureTemp[dir]) {
+                    fileStructureTemp[dir] = [];
+                }
 
-            // If no directory info, place in root
-            const dir = directory || "root";
-
-            // Initialize the directory array if it doesn't exist
-            if (!fileStructureTemp[dir]) {
-                fileStructureTemp[dir] = [];
-            }
-
-            // Add the file to its directory array
-            fileStructureTemp[dir].push(file);
-        });
+                fileStructureTemp[dir].push(file);
+            });
+            
+            logger.debug("Folder structure preserved from input selection");
+        } else {
+            logger.debug("Using provided folder structure");
+        }
 
         setFileStructure(fileStructureTemp);
 
-        // Map each file to a Promise that resolves with its parsed data
-        // and includes path information
         const promises = fileArray.map((file) =>
             parseDicomFile(file)
                 .then((data) => {
-                    // Attach path information to the parsed data
                     currentFile++;
                     setLoadingMsg(
                         `Processing file ${currentFile} of ${fileArray.length} files...`
                     );
 
-                    const path = (file as any).webkitRelativePath || "";
+                    const path = (file as any).webkitRelativePath || file.name;
+
                     return {
                         ...data,
                         filePath: path,
@@ -131,25 +129,19 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                     setFileParseError([...fileParseError, file.name]);
                     logger.error(error);
                     toggleModal();
-                    return null; // Ensure failed files do not break Promise.all
+                    return null;
                 })
         );
 
-        // Wait for all Promises to resolve
         Promise.all(promises)
             .then((dicomDataArray) => {
-                // Filter out null values
-                const validData = dicomDataArray.filter(
-                    (data) => data !== null
-                );
-                // Check if all files succeeded (no `null` values)
+                const validData = dicomDataArray.filter((data) => data !== null);
                 if (dicomDataArray.every((data) => data !== null)) {
-                    onFileUpload(fileArray, validData); // fileStructure); // Pass file structure
+                    onFileUpload(fileArray, validData);
                 } else {
                     onFileUpload(
                         fileArray.filter((_, i) => dicomDataArray[i] !== null),
                         validData
-                        // fileStructure
                     );
                 }
             })
@@ -167,11 +159,46 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
      * @postcondition - Files are cleared and processed
      * @returns void
      */
-    const onDrop = (acceptedFiles: File[]) => {
+    const onDrop = async (acceptedFiles: File[]) => {
         logger.info(`Accepted ${acceptedFiles.length} files`);
         clearData();
         loading(true);
-        processFiles(acceptedFiles);
+        currentFile = 0;
+        
+        try {
+            await processEntries(acceptedFiles);
+        } catch (error) {
+            logger.error("Error processing dragged folder structure:", error);
+            processFiles(acceptedFiles);
+        }
+    };
+
+    /**
+     * Process entries from drag and drop operation
+     * @description - Process files from drag and drop operation, placing all in a single folder
+     * @param files - Files from drag and drop
+     * @returns A promise that resolves when all entries are processed
+     */
+    const processEntries = async (files: File[]) => {
+        const fileStructureTemp: Record<string, File[]> = {
+            "root": [...files]
+        };
+        
+        logger.debug('Drag and drop detected - placing all files in root folder');
+        logger.debug(`Total files: ${files.length}`);
+        
+        files.forEach((file, index) => {
+            Object.defineProperty(file, 'webkitRelativePath', {
+                value: `root/${file.name}`,
+                writable: true
+            });
+            
+            if (index < 3) {
+                logger.debug(`Sample file ${index}: ${file.name}, size: ${file.size}`);
+            }
+        });
+        
+        processFiles(files, fileStructureTemp);
     };
 
     /**
@@ -185,7 +212,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const openFileSelector = (isDirectory: boolean) => {
         try {
             if (isDirectory && directoryInputRef.current) {
-                // For Chrome, you can also check if the feature is available
                 if ("webkitdirectory" in HTMLInputElement.prototype) {
                     directoryInputRef.current.click();
                 } else {
@@ -214,8 +240,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         multiple: true,
-        noClick: true, // Don't open file dialog on container click
-        noKeyboard: true, // Disable keyboard navigation
+        noClick: true,
+        noKeyboard: true,
     });
 
     return (
@@ -223,7 +249,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             <div
                 {...getRootProps()}
                 onClick={(e) => {
-                    // Only trigger if directly clicking the drop zone (not buttons)
                     if (e.target === e.currentTarget) {
                         openFileSelector(false);
                     }
@@ -240,7 +265,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                     <div className="flex flex-col gap-3 sm:flex-row">
                         <button
                             onClick={(e) => {
-                                e.stopPropagation(); // Add this to prevent event bubbling
+                                e.stopPropagation();
                                 e.preventDefault();
                                 openFileSelector(false);
                             }}
@@ -250,7 +275,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                         </button>
                         <button
                             onClick={(e) => {
-                                e.stopPropagation(); // Add this to prevent event bubbling
+                                e.stopPropagation();
                                 e.preventDefault();
                                 openFileSelector(true);
                             }}
@@ -262,7 +287,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 </div>
             </div>
 
-            {/* Hidden file input for selecting individual files */}
             <input
                 ref={fileInputRef}
                 type="file"
@@ -271,7 +295,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 className="hidden"
             />
 
-            {/* Hidden file input for selecting directories */}
             <input
                 ref={directoryInputRef}
                 type="file"
