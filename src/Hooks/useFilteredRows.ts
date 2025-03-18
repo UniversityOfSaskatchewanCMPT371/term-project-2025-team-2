@@ -50,6 +50,6 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
 
                 return matchesTag || matchesNested || matchesValue;
             }),
-        [rows, searchTerm]
+        [rows, lowerSearchTerm]
     );
 };
