@@ -1,5 +1,6 @@
 import React from "react";
 import { SearchProps } from "@type/types";
+import logger from "@logger/Logger";
 
 /**
  * Search component for filtering tags
@@ -14,6 +15,8 @@ export const Search: React.FC<SearchProps> = ({
     searchTerm,
     onSearchChange,
 }) => {
+    logger.debug("Rendering Search component");
+
     return (
         <div className="mb-4 flex items-center">
             <input

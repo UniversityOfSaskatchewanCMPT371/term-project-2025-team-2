@@ -73,10 +73,14 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
      * @returns {void}
      */
     const updateFile = () => {
+        logger.debug(`Updating file: ${files[currentFileIndex].name}`);
+
         const currentFileName = files[currentFileIndex].name;
         const isFileEdited = newTagValues.some(
             (tag) => tag.fileName === currentFileName
         );
+
+        logger.debug(`File edited: ${isFileEdited}`);
 
         const updatedDicomData = tagUpdater(
             dicomData[currentFileIndex].DicomDataSet,
@@ -91,6 +95,8 @@ export const DicomTable: React.FC<DicomTableProps> = () => {
         downloadDicomFile(newFile);
         clearData();
     };
+
+    logger.debug("Rendering DICOM table");
 
     return (
         <div key={fileName} className="mt-8">

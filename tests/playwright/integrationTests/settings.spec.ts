@@ -36,7 +36,7 @@ test("Verify Set Theme toggle functionality", async ({ page }) => {
         await settingsButton.click();
 
         const moonIcon = page
-            .locator('label.mb-4cursor-pointer.label svg[data-slot="icon"]')
+            .locator('label.mb-2.cursor-pointer.label svg[data-slot="icon"]')
             .first();
         await expect(moonIcon).toBeVisible();
         await expect(moonIcon).toBeEnabled();
@@ -61,7 +61,7 @@ test("Verify toggle input (checkbox) is clickable", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const label = page.locator("label.mb-4cursor-pointer.label");
+        const label = page.locator("label.mb-2.cursor-pointer.label");
 
         const setThemeToggle = label.locator("#theme-option");
         await expect(setThemeToggle).toBeVisible();
@@ -91,7 +91,7 @@ test("Verify second SVG icon (Sun icon) is clickable", async ({ page }) => {
         await settingsButton.click();
 
         const sunIcon = page
-            .locator('label.mb-4cursor-pointer.label svg[data-slot="icon"]')
+            .locator('label.mb-2.cursor-pointer.label svg[data-slot="icon"]')
             .nth(1);
         await expect(sunIcon).toBeVisible();
 
@@ -116,7 +116,7 @@ test("Verify Show Hidden Tags toggle state change", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
-        const label = page.locator("label.mb-4cursor-pointer.label");
+        const label = page.locator("label.mb-2.cursor-pointer.label");
 
         const showHiddenTagsToggle = label.locator("#hidden-tag-option");
         await expect(showHiddenTagsToggle).toBeVisible();

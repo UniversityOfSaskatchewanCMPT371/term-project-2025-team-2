@@ -7,7 +7,7 @@ test("Upload DICOM file", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles("./test-data/000000.dcm");
 
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
@@ -24,7 +24,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles("./test-data/CR000001.dcm");
 
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {

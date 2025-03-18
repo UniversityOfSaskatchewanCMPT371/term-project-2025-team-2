@@ -1,7 +1,7 @@
 import React from "react";
 import { FileListProps } from "../Types/FileTypes";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
-
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store.tsx";
 
 /**
@@ -19,6 +19,10 @@ export const FileTableBody: React.FC<FileListProps> = ({ openModal }) => {
     const series = useStore((state) => state.series);
     const setCurrentFileIndex = useStore((state) => state.setCurrentFileIndex);
     const files = useStore((state) => state.files);
+
+    logger.debug(
+        `Rendering FileTableBody component with ${files.length} files`
+    );
 
     return (
         <tbody>

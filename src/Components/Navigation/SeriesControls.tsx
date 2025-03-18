@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import { GenButton } from "../utils/GenButton";
 import { SeriesControlsProps } from "@type/types";
-
+import logger from "../../Logger/Logger";
 import { updateAllFiles } from "@dataFunctions/DicomData/UpdateAllFiles";
 import { useStore } from "@state/Store";
 
@@ -23,23 +23,39 @@ export const SeriesControls: React.FC<SeriesControlsProps> = () => {
     const seriesToggle = useStore((state) => state.toggleSeries);
     const clearData = useStore((state) => state.clearData);
 
+    const fileStructure = useStore((state) => state.fileStructure);
+
+    logger.debug("Rendering SeriesControls");
+
     return (
         <>
             <GenButton
                 label={series ? "Apply Edits to All Files" : "Save All Files"}
                 disabled={false}
-                onClick={() => {
-                    updateAllFiles(
-                        dicomData,
-                        series,
-                        newTagValues,
-                        files,
-                        currentFileIndex,
-                        downloadOption
-                    );
-                    clearData();
+                onClick={async () => {
+                    logger.debug("Apply edits button clicked");
+                    useStore.getState().setLoading(true);
+
+                    try {
+                        await updateAllFiles(
+                            dicomData,
+                            series,
+                            newTagValues,
+                            files,
+                            currentFileIndex,
+                            downloadOption,
+                            fileStructure,
+                            useStore.getState().setLoadingMsg
+                        );
+                        clearData();
+                    } catch (err) {
+                        logger.error("Failed to update files", err);
+                    } finally {
+                        useStore.getState().setLoading(false);
+                    }
                 }}
             />
+
             <div className="mt-4 rounded-lg bg-base-300/50 p-3 backdrop-blur-sm">
                 <button
                     onClick={seriesToggle}

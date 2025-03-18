@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import * as fs from "fs";
 
-import { TagsAnon } from "../../../src/Features/AutoAnonymize/Functions/TagsAnon";
+import { TagsAnon } from "@features/AutoAnonymize/Functions/TagsAnon";
 
 import AdmZip from "adm-zip";
 import { promisify } from "util";
@@ -41,7 +41,7 @@ test("Auto anon tags in series", async ({ page }) => {
             throw new Error("No DICOM files found in the directory");
         }
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles(dicomFiles);
 
         await page.waitForSelector("text=Edit Files", {

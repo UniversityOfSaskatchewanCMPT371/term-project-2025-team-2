@@ -1,3 +1,5 @@
+import logger from "@logger/Logger";
+
 /**
  * createRows function
  * @description Function to create rows for the DICOM table
@@ -13,6 +15,8 @@ export const createRows = (
     fileName: string,
     newTableData: any[]
 ) => {
+    logger.debug("Creating rows for the DICOM table");
+
     const data = Object.entries(dicomData.tags).map(
         ([tagId, tagData]: [string, any]) => ({
             tagId,
@@ -42,6 +46,8 @@ export const createRows = (
             });
         }
     });
+
+    logger.debug(`Created ${data.length} rows for the DICOM table`);
 
     return data;
 };

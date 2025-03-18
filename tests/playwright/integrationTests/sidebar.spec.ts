@@ -22,7 +22,7 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles([
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
@@ -48,7 +48,7 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
         });
 
         const editButton = page
-            .locator('tr:has-text("SOPClassUID")')
+            .locator('tr:has-text("X00080005")')
             .locator("svg")
             .first();
         await editButton.waitFor({ state: "visible", timeout: 5000 });
@@ -83,7 +83,7 @@ test("Testing edit individually and series button in sidebar", async ({
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles([
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
@@ -133,7 +133,7 @@ test("Navigating from files from sidebar", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles([
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
@@ -192,7 +192,7 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles([
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
@@ -248,7 +248,7 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
 
         const tagRow = page
             .locator("tr")
-            .filter({ hasText: "SOPClassUID" })
+            .filter({ hasText: "X00080020" })
             .first();
         await expect(tagRow).toBeVisible();
 

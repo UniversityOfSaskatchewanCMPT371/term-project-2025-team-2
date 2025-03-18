@@ -5,7 +5,7 @@ import { DownloadOption } from "../utils/DownloadOption";
 import { SettingsModalProps } from "@type/types";
 import { HiddenTagsOption } from "./HiddenTagsOption";
 import { ThemeSelector } from "./ThemeSelector";
-
+import logger from "../../Logger/Logger";
 import { useStore } from "@state/Store";
 import { EditOption } from "@components/utils/EditOption";
 
@@ -26,6 +26,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     const setAutoAnonTagsEditPanelVisible = useStore(
         (state) => state.setAutoAnonTagsEditPanelVisible
     );
+
+    logger.debug("Rendering SettingsModal component");
 
     return (
         <div
@@ -63,13 +65,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <p>Editing Locked Tags</p>
                 <EditOption />
 
-                <GenButton
-                    onClick={() => {
-                        setAutoAnonTagsEditPanelVisible(true);
-                    }}
-                    disabled={false}
-                    label="Show Side Panel"
-                />
+                <div className="mb-4">
+                    <GenButton
+                        onClick={() => {
+                            logger.debug("Edit Auto-Anon Tags button clicked");
+                            setAutoAnonTagsEditPanelVisible(true);
+                        }}
+                        disabled={false}
+                        label="Edit Auto-Anon Tags"
+                    />
+                </div>
 
                 <GenButton
                     onClick={toggleModal}

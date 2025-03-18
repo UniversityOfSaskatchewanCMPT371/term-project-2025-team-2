@@ -1,6 +1,7 @@
 import React from "react";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { HeaderProps } from "@type/types";
+import logger from "../../Logger/Logger";
 
 /**
  * Header component for the sidebar
@@ -12,6 +13,8 @@ import { HeaderProps } from "@type/types";
  * @returns {JSX.Element} Rendered Header component
  */
 export const Header: React.FC<HeaderProps> = ({ toggleModal }) => {
+    logger.debug("Rendering Header component");
+
     return (
         <div className="mb-6 flex items-center justify-between">
             <h3 className="text-xl font-bold text-primary">Files</h3>

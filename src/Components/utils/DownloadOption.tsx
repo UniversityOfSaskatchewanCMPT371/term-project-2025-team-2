@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { isSafari } from "react-device-detect";
-
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 import { DownloadOptionProps } from "@type/types";
 import { assert } from "@dataFunctions/assert";
@@ -24,21 +24,27 @@ export const DownloadOption: React.FC<DownloadOptionProps> = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (safari) {
             // Safari does not support downloading multiple files at once
+            logger.info("Safari browser detected - not supported");
             return;
         }
 
         if (files.length > MAXSINGLEFILESDOWNLOAD) {
+            logger.info(`Too many files ${files.length} - Zip Only`);
             return;
         }
 
         if (event.target.checked) {
             setDownloadOption("zip");
+            logger.info("Switched to Zip File");
         } else {
             setDownloadOption("single");
+            logger.info("Switched to Individual Files");
         }
 
         assert(downloadOption === "zip" || downloadOption === "single");
     };
+
+    logger.debug("Rendering DownloadOption component");
 
     return (
         <div>

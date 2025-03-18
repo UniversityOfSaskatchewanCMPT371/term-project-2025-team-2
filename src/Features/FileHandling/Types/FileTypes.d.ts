@@ -37,6 +37,7 @@ export interface FileNavigationProps {
 export interface FileData {
     name: string;
     content: Blob;
+    path?: string;
 }
 
 /**

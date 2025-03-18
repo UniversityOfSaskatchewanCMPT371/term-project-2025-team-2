@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../Types/DicomTypes";
 import { useStore } from "@state/Store";
+import logger from "@logger/Logger";
 
 const lockEditingTags: any = [
     "X00080016",
@@ -13,6 +14,10 @@ const lockEditingTags: any = [
     "X00431028",
     "X00431029",
     "X0043102A",
+    "X7FE00010",
+    "X00020002",
+    "X00020003",
+    "X00020010",
 ];
 
 /**
@@ -58,6 +63,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewValue(e.target.value);
         setEdited(true);
+        logger.debug(`Changed value to ${e.target.value}`);
     };
 
     const handleBlur = () => {
@@ -67,30 +73,40 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
+        logger.debug(`Toggled expand for tag with tagId: ${row.tagId}`);
     };
 
     const toggleEditing = () => {
         setIsEditing(!isEditing);
+        logger.debug(`Toggled editing for tag with tagId: ${row.tagId}`);
     };
 
     const toggleDelete = () => {
         setDeleteTag((preValue) => !preValue);
         const tempDeletetag = !deleteTag;
 
+        logger.debug(
+            `Delete set to ${tempDeletetag}, tag with tagId: ${row.tagId}`
+        );
+
         onUpdateValue(row.tagId, newValue, tempDeletetag);
     };
+
+    logger.debug("Rendering DicomTableRow component");
 
     return (
         <React.Fragment key={index + row.tagId + row.value}>
             <tr
                 key={index + row.tagId}
-                className={`hover:bg-blue-600 ${deleteTag && "outline -outline-offset-4 outline-red-600"}`}
+                className={`hover:bg-blue-600 ${
+                    deleteTag && "outline -outline-offset-4 outline-red-600"
+                }`}
             >
-                {hideTagNumber ? null : (
+                {!hideTagNumber && (
                     <td
                         className={`break-all border px-4 py-2 ${
                             nested
-                                ? `bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-black dark:bg-blue-500`
+                                ? `bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-black dark:bg-blue-500`
                                 : ""
                         }`}
                         style={{
@@ -99,7 +115,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                     >
                         {typeof row.value !== "string" && (
                             <span
-                                className="mr-2 inline-block cursor-pointer text-white transition-colors hover:text-blue-200"
+                                className="mr-2 inline-block cursor-pointer text-blue-600 transition-colors hover:text-blue-200"
                                 onClick={toggleExpand}
                                 style={{ width: "20px" }}
                             >
@@ -114,6 +130,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 )}
 
                 <td className="break-all border px-4 py-2">{row.tagName}</td>
+
                 <td className="break-all border px-4 py-2">
                     {typeof row.value === "string" ||
                     row.value instanceof String ? (
@@ -136,9 +153,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 )}
                             </div>
                             {lockEditingTags.includes(row.tagId) &&
-                            !allowEditLockedTags ? (
-                                ""
-                            ) : (
+                            !allowEditLockedTags ? null : (
                                 <>
                                     <div
                                         className="flex cursor-pointer justify-end hover:text-accent"
@@ -160,10 +175,12 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                     </div>
                                     <div
                                         className="flex cursor-pointer justify-end hover:text-accent"
-                                        onClick={() => toggleDelete()}
+                                        onClick={toggleDelete}
                                     >
                                         <XCircleIcon
-                                            className={`ml-4 h-6 w-6 ${deleteTag && "text-red-600"}`}
+                                            className={`ml-4 h-6 w-6 ${
+                                                deleteTag && "text-red-600"
+                                            }`}
                                             data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
                                             data-tooltip-content={
                                                 deleteTag
@@ -184,23 +201,50 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 </>
                             )}
                         </div>
-                    ) : (
-                        ""
-                    )}
+                    ) : null}
                 </td>
             </tr>
-            {typeof row.value !== "string" && isExpanded
-                ? Object.values(row.value.tags).map((nested: any) => (
-                      <DicomTableRow
-                          key={nested.tagId}
-                          row={nested}
-                          index={index}
-                          onUpdateValue={onUpdateValue}
-                          nested
-                          level={(level || 0) + 1}
-                      />
-                  ))
-                : null}
+
+            {/* Render nested rows for sequences */}
+            {isExpanded &&
+                (() => {
+                    // Case 1: row.value is an array (multiple sequence items)
+                    if (Array.isArray(row.value)) {
+                        return row.value.map((nestedItem: any, i: number) =>
+                            nestedItem?.tags
+                                ? Object.values(nestedItem.tags).map(
+                                      (nested: any) => (
+                                          <DicomTableRow
+                                              key={`${nested.tagId}-${i}`}
+                                              row={nested}
+                                              index={index}
+                                              onUpdateValue={onUpdateValue}
+                                              nested
+                                              level={level + 1}
+                                          />
+                                      )
+                                  )
+                                : null
+                        );
+                    }
+                    // Case 2: row.value is a single nested tag object
+                    if (typeof row.value === "object" && row.value?.tags) {
+                        return Object.values(row.value.tags).map(
+                            (nested: any) => (
+                                <DicomTableRow
+                                    key={nested.tagId}
+                                    row={nested}
+                                    index={index}
+                                    onUpdateValue={onUpdateValue}
+                                    nested
+                                    level={level + 1}
+                                />
+                            )
+                        );
+                    }
+
+                    return null;
+                })()}
         </React.Fragment>
     );
 };

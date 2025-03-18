@@ -6,7 +6,7 @@ test("Edit a DICOM tag and save file", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
 
-        const fileInput = page.locator('input[type="file"].hidden');
+        const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles("./test-data/CR000001.dcm");
 
         await page.waitForSelector("table", {
@@ -16,7 +16,7 @@ test("Edit a DICOM tag and save file", async ({ page }) => {
 
         const tagRow = page
             .locator("tr")
-            .filter({ hasText: "SOPClassUID" })
+            .filter({ hasText: "X00080020" })
             .first();
 
         const editButton = tagRow.locator("svg.h-6.w-6").first();

@@ -1,4 +1,4 @@
-import logger from "../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Asserts that a condition is true, otherwise throws an error

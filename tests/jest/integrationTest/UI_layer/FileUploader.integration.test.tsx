@@ -91,6 +91,11 @@ describe("FileUploader Component Integration Tests", () => {
             Tag: "(0002,0000)",
             TagDescription: "File Meta Information Group Length",
             Value: "198",
+            tags: {},
+            DicomDataSet: {},
+            fileName: "file1.dcm",
+            filePath: "root/file1.dcm",
+            mockMetadata: "mocked DICOM data",
         };
 
         mockedParseDicomFile.mockResolvedValue(dicomMetadata);

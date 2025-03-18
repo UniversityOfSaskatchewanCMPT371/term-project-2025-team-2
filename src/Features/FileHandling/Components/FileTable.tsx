@@ -3,7 +3,7 @@ import { FileTableBody } from "./FileTableBody.tsx";
 import { Modal } from "@utils/Modals/Modal.tsx";
 import { FileTableProps } from "../Types/FileTypes";
 import { DocumentIcon } from "@heroicons/react/24/outline";
-
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store.tsx";
 
 /**
@@ -32,6 +32,8 @@ export const FileTable: React.FC<FileTableProps> = () => {
             </div>
         );
     }
+
+    logger.debug(`Rendering FileTable component with ${files.length} files`);
 
     return (
         <div className="mt-2 rounded-lg bg-base-300/30 p-4">

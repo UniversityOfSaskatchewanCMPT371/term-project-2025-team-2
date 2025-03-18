@@ -1,6 +1,6 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
-
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
 /**
@@ -20,10 +20,14 @@ export const EditOption: React.FC = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
             setAllowEditLockedTags(true);
+            logger.info("Allow Edit Locked Tags");
         } else {
             setAllowEditLockedTags(false);
+            logger.info("Disallow Edit Locked Tags");
         }
     };
+
+    logger.debug("Rendering EditOption component");
 
     return (
         <div>

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { isSafari } from "react-device-detect";
 import { TagsAnon } from "@auto/Functions/TagsAnon";
-
+import logger from "@logger/Logger";
 import { CustomFile } from "@file/Types/FileTypes";
 import {
     TableUpdateData,
@@ -31,6 +31,9 @@ type Store = {
 
     loading: boolean;
     setLoading: (loading: boolean) => void;
+
+    loadingMsg: string;
+    setLoadingMsg: (msg: string) => void;
 
     showErrorModal: boolean;
     showError: () => void;
@@ -88,12 +91,18 @@ type Store = {
     alertMsg: string;
     setAlertMsg: (msg: string) => void;
 
+    alertType: string;
+    setAlertType: (type: string) => void;
+
     allowEditLockedTags: boolean;
     setAllowEditLockedTags: (allowEdit: boolean) => void;
 
     tagsToAnon: any[];
     setTagsToAnon: (tags: any) => void;
     resetTagsAnon: () => void;
+
+    fileStructure: Record<string, File[]>;
+    setFileStructure: (struture: Record<string, File[]>) => void;
 };
 
 /**
@@ -112,6 +121,9 @@ export const useStore = create<Store>((set) => ({
 
     loading: false,
     setLoading: (loading) => set({ loading }),
+
+    loadingMsg: "",
+    setLoadingMsg: (msg) => set({ loadingMsg: msg }),
 
     showErrorModal: false,
     showError: () => set({ showErrorModal: true }),
@@ -206,6 +218,19 @@ export const useStore = create<Store>((set) => ({
     alertMsg: "Alert",
     setAlertMsg: (msg) => set({ alertMsg: msg }),
 
+    alertType: "alert-error",
+    setAlertType: (type) => {
+        set({
+            alertType:
+                type !== "alert-error" &&
+                type !== "alert-success" &&
+                type !== "alert-warning"
+                    ? "alert-error"
+                    : type,
+        });
+        logger.debug(`Alert type: ${type}`);
+    },
+
     allowEditLockedTags: false,
     setAllowEditLockedTags: (allowEdit) =>
         set({ allowEditLockedTags: allowEdit }),
@@ -224,5 +249,10 @@ export const useStore = create<Store>((set) => ({
     resetTagsAnon: () => {
         set({ tagsToAnon: TagsAnon });
         localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
+    },
+
+    fileStructure: {},
+    setFileStructure: (structure) => {
+        set({ fileStructure: structure });
     },
 }));

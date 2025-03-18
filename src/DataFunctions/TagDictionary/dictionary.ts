@@ -1,4 +1,5 @@
 import { standardDataElements } from "./standardDataElements";
+import logger from "@logger/Logger";
 
 /**
  * TagDictionary class
@@ -25,6 +26,7 @@ export class TagDictionary {
         try {
             tagName = this.dicomTagDictionary[tag.slice(1)].name;
         } catch {
+            logger.debug(`Tag ${tag} not found in dictionary`);
             tagName = "Unknown";
         }
 
@@ -41,6 +43,7 @@ export class TagDictionary {
         try {
             tagVR = this.dicomTagDictionary[tag.slice(1)].vr;
         } catch {
+            logger.debug(`Tag ${tag} not found in dictionary`);
             tagVR = "Unknown";
         }
 
