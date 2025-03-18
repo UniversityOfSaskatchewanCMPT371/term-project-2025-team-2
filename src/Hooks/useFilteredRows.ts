@@ -181,6 +181,6 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
                     return null;
                 })
                 .filter(Boolean),
-        [rows, searchTerm]
+        [rows, lowerSearchTerm]
     );
 };

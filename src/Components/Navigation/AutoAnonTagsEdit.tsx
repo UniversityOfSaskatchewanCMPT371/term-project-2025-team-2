@@ -3,7 +3,8 @@ import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow"
 import { useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { GenButton } from "@components/utils/GenButton";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
+import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
 
 /**
  * Side panel for showing and editing tags to be anonymized
@@ -46,8 +47,8 @@ export const AutoAnonTagsEdit = () => {
         tagChanges.push({ tagId, newValue, deleteTag });
     };
 
-    const addtag = (tagId: string, tagName: string, tagValue: string) => {
-        logger.info(`Adding tag: ${tagId} ${tagName} ${tagValue}`);
+    const addtag = (tagId: string, tagValue: string) => {
+        logger.info(`Adding tag: ${tagId} ${tagValue}`);
 
         if (tagId.length !== 8 || isNaN(parseInt(tagId))) {
             setAlertType("alert-error");
@@ -110,6 +111,16 @@ export const AutoAnonTagsEdit = () => {
         setShowAlert(true);
     };
 
+    const filterTagName = (tagId: string) => {
+        const keyId = Object.keys(standardDataElements).find(
+            (key) => key === tagId
+        );
+        if (keyId) {
+            return standardDataElements[keyId].name;
+        }
+        return "Unknown";
+    };
+
     return (
         <div
             className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
@@ -125,6 +136,7 @@ export const AutoAnonTagsEdit = () => {
                 <GenButton
                     onClick={() => {
                         setAutoAnonTagsEditPanelVisible(false);
+                        setShowAddTag(false);
                     }}
                     label="Close"
                     disabled={false}
@@ -151,6 +163,7 @@ export const AutoAnonTagsEdit = () => {
                 <button
                     onClick={() => {
                         setAutoAnonTagsEditPanelVisible(false);
+                        setShowAddTag(false);
                         tagChanges = [];
                         setReset((prev) => prev + 1);
                     }}
@@ -195,9 +208,12 @@ export const AutoAnonTagsEdit = () => {
                                         className="w-full"
                                         placeholder="Tag ID"
                                         maxLength={8}
-                                        onChange={(e) =>
-                                            setTagId(e.target.value)
-                                        }
+                                        onChange={(e) => {
+                                            setTagId(e.target.value);
+                                            setTagName(
+                                                filterTagName(e.target.value)
+                                            );
+                                        }}
                                     />
                                 </div>
                             </td>
@@ -206,7 +222,9 @@ export const AutoAnonTagsEdit = () => {
                                     type="text"
                                     className="w-full"
                                     placeholder="Tag Name"
-                                    onChange={(e) => setTagName(e.target.value)}
+                                    disabled={true}
+                                    value={tagName}
+                                    // onChange={(e) => setTagName(e.target.value)}
                                 />
                             </td>
                             <td className="border px-4 py-2 text-center">
@@ -222,9 +240,7 @@ export const AutoAnonTagsEdit = () => {
                                     <CheckCircleIcon
                                         data-testid="CheckCircleIcon"
                                         className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
-                                        onClick={() =>
-                                            addtag(tagId, tagName, tagValue)
-                                        }
+                                        onClick={() => addtag(tagId, tagValue)}
                                     />
                                 </div>
                             </td>

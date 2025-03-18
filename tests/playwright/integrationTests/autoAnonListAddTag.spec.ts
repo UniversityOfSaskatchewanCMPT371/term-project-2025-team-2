@@ -40,9 +40,6 @@ test("Add tag to auto list", async ({ page }) => {
         await expect(tagInput).toBeVisible();
         await tagInput.fill("00080007");
 
-        const tagName = tagRow.locator("input").nth(1);
-        await expect(tagName).toBeVisible();
-        await tagName.fill("name");
 
         const tagValue = tagRow.locator("input").nth(2);
         await expect(tagValue).toBeVisible();

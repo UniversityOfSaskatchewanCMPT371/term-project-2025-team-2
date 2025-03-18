@@ -44,7 +44,6 @@ import {
     downloadDicomFile,
 } from "@dataFunctions/DicomData/DownloadFuncs";
 
-
 describe("AutoClean Module", () => {
     describe("FormatData", () => {
         it("should format dicom data correctly based on TagsAnon", () => {

@@ -2,6 +2,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@state/Store";
 import { useState } from "react";
 import logger from "@logger/Logger";
+import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
 
 /**
  * Create New Tag Row
@@ -71,6 +72,16 @@ export const NewTagRow = () => {
         setShowAlert(true);
     };
 
+    const filterTagName = (tagId: string) => {
+        const keyId = Object.keys(standardDataElements).find(
+            (key) => key === tagId
+        );
+        if (keyId) {
+            return standardDataElements[keyId].name;
+        }
+        return "Unknown";
+    };
+
     logger.debug("Rendering NewTagRow component");
 
     return (
@@ -83,7 +94,10 @@ export const NewTagRow = () => {
                         className="w-full"
                         placeholder="Tag ID"
                         maxLength={8}
-                        onChange={(e) => setTagId(e.target.value)}
+                        onChange={(e) => {
+                            setTagId(e.target.value);
+                            setTagName(filterTagName(e.target.value));
+                        }}
                     />
                 </div>
             </td>
@@ -92,7 +106,9 @@ export const NewTagRow = () => {
                     type="text"
                     className="w-full"
                     placeholder="Tag Name"
-                    onChange={(e) => setTagName(e.target.value)}
+                    disabled={true}
+                    value={tagName}
+                    // onChange={(e) => setTagName(e.target.value)}
                 />
             </td>
             <td className="border px-4 py-2 text-center">
