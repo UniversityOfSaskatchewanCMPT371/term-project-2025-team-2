@@ -21,6 +21,8 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
 
         // SQ sequences — array of items
         if (Array.isArray(value)) {
+            logger.debug("Filtering nested array of sequence items");
+
             const filteredItems = value
                 .map((item: any) => {
                     if (!item?.tags) return null;
@@ -68,6 +70,8 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
 
         // single nested object
         if (typeof value === "object" && value.tags) {
+            logger.debug("Filtering single nested object with tags");
+            
             const filteredTags = Object.values(value.tags).filter(
                 (nestedRow: any) => {
                     const tagId = (nestedRow.tagId ?? "")
