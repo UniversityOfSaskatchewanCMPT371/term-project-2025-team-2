@@ -17,7 +17,7 @@
     "test:integration":"jest tests/jest/integrationTest",
     "test:integration:playwright": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.integration.ts",
     "test:regression": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts",
-    "playwright": "NODE_NO_WARNINGS=1 playwright test",
+    "playwright": "node -e \"const start = Date.now(); require('child_process').spawnSync('NODE_NO_WARNINGS=1 playwright test', {shell: true, stdio: 'inherit'}); console.log('Execution time:', ((Date.now() - start)/1000).toFixed(2), 'seconds');\"",
     "regTests": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts tests/playwright/regressionTests/autoEditing.spec.ts"
   },
   "dependencies": {
