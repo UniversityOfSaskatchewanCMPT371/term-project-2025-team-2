@@ -67,6 +67,11 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     const filteredTags = newTagData;
     let data: any;
 
+    const implicitTags =
+        dicomData.string("x00020010") === "1.2.840.10008.1.2" ? true : false;
+
+    debug("Implicit: " + implicitTags);
+
     if (filteredTags.length === 0) {
         return newDicomData;
     }
@@ -74,46 +79,60 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     debug("filteredTags: " + JSON.stringify(filteredTags));
 
     filteredTags.forEach((tag: any) => {
-        const insertTag = {
-            tagId: tag.tagId,
-            value: tag.newValue,
-            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
-            dataOffSet:
-                dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
-            length: tag.newValue.length,
-            delete: tag.delete,
-            add: tag.add,
-        };
-        newTags.push(insertTag);
-        debug("insertTag: " + JSON.stringify(insertTag));
+        let offSet = 0;
+        try {
+            offSet = dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+        } catch (error) {
+            logger.error(
+                `Data OffSet for Tag: ${tag.tagId} doesn't exisit in file ${error}`
+            );
+            return;
+        }
+
+        try {
+            const insertTag = {
+                tagId: tag.tagId,
+                value: tag.newValue,
+                vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST", // ST is string type
+                dataOffSet: offSet,
+                length: tag.newValue.length,
+                delete: tag.delete || false,
+                add: tag.add || false,
+            };
+
+            newTags.push(insertTag);
+            debug("insertTag: " + JSON.stringify(insertTag));
+        } catch (error) {
+            logger.error(`Error trying to create tag: ${tag.tagId}, ${error}`);
+        }
     });
 
     newTags.forEach((tag: any) => {
+        debug("TagEdit: " + JSON.stringify(tag));
+
         if (tag.delete) {
             data = removeTag(dicomData, tag);
         } else if (tag.add) {
             data = addTag(dicomData, tag);
         } else {
-            try {
-                const tagIdByte = new Uint8Array(groupLen + elementLen);
-                const group = parseInt(tag.tagId.slice(1, 5), 16);
-                const element = parseInt(tag.tagId.slice(5), 16);
+            debug(tag);
+            debug(dicomData);
 
-                tag.dataOffSet =
-                    dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+            const tagIdByte = new Uint8Array(groupLen + elementLen);
+            const group = parseInt(tag.tagId.slice(1, 5), 16);
+            const element = parseInt(tag.tagId.slice(5), 16);
+            debug("Group: " + group + " Element: " + element);
 
-                tagIdByte.set(
-                    new Uint8Array([group, group >> 8, element, element >> 8])
-                );
-                const newTag = createTag(tagIdByte, tag, true);
-                data = insertTag(dicomData, tag, newTag);
+            tag.dataOffSet =
+                dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
 
-                debug("newTag: " + JSON.stringify(newTag));
-            } catch (error) {
-                logger.error(
-                    `Tag: ${tag.tagId} doesn't exisit in file ${error}`
-                );
-            }
+            tagIdByte.set(
+                new Uint8Array([group, group >> 8, element, element >> 8])
+            );
+            const newTag = createTag(tagIdByte, tag, true, implicitTags);
+            data = insertTag(dicomData, tag, newTag);
+
+            debug("newTag: " + newTag);
         }
 
         const newData = dicomParser.parseDicom(data);
@@ -175,6 +194,13 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
     const newArray = concatBuffers(buf1, last);
 
     debug("Insert at " + tagToAdd.dataOffSet);
+    debug(
+        dicomByteArray.slice(
+            tagToAdd.dataOffSet - 8,
+            tagToAdd.dataOffSet +
+                dicomData.elements[tagToAdd.tagId.toLowerCase()].length
+        )
+    );
 
     return newArray;
 }
@@ -230,7 +256,12 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
  * @description creates a bytearray representing the tag
  * @return tag's bytearray
  */
-function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
+function createTag(
+    tagName: Uint8Array,
+    tag: any,
+    littleEndian: boolean,
+    Implicit: boolean = false
+) {
     const valueOffset =
         tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
@@ -248,8 +279,16 @@ function createTag(tagName: Uint8Array, tag: any, littleEndian: boolean) {
 
     const newTag = new Uint8Array(valueLength + valueOffset);
     newTag.set(tagName);
-    newTag.set(tagVR, vrOffset);
-    newTag.set(tagLength, lengthOffset);
+    if (Implicit) {
+        // handle Implicit VR Little Endian (UID: 1.2.840.10008.1.2)
+        // newTag.set(tagVR, lengthOffset); VR not needed, length gets put a vr offset
+        newTag.set(tagLength, vrOffset);
+    } else {
+        newTag.set(tagVR, vrOffset);
+        newTag.set(tagLength, lengthOffset);
+    }
+
+    debug("new: " + newTag);
 
     debug("Tag VR: " + tag.vr);
 

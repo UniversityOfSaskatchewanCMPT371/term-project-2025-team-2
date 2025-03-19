@@ -66,6 +66,7 @@ export const AutoAnon = async (
 ) => {
     const { setLoading } = useStore.getState();
     const { setLoadingMsg } = useStore.getState();
+    const { setShowAlert, setAlertType, setAlertMsg } = useStore.getState();
     const structuredFiles: any[] = [];
 
     logger.debug("Auto anonymizing DICOM files");
@@ -125,6 +126,10 @@ export const AutoAnon = async (
 
         downloadDicomFile({ name: "anonymized_dicoms.zip", content: zipFile });
     } catch (err) {
+        setAlertType("alert-error");
+        setAlertMsg("Auto anonymization failed");
+        setShowAlert(true);
+
         logger.error("Auto anonymization failed:", err);
     } finally {
         setLoading(false);

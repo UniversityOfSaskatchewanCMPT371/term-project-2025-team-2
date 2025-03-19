@@ -47,7 +47,6 @@ test("Add tag and verify", async ({ page }) => {
         await expect(tagInput).toBeVisible();
         await tagInput.fill("00080007");
 
-
         const tagValue = tagRow.locator("input").nth(2);
         await expect(tagValue).toBeVisible();
         await tagValue.fill("value");
