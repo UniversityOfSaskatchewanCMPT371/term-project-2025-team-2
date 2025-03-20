@@ -53,6 +53,11 @@ export const SidePanel = () => {
     const handleAutoAnon = async () => {
         logger.debug("Auto Anonymizing tags");
 
+        setLoading(true);
+        setLoadingMsg("Anonymizing tags...");
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
         await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
 
         clearData();
@@ -108,8 +113,6 @@ export const SidePanel = () => {
             <div className="mb-4 flex justify-around">
                 <button
                     onClick={() => {
-                        setLoading(true);
-                        setLoadingMsg("Anonymizing tags...");
                         handleAutoAnon();
                     }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"

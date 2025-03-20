@@ -72,10 +72,17 @@ export const AutoAnon = async (
     logger.debug("Auto anonymizing DICOM files");
 
     try {
-        dicomData.forEach((dicom: any, index: number) => {
+        // Process files one by one using a for loop and await
+        for (let index = 0; index < dicomData.length; index++) {
+            const dicom = dicomData[index];
+
+            // Update loading message
             setLoadingMsg(
                 `Anonymizing file ${index + 1} of ${dicomData.length}`
             );
+
+            // Force UI update before continuing
+            await new Promise((resolve) => setTimeout(resolve, 0));
 
             const formattedData = FormatData(dicom, tagsToAnon);
 
@@ -119,9 +126,12 @@ export const AutoAnon = async (
             fileWithPath.path = filePath;
 
             structuredFiles.push(fileWithPath);
-        });
+        }
 
         setLoadingMsg("Creating ZIP file");
+        // Force UI update before continuing
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
         const zipFile = await createZipFromFiles(structuredFiles);
 
         downloadDicomFile({ name: "anonymized_dicoms.zip", content: zipFile });
