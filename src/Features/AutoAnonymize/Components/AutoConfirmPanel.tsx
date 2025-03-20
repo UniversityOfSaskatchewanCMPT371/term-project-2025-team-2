@@ -74,27 +74,39 @@ export const SidePanel = () => {
     const [foundPII, setFoundPII] = useState(false);
 
     const findPII = () => {
-        Object.values(dicomData[0].tags).forEach((tag) => {
-            if (typeof tag.value !== "string") {
-                return;
-            }
+        dicomData.forEach((data) => {
+            Object.values(data.tags).forEach((tag) => {
+                if (typeof tag.value !== "string") {
+                    return;
+                }
 
-            if (TagsAnon.some((anonTag) => anonTag.tagId === tag.tagId)) {
-                return;
-            }
+                if (TagsAnon.some((anonTag) => anonTag.tagId === tag.tagId)) {
+                    return;
+                }
 
-            if (
-                regex.test(tag.value as string) &&
-                (tag.value as string).length > 3 &&
-                !notPII.includes((tag.value as string).toUpperCase()) &&
-                !tagsToAnon.includes(tag.tagId) &&
-                tag.value.split(" ").length <= 2 &&
-                (tag.value as string).toUpperCase() !== (tag.value as string)
-            ) {
-                setPII([...PII, tag]);
-                setFoundPII(true);
-                logger.info(`Potential PII found: ${tag.value}`);
-            }
+                if (
+                    regex.test(tag.value as string) &&
+                    (tag.value as string).length > 3 &&
+                    !notPII.includes((tag.value as string).toUpperCase()) &&
+                    !tagsToAnon.includes(tag.tagId) &&
+                    tag.value.split(" ").length <= 2 &&
+                    (tag.value as string).toUpperCase() !==
+                        (tag.value as string)
+                ) {
+                    if (
+                        !PII.some(
+                            (existingTag) => existingTag.tagId === tag.tagId
+                        )
+                    ) {
+                        setPII((prev) => [...prev, tag]);
+                        setFoundPII(true);
+                        setReset((prev) => prev++);
+                        logger.info(
+                            `Potential PII found:${tag.tagId}, ${tag.value}`
+                        );
+                    }
+                }
+            });
         });
     };
 

@@ -34,19 +34,33 @@ export const TableControls: React.FC<TableControlsProps> = ({
 
     const tagDictionary = new TagDictionary();
 
+    // breaks test, need to update test and remove add assert
     // assert(dicomData.length > 0, "dicomData should not be empty");
     assert(onSave !== null, "onSave should not be empty");
 
     const handleAutoAnon = async () => {
         logger.info("Auto Anonymizing tags");
-        // format anon tags and show them
-        const newTagData: AnonTag[] = FormatData(dicomData[0], tagsToAnon).map(
-            (tag: { tagId: string; tagName: string; newValue: string }) => ({
-                tagId: tag.tagId,
-                tagName: tagDictionary.lookupTagName(tag.tagId),
-                newValue: tag.newValue,
-            })
-        );
+        const newTagData: AnonTag[] = [];
+        dicomData.forEach((data) => {
+            const formattedData = FormatData(data, tagsToAnon);
+
+            formattedData.forEach(
+                (tag: { tagId: string; newValue: string }) => {
+                    if (
+                        !newTagData.some(
+                            (existingTag) => existingTag.tagId === tag.tagId
+                        )
+                    ) {
+                        newTagData.push({
+                            tagId: tag.tagId,
+                            tagName: tagDictionary.lookupTagName(tag.tagId),
+                            newValue: tag.newValue,
+                        });
+                    }
+                }
+            );
+        });
+
         logger.debug(`Anonymizing tags: ${newTagData}`);
         setTags(newTagData);
         setSidePanelVisible(true);
