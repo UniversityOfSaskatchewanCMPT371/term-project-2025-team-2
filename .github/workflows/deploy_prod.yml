@@ -1,9 +1,8 @@
 name: Deploy to Production
 
 on: 
-  workflow_run:
-    workflows: ["Regression Tests"]
-    types: completed
+  push: 
+    branches: [ "fix/prod_deployment" ]
 
   workflow_dispatch:
 
@@ -18,6 +17,7 @@ jobs:
       - name: Log in to Dockerhub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
     
-      - name: Build docker
+      - name: Build and push to dockerhub
         run: |
           docker build -f docker/prod/Dockerfile -t dicom-app .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
