@@ -1,8 +1,17 @@
 import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
 import { GenButton } from "@components/utils/GenButton";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { useStore } from "@state/Store";
 
 export const TagDictEditor = () => {
+
+    const tagDictionary = useStore((state) => state.tagDictionary);
+    const updateTagDictionary = useStore((state) => state.updateTagDictionary);
+    const resetTagDictionary = useStore((state) => state.resetTagDictionary);
+
+    const handleUpdate = (tagId: string) => {
+        console.log(tagId)
+    }
 
     return (
         <dialog id="tagEdit_modal" className="modal modal-bottom">
@@ -10,6 +19,13 @@ export const TagDictEditor = () => {
                 <h3 className="text-2xl font-bold">Tag Dictionary</h3>
                 <div className="py-4 text-lg font-semibold">
                     Tag Dictionary Editor
+                </div>
+                <div>
+                    <GenButton
+                        label={"Reset"}
+                        disabled={false}
+                        onClick={() => resetTagDictionary()}
+                    />
                 </div>
                 <table className="table-auto w-full">
                     <thead className="border">
@@ -27,7 +43,9 @@ export const TagDictEditor = () => {
                                         {standardDataElements[key].name}
                                         <div className="flex flex-col-2">
                                             <div className="flex cursor-pointer justify-end hover:text-accent">
-                                                <PencilSquareIcon className="h-6 w-6" />
+                                                <PencilSquareIcon className="h-6 w-6"
+                                                    onClick={() => handleUpdate(key)}
+                                                />
                                             </div>
                                             <div className="flex cursor-pointer justify-end hover:text-accent">
                                                 <XCircleIcon className="ml-4 h-6 w-6" />

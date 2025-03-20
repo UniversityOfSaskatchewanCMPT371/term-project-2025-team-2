@@ -19,6 +19,7 @@ import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 import { assert } from "./DataFunctions/assert";
 
 import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
+import { DictTagsEdit } from "@features/TagDictEditor/DictTagsEdit";
 
 /**
  * @description Main App Function
@@ -322,6 +323,7 @@ export const App: React.FC = () => {
 
                 <SidePanel />
                 <AutoAnonTagsEdit />
+                <DictTagsEdit />
             </div>
             <Footer />
 

@@ -1,5 +1,5 @@
 import { useStore } from "@state/Store";
-import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow";
+import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { GenButton } from "@components/utils/GenButton";
@@ -13,17 +13,13 @@ import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataE
  * @postcondition SidePanel component renders a side panel for showing and editing tags to be anonymized
  * @returns {JSX.Element} The rendered side panel
  */
-export const AutoAnonTagsEdit = () => {
-    const autoAnonTagsEditPanelVisible = useStore(
-        (state) => state.autoAnonTagsEditPanelVisible
-    );
-    const setAutoAnonTagsEditPanelVisible = useStore(
-        (state) => state.setAutoAnonTagsEditPanelVisible
-    );
+export const DictTagsEdit = () => {
+    const setShowDictEdit = useStore((state)=> state.setShowDictEdit)
+    const showDictEdit = useStore((state)=>state.showDictEdit)
 
-    const tagsToAnon = useStore((state) => state.tagsToAnon);
-    const setTagsToAnon = useStore((state) => state.setTagsToAnon);
-    const resetTagsAnon = useStore((state) => state.resetTagsAnon);
+    const tagDictionary = useStore((state) => state.tagDictionary);
+    const updateTagDictionary = useStore((state) => state.updateTagDictionary);
+    const resetTagDictionary = useStore((state) => state.resetTagDictionary);
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state) => state.setAlertMsg);
     const setAlertType = useStore((state) => state.setAlertType);
@@ -56,12 +52,7 @@ export const AutoAnonTagsEdit = () => {
             setShowAlert(true);
             return;
         }
-        if (tagValue.length < 1) {
-            setAlertType("alert-error");
-            setAlertMsg("Tag Value can't be empty");
-            setShowAlert(true);
-            return;
-        }
+       
         if (tagName.length < 1) {
             setAlertType("alert-error");
             setAlertMsg("Tag Name can't be empty");
@@ -69,14 +60,14 @@ export const AutoAnonTagsEdit = () => {
             return;
         }
 
-        const temp = [...tagsToAnon];
-        temp.unshift({
-            tagId: "X" + tagId,
-            name: tagName,
-            value: tagValue,
-        });
+        // const temp = [...tagsToAnon];
+        // temp.unshift({
+        //     tagId: "X" + tagId,
+        //     name: tagName,
+        //     value: tagValue,
+        // });
 
-        setTagsToAnon(temp);
+       ;
         setTagId("");
         setTagName("");
         setTagValue("");
@@ -87,31 +78,24 @@ export const AutoAnonTagsEdit = () => {
         logger.debug("Updating tag values");
         setShowAddTag(false);
 
-        if(tagChanges.length === 0){
-            setAlertMsg("No Changes Made");
-            setAlertType("alert-warning");
-            setShowAlert(true);
-            return;
-        }
+        // const temp = [...tagsToAnon];
 
-        const temp = [...tagsToAnon];
-
-        tagChanges.forEach((change: any) => {
-            if (change.deleteTag) {
-                temp.splice(
-                    temp.findIndex((tag: any) => tag.tagId === change.tagId),
-                    1
-                );
-            } else {
-                temp[
-                    temp.findIndex((tag: any) => tag.tagId === change.tagId)
-                ].value = change.newValue;
-            }
-        });
+        // tagChanges.forEach((change: any) => {
+        //     if (change.deleteTag) {
+        //         temp.splice(
+        //             temp.findIndex((tag: any) => tag.tagId === change.tagId),
+        //             1
+        //         );
+        //     } else {
+        //         temp[
+        //             temp.findIndex((tag: any) => tag.tagId === change.tagId)
+        //         ].value = change.newValue;
+        //     }
+        // });
 
         setReset((prev) => prev + 1);
         tagChanges = [];
-        setTagsToAnon(temp);
+       
 
         setAlertMsg("Updates Saved");
         setAlertType("alert-success");
@@ -130,25 +114,30 @@ export const AutoAnonTagsEdit = () => {
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
-                autoAnonTagsEditPanelVisible
+            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out 
+                ${showDictEdit
                     ? "translate-x-0"
                     : "translate-x-full"
-            }`}
+                }`}
         >
             <div className="mb-5 mr-8 mt-24 flex items-center justify-between">
                 <div className="ml-4 text-xl font-bold text-blue-400">
-                    Tags in Anonymize List
+                    Edit Tag Dictionary
                 </div>
+                <GenButton
+                    onClick={() => {
+                        setShowDictEdit(false);
+                        setShowAddTag(false);
+                    }}
+                    label="Close"
+                    disabled={false}
+                />
             </div>
 
             <div className="mb-4 flex justify-around">
                 <button
                     onClick={() => {
                         handleUpdateValue();
-                        setAutoAnonTagsEditPanelVisible(false);
-                        setShowAddTag(false);
-                        setReset(0);
                     }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
@@ -164,10 +153,10 @@ export const AutoAnonTagsEdit = () => {
                 </button>
                 <button
                     onClick={() => {
-                        setAutoAnonTagsEditPanelVisible(false);
+                       setShowDictEdit(false);
                         setShowAddTag(false);
                         tagChanges = [];
-                        setReset(0);
+                        setReset((prev) => prev + 1);
                     }}
                     className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
@@ -176,7 +165,7 @@ export const AutoAnonTagsEdit = () => {
                 <button
                     onClick={() => {
                         tagChanges = [];
-                        resetTagsAnon();
+                        
                         setShowAddTag(false);
                         setReset((prev) => prev + 1);
                     }}
@@ -193,9 +182,6 @@ export const AutoAnonTagsEdit = () => {
                         </th>
                         <th className="w-2/5 border px-4 py-2 text-primary-content">
                             Tag Name
-                        </th>
-                        <th className="w-7/12 border px-4 py-2 text-primary-content">
-                            New Value
                         </th>
                     </tr>
                 </thead>
@@ -220,16 +206,6 @@ export const AutoAnonTagsEdit = () => {
                                 </div>
                             </td>
                             <td className="border px-4 py-2 text-center">
-                                <input
-                                    type="text"
-                                    className="w-full"
-                                    placeholder="Tag Name"
-                                    disabled={true}
-                                    value={tagName}
-                                    // onChange={(e) => setTagName(e.target.value)}
-                                />
-                            </td>
-                            <td className="border px-4 py-2 text-center">
                                 <div className="flex-col-2 flex">
                                     <input
                                         type="text"
@@ -249,22 +225,27 @@ export const AutoAnonTagsEdit = () => {
                         </tr>
                     ) : null}
 
-                    {tagsToAnon.length > 0
-                        ? tagsToAnon.map((tag, index) => (
-                              <DicomTableRow
-                                  key={index + tag.tagId + reset}
-                                  row={{
-                                      tagId: tag.tagId,
-                                      tagName: tag.name,
-                                      value: tag.value,
-                                  }}
-                                  index={index + reset}
-                                  nested={false}
-                                  onUpdateValue={addChanges}
-                                  updated={false}
-                              />
-                          ))
-                        : null}
+
+                    {Object.keys(standardDataElements).map((key, index) => (
+                        <tr key={index}>
+                            <td className="border text-center">{key}</td>
+                            <td className="border">
+                                <div className="flex justify-between">
+                                    {standardDataElements[key].name}
+                                    <div className="flex flex-col-2">
+                                        <div className="flex cursor-pointer justify-end hover:text-accent">
+                                            <PencilSquareIcon className="h-6 w-6"
+                                                onClick={() => addChanges}
+                                            />
+                                        </div>
+                                        <div className="flex cursor-pointer justify-end hover:text-accent">
+                                            <XCircleIcon className="mx-4 h-6 w-6" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

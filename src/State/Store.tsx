@@ -8,6 +8,7 @@ import {
     DicomData,
     AnonTag,
 } from "../Features/DicomTagTable/Types/DicomTypes";
+import { TagDictionary } from "@dataFunctions/TagDictionary/dictionary";
 
 // interface tagIdAnon {
 //     tagId: string;
@@ -188,6 +189,13 @@ type Store = {
 
     fileStructure: Record<string, File[]>;
     setFileStructure: (struture: Record<string, File[]>) => void;
+
+    showDictEdit: boolean;
+    setShowDictEdit: (show: boolean) => void;
+
+    tagDictionary: any[];
+    updateTagDictionary: (tags: any) => void;
+    resetTagDictionary: () => void;
 };
 
 /**
@@ -325,8 +333,8 @@ export const useStore = create<Store>((set) => ({
         set({
             alertType:
                 type !== "alert-error" &&
-                type !== "alert-success" &&
-                type !== "alert-warning"
+                    type !== "alert-success" &&
+                    type !== "alert-warning"
                     ? "alert-error"
                     : type,
         });
@@ -350,6 +358,9 @@ export const useStore = create<Store>((set) => ({
     },
     resetTagsAnon: () => {
         set({ tagsToAnon: TagsAnon });
+        set({alertType: "alert-warning"})
+        set({ alertMsg: "Tags Reset to Default" });
+        set({ showAlert: true });
         localStorage.setItem("TagsAutoList", JSON.stringify(TagsAnon));
     },
 
@@ -357,4 +368,14 @@ export const useStore = create<Store>((set) => ({
     setFileStructure: (structure) => {
         set({ fileStructure: structure });
     },
+
+    showDictEdit: false,
+    setShowDictEdit: (show) => set({ showDictEdit: show }),
+
+    tagDictionary: [],
+    updateTagDictionary: (tags) => {
+        set({ tagDictionary: tags });
+    },
+    resetTagDictionary: () => set({ tagDictionary: [] })
+
 }));

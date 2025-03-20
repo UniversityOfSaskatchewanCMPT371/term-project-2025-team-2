@@ -1,6 +1,7 @@
 import React from "react";
 import { GenButton } from "../GenButton";
 import { HelpModalProps } from "@type/types";
+import { useStore } from "@state/Store";
 
 /**
  * HelpModal component for displaying help documentation
@@ -11,6 +12,8 @@ import { HelpModalProps } from "@type/types";
  * @description Displays help information and documentation about the DICOM tag editor
  */
 export const HelpModal: React.FC<HelpModalProps> = () => {
+    const setShowDictEdit = useStore((state) => state.setShowDictEdit)
+
     return (
         <dialog id="help_modal" className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
@@ -39,11 +42,12 @@ export const HelpModal: React.FC<HelpModalProps> = () => {
                     <div className="mt-6">
                         <GenButton
                             onClick={() => {
-                                const tagEditModal =
-                                    document.getElementById("tagEdit_modal");
-                                if (tagEditModal) {
-                                    (tagEditModal as HTMLDialogElement).showModal();
+                                const helpModal =
+                                    document.getElementById("help_modal");
+                                if (helpModal) {
+                                    (helpModal as HTMLDialogElement).close();
                                 }
+                                setShowDictEdit(true)
                             }}
                             disabled={false}
                             label="Edit Tag Dictionary"
