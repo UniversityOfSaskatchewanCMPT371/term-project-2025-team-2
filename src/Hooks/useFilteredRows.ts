@@ -71,7 +71,7 @@ export const useFilteredRows = (rows: any[], searchTerm: string) => {
         // single nested object
         if (typeof value === "object" && value.tags) {
             logger.debug("Filtering single nested object with tags");
-            
+
             const filteredTags = Object.values(value.tags).filter(
                 (nestedRow: any) => {
                     const tagId = (nestedRow.tagId ?? "")
