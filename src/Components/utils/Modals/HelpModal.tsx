@@ -35,20 +35,35 @@ export const HelpModal: React.FC<HelpModalProps> = () => {
                         Detailed User Guide
                     </a>
                 </div>
-                <div className="modal-action">
-                    <form method="dialog">
+                <div className="flex flex-col-2 justify-between">
+                    <div className="mt-6">
                         <GenButton
                             onClick={() => {
-                                const helpModal =
-                                    document.getElementById("help_modal");
-                                if (helpModal) {
-                                    (helpModal as HTMLDialogElement).close();
+                                const tagEditModal =
+                                    document.getElementById("tagEdit_modal");
+                                if (tagEditModal) {
+                                    (tagEditModal as HTMLDialogElement).showModal();
                                 }
                             }}
                             disabled={false}
-                            label="Close"
+                            label="Edit Tag Dictionary"
                         />
-                    </form>
+                    </div>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <GenButton
+                                onClick={() => {
+                                    const helpModal =
+                                        document.getElementById("help_modal");
+                                    if (helpModal) {
+                                        (helpModal as HTMLDialogElement).close();
+                                    }
+                                }}
+                                disabled={false}
+                                label="Close"
+                            />
+                        </form>
+                    </div>
                 </div>
             </div>
         </dialog>

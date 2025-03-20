@@ -40,6 +40,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
 
     const handleAutoAnon = async () => {
         logger.info("Auto Anonymizing tags");
+
         const newTagData: AnonTag[] = [];
         dicomData.forEach((data) => {
             const formattedData = FormatData(data, tagsToAnon);

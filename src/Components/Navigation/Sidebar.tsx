@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { SeriesControls } from "./SeriesControls";
 import { SettingsModal } from "./SettingsModal";
 import { HelpModal } from "../utils/Modals/HelpModal";
+import { TagDictEditor } from "@features/TagDictEditor/TagDictEditor";
 import logger from "../../Logger/Logger";
 import { useStore } from "@state/Store";
 
@@ -42,6 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
             {isModalOpen && <SettingsModal toggleModal={toggleModal} />}
 
             <HelpModal />
+            <TagDictEditor />
         </div>
     );
 };

@@ -6,13 +6,18 @@ import { DicomData, DicomTags } from "@dicom//Types/DicomTypes";
 
 const tagDictionary = new TagDictionary();
 
+// List of tags to hide from the user interface
 const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
 
 /**
- *
- * @param file - DICOM file
- * @returns - Promise that resolves with the parsed DICOM data
- * @description - Parses a DICOM file and extracts the DICOM tags
+ * Parse a DICOM file and extract its tags
+ * @description Reads and parses a DICOM file, extracting its tags into a structured format
+ * @precondition The file parameter must be a valid File object containing DICOM-formatted data
+ * @postcondition A Promise is returned that resolves to a DicomData object containing the parsed tags and dataset
+ * @param {File} file - DICOM file to be parsed
+ * @returns {Promise<DicomData>} Promise that resolves with the parsed DICOM data including tags and original dataset
+ * @throws {Error} If the file cannot be read as an ArrayBuffer
+ * @throws {Error} If the DICOM parsing fails due to invalid or corrupted DICOM data
  */
 export const parseDicomFile = (file: File): Promise<DicomData> => {
     logger.info("Parsing DICOM file: ", file.name);
@@ -46,9 +51,13 @@ export const parseDicomFile = (file: File): Promise<DicomData> => {
 };
 
 /**
- *
- * @param dataSet - DICOM data set, parsed using dicom-parser
- * @returns dicomTags - Object containing the extracted DICOM tags
+ * Extract DICOM tags from a parsed dataset
+ * @description Extracts and organizes DICOM tag information from a parsed dataset into a structured format
+ * @precondition The dataSet parameter must be a valid dicomParser.DataSet object with elements property
+ * @postcondition A DicomData object is returned containing structured tag information and the original dataset
+ * @param {dicomParser.DataSet} dataSet - DICOM dataset parsed using dicom-parser
+ * @returns {DicomData} Object containing the extracted DICOM tags (tags) and original dataset (DicomDataSet)
+ * @throws {AssertionError} If no DICOM tags are found in the dataset
  */
 export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
     logger.info("Extracting DICOM tags from dataset.");

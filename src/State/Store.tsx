@@ -16,8 +16,93 @@ import {
 // }
 
 /**
- * Store for global state management
- * @typedef Store
+ * Global application state store
+ * @description Centralized state management store using Zustand to handle application state
+ *
+ * @typedef {Object} Store - The global state store interface
+ * @property {CustomFile[]} files - List of uploaded DICOM files
+ * @property {(files: CustomFile[]) => void} setFiles - Update the list of files
+ *
+ * @property {DicomData[]} dicomData - Parsed DICOM data for all uploaded files
+ * @property {(dicomData: DicomData[]) => void} setDicomData - Update the DICOM data
+ *
+ * @property {number} currentFileIndex - Index of the currently selected file
+ * @property {(index: number) => void} setCurrentFileIndex - Update the current file index
+ *
+ * @property {boolean} loading - Whether the application is in a loading state
+ * @property {(loading: boolean) => void} setLoading - Update the loading state
+ *
+ * @property {string} loadingMsg - Message to display during loading
+ * @property {(msg: string) => void} setLoadingMsg - Update the loading message
+ *
+ * @property {boolean} showErrorModal - Whether to show the error modal
+ * @property {() => void} showError - Show the error modal
+ * @property {(show: boolean) => void} setShowErrorModal - Update the error modal visibility
+ *
+ * @property {boolean} sidebarVisible - Whether the sidebar is visible
+ * @property {(visible: boolean) => void} setSidebarVisible - Update sidebar visibility
+ *
+ * @property {boolean} sidePanelVisible - Whether the side panel is visible
+ * @property {(visible: boolean) => void} setSidePanelVisible - Update side panel visibility
+ *
+ * @property {boolean} autoAnonTagsEditPanelVisible - Whether the auto anonymization tags edit panel is visible
+ * @property {(visible: boolean) => void} setAutoAnonTagsEditPanelVisible - Update auto anonymization tags edit panel visibility
+ *
+ * @property {boolean} showSeriesModal - Whether to show the series modal
+ * @property {(show: boolean) => void} setShowSeriesModal - Update series modal visibility
+ *
+ * @property {boolean} series - Whether files are being treated as a series
+ * @property {(series: boolean) => void} setSeries - Update series state
+ * @property {() => void} toggleSeries - Toggle series state
+ *
+ * @property {boolean} seriesSwitchModel - Whether to use the series switch model
+ * @property {(switchModel: boolean) => void} setSeriesSwitchModel - Update series switch model state
+ *
+ * @property {string} downloadOption - Current download option ("single" or "zip")
+ * @property {(option: string) => void} setDownloadOption - Update download option
+ *
+ * @property {string} theme - Current theme ("corporate" or "night")
+ * @property {() => void} toggleTheme - Toggle between light and dark themes
+ *
+ * @property {TableUpdateData[]} newTagValues - Tags with updated values
+ * @property {(tags: TableUpdateData) => void} setNewTagValues - Add or update a tag value
+ * @property {() => void} emptyNewTagValues - Clear all new tag values
+ *
+ * @property {boolean} showHiddenTags - Whether to show hidden DICOM tags
+ * @property {(show: boolean) => void} setShowHiddenTags - Update hidden tags visibility
+ *
+ * @property {AnonTag[]} tags - Tags for anonymization
+ * @property {(tags: AnonTag[]) => void} setTags - Update anonymization tags
+ *
+ * @property {boolean} hideTagNumber - Whether to hide tag numbers
+ * @property {(hide: boolean) => void} setHideTagNumber - Update tag number visibility
+ *
+ * @property {() => void} clearData - Clear all application data
+ *
+ * @property {string[]} fileParseErrorFileNames - List of files that failed to parse
+ * @property {(fileNames: string[]) => void} setFileParseErrorFileNames - Update list of files with parse errors
+ *
+ * @property {boolean} addTag - Whether the add tag UI is visible
+ * @property {(show: boolean) => void} setShowAddTag - Update add tag UI visibility
+ *
+ * @property {boolean} showAlert - Whether to show an alert
+ * @property {(show: boolean) => void} setShowAlert - Update alert visibility
+ *
+ * @property {string} alertMsg - Alert message text
+ * @property {(msg: string) => void} setAlertMsg - Update alert message
+ *
+ * @property {string} alertType - Alert type ("alert-error", "alert-success", or "alert-warning")
+ * @property {(type: string) => void} setAlertType - Update alert type
+ *
+ * @property {boolean} allowEditLockedTags - Whether to allow editing of locked tags
+ * @property {(allowEdit: boolean) => void} setAllowEditLockedTags - Update locked tags edit permission
+ *
+ * @property {any[]} tagsToAnon - List of tags to anonymize
+ * @property {(tags: any) => void} setTagsToAnon - Update list of tags to anonymize
+ * @property {() => void} resetTagsAnon - Reset anonymization tags to defaults
+ *
+ * @property {Record<string, File[]>} fileStructure - Mapping of folder paths to file lists
+ * @property {(structure: Record<string, File[]>) => void} setFileStructure - Update file structure
  */
 type Store = {
     files: CustomFile[];
@@ -106,8 +191,25 @@ type Store = {
 };
 
 /**
- * Store for global state management
- * @type {Store}
+ * Global state store instance
+ * @description Creates the centralized state management store using Zustand
+ *
+ * @remarks
+ * This store contains all global application state including:
+ * - File management (DICOM files, parsed data, folder structure)
+ * - UI state (loading, modals, panels, themes)
+ * - Tag management (tag values, anonymization settings)
+ * - Application preferences (stored in localStorage where appropriate)
+ *
+ * @example
+ * // Access state in a component
+ * const files = useStore(state => state.files);
+ * const setFiles = useStore(state => state.setFiles);
+ *
+ * // Update state
+ * setFiles(newFiles);
+ *
+ * @returns {Store} The initialized Zustand store with all state and actions
  */
 export const useStore = create<Store>((set) => ({
     files: [] as CustomFile[],

@@ -6,11 +6,15 @@ import { useStore } from "@state/Store";
 
 /**
  * Creates a ZIP file containing multiple files, preserving folder structure
- * @description - Create a zip file from multiple files while maintaining folder structure
- * @precondition - The files array must contain objects with name, content, and optional path
- * @postcondition - The ZIP file is created with preserved folder structure and returned as a Blob
- * @param files - Array of files with name, content, and optional path
- * @returns Promise resolving to the ZIP file as a Blob
+ * @description Creates a compressed ZIP archive from multiple files while maintaining their folder hierarchy
+ * @precondition The files array must contain FileData objects with name, content, and optional path properties
+ * @postcondition A ZIP file is created with preserved folder structure and returned as a Blob
+ * @param {FileData[]} files - Array of file objects with name, content, and optional path properties
+ * @param {string} files[].name - The name of each file
+ * @param {Blob} files[].content - The content of each file as a Blob
+ * @param {string} [files[].path] - Optional folder path for the file (empty string for root level)
+ * @returns {Promise<Blob>} Promise resolving to the ZIP file as a Blob
+ * @throws {Error} If ZIP creation fails for any reason
  */
 export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     logger.info("Creating ZIP file from files");
@@ -81,12 +85,14 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
 }
 
 /**
- * Downloads a file as a Blob
- * @description - Download the dicom file, single file
- * @precondition - The file object must have a name and content
- * @postcondition - The file is downloaded to the user's device
- * @param blobData - The dicom data object, byteArray
- * @param fileName - string name of the file
+ * Downloads a file to the user's device
+ * @description Triggers a browser download of a DICOM file or any other file format
+ * @precondition The file object must have valid name and content properties
+ * @postcondition The file is downloaded to the user's device through the browser's download mechanism
+ * @param {FileData} newFile - The file object containing name and content
+ * @param {string} newFile.name - The name of the file to be downloaded
+ * @param {Blob} newFile.content - The content of the file as a Blob
+ * @returns {Promise<void>} A promise that resolves when the download is initiated
  */
 export async function downloadDicomFile(newFile: FileData) {
     logger.info("Downloading DICOM file: ", newFile.name);
@@ -104,14 +110,14 @@ export async function downloadDicomFile(newFile: FileData) {
 }
 
 /**
- * Create a new file object
- * @description - Create a new file object
- * @precondition - The blobData must be a valid Blob, fileName must be a string, isEdited must be a boolean
- * @postcondition - The file object is created and returned
- * @param fileName - string name of the file
- * @param blobData - The dicom data object, byteArray
- * @param isEdited - boolean flag indicating if the file has been edited
- * @returns - object with name and content of the file
+ * Create a new file object for DICOM data
+ * @description Creates a FileData object from raw DICOM data with appropriate naming
+ * @precondition The blobData must be a valid Uint8Array or Blob, fileName must be a string, isEdited must be a boolean
+ * @postcondition A FileData object is created with appropriate name and content properties
+ * @param {string} fileName - Name of the file (with or without .dcm extension)
+ * @param {Uint8Array|Blob} blobData - The DICOM data as a byte array or Blob
+ * @param {boolean} isEdited - Flag indicating if the file has been edited (affects filename)
+ * @returns {FileData} Object with name, content (as Blob), and empty path property
  */
 export function createFile(
     fileName: string,
