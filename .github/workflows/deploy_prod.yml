@@ -17,7 +17,8 @@ jobs:
       - name: Log in to Dockerhub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
     
-      - name: Build and push to dockerhub
+      - name: Build, tag, and push to dockerhub
         run: |
           docker build -f docker/prod/Dockerfile -t dicom-app .
+          docker tag dicom-app ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
