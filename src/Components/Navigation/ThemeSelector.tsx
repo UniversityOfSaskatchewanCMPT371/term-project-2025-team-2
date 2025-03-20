@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import { ThemeSelectorProps } from "@type/types";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
 /**

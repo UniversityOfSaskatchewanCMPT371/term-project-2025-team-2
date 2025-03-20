@@ -1,7 +1,7 @@
 import React from "react";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { HeaderProps } from "@type/types";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Header component for the sidebar

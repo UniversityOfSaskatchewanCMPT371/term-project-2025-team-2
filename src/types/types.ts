@@ -1,4 +1,4 @@
-import { CustomFile } from "../Features/FileHandling/Types/FileTypes";
+import { CustomFile } from "@features/FileHandling/Types/FileTypes";
 
 /**
  * Props for the Sidebar component
