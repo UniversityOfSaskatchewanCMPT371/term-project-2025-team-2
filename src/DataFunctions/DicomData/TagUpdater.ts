@@ -63,6 +63,7 @@ const lengthOffset = 6;
 
 import dicomParser from "dicom-parser";
 import logger from "@logger/Logger";
+import { TableUpdateData } from "@dicom//Types/DicomTypes";
 
 /**
  * Update the tags in a DICOM file
@@ -484,7 +485,7 @@ function getValueLength(tag: any) {
  * @param {string} fileName - The file name to filter tags by
  * @returns {Array<Object>} Array of tag objects that match the specified fileName
  */
-export function getSingleFileTagEdits(newTags: any, fileName: string) {
+export function getSingleFileTagEdits(newTags: TableUpdateData[], fileName: string): TableUpdateData[] {
     return newTags.filter((tag: any) => tag.fileName === fileName);
 }
 
