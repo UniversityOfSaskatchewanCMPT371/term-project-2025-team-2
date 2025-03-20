@@ -5,6 +5,9 @@ import { FileUploaderProps } from "../Types/FileTypes";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
+import { FolderIcon, Square2StackIcon } from "@heroicons/react/24/outline";
+import { Tooltip } from "react-tooltip";
+
 interface DirectoryInputHTMLAttributes
     extends React.InputHTMLAttributes<HTMLInputElement> {
     webkitdirectory?: string;
@@ -269,7 +272,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 </p>
 
                 <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-3">
-                    <div className="flex flex-col gap-3 sm:flex-row">
+                    <div className="flex flex-col gap-6 sm:flex-row">
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -278,7 +281,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                             }}
                             className="rounded-full bg-primary px-5 py-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-secondary disabled:bg-gray-400"
                         >
-                            Select Files
+                            <div
+                                className="fel-col-2 flex"
+                                data-testid="edit-tag-button"
+                                data-tooltip-id="select-files-button-tooltip"
+                                data-tooltip-content="Upload File/s"
+                                data-tooltip-place="top"
+                            >
+                                Select Files
+                                <Square2StackIcon className="ml-4 h-6 w-6" />
+                            </div>
+                            <Tooltip id="select-files-button-tooltip" />
                         </button>
                         <button
                             onClick={(e) => {
@@ -286,9 +299,19 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                                 e.preventDefault();
                                 openFileSelector(true);
                             }}
-                            className="rounded-full bg-secondary px-5 py-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-primary disabled:bg-gray-400"
+                            className="rounded-full bg-primary px-5 py-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-secondary disabled:bg-gray-400"
                         >
-                            Select Folder
+                            <div
+                                className="fel-col-2 flex"
+                                data-testid="edit-tag-button"
+                                data-tooltip-id="select-folder-button-tooltip"
+                                data-tooltip-content="Upload Folder/s"
+                                data-tooltip-place="top"
+                            >
+                                Select Folder
+                                <FolderIcon className="ml-4 h-6 w-6" />
+                            </div>
+                            <Tooltip id="select-folder-button-tooltip" />
                         </button>
                     </div>
                 </div>

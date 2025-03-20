@@ -40,6 +40,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
 
     const handleAutoAnon = async () => {
         logger.info("Auto Anonymizing tags");
+
         const newTagData: AnonTag[] = [];
         dicomData.forEach((data) => {
             const formattedData = FormatData(data, tagsToAnon);
@@ -90,6 +91,7 @@ export const TableControls: React.FC<TableControlsProps> = ({
 
                 <div className="ml-4">
                     <GenButton
+                        data-testid="DicomAddTag"
                         onClick={() => setShowAddTag(!addTag)}
                         label={addTag ? "Close Add Tag" : "Add Tag"}
                         disabled={false}

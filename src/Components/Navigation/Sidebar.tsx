@@ -27,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-72 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"}`}
+            className={`fixed right-0 top-0 h-full w-80 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"}`}
         >
             <div className="mt-4 flex flex-col p-6 pt-20">
                 <Header toggleModal={toggleModal} />

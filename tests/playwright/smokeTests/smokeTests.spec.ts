@@ -51,6 +51,8 @@ test("Upload dicom and verify file name matches tag displayed", async ({
             timeout: 5000,
         });
 
+        await page.waitForTimeout(1000);
+
         if (DEBUG) {
             await page.screenshot({
                 path: `${__dirname}/screenshots/screenshot-smoke.png`,
@@ -60,7 +62,7 @@ test("Upload dicom and verify file name matches tag displayed", async ({
 
         const PatientIDRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "PatientID" }),
+                has: page.locator("td", { hasText: "X00100020" }),
             })
             .first();
 

@@ -2,11 +2,77 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { NewTagRow } from "@features/DicomTagTable/Components/NewTagRow";
 import * as storeModule from "@state/Store";
 
+const mockStateObject = {
+    files: [{ name: "test.dcm" }],
+    dicomData: [
+        {
+            tags: [
+                { tagId: "tag1", tagName: "tag1", value: "value1" },
+                { tagId: "tag2", tagName: "tag2", value: "value2" },
+            ],
+            DicomDataSet: "dicomData",
+        },
+    ],
+    currentFileIndex: 0,
+    newTagValues: [{ tag1: "value2" }],
+    showHiddenTags: false,
+    setNewTagValues: jest.fn(),
+    loadTagDictionary: jest.fn().mockResolvedValue(null),
+    tagDictionary: [
+        { tagId: "12345678", name: "Test Tag", value: "Test Value" }
+    ],
+    isTagDictionaryLoaded: true,
+    setShowAlert: jest.fn(),
+    setAlertMsg: jest.fn(),
+    setAlertType: jest.fn(),
+};
+
+// Create a properly typed mock for useStore
+const useStoreMock = jest.fn() as jest.Mock & {
+    getState: jest.Mock;
+};
+
+// Set up the getState method on the mock
+useStoreMock.getState = jest.fn().mockReturnValue(mockStateObject);
+
+// Mock the entire Store module
 jest.mock("@state/Store", () => {
     const actual = jest.requireActual("@state/Store");
+    // Create a properly typed mock for useStore
+    const useStoreMock = jest.fn() as jest.Mock & {
+        getState: jest.Mock;
+    };
+
+    const mockStateObject = {
+        files: [{ name: "test.dcm" }],
+        dicomData: [
+            {
+                tags: [
+                    { tagId: "tag1", tagName: "tag1", value: "value1" },
+                    { tagId: "tag2", tagName: "tag2", value: "value2" },
+                ],
+                DicomDataSet: "dicomData",
+            },
+        ],
+        currentFileIndex: 0,
+        newTagValues: [{ tag1: "value2" }],
+        showHiddenTags: false,
+        setNewTagValues: jest.fn(),
+        loadTagDictionary: jest.fn().mockResolvedValue(null),
+        tagDictionary: [
+            { tagId: "12345678", name: "Test Tag", value: "Test Value" }
+        ],
+        isTagDictionaryLoaded: true,
+        setShowAlert: jest.fn(),
+        setAlertMsg: jest.fn(),
+        setAlertType: jest.fn(),
+    };
+
+    useStoreMock.getState = jest.fn().mockReturnValue(mockStateObject);
+
     return {
         ...actual,
-        useStore: jest.fn(),
+        useStore: useStoreMock,
     };
 });
 
@@ -17,6 +83,12 @@ describe("NewTagRow", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+
+        useStoreMock.mockClear();
+        useStoreMock.getState.mockClear();
+
+        // Make sure getState always returns the mockStateObject
+        useStoreMock.getState.mockReturnValue(mockStateObject);
 
         mockState = {
             files: [{ name: "test.dcm" }],
@@ -37,6 +109,7 @@ describe("NewTagRow", () => {
         (storeModule.useStore as unknown as jest.Mock).mockImplementation(
             (selector) => (selector ? selector(mockState) : mockState)
         );
+
     });
 
     it("should render inputs for tag ID, tag name, and tag value", () => {

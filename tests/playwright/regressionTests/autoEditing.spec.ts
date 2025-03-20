@@ -80,7 +80,7 @@ test("Edit tags in MRI series", async ({ page }) => {
 
         const tagRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "PatientName" }),
+                has: page.locator("td", { hasText: "X00080016" }),
             })
             .first();
 

@@ -31,7 +31,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const institutionNameRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "PatientName" }),
+                has: page.locator("td", { hasText: "X00100020" }),
             })
             .first();
 
@@ -104,7 +104,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
 
         const institutionNameRowAfterReupload = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "PatientName" }),
+                has: page.locator("td", { hasText: "X00100020" }),
             })
             .first();
 
@@ -116,7 +116,7 @@ test("Auto anonymize DICOM file and verify changes", async ({ page }) => {
             .locator("td")
             .nth(2)
             .textContent();
-        expect(finalValue).toBe("ANONYMOUS");
+        expect(finalValue).toBe("MR0000");
 
         fs.rmSync(extractDir, { recursive: true, force: true });
     } catch (error) {

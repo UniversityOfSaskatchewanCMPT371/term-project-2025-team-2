@@ -2,7 +2,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@state/Store";
 import { useState } from "react";
 import logger from "@logger/Logger";
-import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
+import { getTagName } from "@dataFunctions/DicomData/DicomParserUtils";
 
 /**
  * Create New Tag Row
@@ -73,11 +73,9 @@ export const NewTagRow = () => {
     };
 
     const filterTagName = (tagId: string) => {
-        const keyId = Object.keys(standardDataElements).find(
-            (key) => key === tagId
-        );
+        const keyId = getTagName("X" + tagId);
         if (keyId) {
-            return standardDataElements[keyId].name;
+            return keyId;
         }
         return "Unknown";
     };

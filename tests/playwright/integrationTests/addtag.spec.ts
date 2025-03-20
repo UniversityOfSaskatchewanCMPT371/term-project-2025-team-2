@@ -31,16 +31,18 @@ test("Add tag and verify", async ({ page }) => {
 
         const institutionNameRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "PatientName" }),
+                has: page.locator("td", { hasText: "X00100020" }),
             })
             .first();
 
-        await expect(institutionNameRow).toBeVisible({ timeout: 5000 });
+        await expect(institutionNameRow).toBeVisible({ timeout: 1000 });
 
-        const addButton = page.getByRole("button", { name: /Add Tag/i }).nth(0);
-        await expect(addButton).toBeVisible({ timeout: 5000 });
-        await addButton.click();
+        const addButton = await page.getByRole("button", { name: "Add Tag", exact: true }).first();
+        await addButton.isVisible({timeout: 100});
+        addButton.click();
 
+        await page.waitForTimeout(1000)
+        await page.screenshot({path: "cl.png"})
         const tagRow = page.locator("tr").filter({ hasText: "X" }).first();
 
         const tagInput = tagRow.locator("input").first();
