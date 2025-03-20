@@ -1,5 +1,5 @@
 import { GenErrorPageProps } from "@type/types";
-import { GenButton } from "../utils/GenButton";
+import { GenButton } from "@utils/GenButton";
 /**
  * GenErrorPage
  * @param error - Error object

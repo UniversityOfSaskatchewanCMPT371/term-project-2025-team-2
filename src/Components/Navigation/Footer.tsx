@@ -1,5 +1,5 @@
 import React from "react";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Footer component

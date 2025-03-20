@@ -1,7 +1,7 @@
 import { Tooltip } from "react-tooltip";
 import { HiddenTagsProps } from "@type/types";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * Hidden tags option component

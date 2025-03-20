@@ -1,11 +1,11 @@
 import React from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { GenButton } from "../utils/GenButton";
-import { DownloadOption } from "../utils/DownloadOption";
+import { GenButton } from "@utils/GenButton";
+import { DownloadOption } from "@utils/DownloadOption";
 import { SettingsModalProps } from "@type/types";
 import { HiddenTagsOption } from "./HiddenTagsOption";
 import { ThemeSelector } from "./ThemeSelector";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 import { EditOption } from "@components/utils/EditOption";
 

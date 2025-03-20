@@ -1,8 +1,8 @@
 import React from "react";
-import { GenButton } from "../utils/GenButton";
+import { GenButton } from "@utils/GenButton";
 import { FileNavigationProps } from "@features/FileHandling/Types/FileTypes";
 import { Tooltip } from "react-tooltip";
-import logger from "../../Logger/Logger";
+import logger from "@logger/Logger";
 
 /**
  * File navigation component
