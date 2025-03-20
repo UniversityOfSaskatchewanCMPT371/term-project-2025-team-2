@@ -3,6 +3,8 @@ name: Deploy to Production
 on: 
   push: 
     branches: [ "fix/prod_deployment" ]
+  pull_request:
+    branches: [ "fix/prod_deployment" ]
 
   workflow_dispatch:
 
