@@ -1,0 +1,23 @@
+name: Deploy to Production
+
+on: 
+  workflow_run:
+    workflows: ["Regression Tests"]
+    types: completed
+
+  workflow_dispatch:
+
+jobs:
+  deploy_prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Dockerhub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+    
+      - name: Build docker
+        run: |
+          docker build -f docker/prod/Dockerfile -t dicom-app .
