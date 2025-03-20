@@ -7,7 +7,8 @@ import {
     TableUpdateData,
     DicomData,
     AnonTag,
-} from "../Features/DicomTagTable/Types/DicomTypes";
+} from "@features/DicomTagTable/Types/DicomTypes";
+
 
 // interface tagIdAnon {
 //     tagId: string;

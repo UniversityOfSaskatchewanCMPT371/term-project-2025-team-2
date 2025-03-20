@@ -85,6 +85,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         loading(true);
 
         logger.info(`Processing ${fileArray.length} files`);
+        fileArray.sort((a, b) => {
+            const pathA = (a as any).webkitRelativePath || a.name;
+            const pathB = (b as any).webkitRelativePath || b.name;
+            return pathA.localeCompare(pathB, undefined, { numeric: true, sensitivity: "base" });
+        });
 
         const fileStructureTemp: Record<string, File[]> =
             existingFileStructure || {};
