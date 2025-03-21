@@ -211,4 +211,72 @@ describe("Zustand Store", () => {
         expect(state.sidebarVisible).toBe(false);
         expect(state.series).toBe(false);
     });
+    test("setSidePanelVisible updates sidePanelVisible", () => {
+        const { setSidePanelVisible } = useStore.getState();
+        setSidePanelVisible(true);
+        expect(useStore.getState().sidePanelVisible).toBe(true);
+    });
+    
+    test("setAutoAnonTagsEditPanelVisible updates autoAnonTagsEditPanelVisible", () => {
+        const { setAutoAnonTagsEditPanelVisible } = useStore.getState();
+        setAutoAnonTagsEditPanelVisible(true);
+        expect(useStore.getState().autoAnonTagsEditPanelVisible).toBe(true);
+    });
+    
+    test("setShowAddTag updates addTag state", () => {
+        const { setShowAddTag } = useStore.getState();
+        setShowAddTag(true);
+        expect(useStore.getState().addTag).toBe(true);
+    });
+    
+    test("setShowDictEdit updates showDictEdit state", () => {
+        const { setShowDictEdit } = useStore.getState();
+        setShowDictEdit(true);
+        expect(useStore.getState().showDictEdit).toBe(true);
+    });
+    
+    test("setAlertMsg updates alert message", () => {
+        const { setAlertMsg } = useStore.getState();
+        setAlertMsg("New Alert");
+        expect(useStore.getState().alertMsg).toBe("New Alert");
+    });
+    
+    test("setAlertType updates alert type and handles invalid types", () => {
+        const { setAlertType } = useStore.getState();
+        setAlertType("alert-success");
+        expect(useStore.getState().alertType).toBe("alert-success");
+    
+        setAlertType("invalid-type");
+        expect(useStore.getState().alertType).toBe("alert-error"); // fallback
+    });
+    
+    test("setAllowEditLockedTags updates allowEditLockedTags state", () => {
+        const { setAllowEditLockedTags } = useStore.getState();
+        setAllowEditLockedTags(true);
+        expect(useStore.getState().allowEditLockedTags).toBe(true);
+    });
+    
+    test("setTagsToAnon updates and persists tagsToAnon", () => {
+        const { setTagsToAnon } = useStore.getState();
+        const mockTags = [{ tagId: "test", tagName: "Test Tag" }];
+        setTagsToAnon(mockTags);
+        expect(useStore.getState().tagsToAnon).toEqual(mockTags);
+        expect(JSON.parse(localStorage.getItem("TagsAutoList") || "")).toEqual(mockTags);
+    });
+    
+    test("resetTagsAnon resets tagsToAnon and shows alert", () => {
+        const { resetTagsAnon } = useStore.getState();
+        resetTagsAnon();
+        expect(useStore.getState().alertMsg).toBe("Tags Reset to Default");
+        expect(useStore.getState().alertType).toBe("alert-warning");
+        expect(useStore.getState().showAlert).toBe(true);
+    });
+    
+    test("setFileStructure updates fileStructure", () => {
+        const { setFileStructure } = useStore.getState();
+        const mockStructure = { root: [new File([""], "mock.dcm")] };
+        setFileStructure(mockStructure);
+        expect(useStore.getState().fileStructure).toEqual(mockStructure);
+    });
+    
 });
