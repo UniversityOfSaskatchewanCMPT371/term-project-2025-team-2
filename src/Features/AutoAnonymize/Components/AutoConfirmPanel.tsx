@@ -40,14 +40,14 @@ export const SidePanel = () => {
             setTags(tags.filter((tag) => tag.tagId !== tagId));
             return;
         }
-        const temp = tags.some(tag => tag.tagId === tagId)
+        const temp = tags.some((tag) => tag.tagId === tagId)
             ? tags.map((tag) => {
-                if (tag.tagId === tagId) {
-                    return { ...tag, newValue };
-                }
-                return tag;
-            })
-            : [...tags, { tagId, tagName: "", newValue }]
+                  if (tag.tagId === tagId) {
+                      return { ...tag, newValue };
+                  }
+                  return tag;
+              })
+            : [...tags, { tagId, tagName: "", newValue }];
 
         setTags(temp);
     };
@@ -122,7 +122,7 @@ export const SidePanel = () => {
                         !tagsToAnon.includes(tag.tagId) &&
                         tag.value.split(" ").length <= 2 &&
                         (tag.value as string).toUpperCase() !==
-                        (tag.value as string)
+                            (tag.value as string)
                     ) {
                         if (
                             !localPII.some(
@@ -175,8 +175,9 @@ export const SidePanel = () => {
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${sidePanelVisible ? "translate-x-0" : "translate-x-full"
-                }`}
+            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
+                sidePanelVisible ? "translate-x-0" : "translate-x-full"
+            }`}
         >
             <div className="mb-5 ml-4 mt-24 text-xl font-bold text-blue-400">
                 Tags to be Anonymized

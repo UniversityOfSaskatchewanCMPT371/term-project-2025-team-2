@@ -101,7 +101,6 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
         } else if (tag.add) {
             data = addTag(dicomData, tag, implicitTags);
         } else {
-
             const tagIdByte = new Uint8Array(groupLen + elementLen);
             const group = parseInt(tag.tagId.slice(1, 5), 16);
             const element = parseInt(tag.tagId.slice(5), 16);
@@ -165,7 +164,11 @@ function addTag(dicomData: any, tag: InsertTag, implicit: boolean): Uint8Array {
  * @param newTag - bytearray to insert into dicom file
  * @returns byte array with tag inserted
  */
-function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: Uint8Array): Uint8Array {
+function insertTag(
+    dicomData: any,
+    tagToAdd: InsertTag,
+    newtag: Uint8Array
+): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
@@ -240,7 +243,12 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
  * @description creates a bytearray representing the tag
  * @return tag's bytearray
  */
-function createTag(tagName: Uint8Array, tag: InsertTag, littleEndian: boolean, implicit: boolean): Uint8Array {
+function createTag(
+    tagName: Uint8Array,
+    tag: InsertTag,
+    littleEndian: boolean,
+    implicit: boolean
+): Uint8Array {
     const valueOffset =
         tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
@@ -464,7 +472,10 @@ function getValueLength(tag: InsertTag) {
  * @param fileName
  * @returns - object tags edited for a single file
  */
-export function getSingleFileTagEdits(newTags: TableUpdateData[], fileName: string): TableUpdateData[] {
+export function getSingleFileTagEdits(
+    newTags: TableUpdateData[],
+    fileName: string
+): TableUpdateData[] {
     return newTags.filter((tag: TableUpdateData) => tag.fileName === fileName);
 }
 

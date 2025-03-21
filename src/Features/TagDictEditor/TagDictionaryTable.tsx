@@ -64,7 +64,7 @@ export const TagDictionaryTable = React.memo(
 
         return (
             <div className="w-full p-4">
-                <table className="mb-20 border w-full text-lg text-base-content">
+                <table className="mb-20 w-full border text-lg text-base-content">
                     <thead>
                         <tr className="text-wrap bg-primary">
                             <th className="w-1/5 border px-4 py-2 text-primary-content">
@@ -128,29 +128,34 @@ export const TagDictionaryTable = React.memo(
                             </tr>
                         ) : null}
 
-                        {filteredTags.slice(0, displayCount).map((tag, index) => {
-                            // Check if there's a pending change for this tag
-                            const pendingChange = pendingChanges.get(tag.tagId);
-                            const isPendingDelete =
-                                pendingChange && (pendingChange as any)._delete;
+                        {filteredTags
+                            .slice(0, displayCount)
+                            .map((tag, index) => {
+                                // Check if there's a pending change for this tag
+                                const pendingChange = pendingChanges.get(
+                                    tag.tagId
+                                );
+                                const isPendingDelete =
+                                    pendingChange &&
+                                    (pendingChange as any)._delete;
 
-                            return (
-                                <TagDictTableRow
-                                    key={tag.tagId}
-                                    tagId={tag.tagId}
-                                    index={index}
-                                    tagName={tag.name}
-                                    tagVR={tag.vr}
-                                    onUpdateValue={addChanges}
-                                    isPendingDelete={isPendingDelete}
-                                    pendingValue={
-                                        pendingChange && !isPendingDelete
-                                            ? pendingChange.name
-                                            : undefined
-                                    }
-                                />
-                            );
-                        })}
+                                return (
+                                    <TagDictTableRow
+                                        key={tag.tagId}
+                                        tagId={tag.tagId}
+                                        index={index}
+                                        tagName={tag.name}
+                                        tagVR={tag.vr}
+                                        onUpdateValue={addChanges}
+                                        isPendingDelete={isPendingDelete}
+                                        pendingValue={
+                                            pendingChange && !isPendingDelete
+                                                ? pendingChange.name
+                                                : undefined
+                                        }
+                                    />
+                                );
+                            })}
 
                         {displayCount < filteredTags.length && (
                             <tr>

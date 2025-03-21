@@ -89,11 +89,13 @@ export const AutoAnon = async (
                         tagId: anonTag.tagId,
                         newValue: anonTag.newValue,
                         vr:
-                            dicom.DicomDataSet.elements[anonTag.tagId.toLowerCase()].vr ||
-                            "NO",
+                            dicom.DicomDataSet.elements[
+                                anonTag.tagId.toLowerCase()
+                            ].vr || "NO",
                         dataOffSet:
-                            dicom.DicomDataSet.elements[anonTag.tagId.toLowerCase()]
-                                .dataOffset,
+                            dicom.DicomDataSet.elements[
+                                anonTag.tagId.toLowerCase()
+                            ].dataOffset,
                         length: anonTag.newValue.length,
                         deleteTag: false,
                     });

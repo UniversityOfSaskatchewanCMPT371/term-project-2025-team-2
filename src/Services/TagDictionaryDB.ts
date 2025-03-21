@@ -289,7 +289,9 @@ export class TagDictionaryDB {
                     for (const [tagId, data] of entries) {
                         const tag: TagDictionaryItem = {
                             tagId,
-                            name: data.name.replace(/([a-z])([A-Z])/g, '$1 $2').trim(),
+                            name: data.name
+                                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                                .trim(),
                             vr: data.vr,
                         };
 

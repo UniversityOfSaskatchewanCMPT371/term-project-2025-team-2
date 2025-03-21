@@ -16,7 +16,7 @@
             "@fileHandling/*": ["Features/FileHandling/*"],
             "@state/*": ["State/*"],
             "@auto/*": ["Features/AutoAnonymize/*"],
-            "@services/*": ["Services/*"],
+            "@services/*": ["Services/*"]
         }
     }
 }

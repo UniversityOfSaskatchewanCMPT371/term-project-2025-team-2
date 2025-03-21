@@ -36,9 +36,16 @@ test("Remove tag from auto list", async ({ page }) => {
         const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
-        const editButton = page.getByRole("button", {
-            name: /Edit Auto-Anon Tags/i,
+        const advancedMenu = page.getByRole("button", {
+            name: /Advanced/i,
         });
+
+        await expect(advancedMenu).toBeVisible();
+        await advancedMenu.click();
+
+        const editButton = page
+            .locator("li")
+            .filter({ hasText: "Edit Auto-Anon Tags" });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
         await page.waitForTimeout(500);
@@ -82,12 +89,18 @@ test("Remove tag from auto list", async ({ page }) => {
 
         await page.waitForTimeout(1000);
 
-        const editButton2 = page.getByRole("button", {
-            name: /Edit Auto-Anon Tags/i,
+        const advancedMenu2 = page.getByRole("button", {
+            name: /Advanced/i,
         });
+
+        await expect(advancedMenu2).toBeVisible();
+        await advancedMenu2.click();
+
+        const editButton2 = page
+            .locator("li")
+            .filter({ hasText: "Edit Auto-Anon Tags" });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
-
         await page.waitForTimeout(500);
 
         await expect(page.locator("td:has-text('X00080050')")).toHaveCount(0);

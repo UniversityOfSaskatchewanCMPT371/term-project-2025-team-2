@@ -39,7 +39,7 @@
             "@features/*": ["Features/*"],
             "@logger/*": ["Logger/*"],
             "@type/*": ["types/*"],
-            "@services/*": ["Services/*"],
+            "@services/*": ["Services/*"]
         }
     },
     "include": ["src", "types"]

@@ -61,7 +61,7 @@ describe("DicomTableRow", () => {
         fireEvent.mouseOver(deleteIcon);
 
         await waitFor(() => {
-            expect(screen.getByText("To Be Deleted")).toBeInTheDocument();
+            expect(screen.getByText("Delete Tag")).toBeInTheDocument();
         });
     });
 

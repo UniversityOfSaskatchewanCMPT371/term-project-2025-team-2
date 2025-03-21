@@ -38,14 +38,15 @@ export const HelpModal: React.FC<HelpModalProps> = () => {
                 (helpModal as HTMLDialogElement).close();
             }
 
-            setAlertMsg("All data has been cleared. The application will now reload.");
+            setAlertMsg(
+                "All data has been cleared. The application will now reload."
+            );
             setAlertType("alert-success");
             setShowAlert(true);
 
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
-
         } catch (error) {
             logger.error("Error clearing data:", error);
             setAlertMsg("Failed to clear data. Please try again.");
@@ -78,44 +79,71 @@ export const HelpModal: React.FC<HelpModalProps> = () => {
                         Detailed User Guide
                     </a>
                 </div>
-                <div className="flex justify-between items-center mt-6">
+                <div className="mt-6 flex items-center justify-between">
                     <div className="dropdown dropdown-top">
                         <div tabIndex={0} role="button" className="btn">
                             Advanced Options
-                            <ChevronUpIcon className="w-6 h-6 ml-2" />
+                            <ChevronUpIcon className="ml-2 h-6 w-6" />
                         </div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                        <ul
+                            tabIndex={0}
+                            className="menu dropdown-content z-[1] w-52 rounded-box bg-base-200 p-2 shadow"
+                        >
                             <li className="hover:bg-base-200 hover:text-primary">
-                                <a onClick={() => {
-                                    logger.debug("Edit Tag Dictionary button clicked");
-                                    const helpModal = document.getElementById("help_modal");
-                                    if (helpModal) {
-                                        (helpModal as HTMLDialogElement).close();
-                                    }
-                                    setShowDictEdit(true);
-                                }}>
+                                <a
+                                    onClick={() => {
+                                        logger.debug(
+                                            "Edit Tag Dictionary button clicked"
+                                        );
+                                        const helpModal =
+                                            document.getElementById(
+                                                "help_modal"
+                                            );
+                                        if (helpModal) {
+                                            (
+                                                helpModal as HTMLDialogElement
+                                            ).close();
+                                        }
+                                        setShowDictEdit(true);
+                                    }}
+                                >
                                     Edit Tag Dictionary
                                 </a>
                             </li>
                             <li className="hover:bg-base-200 hover:text-primary">
-                                <a onClick={() => {
-                                    logger.debug("Edit Auto-Anon Tags button clicked");
-                                    const helpModal = document.getElementById("help_modal");
-                                    if (helpModal) {
-                                        (helpModal as HTMLDialogElement).close();
-                                    }
-                                    setAutoAnonTagsEditPanelVisible(true);
-                                }}>
+                                <a
+                                    onClick={() => {
+                                        logger.debug(
+                                            "Edit Auto-Anon Tags button clicked"
+                                        );
+                                        const helpModal =
+                                            document.getElementById(
+                                                "help_modal"
+                                            );
+                                        if (helpModal) {
+                                            (
+                                                helpModal as HTMLDialogElement
+                                            ).close();
+                                        }
+                                        setAutoAnonTagsEditPanelVisible(true);
+                                    }}
+                                >
                                     Edit Auto-Anon Tags
                                 </a>
                             </li>
                             <li className="hover:bg-base-200 hover:text-error">
-                                <a onClick={() => {
-                                    // Show confirmation dialog before clearing data
-                                    if (confirm("This will clear all local application data. This action cannot be undone. Continue?")) {
-                                        handleClearData();
-                                    }
-                                }}>
+                                <a
+                                    onClick={() => {
+                                        // Show confirmation dialog before clearing data
+                                        if (
+                                            confirm(
+                                                "This will clear all local application data. This action cannot be undone. Continue?"
+                                            )
+                                        ) {
+                                            handleClearData();
+                                        }
+                                    }}
+                                >
                                     Clear All Saved Data
                                 </a>
                             </li>

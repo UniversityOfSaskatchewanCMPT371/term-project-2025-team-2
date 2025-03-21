@@ -103,15 +103,18 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
         <React.Fragment key={index + row.tagId + row.value}>
             <tr
                 key={index + row.tagId}
-                className={`${deleteTag && "bg-red-100 text-red-500 opacity-50 hover:bg-red-400"
-                    } ${edited ? " bg-yellow-100 text-yellow-700 hover:bg-yellow-400" : "hover:bg-blue-600"}`}
+                className={`${
+                    deleteTag &&
+                    "bg-red-100 text-red-500 opacity-50 hover:bg-red-400"
+                } ${edited ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-400" : "hover:bg-blue-600"}`}
             >
                 {!hideTagNumber && (
                     <td
-                        className={`break-all border px-4 py-2 ${nested
-                            ? `bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-black dark:bg-blue-500`
-                            : ""
-                            }`}
+                        className={`break-all border px-4 py-2 ${
+                            nested
+                                ? `bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-black dark:bg-blue-500`
+                                : ""
+                        }`}
                         style={{
                             paddingLeft: `${nested ? 40 + level * 20 : 16}px`,
                         }}
@@ -136,7 +139,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
 
                 <td className="break-all border px-4 py-2">
                     {typeof row.value === "string" ||
-                        row.value instanceof String ? (
+                    row.value instanceof String ? (
                         <div className="flex">
                             <div className="flex-1">
                                 {isEditing ? (
@@ -145,7 +148,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         value={newValue}
                                         onChange={handleValueChange}
                                         onBlur={handleBlur}
-                                        className="w-full rounded border p-1 border-primary"
+                                        className="w-full rounded border border-primary p-1"
                                     />
                                 ) : edited ? (
                                     <span className="text-yellow-700">
@@ -166,56 +169,58 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                 )}
                             </div>
                             {lockEditingTags.includes(row.tagId) &&
-                                !allowEditLockedTags ? null : !deleteTag ? (
-                                    isEditing ? (
-                                        <>
-                                            <CheckCircleIcon
-                                                className="h-6 w-6 ml-2 mt-1 cursor-pointer hover:scale-110 hover:text-success"
-                                                onClick={toggleEditing}
-                                                data-tooltip-id={`save-tag-${row.tagId}`}
-                                                data-tooltip-content="Save update"
-                                                data-tooltip-place="left"
-                                            />
-                                            <Tooltip id={`save-tag-${row.tagId}`} />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div
-                                                className="flex cursor-pointer justify-end hover:text-accent"
-                                                onClick={() =>
-                                                    handleClick(toggleEditing)
-                                                }
-                                            >
-                                                <PencilSquareIcon
-                                                    className="ml-4 h-6 w-6"
-                                                    data-testid="edit-tag-button"
-                                                    data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
-                                                    data-tooltip-content="Edit Tag Value"
-                                                    data-tooltip-place="top"
-                                                    aria-label="Edit Tag"
-                                                />
-                                                <Tooltip
-                                                    id={`${row.tagId}-editTag-button-tooltip`}
-                                                />
-                                            </div>
-                                            <div
-                                                className="flex cursor-pointer justify-end hover:text-accent"
-                                                onClick={toggleDelete}
-                                            >
-                                                <XCircleIcon
-                                                    className={`ml-4 h-6 w-6 hover:text-red-500`}
-                                                    data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
-                                                    data-tooltip-content={"Delete Tag"}
-                                                    data-tooltip-place="left"
-                                                    aria-label="Delete Tag"
-                                                />
-                                                <Tooltip
-                                                    id={`${row.tagId}-deleteTag-button-tooltip`}
-                                                />
-                                            </div>
-                                        </>
-                                    )
+                            !allowEditLockedTags ? null : !deleteTag ? (
+                                isEditing ? (
+                                    <>
+                                        <CheckCircleIcon
+                                            className="ml-2 mt-1 h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
+                                            onClick={toggleEditing}
+                                            data-tooltip-id={`save-tag-${row.tagId}`}
+                                            data-tooltip-content="Save update"
+                                            data-tooltip-place="left"
+                                        />
+                                        <Tooltip id={`save-tag-${row.tagId}`} />
+                                    </>
                                 ) : (
+                                    <>
+                                        <div
+                                            className="flex cursor-pointer justify-end hover:text-accent"
+                                            onClick={() =>
+                                                handleClick(toggleEditing)
+                                            }
+                                        >
+                                            <PencilSquareIcon
+                                                className="ml-4 h-6 w-6"
+                                                data-testid="edit-tag-button"
+                                                data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
+                                                data-tooltip-content="Edit Tag Value"
+                                                data-tooltip-place="top"
+                                                aria-label="Edit Tag"
+                                            />
+                                            <Tooltip
+                                                id={`${row.tagId}-editTag-button-tooltip`}
+                                            />
+                                        </div>
+                                        <div
+                                            className="flex cursor-pointer justify-end hover:text-accent"
+                                            onClick={toggleDelete}
+                                        >
+                                            <XCircleIcon
+                                                className={`ml-4 h-6 w-6 hover:text-red-500`}
+                                                data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
+                                                data-tooltip-content={
+                                                    "Delete Tag"
+                                                }
+                                                data-tooltip-place="left"
+                                                aria-label="Delete Tag"
+                                            />
+                                            <Tooltip
+                                                id={`${row.tagId}-deleteTag-button-tooltip`}
+                                            />
+                                        </div>
+                                    </>
+                                )
+                            ) : (
                                 <div
                                     className="flex cursor-pointer justify-end hover:text-accent"
                                     onClick={() => toggleDelete()}
@@ -245,17 +250,17 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                         return row.value.map((nestedItem: any, i: number) =>
                             nestedItem?.tags
                                 ? Object.values(nestedItem.tags).map(
-                                    (nested: any) => (
-                                        <DicomTableRow
-                                            key={`${nested.tagId}-${i}`}
-                                            row={nested}
-                                            index={index}
-                                            onUpdateValue={onUpdateValue}
-                                            nested
-                                            level={level + 1}
-                                        />
-                                    )
-                                )
+                                      (nested: any) => (
+                                          <DicomTableRow
+                                              key={`${nested.tagId}-${i}`}
+                                              row={nested}
+                                              index={index}
+                                              onUpdateValue={onUpdateValue}
+                                              nested
+                                              level={level + 1}
+                                          />
+                                      )
+                                  )
                                 : null
                         );
                     }
