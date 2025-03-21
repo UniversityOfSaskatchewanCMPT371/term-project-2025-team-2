@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { DicomTableRowProps } from "../Types/DicomTypes";
+import { DicomTableRowProps,DicomTag } from "../Types/DicomTypes";
 import { useStore } from "@state/Store";
 import logger from "@logger/Logger";
 
-const lockEditingTags: any = [
+const lockEditingTags: string[] = [
     "X00080016",
     "X00080018",
     "X00200032",
@@ -210,10 +210,10 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 (() => {
                     // Case 1: row.value is an array (multiple sequence items)
                     if (Array.isArray(row.value)) {
-                        return row.value.map((nestedItem: any, i: number) =>
+                        return row.value.map((nestedItem: { tags?: Record<string, DicomTag> }, i: number) =>
                             nestedItem?.tags
                                 ? Object.values(nestedItem.tags).map(
-                                      (nested: any) => (
+                                      (nested: DicomTag) => (
                                           <DicomTableRow
                                               key={`${nested.tagId}-${i}`}
                                               row={nested}
@@ -230,7 +230,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                     // Case 2: row.value is a single nested tag object
                     if (typeof row.value === "object" && row.value?.tags) {
                         return Object.values(row.value.tags).map(
-                            (nested: any) => (
+                            (nested: DicomTag) => (
                                 <DicomTableRow
                                     key={nested.tagId}
                                     row={nested}
