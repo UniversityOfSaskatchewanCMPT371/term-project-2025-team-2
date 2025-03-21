@@ -1,4 +1,5 @@
 import logger from "@logger/Logger";
+import { TableUpdateData } from "../Types/DicomTypes";
 
 /**
  * createRows function
@@ -13,7 +14,7 @@ import logger from "@logger/Logger";
 export const createRows = (
     dicomData: any,
     fileName: string,
-    newTableData: any[]
+    newTableData: TableUpdateData[]
 ) => {
     logger.debug("Creating rows for the DICOM table");
 

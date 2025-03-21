@@ -10,6 +10,11 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+import dicomParser from "dicom-parser";
+import logger from "@logger/Logger";
+import { TableUpdateData, InsertTag } from "@dicom//Types/DicomTypes";
+
+//mset to turn on console logs for debugging
 const DEBUG = false;
 
 const debug = (message: string) => {
@@ -49,9 +54,6 @@ const longHeaderLen = 12;
 const vrOffset = 4;
 const lengthOffset = 6;
 
-import dicomParser from "dicom-parser";
-import logger from "@logger/Logger";
-
 /**
  * Update the tags in a dicom file
  * @description - Update the tags in a dicom file
@@ -61,8 +63,8 @@ import logger from "@logger/Logger";
  * @param newTagData - The new tag values
  * @returns newDicomData - The updated dicom data object, byte array
  */
-export function tagUpdater(dicomData: any, newTagData: any) {
-    const newTags: any = [];
+export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
+    const newTags: InsertTag[] = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
     let data: any;
@@ -79,44 +81,26 @@ export function tagUpdater(dicomData: any, newTagData: any) {
     debug("filteredTags: " + JSON.stringify(filteredTags));
 
     filteredTags.forEach((tag: any) => {
-        let offSet = 0;
-        try {
-            offSet = dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
-        } catch (error) {
-            logger.error(
-                `Data OffSet for Tag: ${tag.tagId} doesn't exisit in file ${error}`
-            );
-            return;
-        }
-
-        try {
-            const insertTag = {
-                tagId: tag.tagId,
-                value: tag.newValue,
-                vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST", // ST is string type
-                dataOffSet: offSet,
-                length: tag.newValue.length,
-                delete: tag.delete || false,
-                add: tag.add || false,
-            };
-
-            newTags.push(insertTag);
-            debug("insertTag: " + JSON.stringify(insertTag));
-        } catch (error) {
-            logger.error(`Error trying to create tag: ${tag.tagId}, ${error}`);
-        }
+        const insertTag: InsertTag = {
+            tagId: tag.tagId,
+            newValue: tag.newValue,
+            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
+            dataOffSet:
+                dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
+            length: tag.newValue.length,
+            delete: tag.delete,
+            add: tag.add,
+        };
+        newTags.push(insertTag);
+        debug("insertTag: " + JSON.stringify(insertTag));
     });
 
-    newTags.forEach((tag: any) => {
-        debug("TagEdit: " + JSON.stringify(tag));
-
+    newTags.forEach((tag: InsertTag) => {
         if (tag.delete) {
             data = removeTag(dicomData, tag);
         } else if (tag.add) {
-            data = addTag(dicomData, tag);
+            data = addTag(dicomData, tag, implicitTags);
         } else {
-            debug(tag);
-            debug(dicomData);
 
             const tagIdByte = new Uint8Array(groupLen + elementLen);
             const group = parseInt(tag.tagId.slice(1, 5), 16);
@@ -154,13 +138,13 @@ export function tagUpdater(dicomData: any, newTagData: any) {
  * @param tag
  * @returns
  */
-function addTag(dicomData: any, tag: any) {
+function addTag(dicomData: any, tag: InsertTag, implicit: boolean): Uint8Array {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
     const element = parseInt(tag.tagId.slice(5), 16);
 
     tagIdByte.set(new Uint8Array([group, group >> 8, element, element >> 8]));
-    const newTag = createTag(tagIdByte, tag, true);
+    const newTag = createTag(tagIdByte, tag, true, implicit);
 
     const newArray = concatBuffers(dicomData.byteArray, newTag);
 
@@ -181,7 +165,7 @@ function addTag(dicomData: any, tag: any) {
  * @param newTag - bytearray to insert into dicom file
  * @returns byte array with tag inserted
  */
-function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
+function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: Uint8Array): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
@@ -214,7 +198,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
  * @param tagToRemove - tag to be removed
  * @returns byte array with tag removed
  */
-function removeTag(dicomData: any, tagToRemove: any) {
+function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
@@ -256,12 +240,7 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
  * @description creates a bytearray representing the tag
  * @return tag's bytearray
  */
-function createTag(
-    tagName: Uint8Array,
-    tag: any,
-    littleEndian: boolean,
-    Implicit: boolean = false
-) {
+function createTag(tagName: Uint8Array, tag: InsertTag, littleEndian: boolean, implicit: boolean): Uint8Array {
     const valueOffset =
         tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
@@ -279,7 +258,7 @@ function createTag(
 
     const newTag = new Uint8Array(valueLength + valueOffset);
     newTag.set(tagName);
-    if (Implicit) {
+    if (implicit) {
         // handle Implicit VR Little Endian (UID: 1.2.840.10008.1.2)
         // newTag.set(tagVR, lengthOffset); VR not needed, length gets put a vr offset
         newTag.set(tagLength, vrOffset);
@@ -296,7 +275,7 @@ function createTag(
         case "FD":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "double",
                     valueLength,
                     littleEndian
@@ -307,7 +286,7 @@ function createTag(
         case "FL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "float",
                     valueLength,
                     littleEndian
@@ -318,7 +297,7 @@ function createTag(
         case "UL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "uint32",
                     valueLength,
                     littleEndian
@@ -329,7 +308,7 @@ function createTag(
         case "US":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "uint16",
                     valueLength,
                     littleEndian
@@ -340,7 +319,7 @@ function createTag(
         case "SL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "int32",
                     valueLength,
                     littleEndian
@@ -351,7 +330,7 @@ function createTag(
         case "SS":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "int16",
                     valueLength,
                     littleEndian
@@ -360,14 +339,14 @@ function createTag(
             );
             break;
         // case 'AT':
-        //     const atGroup = parseInt(tag.value.slice(0, 4), 16);
-        //     const atElement = parseInt(tag.value.slice(4,), 16);
+        //     const atGroup = parseInt(tag.newValue.slice(0, 4), 16);
+        //     const atElement = parseInt(tag.newValue.slice(4,), 16);
         //     newTag.set(writeTypedNumber(atGroup, 'uint16', valueLength / 2, littleEndian), valueOffset);
         //     newTag.set(writeTypedNumber(atElement, 'uint16', valueLength / 2, littleEndian), valueOffset + 2);
         //     break;
         default:
-            for (let i = 0; i < tag.value.length; i++) {
-                newTag[i + 8] = tag.value.charCodeAt(i);
+            for (let i = 0; i < tag.newValue.length; i++) {
+                newTag[i + 8] = tag.newValue.charCodeAt(i);
             }
             break;
     }
@@ -444,16 +423,16 @@ function writeVRArray(vr: string) {
  * @description gets the length of the tag's value
  * @return length of the tag's value
  */
-function getValueLength(tag: any) {
-    if (tag.tagVR in NUMBERS) {
-        let value = parseInt(tag.tagValue, 10);
+function getValueLength(tag: InsertTag) {
+    if (tag.vr in NUMBERS) {
+        let value = parseInt(tag.newValue, 10);
         let byteLength = 1;
         /* tslint:disable */
         while ((value >>= 8) > 0) {
             /* tslint:enable */
             byteLength++;
         }
-        switch (tag.tagVR[1]) {
+        switch (tag.vr[1]) {
             case "S":
                 byteLength += 2 - (byteLength % 2);
                 break;
@@ -467,12 +446,12 @@ function getValueLength(tag: any) {
                 break;
         }
         return byteLength;
-    } else if (tag.tagVR === "AT") {
+    } else if (tag.vr === "AT") {
         return 4;
     } else {
-        debug("Tag value length: " + tag.value.length);
+        debug("Tag value length: " + tag.newValue.length);
 
-        return tag.value.length;
+        return tag.newValue.length;
     }
 }
 
@@ -485,8 +464,8 @@ function getValueLength(tag: any) {
  * @param fileName
  * @returns - object tags edited for a single file
  */
-export function getSingleFileTagEdits(newTags: any, fileName: string) {
-    return newTags.filter((tag: any) => tag.fileName === fileName);
+export function getSingleFileTagEdits(newTags: TableUpdateData[], fileName: string): TableUpdateData[] {
+    return newTags.filter((tag: TableUpdateData) => tag.fileName === fileName);
 }
 
 /**
