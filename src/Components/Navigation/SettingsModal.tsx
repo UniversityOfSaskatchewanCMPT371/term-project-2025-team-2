@@ -23,9 +23,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
     const showHiddenTags = useStore((state) => state.showHiddenTags);
     const setShowHiddenTags = useStore((state) => state.setShowHiddenTags);
-    const setAutoAnonTagsEditPanelVisible = useStore(
-        (state) => state.setAutoAnonTagsEditPanelVisible
-    );
 
     logger.debug("Rendering SettingsModal component");
 
@@ -64,17 +61,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
                 <p>Editing Locked Tags</p>
                 <EditOption />
-
-                <div className="mb-4">
-                    <GenButton
-                        onClick={() => {
-                            logger.debug("Edit Auto-Anon Tags button clicked");
-                            setAutoAnonTagsEditPanelVisible(true);
-                        }}
-                        disabled={false}
-                        label="Edit Auto-Anon Tags"
-                    />
-                </div>
 
                 <GenButton
                     onClick={toggleModal}

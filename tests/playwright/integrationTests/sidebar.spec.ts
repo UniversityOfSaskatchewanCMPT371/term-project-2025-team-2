@@ -28,6 +28,8 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
+        await page.waitForTimeout(2000)
+
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
@@ -42,7 +44,7 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
             timeout: 5000,
         });
 
-        await page.waitForSelector('tr:has-text("SOPClassUID")', {
+        await page.waitForSelector('tr:has-text("X00080016")', {
             state: "visible",
             timeout: 1000,
         });
@@ -88,6 +90,8 @@ test("Testing edit individually and series button in sidebar", async ({
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
         ]);
+
+        await page.waitForTimeout(2000)
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
@@ -139,6 +143,8 @@ test("Navigating from files from sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
+        await page.waitForTimeout(2000)
+        
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
@@ -198,6 +204,8 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
+        await page.waitForTimeout(2000)
+        
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,

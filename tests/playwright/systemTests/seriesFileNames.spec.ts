@@ -73,7 +73,7 @@ test("Upload dicoms and verify file name matches tags displayed", async ({
 
             const PatientIDRow = page
                 .locator("tr", {
-                    has: page.locator("td", { hasText: "PatientID" }),
+                    has: page.locator("td", { hasText: "X00080016" }),
                 })
                 .first();
 

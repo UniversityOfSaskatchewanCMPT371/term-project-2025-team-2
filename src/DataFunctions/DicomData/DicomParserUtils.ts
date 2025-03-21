@@ -3,16 +3,23 @@ import { TagDictionary } from "../TagDictionary/dictionary";
 import logger from "@logger/Logger";
 import { assert } from "../assert";
 import { DicomData, DicomTags } from "@dicom//Types/DicomTypes";
+import { useStore } from "@state/Store";
+import { standardDataElements } from "../TagDictionary/standardDataElements";
 
 const tagDictionary = new TagDictionary();
 
+// List of tags to hide from the user interface
 const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
 
 /**
- *
- * @param file - DICOM file
- * @returns - Promise that resolves with the parsed DICOM data
- * @description - Parses a DICOM file and extracts the DICOM tags
+ * Parse a DICOM file and extract its tags
+ * @description Reads and parses a DICOM file, extracting its tags into a structured format
+ * @precondition The file parameter must be a valid File object containing DICOM-formatted data
+ * @postcondition A Promise is returned that resolves to a DicomData object containing the parsed tags and dataset
+ * @param {File} file - DICOM file to be parsed
+ * @returns {Promise<DicomData>} Promise that resolves with the parsed DICOM data including tags and original dataset
+ * @throws {Error} If the file cannot be read as an ArrayBuffer
+ * @throws {Error} If the DICOM parsing fails due to invalid or corrupted DICOM data
  */
 export const parseDicomFile = (file: File): Promise<DicomData> => {
     logger.info("Parsing DICOM file: ", file.name);
@@ -46,9 +53,65 @@ export const parseDicomFile = (file: File): Promise<DicomData> => {
 };
 
 /**
- *
- * @param dataSet - DICOM data set, parsed using dicom-parser
- * @returns dicomTags - Object containing the extracted DICOM tags
+ * Get a human-readable tag name from a tag ID
+ * @param tagId The DICOM tag ID in format "ggggeeee"
+ * @returns The human-readable tag name or "Unknown" if not found
+ */
+export function getTagName(tagId: string): string {
+    // Get the tag dictionary from the store
+    const tagDictionary = useStore.getState().tagDictionary;
+    const isTagDictionaryLoaded = useStore.getState().isTagDictionaryLoaded;
+
+    // If dictionary isn't loaded, return "Loading..." and trigger load in background
+    if (!isTagDictionaryLoaded) {
+        // Start loading the dictionary in the background for future calls
+        useStore.getState().loadTagDictionary();
+        // For standardDataElements, try to get name from there
+        // const standardElements = require("../TagDictionary/standardDataElements").standardDataElements;
+        if (standardDataElements && standardDataElements[tagId]) {
+            return standardDataElements[tagId].name;
+        }
+        return "Loading...";
+    }
+
+    // Find the tag in the dictionary
+    const tagInfo = tagDictionary.find((tag) => tag.tagId === tagId.slice(1));
+
+    // Return the tag name if found, otherwise return "Unknown"
+    return tagInfo ? tagInfo.name : "Unknown";
+}
+
+/**
+ * Get a value representation (VR) for a tag
+ * @param tagId The DICOM tag ID in format "ggggeeee"
+ * @returns The VR code (e.g., "CS", "LO", "PN", etc.) or "UN" if not found
+ */
+export async function getTagVR(tagId: string): Promise<string> {
+    // Get the tag dictionary from the store
+    const tagDictionary = useStore.getState().tagDictionary;
+    const isTagDictionaryLoaded = useStore.getState().isTagDictionaryLoaded;
+    const loadTagDictionary = useStore.getState().loadTagDictionary;
+
+    // If tag dictionary isn't loaded yet, load it
+    if (!isTagDictionaryLoaded) {
+        await loadTagDictionary();
+    }
+
+    // Find the tag in the dictionary
+    const tagInfo = tagDictionary.find((tag) => tag.tagId === tagId.slice(1));
+
+    // Return the tag VR if found, otherwise return "UN" (Unknown)
+    return tagInfo?.vr || "UN";
+}
+
+/**
+ * Extract DICOM tags from a parsed dataset
+ * @description Extracts and organizes DICOM tag information from a parsed dataset into a structured format
+ * @precondition The dataSet parameter must be a valid dicomParser.DataSet object with elements property
+ * @postcondition A DicomData object is returned containing structured tag information and the original dataset
+ * @param {dicomParser.DataSet} dataSet - DICOM dataset parsed using dicom-parser
+ * @returns {DicomData} Object containing the extracted DICOM tags (tags) and original dataset (DicomDataSet)
+ * @throws {AssertionError} If no DICOM tags are found in the dataset
  */
 export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
     logger.info("Extracting DICOM tags from dataset.");
@@ -63,7 +126,8 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
     Object.keys(dataSet.elements).forEach((tag: string) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
-        const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
+        // const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
+        const tagName = getTagName(tagId);
         let vr = element.vr;
         const vrTagDict = tagDictionary.lookupTagVR(tagId);
         if (!vr) {

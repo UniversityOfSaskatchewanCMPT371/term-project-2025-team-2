@@ -53,11 +53,6 @@ export const SidePanel = () => {
     const handleAutoAnon = async () => {
         logger.debug("Auto Anonymizing tags");
 
-        setLoading(true);
-        setLoadingMsg("Anonymizing tags...");
-
-        await new Promise((resolve) => setTimeout(resolve, 0));
-
         await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
 
         clearData();
@@ -69,45 +64,109 @@ export const SidePanel = () => {
     };
 
     const regex = new RegExp(/^[A-Za-z]+(?: [A-Za-z]+)?$/);
-    const notPII = ["ANONYMIZED", "ANONYMOUS", "NONE"];
+    const notPII = [
+        "ANONYMIZED",
+        "ANONYMOUS",
+        "NONE",
+        "FREE FORM",
+        "COMPOSITE",
+        "VOID",
+        "VOLUME VIEWER",
+        "MEASURED",
+        "PREDICTED",
+    ];
     const [PII, setPII] = useState<DicomTag[]>([]);
     const [foundPII, setFoundPII] = useState(false);
 
-    const findPII = () => {
-        dicomData.forEach((data) => {
-            Object.values(data.tags).forEach((tag) => {
-                if (typeof tag.value !== "string") {
-                    return;
-                }
+    const setShowAlert = useStore((state) => state.setShowAlert);
+    const setAlertMsg = useStore((state) => state.setAlertMsg);
+    const setAlertType = useStore((state) => state.setAlertType);
 
-                if (TagsAnon.some((anonTag) => anonTag.tagId === tag.tagId)) {
-                    return;
-                }
+    const findPII = async () => {
+        setLoadingMsg(`Finding PII, searching all ${files.length}`);
+        setLoading(true);
 
-                if (
-                    regex.test(tag.value as string) &&
-                    (tag.value as string).length > 3 &&
-                    !notPII.includes((tag.value as string).toUpperCase()) &&
-                    !tagsToAnon.includes(tag.tagId) &&
-                    tag.value.split(" ").length <= 2 &&
-                    (tag.value as string).toUpperCase() !==
-                        (tag.value as string)
-                ) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        setPII([]);
+        setFoundPII(false);
+
+        const localPII: DicomTag[] = [];
+
+        try {
+            for (let i = 0; i < dicomData.length; i++) {
+                const data = dicomData[i];
+
+                setLoadingMsg(
+                    `Searching for PII in file ${i + 1} of ${files.length}`
+                );
+                await new Promise((resolve) => setTimeout(resolve, 0));
+
+                for (const tag of Object.values(data.tags)) {
+                    if (typeof tag.value !== "string") {
+                        continue;
+                    }
+
                     if (
-                        !PII.some(
-                            (existingTag) => existingTag.tagId === tag.tagId
-                        )
+                        TagsAnon.some((anonTag) => anonTag.tagId === tag.tagId)
                     ) {
-                        setPII((prev) => [...prev, tag]);
-                        setFoundPII(true);
-                        setReset((prev) => prev++);
-                        logger.info(
-                            `Potential PII found:${tag.tagId}, ${tag.value}`
-                        );
+                        continue;
+                    }
+
+                    if (
+                        regex.test(tag.value as string) &&
+                        (tag.value as string).length > 3 &&
+                        !notPII.includes((tag.value as string).toUpperCase()) &&
+                        !tagsToAnon.includes(tag.tagId) &&
+                        tag.value.split(" ").length <= 2 &&
+                        (tag.value as string).toUpperCase() !==
+                            (tag.value as string)
+                    ) {
+                        if (
+                            !localPII.some(
+                                (existingTag) => existingTag.tagId === tag.tagId
+                            )
+                        ) {
+                            localPII.push(tag);
+
+                            logger.info(
+                                `Potential PII found: ${tag.tagId}, ${tag.value}`
+                            );
+
+                            if (localPII.length > 25) {
+                                setAlertMsg("Max Amount of PII exceeded");
+                                setAlertType("alert-error");
+                                setShowAlert(true);
+
+                                setPII(localPII);
+                                setFoundPII(localPII.length > 0);
+                                setReset((prev) => prev + 1);
+                                setLoading(false);
+                                return;
+                            }
+                        }
                     }
                 }
-            });
-        });
+            }
+
+            setPII(localPII);
+            setFoundPII(localPII.length > 0);
+            setReset((prev) => prev + 1);
+
+            setLoading(false);
+
+            if (localPII.length === 0) {
+                setAlertMsg("No potential PII found in file");
+                setAlertType("alert-success");
+                setShowAlert(true);
+            }
+        } catch (error) {
+            logger.error("Error finding PII:", error);
+            setLoading(false);
+            setAlertMsg("Error searching for PII");
+            setAlertType("alert-error");
+            setShowAlert(true);
+        }
     };
 
     logger.info("Rendering AutoConfirmPanel component");
@@ -125,6 +184,8 @@ export const SidePanel = () => {
             <div className="mb-4 flex justify-around">
                 <button
                     onClick={() => {
+                        setLoading(true);
+                        setLoadingMsg("Anonymizing tags...");
                         handleAutoAnon();
                     }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"

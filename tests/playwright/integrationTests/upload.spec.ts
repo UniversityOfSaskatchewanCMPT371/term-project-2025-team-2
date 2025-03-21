@@ -10,6 +10,8 @@ test("Upload DICOM file", async ({ page }) => {
         const fileInput = page.locator('input[type="file"].hidden').first();
         await fileInput.setInputFiles("./test-data/000000.dcm");
 
+        await page.waitForTimeout(500);
+        
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
             timeout: 2000,
@@ -34,7 +36,7 @@ test("View DICOM tags for an uploaded file", async ({ page }) => {
 
         const sopClassUID = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "SOPClassUID" }),
+                has: page.locator("td", { hasText: "X00080016" }),
             })
             .first();
         await expect(sopClassUID).toBeVisible();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy } from "react";
 import { Sidebar } from "@components/Navigation/Sidebar";
 import { Topbar } from "@components/Navigation/Topbar";
 import { FileUploader } from "./Features/FileHandling/Components/FileUploader";
@@ -18,7 +18,10 @@ import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 import { assert } from "./DataFunctions/assert";
 
-import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
+const AutoAnonTagsEdit = lazy(
+    () => import("@components/Navigation/AutoAnonTagsEdit")
+);
+const DictTagsEdit = lazy(() => import("@features/TagDictEditor/DictTagsEdit"));
 
 /**
  * @description Main App Function
@@ -26,6 +29,9 @@ import { AutoAnonTagsEdit } from "@components/Navigation/AutoAnonTagsEdit";
  */
 export const App: React.FC = () => {
     const MAXSINGLEFILESDOWNLOAD = 15;
+
+    // Load tag dictionary on app start
+    useStore.getState().loadTagDictionary();
 
     const files = useStore((state) => state.files);
     const setFiles = useStore((state) => state.setFiles);
@@ -322,6 +328,7 @@ export const App: React.FC = () => {
 
                 <SidePanel />
                 <AutoAnonTagsEdit />
+                <DictTagsEdit />
             </div>
             <Footer />
 

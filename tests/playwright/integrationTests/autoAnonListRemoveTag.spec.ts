@@ -23,8 +23,21 @@ test("Remove tag from auto list", async ({ page }) => {
         const settingsButton = page.locator("svg.size-6.cursor-pointer");
         await settingsButton.click();
 
+        const settingsSection = page.locator('div:has-text("Settings")');
+
+        const questionMarkIcon = settingsSection.locator(
+            "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
+        );
+        await expect(questionMarkIcon).toBeVisible();
+        await expect(questionMarkIcon).toBeEnabled();
+
+        await questionMarkIcon.click();
+
+        const modalOrMenu = page.locator(".modal-box");
+        await expect(modalOrMenu).toBeVisible();
+
         const editButton = page.getByRole("button", {
-            name: /Edit Auto-Anon Tag/i,
+            name: /Edit Auto-Anon Tags/i,
         });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
@@ -41,27 +54,31 @@ test("Remove tag from auto list", async ({ page }) => {
 
         const saveButton = page.getByRole("button", {
             name: /Save/i,
-        });
+        }).first();
 
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
 
         await page.waitForTimeout(500);
 
-        const closeButton = page.getByRole("button", { name: /Close/i });
-        await expect(closeButton).toBeVisible({ timeout: 1000 });
-        await closeButton.click();
-
-        await page.waitForTimeout(200);
+        await page.mouse.click(page.viewportSize().width / 2, page.viewportSize().height / 2); 
 
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
 
         await settingsButton.click();
 
-        await page.waitForTimeout(500);
+        await expect(questionMarkIcon).toBeVisible();
+        await expect(questionMarkIcon).toBeEnabled();
+
+        await questionMarkIcon.click();
+
+        await expect(modalOrMenu).toBeVisible();
+
+        await page.waitForTimeout(1000)
+
         const editButton2 = page.getByRole("button", {
-            name: /Edit Auto-Anon Tag/i,
+            name: /Edit Auto-Anon Tags/i,
         });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
