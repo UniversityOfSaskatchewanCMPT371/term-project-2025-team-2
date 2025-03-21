@@ -10,6 +10,10 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+import dicomParser from "dicom-parser";
+import logger from "@logger/Logger";
+import { TableUpdateData, InsertTag } from "@dicom//Types/DicomTypes";
+
 //mset to turn on console logs for debugging
 const DEBUG = false;
 
@@ -61,9 +65,6 @@ const longHeaderLen = 12;
 const vrOffset = 4;
 const lengthOffset = 6;
 
-import dicomParser from "dicom-parser";
-import logger from "@logger/Logger";
-
 /**
  * Update the tags in a DICOM file
  * @description Updates, adds, or removes tags in a DICOM file based on the provided tag data
@@ -79,7 +80,7 @@ import logger from "@logger/Logger";
  * @throws {Error} If the file update fails or produces invalid DICOM data
  */
 export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
-    const newTags: any = [];
+    const newTags: InsertTag[] = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
     let data: any;
@@ -91,9 +92,9 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
     debug("filteredTags: " + JSON.stringify(filteredTags));
 
     filteredTags.forEach((tag: any) => {
-        const insertTag = {
+        const insertTag: InsertTag = {
             tagId: tag.tagId,
-            value: tag.newValue,
+            newValue: tag.newValue,
             vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
             dataOffSet:
                 dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
@@ -105,7 +106,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
         debug("insertTag: " + JSON.stringify(insertTag));
     });
 
-    newTags.forEach((tag: any) => {
+    newTags.forEach((tag: InsertTag) => {
         if (tag.delete) {
             data = removeTag(dicomData, tag);
         } else if (tag.add) {
@@ -158,7 +159,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
  * @param {string} tag.value - The value to add for this tag
  * @returns {Uint8Array} Updated byte array with the tag appended
  */
-function addTag(dicomData: any, tag: any) {
+function addTag(dicomData: any, tag: InsertTag): Uint8Array {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
     const element = parseInt(tag.tagId.slice(5), 16);
@@ -187,7 +188,7 @@ function addTag(dicomData: any, tag: any) {
  * @param {Uint8Array} newtag - Byte array representation of the tag to insert
  * @returns {Uint8Array} Updated byte array with the tag inserted
  */
-function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
+function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: Uint8Array): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
@@ -215,7 +216,7 @@ function insertTag(dicomData: any, tagToAdd: any, newtag: any) {
  * @param {number} tagToRemove.dataOffSet - The data offset position of the tag
  * @returns {Uint8Array} Byte array with the tag removed
  */
-function removeTag(dicomData: any, tagToRemove: any) {
+function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
@@ -259,7 +260,7 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
  * @param {boolean} littleEndian - Whether to use little endian byte ordering
  * @returns {Uint8Array} The complete tag byte array representation
  */
-function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
+function createTag(tagId: Uint8Array, tag: InsertTag, littleEndian: boolean): Uint8Array {
     const valueOffset =
         tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
@@ -286,7 +287,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "FD":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "double",
                     valueLength,
                     littleEndian
@@ -297,7 +298,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "FL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "float",
                     valueLength,
                     littleEndian
@@ -308,7 +309,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "UL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "uint32",
                     valueLength,
                     littleEndian
@@ -319,7 +320,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "US":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "uint16",
                     valueLength,
                     littleEndian
@@ -330,7 +331,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "SL":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "int32",
                     valueLength,
                     littleEndian
@@ -341,7 +342,7 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
         case "SS":
             newTag.set(
                 writeTypedNumber(
-                    parseInt(tag.tagValue, 10),
+                    parseInt(tag.newValue, 10),
                     "int16",
                     valueLength,
                     littleEndian
@@ -350,14 +351,14 @@ function createTag(tagId: Uint8Array, tag: any, littleEndian: boolean) {
             );
             break;
         // case 'AT':
-        //     const atGroup = parseInt(tag.value.slice(0, 4), 16);
-        //     const atElement = parseInt(tag.value.slice(4,), 16);
+        //     const atGroup = parseInt(tag.newValue.slice(0, 4), 16);
+        //     const atElement = parseInt(tag.newValue.slice(4,), 16);
         //     newTag.set(writeTypedNumber(atGroup, 'uint16', valueLength / 2, littleEndian), valueOffset);
         //     newTag.set(writeTypedNumber(atElement, 'uint16', valueLength / 2, littleEndian), valueOffset + 2);
         //     break;
         default:
-            for (let i = 0; i < tag.value.length; i++) {
-                newTag[i + 8] = tag.value.charCodeAt(i);
+            for (let i = 0; i < tag.newValue.length; i++) {
+                newTag[i + 8] = tag.newValue.charCodeAt(i);
             }
             break;
     }
@@ -440,16 +441,16 @@ function writeVRArray(vr: string) {
  * @param {string} tag.value - The string value of the tag (for string types)
  * @returns {number} Byte length required to store the tag value according to its VR
  */
-function getValueLength(tag: any) {
-    if (tag.tagVR in NUMBERS) {
-        let value = parseInt(tag.tagValue, 10);
+function getValueLength(tag: InsertTag) {
+    if (tag.vr in NUMBERS) {
+        let value = parseInt(tag.newValue, 10);
         let byteLength = 1;
         /* tslint:disable */
         while ((value >>= 8) > 0) {
             /* tslint:enable */
             byteLength++;
         }
-        switch (tag.tagVR[1]) {
+        switch (tag.vr[1]) {
             case "S":
                 byteLength += 2 - (byteLength % 2);
                 break;
@@ -463,12 +464,12 @@ function getValueLength(tag: any) {
                 break;
         }
         return byteLength;
-    } else if (tag.tagVR === "AT") {
+    } else if (tag.vr === "AT") {
         return 4;
     } else {
-        debug("Tag value length: " + tag.value.length);
+        debug("Tag value length: " + tag.newValue.length);
 
-        return tag.value.length;
+        return tag.newValue.length;
     }
 }
 
@@ -484,8 +485,8 @@ function getValueLength(tag: any) {
  * @param {string} fileName - The file name to filter tags by
  * @returns {Array<Object>} Array of tag objects that match the specified fileName
  */
-export function getSingleFileTagEdits(newTags: any, fileName: string) {
-    return newTags.filter((tag: any) => tag.fileName === fileName);
+export function getSingleFileTagEdits(newTags: TableUpdateData[], fileName: string): TableUpdateData[] {
+    return newTags.filter((tag: TableUpdateData) => tag.fileName === fileName);
 }
 
 /**
