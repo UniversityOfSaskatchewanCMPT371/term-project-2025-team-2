@@ -10,6 +10,10 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+import dicomParser from "dicom-parser";
+import logger from "@logger/Logger";
+import { TableUpdateData, InsertTag } from "@dicom//Types/DicomTypes";
+
 //mset to turn on console logs for debugging
 const DEBUG = false;
 
@@ -60,20 +64,6 @@ const headerLen = 8;
 const longHeaderLen = 12;
 const vrOffset = 4;
 const lengthOffset = 6;
-
-import dicomParser from "dicom-parser";
-import logger from "@logger/Logger";
-import { TableUpdateData } from "@dicom//Types/DicomTypes";
-
-export type InsertTag = {
-    tagId: string;
-    newValue: string;
-    vr: string;
-    dataOffSet: number;
-    length: number;
-    delete: boolean;
-    add: boolean;
-}
 
 /**
  * Update the tags in a DICOM file
