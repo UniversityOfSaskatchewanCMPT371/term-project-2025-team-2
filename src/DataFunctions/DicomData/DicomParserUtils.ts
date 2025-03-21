@@ -69,7 +69,7 @@ export function getTagName(tagId: string): string {
         // For standardDataElements, try to get name from there
         // const standardElements = require("../TagDictionary/standardDataElements").standardDataElements;
         if (standardDataElements && standardDataElements[tagId]) {
-            return standardDataElements[tagId].name;
+            return standardDataElements[tagId].name.replace(/([a-z])([A-Z])/g, '$1 $2').trim();
         }
         return "Loading...";
     }

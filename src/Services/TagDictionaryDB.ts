@@ -289,7 +289,7 @@ export class TagDictionaryDB {
                     for (const [tagId, data] of entries) {
                         const tag: TagDictionaryItem = {
                             tagId,
-                            name: data.name,
+                            name: data.name.replace(/([a-z])([A-Z])/g, '$1 $2').trim(),
                             vr: data.vr,
                         };
 
@@ -545,6 +545,49 @@ export class TagDictionaryDB {
             };
 
             reader.readAsText(file);
+        });
+    }
+
+    /**
+     * Completely delete the database from the local machine
+     * @description - Permanently removes the entire IndexedDB database for tag dictionary
+     * @returns Promise indicating whether the deletion was successful
+     */
+    async deleteDatabase(): Promise<boolean> {
+        // Close the database connection if it's open
+        if (this.db) {
+            this.db.close();
+            this.db = null;
+        }
+
+        return new Promise((resolve) => {
+            try {
+                const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+
+                deleteRequest.onsuccess = () => {
+                    logger.info(`Successfully deleted ${DB_NAME} database`);
+                    resolve(true);
+                };
+
+                deleteRequest.onerror = (event) => {
+                    logger.error(
+                        `Error deleting ${DB_NAME} database:`,
+                        (event.target as IDBOpenDBRequest).error
+                    );
+                    resolve(false);
+                };
+
+                // Handle edge case where database doesn't exist
+                deleteRequest.onblocked = () => {
+                    logger.warn(
+                        `Database deletion blocked. Ensure all connections are closed.`
+                    );
+                    resolve(false);
+                };
+            } catch (error) {
+                logger.error(`Failed to delete ${DB_NAME} database:`, error);
+                resolve(false);
+            }
         });
     }
 }

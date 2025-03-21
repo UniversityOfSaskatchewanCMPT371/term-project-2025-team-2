@@ -38,7 +38,8 @@
             "@dataFunctions/*": ["DataFunctions/*"],
             "@features/*": ["Features/*"],
             "@logger/*": ["Logger/*"],
-            "@type/*": ["types/*"]
+            "@type/*": ["types/*"],
+            "@services/*": ["Services/*"],
         }
     },
     "include": ["src", "types"]

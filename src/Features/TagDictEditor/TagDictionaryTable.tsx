@@ -63,123 +63,125 @@ export const TagDictionaryTable = React.memo(
         };
 
         return (
-            <table className="m-4 mb-24 border text-lg text-base-content">
-                <thead>
-                    <tr className="text-wrap bg-primary">
-                        <th className="w-1/5 border px-4 py-2 text-primary-content">
-                            Tag ID
-                        </th>
-                        <th className="w-1/5 border px-4 py-2 text-primary-content">
-                            Tag VR
-                        </th>
-                        <th className="w-3/5 border px-4 py-2 text-primary-content">
-                            Tag Name
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="text-wrap break-words bg-base-100">
-                    {showAddTag ? (
-                        <tr>
-                            <td className="border px-4 py-2 text-center">
-                                <div className="flex-col-2 flex">
-                                    <div className="mr-2">X</div>
-                                    <input
-                                        type="text"
-                                        className="w-full"
-                                        placeholder="Tag ID"
-                                        maxLength={8}
-                                        onChange={(e) => {
-                                            setTagId(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            </td>
-                            <td className="border px-4 py-2 text-center">
-                                <div className="flex-col-2 flex">
-                                    <input
-                                        type="text"
-                                        className="mr-4 w-full"
-                                        placeholder="Tag VR"
-                                        value={tagVR}
-                                        onChange={(e) =>
-                                            setTagVR(e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </td>
-                            <td className="border px-4 py-2 text-center">
-                                <div className="flex-col-2 flex">
-                                    <input
-                                        type="text"
-                                        className="mr-4 w-full"
-                                        placeholder="Tag Name"
-                                        onChange={(e) =>
-                                            setTagName(e.target.value)
-                                        }
-                                    />
-                                    <CheckCircleIcon
-                                        data-testid="CheckCircleIcon"
-                                        className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
-                                        onClick={() => addtag(tagId, tagVR)}
-                                    />
-                                </div>
-                            </td>
+            <div className="w-full p-4">
+                <table className="mb-20 border w-full text-lg text-base-content">
+                    <thead>
+                        <tr className="text-wrap bg-primary">
+                            <th className="w-1/5 border px-4 py-2 text-primary-content">
+                                Tag ID
+                            </th>
+                            <th className="w-1/5 border px-4 py-2 text-primary-content">
+                                Tag VR
+                            </th>
+                            <th className="w-3/5 border px-4 py-2 text-primary-content">
+                                Tag Name
+                            </th>
                         </tr>
-                    ) : null}
+                    </thead>
+                    <tbody className="text-wrap break-words bg-base-100">
+                        {showAddTag ? (
+                            <tr>
+                                <td className="border px-4 py-2 text-center">
+                                    <div className="flex-col-2 flex">
+                                        <div className="mr-2">X</div>
+                                        <input
+                                            type="text"
+                                            className="w-full"
+                                            placeholder="Tag ID"
+                                            maxLength={8}
+                                            onChange={(e) => {
+                                                setTagId(e.target.value);
+                                            }}
+                                        />
+                                    </div>
+                                </td>
+                                <td className="border px-4 py-2 text-center">
+                                    <div className="flex-col-2 flex">
+                                        <input
+                                            type="text"
+                                            className="mr-4 w-full"
+                                            placeholder="Tag VR"
+                                            value={tagVR}
+                                            onChange={(e) =>
+                                                setTagVR(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                </td>
+                                <td className="border px-4 py-2 text-center">
+                                    <div className="flex-col-2 flex">
+                                        <input
+                                            type="text"
+                                            className="mr-4 w-full"
+                                            placeholder="Tag Name"
+                                            onChange={(e) =>
+                                                setTagName(e.target.value)
+                                            }
+                                        />
+                                        <CheckCircleIcon
+                                            data-testid="CheckCircleIcon"
+                                            className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
+                                            onClick={() => addtag(tagId, tagVR)}
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                        ) : null}
 
-                    {filteredTags.slice(0, displayCount).map((tag, index) => {
-                        // Check if there's a pending change for this tag
-                        const pendingChange = pendingChanges.get(tag.tagId);
-                        const isPendingDelete =
-                            pendingChange && (pendingChange as any)._delete;
+                        {filteredTags.slice(0, displayCount).map((tag, index) => {
+                            // Check if there's a pending change for this tag
+                            const pendingChange = pendingChanges.get(tag.tagId);
+                            const isPendingDelete =
+                                pendingChange && (pendingChange as any)._delete;
 
-                        return (
-                            <TagDictTableRow
-                                key={tag.tagId}
-                                tagId={tag.tagId}
-                                index={index}
-                                tagName={tag.name}
-                                tagVR={tag.vr}
-                                onUpdateValue={addChanges}
-                                isPendingDelete={isPendingDelete}
-                                pendingValue={
-                                    pendingChange && !isPendingDelete
-                                        ? pendingChange.name
-                                        : undefined
-                                }
-                            />
-                        );
-                    })}
+                            return (
+                                <TagDictTableRow
+                                    key={tag.tagId}
+                                    tagId={tag.tagId}
+                                    index={index}
+                                    tagName={tag.name}
+                                    tagVR={tag.vr}
+                                    onUpdateValue={addChanges}
+                                    isPendingDelete={isPendingDelete}
+                                    pendingValue={
+                                        pendingChange && !isPendingDelete
+                                            ? pendingChange.name
+                                            : undefined
+                                    }
+                                />
+                            );
+                        })}
 
-                    {displayCount < filteredTags.length && (
-                        <tr>
-                            <td colSpan={3} className="py-2 text-center">
-                                <button
-                                    className="btn btn-primary btn-sm"
-                                    onClick={loadMoreRows}
+                        {displayCount < filteredTags.length && (
+                            <tr>
+                                <td colSpan={3} className="py-2 text-center">
+                                    <button
+                                        className="btn btn-primary btn-sm"
+                                        onClick={loadMoreRows}
+                                    >
+                                        Load More (
+                                        {filteredTags.length - displayCount}{" "}
+                                        remaining)
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+
+                        {filteredTags.length === 0 && (
+                            <tr>
+                                <td
+                                    colSpan={3}
+                                    className="py-4 text-center text-base-content"
                                 >
-                                    Load More (
-                                    {filteredTags.length - displayCount}{" "}
-                                    remaining)
-                                </button>
-                            </td>
-                        </tr>
-                    )}
-
-                    {filteredTags.length === 0 && (
-                        <tr>
-                            <td
-                                colSpan={3}
-                                className="py-4 text-center text-base-content"
-                            >
-                                {searchQuery
-                                    ? "No tags match your search query"
-                                    : "No tags available. Add some tags to get started."}
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                                    {searchQuery
+                                        ? "No tags match your search query"
+                                        : "No tags available. Add some tags to get started."}
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 );
