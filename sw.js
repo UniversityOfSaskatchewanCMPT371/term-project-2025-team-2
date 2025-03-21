@@ -91,16 +91,19 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "url": "apple-touch-icon.png",
     "revision": "c84a151eb988fc8574c09a2eb4697489"
   }, {
-    "url": "assets/AutoAnonTagsEdit-Byz4Zb3B.js",
+    "url": "assets/AutoAnonTagsEdit-Cq53nSq1.js",
     "revision": null
   }, {
-    "url": "assets/DictTagsEdit-3DhiJCj5.js",
+    "url": "assets/CheckCircleIcon-DzXCSIYj.js",
     "revision": null
   }, {
-    "url": "assets/index-C4_K8VrH.js",
+    "url": "assets/DictTagsEdit-BFnp6UC8.js",
     "revision": null
   }, {
-    "url": "assets/index-DD8Z04cD.css",
+    "url": "assets/index-BSmWqhEs.js",
+    "revision": null
+  }, {
+    "url": "assets/index-CJ7lL4lV.css",
     "revision": null
   }, {
     "url": "assets/workbox-window.prod.es5-B9K5rw8f.js",
@@ -113,7 +116,7 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "revision": "22479316f56895e8dd84af4c1619e1b2"
   }, {
     "url": "index.html",
-    "revision": "bc67184073cd3d39281e6d65db80fd34"
+    "revision": "df30f78ab3468c34d8dd66c5a14da9d3"
   }, {
     "url": "maskable_icon.png",
     "revision": "ae68a3429b51f884211cebf8011bc4eb"
