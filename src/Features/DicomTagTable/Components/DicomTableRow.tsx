@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import {
+    PencilSquareIcon,
+    XCircleIcon,
+    ArrowUturnLeftIcon,
+} from "@heroicons/react/24/outline";
 import { DicomTableRowProps } from "../Types/DicomTypes";
 import { useStore } from "@state/Store";
 import logger from "@logger/Logger";
@@ -99,8 +103,8 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
             <tr
                 key={index + row.tagId}
                 className={`hover:bg-blue-600 ${
-                    deleteTag && "outline -outline-offset-4 outline-red-600"
-                }`}
+                    deleteTag && "bg-red-100 opacity-50"
+                }${edited ? "bg-yellow-100" : ""}`}
             >
                 {!hideTagNumber && (
                     <td
@@ -142,18 +146,28 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         value={newValue}
                                         onChange={handleValueChange}
                                         onBlur={handleBlur}
-                                        className="rounded border p-1"
+                                        className="w-full rounded border p-1"
                                     />
                                 ) : edited ? (
-                                    <span className="font-semibold text-red-600">
+                                    <span className="text-yellow-700">
                                         {newValue}
+                                        <span className="ml-2 text-xs italic">
+                                            (pending)
+                                        </span>
+                                    </span>
+                                ) : deleteTag ? (
+                                    <span className="text-red-500">
+                                        {newValue}
+                                        <span className="ml-2 text-xs italic">
+                                            (Pending deletion)
+                                        </span>
                                     </span>
                                 ) : (
                                     <span>{newValue}</span>
                                 )}
                             </div>
                             {lockEditingTags.includes(row.tagId) &&
-                            !allowEditLockedTags ? null : (
+                            !allowEditLockedTags ? null : !deleteTag ? (
                                 <>
                                     <div
                                         className="flex cursor-pointer justify-end hover:text-accent"
@@ -162,7 +176,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         }
                                     >
                                         <PencilSquareIcon
-                                            className="h-6 w-6"
+                                            className="ml-4 h-6 w-6"
                                             data-testid="edit-tag-button"
                                             data-tooltip-id={`${row.tagId}-editTag-button-tooltip`}
                                             data-tooltip-content="Edit Tag Value"
@@ -178,27 +192,33 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         onClick={toggleDelete}
                                     >
                                         <XCircleIcon
-                                            className={`ml-4 h-6 w-6 ${
-                                                deleteTag && "text-red-600"
-                                            }`}
+                                            className={`ml-4 h-6 w-6 hover:text-red-500`}
                                             data-tooltip-id={`${row.tagId}-deleteTag-button-tooltip`}
-                                            data-tooltip-content={
-                                                deleteTag
-                                                    ? "Undo Delete"
-                                                    : "To Be Deleted"
-                                            }
+                                            data-tooltip-content={"Delete Tag"}
                                             data-tooltip-place="left"
-                                            aria-label={
-                                                deleteTag
-                                                    ? "Undo Delete"
-                                                    : "Delete Tag"
-                                            }
+                                            aria-label="Delete Tag"
                                         />
                                         <Tooltip
                                             id={`${row.tagId}-deleteTag-button-tooltip`}
                                         />
                                     </div>
                                 </>
+                            ) : (
+                                <div
+                                    className="flex cursor-pointer justify-end hover:text-accent"
+                                    onClick={() => toggleDelete()}
+                                >
+                                    <ArrowUturnLeftIcon
+                                        className="h-6 w-6"
+                                        data-tooltip-id={`${row.tagId}-undo-delete-button-tooltip`}
+                                        data-tooltip-content="Undo Delete"
+                                        data-tooltip-place="left"
+                                        aria-label="Undo Delete"
+                                    />
+                                    <Tooltip
+                                        id={`${row.tagId}-undo-delete-button-tooltip`}
+                                    />
+                                </div>
                             )}
                         </div>
                     ) : null}

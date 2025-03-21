@@ -63,21 +63,21 @@ export const TagDictionaryTable = React.memo(
         };
 
         return (
-            <table className="m-4 mb-10 mb-24 border text-lg text-base-content">
+            <table className="m-4 mb-24 border text-lg text-base-content">
                 <thead>
                     <tr className="text-wrap bg-primary">
                         <th className="w-1/5 border px-4 py-2 text-primary-content">
                             Tag ID
                         </th>
-                        <th className="w-2/5 border px-4 py-2 text-primary-content">
+                        <th className="w-1/5 border px-4 py-2 text-primary-content">
                             Tag VR
                         </th>
-                        <th className="w-2/5 border px-4 py-2 text-primary-content">
+                        <th className="w-3/5 border px-4 py-2 text-primary-content">
                             Tag Name
                         </th>
                     </tr>
                 </thead>
-                <tbody className="bg-base-100">
+                <tbody className="text-wrap break-words bg-base-100">
                     {showAddTag ? (
                         <tr>
                             <td className="border px-4 py-2 text-center">
@@ -144,7 +144,7 @@ export const TagDictionaryTable = React.memo(
                                 isPendingDelete={isPendingDelete}
                                 pendingValue={
                                     pendingChange && !isPendingDelete
-                                        ? pendingChange.vr
+                                        ? pendingChange.name
                                         : undefined
                                 }
                             />

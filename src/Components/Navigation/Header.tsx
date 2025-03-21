@@ -2,6 +2,7 @@ import React from "react";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { HeaderProps } from "@type/types";
 import logger from "@logger/Logger";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Header component for the sidebar
@@ -21,7 +22,12 @@ export const Header: React.FC<HeaderProps> = ({ toggleModal }) => {
             <Cog6ToothIcon
                 className="size-6 cursor-pointer text-base-content/70 transition-colors hover:scale-110 hover:text-accent"
                 onClick={toggleModal}
+                data-tooltip-id="settings-button-tooltip"
+                data-tooltip-content="Settings"
+                data-tooltip-place="left"
+                aria-label="Settings Button"
             />
+            <Tooltip id="settings-button-tooltip" />
         </div>
     );
 };
