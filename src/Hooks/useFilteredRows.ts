@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import logger from "@logger/Logger";
-
+import { DicomTag } from "@features/DicomTagTable/Types/DicomTypes";
 /**
  * Custom hook for filtering DICOM table rows
  * @function
@@ -10,7 +10,7 @@ import logger from "@logger/Logger";
  * @param {string} searchTerm - Current search term
  * @returns {TableRow[]} Filtered array of table rows
  */
-export const useFilteredRows = (rows: any[], searchTerm: string) => {
+export const useFilteredRows = (rows: DicomTag[], searchTerm: string) => {
     logger.debug(`Filtering rows with search term: ${searchTerm}`);
     logger.debug(`Rows length: ${rows.length}`);
 
