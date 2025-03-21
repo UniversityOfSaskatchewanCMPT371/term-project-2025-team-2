@@ -356,6 +356,197 @@ export class TagDictionaryDB {
             }
         });
     }
+
+    /**
+     * Export the current tag dictionary as a downloadable JSON file
+     * @description - Exports all tags from the dictionary to a JSON file that users can download
+     * @precondition - IndexedDB must be initialized and contain tag data
+     * @postcondition - A JSON file containing all tag dictionary data is downloaded to the user's device
+     * @returns Promise indicating whether the export was successful
+     */
+    async exportTagDictionary(): Promise<boolean> {
+        if (!this.db) {
+            await this.initDB();
+            if (!this.db) {
+                logger.error(
+                    "Cannot export tag dictionary: database not initialized"
+                );
+                return false;
+            }
+        }
+
+        try {
+            // Get all tags from the database
+            const tags = await this.getAllTags();
+
+            if (tags.length === 0) {
+                logger.warn("No tags found in dictionary to export");
+                return false;
+            }
+
+            // Convert the tags to a JSON string with pretty formatting
+            const tagsJson = JSON.stringify(tags, null, 2);
+
+            // Create a Blob with the JSON data
+            const blob = new Blob([tagsJson], { type: "application/json" });
+
+            // Create a download URL
+            const url = URL.createObjectURL(blob);
+
+            // Create a link element to trigger the download
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `dicom-tag-dictionary-${new Date().toISOString().split("T")[0]}.json`;
+
+            // Append to the document, click it, and clean up
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Release the URL object
+            URL.revokeObjectURL(url);
+
+            logger.info(`Exported ${tags.length} tags from dictionary`);
+            return true;
+        } catch (error) {
+            logger.error("Error exporting tag dictionary:", error);
+            return false;
+        }
+    }
+
+    /**
+     * Import tags from a JSON file
+     * @description - Imports tags from an uploaded JSON file into the dictionary
+     * @precondition - The JSON file must contain valid tag dictionary data
+     * @postcondition - Tags in the file will be imported, replacing existing ones with the same ID
+     * @returns Promise indicating whether the import was successful
+     */
+    async importTagDictionary(
+        file: File
+    ): Promise<{ success: boolean; count: number }> {
+        if (!this.db) {
+            await this.initDB();
+            if (!this.db) {
+                logger.error(
+                    "Cannot import tag dictionary: database not initialized"
+                );
+                return { success: false, count: 0 };
+            }
+        }
+
+        try {
+            // Read the file contents
+            const fileContents = await this.readFileAsText(file);
+
+            // Parse the JSON data
+            let tagsToImport: TagDictionaryItem[];
+            try {
+                tagsToImport = JSON.parse(fileContents);
+
+                // Validate the data structure
+                if (!Array.isArray(tagsToImport)) {
+                    logger.error("Invalid tag dictionary format: not an array");
+                    return { success: false, count: 0 };
+                }
+
+                // Validate each tag has the required properties
+                const isValid = tagsToImport.every(
+                    (tag) =>
+                        typeof tag === "object" &&
+                        tag !== null &&
+                        typeof tag.tagId === "string" &&
+                        typeof tag.name === "string" &&
+                        typeof tag.vr === "string"
+                );
+
+                if (!isValid) {
+                    logger.error(
+                        "Invalid tag dictionary format: missing required properties"
+                    );
+                    return { success: false, count: 0 };
+                }
+            } catch (parseError) {
+                logger.error("Error parsing tag dictionary JSON:", parseError);
+                return { success: false, count: 0 };
+            }
+
+            // Get the current tags to preserve those not in the import
+            const currentTags = await this.getAllTags();
+            const currentTagIds = new Set(currentTags.map((tag) => tag.tagId));
+
+            // Track import statistics
+            let importCount = 0;
+            let errorCount = 0;
+
+            // Start a transaction for the import
+            const transaction = this.db.transaction(STORE_NAME, "readwrite");
+            const store = transaction.objectStore(STORE_NAME);
+
+            // Process each tag to import
+            for (const tag of tagsToImport) {
+                try {
+                    // Remove the tag from the set of current tags
+                    currentTagIds.delete(tag.tagId);
+
+                    // Use put to replace existing tags
+                    const request = store.put(tag);
+
+                    // Wait for each operation to complete
+                    await new Promise<void>((resolve) => {
+                        request.onsuccess = () => {
+                            importCount++;
+                            resolve();
+                        };
+
+                        request.onerror = (event) => {
+                            logger.warn(
+                                `Error importing tag ${tag.tagId}:`,
+                                (event.target as IDBRequest).error
+                            );
+                            errorCount++;
+                            resolve(); // Continue with next tag
+                        };
+                    });
+                } catch (tagError) {
+                    logger.warn(`Error processing tag ${tag.tagId}:`, tagError);
+                    errorCount++;
+                }
+            }
+
+            logger.info(
+                `Imported ${importCount} tags, with ${errorCount} errors`
+            );
+            return { success: importCount > 0, count: importCount };
+        } catch (error) {
+            logger.error("Error importing tag dictionary:", error);
+            return { success: false, count: 0 };
+        }
+    }
+
+    /**
+     * Helper function to read a file as text
+     * @param file - The file to read
+     * @returns Promise resolving to the file contents as string
+     */
+    private readFileAsText(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                if (event.target && typeof event.target.result === "string") {
+                    resolve(event.target.result);
+                } else {
+                    reject(new Error("Failed to read file as text"));
+                }
+            };
+
+            reader.onerror = () => {
+                reject(reader.error);
+            };
+
+            reader.readAsText(file);
+        });
+    }
 }
 
 // Create and export a singleton instance

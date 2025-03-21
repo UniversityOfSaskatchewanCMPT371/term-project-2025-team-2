@@ -11,7 +11,7 @@ test("Upload DICOM file", async ({ page }) => {
         await fileInput.setInputFiles("./test-data/000000.dcm");
 
         await page.waitForTimeout(500);
-        
+
         await page.waitForSelector("text=/Currently Viewing: .+\.dcm/", {
             state: "visible",
             timeout: 2000,

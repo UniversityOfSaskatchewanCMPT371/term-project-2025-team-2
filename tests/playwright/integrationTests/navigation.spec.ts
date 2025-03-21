@@ -12,7 +12,7 @@ test("Navigate between uploaded files", async ({ page }) => {
             "./test-data/CR000000.dcm",
             "./test-data/CR000001.dcm",
         ]);
-        
+
         await page.waitForTimeout(2000);
 
         await page.waitForSelector("text=Edit Files", {

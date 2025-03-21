@@ -90,9 +90,6 @@ export const TagDictionaryTable = React.memo(
                                         maxLength={8}
                                         onChange={(e) => {
                                             setTagId(e.target.value);
-                                            // setTagName(
-                                            //     filterTagName(e.target.value)
-                                            // );
                                         }}
                                     />
                                 </div>

@@ -63,7 +63,7 @@ test("Edit tag in series", async ({ page }) => {
 
         const tagRow = page
             .locator("tr", {
-                has: page.locator("td", { hasText: "X00080016" }),
+                has: page.locator("td", { hasText: "X00100010" }),
             })
             .first();
 
@@ -183,7 +183,7 @@ test("Edit tag in series", async ({ page }) => {
 
             const PatientNameRow = page
                 .locator("tr", {
-                    has: page.locator("td", { hasText: "X00080016" }),
+                    has: page.locator("td", { hasText: "X00100010" }),
                 })
                 .first();
 
@@ -201,7 +201,7 @@ test("Edit tag in series", async ({ page }) => {
 
             const PatientIDRow = page
                 .locator("tr", {
-                    has: page.locator("td", { hasText: "X00080016" }),
+                    has: page.locator("td", { hasText: "X00100020" }),
                 })
                 .first();
 
