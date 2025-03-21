@@ -91,10 +91,16 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "url": "apple-touch-icon.png",
     "revision": "c84a151eb988fc8574c09a2eb4697489"
   }, {
-    "url": "assets/index-B4GIEVS-.js",
+    "url": "assets/AutoAnonTagsEdit-Byz4Zb3B.js",
     "revision": null
   }, {
-    "url": "assets/index-CkpMGJpG.css",
+    "url": "assets/DictTagsEdit-3DhiJCj5.js",
+    "revision": null
+  }, {
+    "url": "assets/index-C4_K8VrH.js",
+    "revision": null
+  }, {
+    "url": "assets/index-DD8Z04cD.css",
     "revision": null
   }, {
     "url": "assets/workbox-window.prod.es5-B9K5rw8f.js",
@@ -107,7 +113,7 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "revision": "22479316f56895e8dd84af4c1619e1b2"
   }, {
     "url": "index.html",
-    "revision": "f25827d3c6a99adbf17ab7918ae85f8f"
+    "revision": "bc67184073cd3d39281e6d65db80fd34"
   }, {
     "url": "maskable_icon.png",
     "revision": "ae68a3429b51f884211cebf8011bc4eb"
