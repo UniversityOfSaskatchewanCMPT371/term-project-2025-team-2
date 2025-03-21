@@ -93,7 +93,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
     const newTags: InsertTag[] = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
-    let data: any;
+    let data;
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -169,7 +169,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
  * @param {string} tag.value - The value to add for this tag
  * @returns {Uint8Array} Updated byte array with the tag appended
  */
-function addTag(dicomData: any, tag: InsertTag) {
+function addTag(dicomData: any, tag: InsertTag): Uint8Array<ArrayBuffer> {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
     const element = parseInt(tag.tagId.slice(5), 16);
@@ -198,7 +198,7 @@ function addTag(dicomData: any, tag: InsertTag) {
  * @param {Uint8Array} newtag - Byte array representation of the tag to insert
  * @returns {Uint8Array} Updated byte array with the tag inserted
  */
-function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: any) {
+function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: any): Uint8Array<ArrayBuffer> {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
@@ -226,7 +226,7 @@ function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: any) {
  * @param {number} tagToRemove.dataOffSet - The data offset position of the tag
  * @returns {Uint8Array} Byte array with the tag removed
  */
-function removeTag(dicomData: any, tagToRemove: InsertTag) {
+function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array<ArrayBuffer> {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
@@ -251,7 +251,7 @@ function removeTag(dicomData: any, tagToRemove: InsertTag) {
  * @param {Uint8Array} buffer2 - Second byte array
  * @returns {Uint8Array} New concatenated byte array containing the content of both input arrays
  */
-function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
+function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array<ArrayBuffer> {
     const concatedBuffer = new Uint8Array(bufffer1.length + buffer2.length);
     concatedBuffer.set(bufffer1);
     concatedBuffer.set(buffer2, bufffer1.length);
@@ -496,7 +496,7 @@ function getValueLength(tag: InsertTag) {
  * @returns {Array<Object>} Array of tag objects that match the specified fileName
  */
 export function getSingleFileTagEdits(newTags: TableUpdateData[], fileName: string): TableUpdateData[] {
-    return newTags.filter((tag: any) => tag.fileName === fileName);
+    return newTags.filter((tag: TableUpdateData) => tag.fileName === fileName);
 }
 
 /**
