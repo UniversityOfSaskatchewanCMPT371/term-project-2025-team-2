@@ -82,7 +82,7 @@ export const updateAllFiles = async (
 
         dicomData.forEach((dicom, index) => {
             const fileName = files[index].name;
-            const fileEdits = getSingleFileTagEdits(newTagValues, fileName);
+            const fileEdits: TableUpdateData[] = getSingleFileTagEdits(newTagValues, fileName);
             const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
 
             const updatedFile = tagUpdater(dicom.DicomDataSet, fileEdits);
