@@ -106,7 +106,6 @@ export const NewTagRow = () => {
                     placeholder="Tag Name"
                     disabled={true}
                     value={tagName}
-                    // onChange={(e) => setTagName(e.target.value)}
                 />
             </td>
             <td className="border px-4 py-2 text-center">
@@ -119,7 +118,7 @@ export const NewTagRow = () => {
                     />
                     <CheckCircleIcon
                         data-testid="CheckCircleIcon"
-                        className="h-6 w-6 cursor-pointer text-gray-500 hover:scale-110 hover:text-success"
+                        className="h-8 w-8 cursor-pointer text-gray-500 hover:scale-110 hover:text-success"
                         onClick={() =>
                             handleUpdateValue(tagId, tagValue, false)
                         }

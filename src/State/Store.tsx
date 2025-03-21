@@ -519,7 +519,7 @@ export const useStore = create<Store>((set) => ({
     },
 
     resetTagDictionary: async () => {
-        set({ loadingMsg: "Reseting Tag Dictionary to Default" });
+        set({ loadingMsg: "Resetting Tag Dictionary to Default" });
         set({ loading: true });
 
         const success = await tagDictionaryDB.resetToDefaults();

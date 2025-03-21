@@ -4,7 +4,7 @@ import {
     PencilSquareIcon,
     XCircleIcon,
     CheckCircleIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/24/outline";
 
 /**
  * DicomTableRow component

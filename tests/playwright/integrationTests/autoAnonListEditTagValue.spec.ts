@@ -36,7 +36,7 @@ test("Edit tag value in auto list", async ({ page }) => {
         const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(1000);
 
         const editButton = page.getByRole("button", {
             name: /Edit Auto-Anon Tags/i,
@@ -57,16 +57,21 @@ test("Edit tag value in auto list", async ({ page }) => {
         await expect(tagInput).toBeVisible();
         await tagInput.fill("New Value");
 
-        const saveButton = page.getByRole("button", {
-            name: /Save/i,
-        }).first();
+        const saveButton = page
+            .getByRole("button", {
+                name: /Save/i,
+            })
+            .first();
 
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
 
         await page.waitForTimeout(500);
 
-        await page.mouse.click(page.viewportSize().width / 2, page.viewportSize().height / 2); 
+        await page.mouse.click(
+            page.viewportSize().width / 2,
+            page.viewportSize().height / 2
+        );
 
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
@@ -80,7 +85,7 @@ test("Edit tag value in auto list", async ({ page }) => {
 
         await expect(modalOrMenu).toBeVisible();
 
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(1000);
 
         const editButton2 = page.getByRole("button", {
             name: /Edit Auto-Anon Tags/i,

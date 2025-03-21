@@ -19,7 +19,7 @@ const mockStateObject = {
     setNewTagValues: jest.fn(),
     loadTagDictionary: jest.fn().mockResolvedValue(null),
     tagDictionary: [
-        { tagId: "12345678", name: "Test Tag", value: "Test Value" }
+        { tagId: "12345678", name: "Test Tag", value: "Test Value" },
     ],
     isTagDictionaryLoaded: true,
     setShowAlert: jest.fn(),
@@ -60,7 +60,7 @@ jest.mock("@state/Store", () => {
         setNewTagValues: jest.fn(),
         loadTagDictionary: jest.fn().mockResolvedValue(null),
         tagDictionary: [
-            { tagId: "12345678", name: "Test Tag", value: "Test Value" }
+            { tagId: "12345678", name: "Test Tag", value: "Test Value" },
         ],
         isTagDictionaryLoaded: true,
         setShowAlert: jest.fn(),
@@ -109,7 +109,6 @@ describe("NewTagRow", () => {
         (storeModule.useStore as unknown as jest.Mock).mockImplementation(
             (selector) => (selector ? selector(mockState) : mockState)
         );
-
     });
 
     it("should render inputs for tag ID, tag name, and tag value", () => {

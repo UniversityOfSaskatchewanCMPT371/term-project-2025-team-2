@@ -1,7 +1,7 @@
 import { useStore } from "@state/Store";
 import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow";
 import { useState } from "react";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import logger from "@logger/Logger";
 import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
 
@@ -84,12 +84,21 @@ export default function AutoAnonTagsEdit() {
 
     const handleUpdateValue = () => {
         logger.debug("Updating tag values");
-        setShowAddTag(false);
+
+        if (showAddTag) {
+            setAlertMsg(
+                "Add tag isn't saved yet, please save or cancel it first"
+            );
+            setAlertType("alert-error");
+            setShowAlert(true);
+            return;
+        }
 
         if (tagChanges.length === 0) {
             setAlertMsg("No Changes Made");
             setAlertType("alert-warning");
             setShowAlert(true);
+            setAutoAnonTagsEditPanelVisible(false);
             return;
         }
 
@@ -107,6 +116,8 @@ export default function AutoAnonTagsEdit() {
                 ].value = change.newValue;
             }
         });
+
+        setAutoAnonTagsEditPanelVisible(false);
 
         setReset((prev) => prev + 1);
         tagChanges = [];
@@ -129,10 +140,11 @@ export default function AutoAnonTagsEdit() {
 
     return (
         <div
-            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${autoAnonTagsEditPanelVisible
+            className={`fixed right-0 top-0 h-full w-3/4 transform overflow-y-auto bg-base-200/95 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out ${
+                autoAnonTagsEditPanelVisible
                     ? "translate-x-0"
                     : "translate-x-full"
-                }`}
+            }`}
         >
             <div className="mb-5 mr-8 mt-24 flex items-center justify-between">
                 <div className="ml-4 text-xl font-bold text-blue-400">
@@ -144,9 +156,6 @@ export default function AutoAnonTagsEdit() {
                 <button
                     onClick={() => {
                         handleUpdateValue();
-                        setAutoAnonTagsEditPanelVisible(false);
-                        setShowAddTag(false);
-                        setReset((prev) => prev++);
                     }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
@@ -225,7 +234,6 @@ export default function AutoAnonTagsEdit() {
                                     placeholder="Tag Name"
                                     disabled={true}
                                     value={tagName}
-                                // onChange={(e) => setTagName(e.target.value)}
                                 />
                             </td>
                             <td className="border px-4 py-2 text-center">
@@ -240,7 +248,7 @@ export default function AutoAnonTagsEdit() {
                                     />
                                     <CheckCircleIcon
                                         data-testid="CheckCircleIcon"
-                                        className="h-6 w-6 cursor-pointer hover:scale-110 hover:text-success"
+                                        className="h-8 w-8 cursor-pointer hover:scale-110 hover:text-success"
                                         onClick={() => addtag(tagId, tagValue)}
                                     />
                                 </div>
@@ -250,19 +258,19 @@ export default function AutoAnonTagsEdit() {
 
                     {tagsToAnon.length > 0
                         ? tagsToAnon.map((tag, index) => (
-                            <DicomTableRow
-                                key={index + tag.tagId + reset}
-                                row={{
-                                    tagId: tag.tagId,
-                                    tagName: tag.name,
-                                    value: tag.value,
-                                }}
-                                index={index + reset}
-                                nested={false}
-                                onUpdateValue={addChanges}
-                                updated={false}
-                            />
-                        ))
+                              <DicomTableRow
+                                  key={index + tag.tagId + reset}
+                                  row={{
+                                      tagId: tag.tagId,
+                                      tagName: tag.name,
+                                      value: tag.value,
+                                  }}
+                                  index={index + reset}
+                                  nested={false}
+                                  onUpdateValue={addChanges}
+                                  updated={false}
+                              />
+                          ))
                         : null}
                 </tbody>
             </table>
