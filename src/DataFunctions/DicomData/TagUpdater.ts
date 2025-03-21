@@ -93,7 +93,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
     const newTags: InsertTag[] = [];
     const newDicomData = dicomData.byteArray;
     const filteredTags = newTagData;
-    let data;
+    let data: any;
 
     if (filteredTags.length === 0) {
         return newDicomData;
@@ -169,7 +169,7 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
  * @param {string} tag.value - The value to add for this tag
  * @returns {Uint8Array} Updated byte array with the tag appended
  */
-function addTag(dicomData: any, tag: InsertTag): Uint8Array<ArrayBuffer> {
+function addTag(dicomData: any, tag: InsertTag): Uint8Array {
     const tagIdByte = new Uint8Array(groupLen + elementLen);
     const group = parseInt(tag.tagId.slice(1, 5), 16);
     const element = parseInt(tag.tagId.slice(5), 16);
@@ -198,7 +198,7 @@ function addTag(dicomData: any, tag: InsertTag): Uint8Array<ArrayBuffer> {
  * @param {Uint8Array} newtag - Byte array representation of the tag to insert
  * @returns {Uint8Array} Updated byte array with the tag inserted
  */
-function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: any): Uint8Array<ArrayBuffer> {
+function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: Uint8Array): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToAdd.dataOffSet - 8);
@@ -226,7 +226,7 @@ function insertTag(dicomData: any, tagToAdd: InsertTag, newtag: any): Uint8Array
  * @param {number} tagToRemove.dataOffSet - The data offset position of the tag
  * @returns {Uint8Array} Byte array with the tag removed
  */
-function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array<ArrayBuffer> {
+function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array {
     const dicomByteArray = dicomData.byteArray;
 
     const first = dicomByteArray.slice(0, tagToRemove.dataOffSet - 8);
@@ -251,7 +251,7 @@ function removeTag(dicomData: any, tagToRemove: InsertTag): Uint8Array<ArrayBuff
  * @param {Uint8Array} buffer2 - Second byte array
  * @returns {Uint8Array} New concatenated byte array containing the content of both input arrays
  */
-function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array<ArrayBuffer> {
+function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
     const concatedBuffer = new Uint8Array(bufffer1.length + buffer2.length);
     concatedBuffer.set(bufffer1);
     concatedBuffer.set(buffer2, bufffer1.length);
@@ -270,7 +270,7 @@ function concatBuffers(bufffer1: Uint8Array, buffer2: Uint8Array): Uint8Array<Ar
  * @param {boolean} littleEndian - Whether to use little endian byte ordering
  * @returns {Uint8Array} The complete tag byte array representation
  */
-function createTag(tagId: Uint8Array, tag: InsertTag, littleEndian: boolean) {
+function createTag(tagId: Uint8Array, tag: InsertTag, littleEndian: boolean): Uint8Array {
     const valueOffset =
         tag.vr in VR_with_12_bytes_header ? longHeaderLen : headerLen;
     const valueLength = getValueLength(tag);
