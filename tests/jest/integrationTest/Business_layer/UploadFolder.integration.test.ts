@@ -1,10 +1,12 @@
-import { processFiles } from "./FileProcessor";
 import { tagUpdater } from "../../../../src/DataFunctions/DicomData/TagUpdater";
+import { parseDicomFiles } from "../../../../src/DataFunctions/DicomData/FileProcessor";
+import { buildFileStructure } from "../../../../src/DataFunctions/DicomData/BuildFileStructure";
 import { updateAllFiles } from "../../../../src/DataFunctions/DicomData/UpdateAllFiles";
 import {
     createZipFromFiles,
     downloadDicomFile,
 } from "../../../../src/DataFunctions/DicomData/DownloadFuncs";
+import { parseDicomFile } from "../../../../src/DataFunctions/DicomData/DicomParserUtils";
 
 import fs from "fs";
 import path from "path";
@@ -68,8 +70,11 @@ declare global {
 }
 
 describe("Upload Folder Integration Test", () => {
+    const toggleModal = jest.fn();
+    const onError = jest.fn();
+    const onProgress = jest.fn();
+
     beforeAll(() => {
-        // Now assign it safely
         (globalThis as unknown as Global).indexedDB = {
             open: jest.fn(() => ({
                 onerror: jest.fn(),
@@ -77,34 +82,65 @@ describe("Upload Folder Integration Test", () => {
                 result: {},
             })),
         };
-
         jest.clearAllMocks();
     });
+    test("should build correct folder structure from real DICOM files", () => {
+        const structured = buildFileStructure(realFiles);
 
-    test("should preserve folder structure and parse DICOM files correctly", async () => {
-        const result = await processFiles(realFiles);
+        const expectedFolders = ["root", "simple_files", "tagUpdater_testing"];
 
-        expect(Object.keys(result.structuredFiles).sort()).toEqual(
-            ["root", "simple_files", "tagUpdater_testing"].sort()
+        expect(Object.keys(structured).sort()).toEqual(expectedFolders.sort());
+
+        expect(structured["root"]).toHaveLength(100);
+        expect(structured["simple_files"]).toHaveLength(4);
+        expect(structured["tagUpdater_testing"]).toHaveLength(12);
+    });
+
+    test("should parse real DICOM files with parseDicomFiles", async () => {
+        const result = await parseDicomFiles(
+            realFiles,
+            parseDicomFile,
+            toggleModal,
+            onError,
+            onProgress
         );
 
-        expect(result.structuredFiles["root"]).toHaveLength(100);
-        expect(result.structuredFiles["simple_files"]).toHaveLength(4);
-        expect(result.structuredFiles["tagUpdater_testing"]).toHaveLength(12);
-        expect(result.parsedData).toHaveLength(116);
+        expect(result).toHaveLength(realFiles.length);
+        expect(result.filter(Boolean).length).toBe(116);
+
+        interface ParsedDicomEntry {
+            fileName: string;
+            filePath: string;
+            tags: Record<string, any>;
+        }
+
+        result.forEach((entry: ParsedDicomEntry | null, i: number) => {
+            if (entry !== null) {
+                expect(entry.fileName).toBe(realFiles[i].name);
+                expect(entry.filePath).toBe(
+                    (realFiles[i] as any).webkitRelativePath ||
+                        realFiles[i].name
+                );
+                expect(entry.tags).toBeDefined();
+            }
+        });
+
+        expect(onProgress).toHaveBeenCalled();
     });
 
     test("should update Patient Name tag in a single REAL DICOM file", async () => {
-        const result = await processFiles(realFiles);
-
-        const original = result.parsedData[0];
+        const parsed = await parseDicomFiles(
+            realFiles,
+            parseDicomFile,
+            toggleModal,
+            onError,
+            onProgress
+        );
+        const original = parsed[0]!;
         const originalValue = original.tags["X00100010"]?.value;
 
         const newTagValues = [
-            {
-                tagId: "X00100010",
-                newValue: "John Doe 9000",
-            },
+            { tagId: "X00100010", newValue: "John Doe 9000" },
         ];
 
         const updatedBuffer = tagUpdater(original.DicomDataSet, newTagValues);
@@ -142,9 +178,17 @@ describe("Upload Folder Integration Test", () => {
                 add: false,
             },
         ];
-        const result = await processFiles(realFiles);
+
+        const parsed = await parseDicomFiles(
+            realFiles,
+            parseDicomFile,
+            toggleModal,
+            onError,
+            onProgress
+        );
+
         await updateAllFiles(
-            [result.parsedData[0], result.parsedData[1]],
+            [parsed[0]!, parsed[1]!],
             true,
             newTagValues,
             files,
@@ -158,7 +202,13 @@ describe("Upload Folder Integration Test", () => {
     });
 
     test("should call createZipFromFiles and downloadDicomFile when downloadOption is 'zip'", async () => {
-        const result = await processFiles(realFiles);
+        const parsed = await parseDicomFiles(
+            realFiles,
+            parseDicomFile,
+            toggleModal,
+            onError,
+            onProgress
+        );
 
         const files = [
             { name: "test_dicom_0.dcm" },
@@ -183,7 +233,7 @@ describe("Upload Folder Integration Test", () => {
         ];
 
         await updateAllFiles(
-            [result.parsedData[0], result.parsedData[1]],
+            [parsed[0]!, parsed[1]!],
             true,
             newTagValues,
             files,
