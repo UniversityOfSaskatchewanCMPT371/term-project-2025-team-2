@@ -52,3 +52,7 @@ screenshots/
 dev-dist/*.map
 dev-dist/*.js
 
+# Jest coverage
+/coverage/
+coverage/
+
