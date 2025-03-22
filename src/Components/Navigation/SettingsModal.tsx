@@ -8,6 +8,7 @@ import { ThemeSelector } from "./ThemeSelector";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 import { EditOption } from "@components/utils/EditOption";
+import { Tooltip } from "react-tooltip";
 
 /**
  * SettingsModal component for managing application settings
@@ -47,7 +48,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                                 (helpModal as HTMLDialogElement).showModal();
                             }
                         }}
+                        data-tooltip-id="help-button-tooltip"
+                        data-tooltip-content="Help/Advanced Settings"
+                        data-tooltip-place="left"
+                        aria-label="Help Button"
                     />
+                    <Tooltip id="help-button-tooltip" />
                 </div>
 
                 <ThemeSelector />

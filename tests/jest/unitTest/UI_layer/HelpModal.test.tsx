@@ -1,5 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { HelpModal } from "@components/utils/Modals/HelpModal";
+// import { TagDictionaryDB } from "@services/TagDictionaryDB";
+
+// Mock the TagDictionaryDB class
+jest.mock("@services/TagDictionaryDB", () => {
+    return {
+        TagDictionaryDB: jest.fn().mockImplementation(() => {
+            return {
+                deleteDatabase: jest.fn().mockResolvedValue(true),
+            };
+        }),
+    };
+});
 
 describe("HelpModal", () => {
     beforeEach(() => {
@@ -7,6 +19,21 @@ describe("HelpModal", () => {
         HTMLDialogElement.prototype.close = jest.fn();
         // Mock the dialog element
         document.body.innerHTML = '<dialog id="help_modal"></dialog>';
+        Object.defineProperty(window, "localStorage", {
+            value: {
+                clear: jest.fn(),
+            },
+            writable: true,
+        });
+        // Mock window.location.reload
+        Object.defineProperty(window, "location", {
+            value: {
+                reload: jest.fn(),
+            },
+            writable: true,
+        });
+        // Mock alert
+        window.alert = jest.fn();
     });
 
     afterEach(() => {

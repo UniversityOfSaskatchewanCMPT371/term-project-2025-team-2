@@ -8,32 +8,6 @@ jest.mock("dicom-parser", () => {
     };
 });
 
-jest.mock("@dataFunctions/TagDictionary/dictionary", () => ({
-    TagDictionary: class {
-        lookup(tag: string) {
-            return (
-                {
-                    "0040A730": "Content Sequence",
-                    "00080100": "Code Value",
-                    "00080102": "Coding Scheme Designator",
-                }[tag] || "Unknown"
-            );
-        }
-        lookupTagName(tag: string) {
-            return this.lookup(tag);
-        }
-        lookupTagVR(tag: string) {
-            return (
-                {
-                    "00100010": "PN",
-                    "00100020": "LO",
-                    "00100030": "DA",
-                }[tag] || "Unknown"
-            );
-        }
-    },
-}));
-
 describe("DicomParserUtils Unit Tests", () => {
     let mockFile: File;
 

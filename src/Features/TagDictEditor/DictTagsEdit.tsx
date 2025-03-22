@@ -338,7 +338,7 @@ export default function DictTagsEdit() {
                 </button>
 
                 {/* Dropdown menu for dictionary actions */}
-                <div className="dropdown dropdown-end mt-2">
+                <div className="dropdown dropdown-end mt-2 transition-all duration-200 hover:scale-105">
                     <label
                         tabIndex={0}
                         className="cursor-pointer rounded-full bg-secondary px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
@@ -402,6 +402,7 @@ export default function DictTagsEdit() {
                     accept=".json,application/json"
                     className="hidden"
                     onChange={handleFileChange}
+                    data-testid="file-input"
                 />
             </div>
 

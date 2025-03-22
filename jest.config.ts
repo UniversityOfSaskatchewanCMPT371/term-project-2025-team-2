@@ -22,6 +22,7 @@ export default {
         "^@file/(.*)$": "<rootDir>/src/Features/FileHandling/$1",
         "^@auto/(.*)$": "<rootDir>/src/Features/AutoAnonymize/$1",
         "^@types/(.*)$": "<rootDir>/src/types/$1",
+        "^@services/(.*)$": "<rootDir>/src/Services/$1",
     },
     //ignore playwright tests
     testPathIgnorePatterns: [

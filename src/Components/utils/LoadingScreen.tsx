@@ -19,7 +19,10 @@ export const LoadingScreen = () => {
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80"
         >
             <div className="flex flex-col items-center">
-                <ArrowPathIcon className="h-24 w-24 animate-spin text-gray-400" />
+                <ArrowPathIcon
+                    data-testid="loading-spinner"
+                    className="h-24 w-24 animate-spin text-gray-400"
+                />
                 <div className="mt-4 text-xl text-gray-400">{loadingMsg}</div>
             </div>
         </div>

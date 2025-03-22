@@ -124,6 +124,7 @@ export default defineConfig({
             "@dataFunctions": path.resolve(__dirname, "./src/DataFunctions"),
             "@logger": path.resolve(__dirname, "./src/Logger"),
             "@type": path.resolve(__dirname, "./src/types"),
+            "@services": path.resolve(__dirname, "./src/Services"),
         },
     },
 });
