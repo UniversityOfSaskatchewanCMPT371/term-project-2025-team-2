@@ -4,8 +4,10 @@ import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 import { FileUploaderProps } from "../Types/FileTypes";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
-import { parseDicomFiles } from "@dataFunctions/DicomData/FileProcessor";
-import { buildFileStructure } from "@dataFunctions/DicomData/BuildFileStructure";
+import {
+    parseDicomFiles,
+    buildFileStructure,
+} from "@dataFunctions/DicomData/FileProcessor";
 import { FolderIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "react-tooltip";
 

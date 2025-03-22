@@ -1,6 +1,8 @@
 import { tagUpdater } from "../../../../src/DataFunctions/DicomData/TagUpdater";
-import { parseDicomFiles } from "../../../../src/DataFunctions/DicomData/FileProcessor";
-import { buildFileStructure } from "../../../../src/DataFunctions/DicomData/BuildFileStructure";
+import {
+    parseDicomFiles,
+    buildFileStructure,
+} from "../../../../src/DataFunctions/DicomData/FileProcessor";
 import { updateAllFiles } from "../../../../src/DataFunctions/DicomData/UpdateAllFiles";
 import {
     createZipFromFiles,
