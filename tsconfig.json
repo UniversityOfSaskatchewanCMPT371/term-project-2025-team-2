@@ -15,7 +15,8 @@
             "@hooks/*": ["Hooks/*"],
             "@fileHandling/*": ["Features/FileHandling/*"],
             "@state/*": ["State/*"],
-            "@auto/*": ["Features/AutoAnonymize/*"]
+            "@auto/*": ["Features/AutoAnonymize/*"],
+            "@services/*": ["Services/*"]
         }
     }
 }

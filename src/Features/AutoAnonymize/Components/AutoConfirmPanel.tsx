@@ -40,14 +40,16 @@ export const SidePanel = () => {
             setTags(tags.filter((tag) => tag.tagId !== tagId));
             return;
         }
-        setTags(
-            tags.map((tag) => {
-                if (tag.tagId === tagId) {
-                    return { ...tag, newValue };
-                }
-                return tag;
-            })
-        );
+        const temp = tags.some((tag) => tag.tagId === tagId)
+            ? tags.map((tag) => {
+                  if (tag.tagId === tagId) {
+                      return { ...tag, newValue };
+                  }
+                  return tag;
+              })
+            : [...tags, { tagId, tagName: "", newValue }];
+
+        setTags(temp);
     };
 
     const handleAutoAnon = async () => {
@@ -267,7 +269,7 @@ export const SidePanel = () => {
                 <tbody>
                     {tags.map((tag, index) => (
                         <DicomTableRow
-                            key={index + tag.tagId}
+                            key={index + tag.tagId + reset}
                             row={{
                                 tagId: tag.tagId,
                                 tagName: tag.tagName,

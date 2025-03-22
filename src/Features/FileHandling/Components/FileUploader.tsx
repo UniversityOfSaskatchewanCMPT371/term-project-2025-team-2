@@ -61,6 +61,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             setLoadingMsg(
                 `Processing file ${currentFile} of ${selectedFiles.length} files...`
             );
+
             const fileArray = Array.from(selectedFiles);
             processFiles(fileArray);
         } else {
@@ -203,7 +204,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         );
         logger.debug(`Total files: ${files.length}`);
 
+        setLoadingMsg(`Processing file 1 of ${files.length} files...`);
+
         files.forEach((file, index) => {
+            setLoadingMsg(
+                `Processing file ${index + 1} of ${files.length} files...`
+            );
             Object.defineProperty(file, "webkitRelativePath", {
                 value: `root/${file.name}`,
                 writable: true,

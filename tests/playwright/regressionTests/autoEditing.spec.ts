@@ -23,23 +23,14 @@ const debug = (message: string) => {
 };
 
 const tagsanon = [
-    "InstitutionName",
-    "InstitutionAddress",
-    "ReferringPhysicianName",
-    "PerformingPhysicianName",
-    "NameOfPhysiciansReadingStudy",
-    "OperatorsName",
-    "PatientName",
-    "AdditionalPatientHistory",
-    "OtherPatientIDs",
-    "OtherPatientNames",
-    "ClinicalTrialSponsorName",
-    "ClinicalTrialSiteName",
-    "ClinicalTrialCoordinatingCenterName",
-    "ClinicalTrialProtocolEthicsCommitteeName",
-    "ClinicalTrialProtocolEthicsCommitteeApprovalNumber",
-    "EvaluatorName",
-    "OrderCallbackPhoneNumber",
+    "X00080080",
+    "X00080081",
+    "X00080090",
+    "X00081050",
+    "X00081060",
+    "X00081070",
+    "X00100010",
+    "X001021B0",
 ];
 
 test("Edit tags in MRI series", async ({ page }) => {

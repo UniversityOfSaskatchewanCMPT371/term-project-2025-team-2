@@ -202,7 +202,7 @@ export interface AnonPopupProps {
     onUpdateTag: (tagId: string, newValue: string) => void;
 }
 
-/** 
+/**
  * Dicom Tag used in TagUdater
  * @interface {Object} InsertTag
  * @property {string} tagId - ID of the DICOM tag
@@ -221,4 +221,4 @@ export type InsertTag = {
     length: number;
     delete: boolean;
     add: boolean;
-}
+};

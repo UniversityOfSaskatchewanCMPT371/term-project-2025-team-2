@@ -84,6 +84,21 @@ export const AutoAnon = async (
                 );
                 if (tagIndex !== -1) {
                     formattedData[tagIndex].newValue = anonTag.newValue;
+                } else {
+                    formattedData.push({
+                        tagId: anonTag.tagId,
+                        newValue: anonTag.newValue,
+                        vr:
+                            dicom.DicomDataSet.elements[
+                                anonTag.tagId.toLowerCase()
+                            ].vr || "NO",
+                        dataOffSet:
+                            dicom.DicomDataSet.elements[
+                                anonTag.tagId.toLowerCase()
+                            ].dataOffset,
+                        length: anonTag.newValue.length,
+                        deleteTag: false,
+                    });
                 }
             });
 
