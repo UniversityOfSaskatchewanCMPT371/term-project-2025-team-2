@@ -1,22 +1,22 @@
-import { tagUpdater } from "../../../../src/DataFunctions/DicomData/TagUpdater";
+import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
 import {
     parseDicomFiles,
     buildFileStructure,
-} from "../../../../src/DataFunctions/DicomData/FileProcessor";
-import { updateAllFiles } from "../../../../src/DataFunctions/DicomData/UpdateAllFiles";
+} from "@dataFunctions/DicomData/FileProcessor";
+import { updateAllFiles } from "@dataFunctions/DicomData/UpdateAllFiles";
 import {
     createZipFromFiles,
     downloadDicomFile,
-} from "../../../../src/DataFunctions/DicomData/DownloadFuncs";
-import { parseDicomFile } from "../../../../src/DataFunctions/DicomData/DicomParserUtils";
+} from "@dataFunctions/DicomData/DownloadFuncs";
+import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 
 import fs from "fs";
 import path from "path";
 import dicomParser from "dicom-parser";
 
-jest.mock("../../../../src/DataFunctions/DicomData/DownloadFuncs.ts", () => ({
+jest.mock("@dataFunctions/DicomData/DownloadFuncs.ts", () => ({
     ...jest.requireActual(
-        "../../../../src/DataFunctions/DicomData/DownloadFuncs.ts"
+        "@dataFunctions/DicomData/DownloadFuncs.ts"
     ),
     createZipFromFiles: jest.fn(() => new Blob()),
     downloadDicomFile: jest.fn(),
@@ -170,7 +170,7 @@ describe("Upload Folder Integration Test", () => {
 
     test("should process REAL files individually when downloadOption is 'single'", async () => {
         const spy = jest.spyOn(
-            await import("../../../../src/DataFunctions/DicomData/TagUpdater"),
+            await import("@dataFunctions/DicomData/TagUpdater"),
             "tagUpdater"
         );
 
