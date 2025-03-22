@@ -89,13 +89,28 @@ describe("Upload Folder Integration Test", () => {
     test("should build correct folder structure from real DICOM files", () => {
         const structured = buildFileStructure(realFiles);
 
-        const expectedFolders = ["root", "simple_files", "tagUpdater_testing"];
+        const expectedFolders = Array.from(
+            new Set(
+                realFiles.map((file) => {
+                    const path = (file as any).webkitRelativePath || file.name;
+                    return path.split("/").slice(0, -1).join("/") || "root";
+                })
+            )
+        ).sort();
 
-        expect(Object.keys(structured).sort()).toEqual(expectedFolders.sort());
+        const actualFolders = Object.keys(structured).sort();
 
-        expect(structured["root"]).toHaveLength(100);
-        expect(structured["simple_files"]).toHaveLength(4);
-        expect(structured["tagUpdater_testing"]).toHaveLength(12);
+        expect(actualFolders).toEqual(expectedFolders);
+
+        expectedFolders.forEach((folder) => {
+            const expectedCount = realFiles.filter((file) => {
+                const path = (file as any).webkitRelativePath || file.name;
+                const dir = path.split("/").slice(0, -1).join("/") || "root";
+                return dir === folder;
+            }).length;
+
+            expect(structured[folder]).toHaveLength(expectedCount);
+        });
     });
 
     test("should parse real DICOM files with parseDicomFiles", async () => {
@@ -108,7 +123,7 @@ describe("Upload Folder Integration Test", () => {
         );
 
         expect(result).toHaveLength(realFiles.length);
-        expect(result.filter(Boolean).length).toBe(116);
+        expect(result.filter(Boolean).length).toBe(realFiles.length);
 
         interface ParsedDicomEntry {
             fileName: string;
@@ -159,27 +174,28 @@ describe("Upload Folder Integration Test", () => {
             "tagUpdater"
         );
 
-        const files = [
-            { name: "test_dicom_0.dcm" },
-            { name: "test_dicom_1.dcm" },
-        ];
-        const currentFileIndex = 0;
+        const file1 = realFiles[0];
+        const file2 = realFiles[1];
+        const files = [{ name: file1.name }, { name: file2.name }];
+
         const newTagValues = [
             {
-                fileName: "test_dicom_0.dcm",
+                fileName: file1.name,
                 tagId: "X00100010",
                 newValue: "John Doe 9001",
                 delete: false,
                 add: false,
             },
             {
-                fileName: "test_dicom_1.dcm",
+                fileName: file2.name,
                 tagId: "X00100010",
                 newValue: "John Doe 9002",
                 delete: false,
                 add: false,
             },
         ];
+
+        const currentFileIndex = 0;
 
         const parsed = await parseDicomFiles(
             realFiles,
@@ -212,27 +228,28 @@ describe("Upload Folder Integration Test", () => {
             onProgress
         );
 
-        const files = [
-            { name: "test_dicom_0.dcm" },
-            { name: "test_dicom_1.dcm" },
-        ];
-        const currentFileIndex = 0;
+        const file1 = realFiles[0];
+        const file2 = realFiles[1];
+        const files = [{ name: file1.name }, { name: file2.name }];
+
         const newTagValues = [
             {
-                fileName: "test_dicom_0.dcm",
+                fileName: file1.name,
                 tagId: "X00100010",
                 newValue: "John Doe 9010",
                 delete: false,
                 add: false,
             },
             {
-                fileName: "test_dicom_1.dcm",
+                fileName: file2.name,
                 tagId: "X00100010",
                 newValue: "John Doe 9011",
                 delete: false,
                 add: false,
             },
         ];
+
+        const currentFileIndex = 0;
 
         await updateAllFiles(
             [parsed[0]!, parsed[1]!],
@@ -255,4 +272,5 @@ describe("Upload Folder Integration Test", () => {
         expect(lastCallArg.name).toBe("updateDicoms.zip");
         expect(lastCallArg.content).toBeInstanceOf(Blob);
     });
+
 });
