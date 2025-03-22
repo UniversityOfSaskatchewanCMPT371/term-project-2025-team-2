@@ -247,21 +247,25 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 (() => {
                     // Case 1: row.value is an array (multiple sequence items)
                     if (Array.isArray(row.value)) {
-                        return row.value.map((nestedItem: { tags?: Record<string, DicomTag> }, i: number) =>
-                            nestedItem?.tags
-                                ? Object.values(nestedItem.tags).map(
-                                      (nested: DicomTag) => (
-                                          <DicomTableRow
-                                              key={`${nested.tagId}-${i}`}
-                                              row={nested}
-                                              index={index}
-                                              onUpdateValue={onUpdateValue}
-                                              nested
-                                              level={level + 1}
-                                          />
+                        return row.value.map(
+                            (
+                                nestedItem: { tags?: Record<string, DicomTag> },
+                                i: number
+                            ) =>
+                                nestedItem?.tags
+                                    ? Object.values(nestedItem.tags).map(
+                                          (nested: DicomTag) => (
+                                              <DicomTableRow
+                                                  key={`${nested.tagId}-${i}`}
+                                                  row={nested}
+                                                  index={index}
+                                                  onUpdateValue={onUpdateValue}
+                                                  nested
+                                                  level={level + 1}
+                                              />
+                                          )
                                       )
-                                  )
-                                : null
+                                    : null
                         );
                     }
                     // Case 2: row.value is a single nested tag object

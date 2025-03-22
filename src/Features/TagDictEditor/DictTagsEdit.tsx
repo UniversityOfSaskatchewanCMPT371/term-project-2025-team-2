@@ -402,6 +402,7 @@ export default function DictTagsEdit() {
                     accept=".json,application/json"
                     className="hidden"
                     onChange={handleFileChange}
+                    data-testid="file-input"
                 />
             </div>
 

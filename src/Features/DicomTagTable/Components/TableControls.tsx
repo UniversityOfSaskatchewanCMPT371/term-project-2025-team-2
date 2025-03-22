@@ -43,31 +43,36 @@ export const TableControls: React.FC<TableControlsProps> = ({
         logger.info("Auto Anonymizing tags");
 
         const newTagData: AnonTag[] = [];
-        dicomData.forEach((data) => {
+        const uniqueTags: { tagId: string; newValue: string }[] = [];
+
+        for (const data of dicomData) {
             const formattedData = FormatData(data, tagsToAnon);
 
-            formattedData.forEach(
-                async (tag: { tagId: string; newValue: string }) => {
-                    if (
-                        !newTagData.some(
-                            (existingTag) => existingTag.tagId === tag.tagId
-                        )
-                    ) {
-                        // Look up tag name from database
-                        const tagInfo = await tagDictionaryDB.getTag(tag.tagId);
-                        const tagName = tagInfo ? tagInfo.name : "Unknown Tag";
-
-                        newTagData.push({
-                            tagId: tag.tagId,
-                            tagName: tagName,
-                            newValue: tag.newValue,
-                        });
-                    }
+            for (const tag of formattedData) {
+                if (
+                    !uniqueTags.some(
+                        (existingTag) => existingTag.tagId === tag.tagId
+                    )
+                ) {
+                    uniqueTags.push(tag);
                 }
-            );
-        });
+            }
+        }
+
+        for (const tag of uniqueTags) {
+            // Look up tag name from database
+            const tagInfo = await tagDictionaryDB.getTag(tag.tagId.slice(1));
+            const tagName = tagInfo ? tagInfo.name : "Unknown Tag";
+
+            newTagData.push({
+                tagId: tag.tagId,
+                tagName: tagName,
+                newValue: tag.newValue,
+            });
+        }
 
         logger.debug(`Anonymizing tags: ${newTagData}`);
+
         setTags(newTagData);
         setSidePanelVisible(true);
     };
