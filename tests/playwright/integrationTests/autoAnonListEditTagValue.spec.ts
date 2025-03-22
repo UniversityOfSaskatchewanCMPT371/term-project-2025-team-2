@@ -36,11 +36,18 @@ test("Edit tag value in auto list", async ({ page }) => {
         const modalOrMenu = page.locator(".modal-box");
         await expect(modalOrMenu).toBeVisible();
 
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(1000);
 
-        const editButton = page.getByRole("button", {
-            name: /Edit Auto-Anon Tags/i,
+        const advancedMenu = page.getByRole("button", {
+            name: /Advanced/i,
         });
+
+        await expect(advancedMenu).toBeVisible();
+        await advancedMenu.click();
+
+        const editButton = page
+            .locator("li")
+            .filter({ hasText: "Edit Auto-Anon Tags" });
         await expect(editButton).toBeVisible({ timeout: 1000 });
         await editButton.click();
         await page.waitForTimeout(500);
@@ -57,16 +64,21 @@ test("Edit tag value in auto list", async ({ page }) => {
         await expect(tagInput).toBeVisible();
         await tagInput.fill("New Value");
 
-        const saveButton = page.getByRole("button", {
-            name: /Save/i,
-        }).first();
+        const saveButton = page
+            .getByRole("button", {
+                name: /Save/i,
+            })
+            .first();
 
         await expect(saveButton).toBeEnabled();
         await saveButton.click();
 
         await page.waitForTimeout(500);
 
-        await page.mouse.click(page.viewportSize().width / 2, page.viewportSize().height / 2); 
+        await page.mouse.click(
+            page.viewportSize().width / 2,
+            page.viewportSize().height / 2
+        );
 
         await sidebarToggleButton.waitFor();
         await sidebarToggleButton.click();
@@ -80,13 +92,21 @@ test("Edit tag value in auto list", async ({ page }) => {
 
         await expect(modalOrMenu).toBeVisible();
 
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(1000);
 
-        const editButton2 = page.getByRole("button", {
-            name: /Edit Auto-Anon Tags/i,
+        const advancedMenu2 = page.getByRole("button", {
+            name: /Advanced/i,
         });
+
+        await expect(advancedMenu2).toBeVisible();
+        await advancedMenu2.click();
+
+        const editButton2 = page
+            .locator("li")
+            .filter({ hasText: "Edit Auto-Anon Tags" });
         await expect(editButton2).toBeVisible({ timeout: 1000 });
         await editButton2.click();
+        await page.waitForTimeout(500);
 
         await page.waitForTimeout(500);
 

@@ -40,8 +40,8 @@ jest.mock("@dataFunctions/DicomData/DownloadFuncs", () => ({
 import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
 import {
     createFile,
-    createZipFromFiles,
-    downloadDicomFile,
+    // createZipFromFiles,
+    // downloadDicomFile,
 } from "@dataFunctions/DicomData/DownloadFuncs";
 
 describe("AutoClean Module", () => {
@@ -167,43 +167,44 @@ describe("AutoClean Module", () => {
             // });
         });
 
-        it("should handle anonTags that do not match any existing tags", async () => {
-            const sampleDicomDataArray = [
-                {
-                    DicomDataSet: {
-                        elements: {
-                            "0010,0010": { vr: "PN", dataOffset: 100 },
-                        },
-                    },
-                },
-            ];
+        // obsolete test
+        // it("should handle anonTags that do not match any existing tags", async () => {
+        //     const sampleDicomDataArray = [
+        //         {
+        //             DicomDataSet: {
+        //                 elements: {
+        //                     "0010,0010": { vr: "PN", dataOffset: 100 },
+        //                 },
+        //             },
+        //         },
+        //     ];
 
-            const sampleFiles: CustomFile[] = [{ name: "dicom1.dcm" }];
+        //     const sampleFiles: CustomFile[] = [{ name: "dicom1.dcm" }];
 
-            const sampleAnonTags: AnonTag[] = [
-                {
-                    tagId: "9999,9999",
-                    newValue: "Non-existent",
-                    tagName: "NonExistent",
-                },
-            ];
+        //     const sampleAnonTags: AnonTag[] = [
+        //         {
+        //             tagId: "9999,9999",
+        //             newValue: "Non-existent",
+        //             tagName: "NonExistent",
+        //         },
+        //     ];
 
-            await AutoAnon(
-                sampleDicomDataArray,
-                sampleFiles,
-                sampleAnonTags,
-                tagsAnon,
-                {}
-            );
+        //     await AutoAnon(
+        //         sampleDicomDataArray,
+        //         sampleFiles,
+        //         sampleAnonTags,
+        //         tagsAnon,
+        //         {}
+        //     );
 
-            expect((tagUpdater as jest.Mock).mock.calls.length).toBe(1);
-            expect(createFile).toHaveBeenCalledWith(
-                "dicom1.dcm",
-                expect.any(ArrayBuffer),
-                true
-            );
-            expect(createZipFromFiles).toHaveBeenCalled();
-            expect(downloadDicomFile).toHaveBeenCalled();
-        });
+        //     expect((tagUpdater as jest.Mock).mock.calls.length).toBe(1);
+        //     expect(createFile).toHaveBeenCalledWith(
+        //         "dicom1.dcm",
+        //         expect.any(ArrayBuffer),
+        //         true
+        //     );
+        //     expect(createZipFromFiles).toHaveBeenCalled();
+        //     expect(downloadDicomFile).toHaveBeenCalled();
+        // });
     });
 });

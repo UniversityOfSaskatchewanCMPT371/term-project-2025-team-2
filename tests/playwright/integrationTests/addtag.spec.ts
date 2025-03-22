@@ -37,12 +37,14 @@ test("Add tag and verify", async ({ page }) => {
 
         await expect(institutionNameRow).toBeVisible({ timeout: 1000 });
 
-        const addButton = await page.getByRole("button", { name: "Add Tag", exact: true }).first();
-        await addButton.isVisible({timeout: 100});
+        const addButton = await page
+            .getByRole("button", { name: "Add Tag", exact: true })
+            .first();
+        await addButton.isVisible({ timeout: 100 });
         addButton.click();
 
-        await page.waitForTimeout(1000)
-        await page.screenshot({path: "cl.png"})
+        await page.waitForTimeout(1000);
+
         const tagRow = page.locator("tr").filter({ hasText: "X" }).first();
 
         const tagInput = tagRow.locator("input").first();
@@ -53,7 +55,7 @@ test("Add tag and verify", async ({ page }) => {
         await expect(tagValue).toBeVisible();
         await tagValue.fill("value");
 
-        const saveButton = tagRow.locator("svg.h-6.w-6").first();
+        const saveButton = tagRow.locator("svg.h-8.w-8").first();
         await expect(saveButton).toBeVisible();
         await saveButton.click();
 

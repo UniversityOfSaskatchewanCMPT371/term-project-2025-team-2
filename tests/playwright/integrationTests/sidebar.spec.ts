@@ -28,7 +28,7 @@ test("Saving changes using Sidebar toggle", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
+        await page.waitForTimeout(2000);
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
@@ -91,7 +91,7 @@ test("Testing edit individually and series button in sidebar", async ({
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
+        await page.waitForTimeout(2000);
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
@@ -143,8 +143,8 @@ test("Navigating from files from sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
-        
+        await page.waitForTimeout(2000);
+
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
@@ -204,8 +204,8 @@ test("Updating file by navigating through sidebar", async ({ page }) => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
-        
+        await page.waitForTimeout(2000);
+
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,

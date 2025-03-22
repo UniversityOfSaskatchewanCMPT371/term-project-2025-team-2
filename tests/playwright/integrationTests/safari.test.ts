@@ -25,8 +25,8 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
-        
+        await page.waitForTimeout(2000);
+
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,
@@ -79,8 +79,8 @@ test.describe("Safari DownloadOption Component", () => {
             "./test-data/CR000001.dcm",
         ]);
 
-        await page.waitForTimeout(2000)
-        
+        await page.waitForTimeout(2000);
+
         await page.waitForSelector("text=Edit Files", {
             state: "visible",
             timeout: 2000,

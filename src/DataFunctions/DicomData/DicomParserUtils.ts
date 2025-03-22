@@ -1,12 +1,9 @@
 import dicomParser from "dicom-parser";
-import { TagDictionary } from "../TagDictionary/dictionary";
 import logger from "@logger/Logger";
 import { assert } from "../assert";
 import { DicomData, DicomTags } from "@dicom//Types/DicomTypes";
 import { useStore } from "@state/Store";
 import { standardDataElements } from "../TagDictionary/standardDataElements";
-
-const tagDictionary = new TagDictionary();
 
 // List of tags to hide from the user interface
 const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
@@ -69,7 +66,9 @@ export function getTagName(tagId: string): string {
         // For standardDataElements, try to get name from there
         // const standardElements = require("../TagDictionary/standardDataElements").standardDataElements;
         if (standardDataElements && standardDataElements[tagId]) {
-            return standardDataElements[tagId].name;
+            return standardDataElements[tagId].name
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .trim();
         }
         return "Loading...";
     }
@@ -86,22 +85,39 @@ export function getTagName(tagId: string): string {
  * @param tagId The DICOM tag ID in format "ggggeeee"
  * @returns The VR code (e.g., "CS", "LO", "PN", etc.) or "UN" if not found
  */
-export async function getTagVR(tagId: string): Promise<string> {
-    // Get the tag dictionary from the store
-    const tagDictionary = useStore.getState().tagDictionary;
-    const isTagDictionaryLoaded = useStore.getState().isTagDictionaryLoaded;
-    const loadTagDictionary = useStore.getState().loadTagDictionary;
+export function getTagVR(tagId: string): string {
+    // Remove 'X' prefix if present
+    const normalizedTagId = tagId.startsWith("X") ? tagId.slice(1) : tagId;
 
-    // If tag dictionary isn't loaded yet, load it
-    if (!isTagDictionaryLoaded) {
-        await loadTagDictionary();
+    // First check standardDataElements for quicker access (no DB access needed)
+    if (standardDataElements && standardDataElements[normalizedTagId]) {
+        return standardDataElements[normalizedTagId].vr;
     }
 
-    // Find the tag in the dictionary
-    const tagInfo = tagDictionary.find((tag) => tag.tagId === tagId.slice(1));
+    // If not in standardDataElements, get the tag dictionary from the store
+    const tagDictionary = useStore.getState().tagDictionary;
+    const isTagDictionaryLoaded = useStore.getState().isTagDictionaryLoaded;
 
-    // Return the tag VR if found, otherwise return "UN" (Unknown)
-    return tagInfo?.vr || "UN";
+    // If dictionary is loaded, try to find the tag there
+    if (isTagDictionaryLoaded) {
+        const tagInfo = tagDictionary.find(
+            (tag) => tag.tagId === normalizedTagId
+        );
+        if (tagInfo) {
+            return tagInfo.vr;
+        }
+    }
+
+    // If we get here, we couldn't find the VR immediately
+    // Instead of making this function async, we'll return "UN" for now
+    // and trigger a load of the dictionary for future calls
+    if (!isTagDictionaryLoaded) {
+        // Start loading the dictionary in the background
+        useStore.getState().loadTagDictionary();
+    }
+
+    // Return "UN" (Unknown) as the default VR
+    return "UN";
 }
 
 /**
@@ -129,7 +145,7 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
         // const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
         const tagName = getTagName(tagId);
         let vr = element.vr;
-        const vrTagDict = tagDictionary.lookupTagVR(tagId);
+        const vrTagDict = getTagVR(tagId);
         if (!vr) {
             // If VR is not found, use the VR from the dictionary
             vr = vrTagDict;

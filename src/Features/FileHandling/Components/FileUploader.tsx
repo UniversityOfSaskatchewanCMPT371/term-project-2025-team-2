@@ -4,7 +4,10 @@ import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 import { FileUploaderProps } from "../Types/FileTypes";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
-
+import {
+    parseDicomFiles,
+    buildFileStructure,
+} from "@dataFunctions/DicomData/FileProcessor";
 import { FolderIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "react-tooltip";
 
@@ -61,6 +64,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             setLoadingMsg(
                 `Processing file ${currentFile} of ${selectedFiles.length} files...`
             );
+
             const fileArray = Array.from(selectedFiles);
             processFiles(fileArray);
         } else {
@@ -91,70 +95,46 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         fileArray.sort((a, b) => {
             const pathA = (a as any).webkitRelativePath || a.name;
             const pathB = (b as any).webkitRelativePath || b.name;
-            return pathA.localeCompare(pathB, undefined, { numeric: true, sensitivity: "base" });
+            return pathA.localeCompare(pathB, undefined, {
+                numeric: true,
+                sensitivity: "base",
+            });
         });
 
-        const fileStructureTemp: Record<string, File[]> =
-            existingFileStructure || {};
+        const fileStructure =
+            existingFileStructure || buildFileStructure(fileArray);
 
-        if (!existingFileStructure) {
-            fileArray.forEach((file) => {
-                const path = (file as any).webkitRelativePath || "";
-                const directory = path.split("/").slice(0, -1).join("/");
-                const dir = directory || "root";
-
-                if (!fileStructureTemp[dir]) {
-                    fileStructureTemp[dir] = [];
-                }
-
-                fileStructureTemp[dir].push(file);
-            });
-
-            logger.debug("Folder structure preserved from input selection");
-        } else {
-            logger.debug("Using provided folder structure");
-        }
-
-        setFileStructure(fileStructureTemp);
-
-        const promises = fileArray.map((file) =>
-            parseDicomFile(file)
-                .then((data) => {
-                    currentFile++;
-                    setLoadingMsg(
-                        `Processing file ${currentFile} of ${fileArray.length} files...`
-                    );
-
-                    const path = (file as any).webkitRelativePath || file.name;
-
-                    return {
-                        ...data,
-                        filePath: path,
-                        fileName: file.name,
-                    };
-                })
-                .catch((error) => {
-                    logger.error(`Error parsing file: ${file.name}`);
-                    setFileParseError([...fileParseError, file.name]);
-                    logger.error(error);
-                    toggleModal();
-                    return null;
-                })
+        logger.debug(
+            existingFileStructure
+                ? "Using provided folder structure"
+                : "Folder structure preserved from input selection"
         );
 
-        Promise.all(promises)
+        setFileStructure(fileStructure);
+
+        parseDicomFiles(
+            fileArray,
+            parseDicomFile,
+            toggleModal,
+            (fileName) => {
+                setFileParseError([...fileParseError, fileName]);
+                logger.error(`Error parsing file: ${fileName}`);
+            },
+            (current, total) => {
+                setLoadingMsg(
+                    `Processing file ${current} of ${total} files...`
+                );
+            }
+        )
             .then((dicomDataArray) => {
                 const validData = dicomDataArray.filter(
                     (data) => data !== null
                 );
-                if (dicomDataArray.every((data) => data !== null)) {
-                    onFileUpload(fileArray, validData);
-                } else {
-                    onFileUpload(
-                        fileArray.filter((_, i) => dicomDataArray[i] !== null),
-                        validData
-                    );
-                }
+                const validFiles = fileArray.filter(
+                    (_, i) => dicomDataArray[i] !== null
+                );
+
+                onFileUpload(validFiles, validData);
             })
             .finally(() => {
                 loading(false);
@@ -200,7 +180,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         );
         logger.debug(`Total files: ${files.length}`);
 
+        setLoadingMsg(`Processing file 1 of ${files.length} files...`);
+
         files.forEach((file, index) => {
+            setLoadingMsg(
+                `Processing file ${index + 1} of ${files.length} files...`
+            );
             Object.defineProperty(file, "webkitRelativePath", {
                 value: `root/${file.name}`,
                 writable: true,

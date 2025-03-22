@@ -72,4 +72,30 @@ describe("Search component", () => {
         expect(onSearchChangeMock).not.toHaveBeenCalled();
         expect(inputElement).toHaveValue("initial value");
     });
+    test("calls onSearchChange when searching for nested tag terms", () => {
+        const onSearchChangeMock = jest.fn();
+
+        const TestComponent = () => {
+            const [searchTerm, setSearchTerm] = useState("");
+            const handleSearchChange = (newSearchTerm: string) => {
+                setSearchTerm(newSearchTerm);
+                onSearchChangeMock(newSearchTerm);
+            };
+
+            return (
+                <Search
+                    searchTerm={searchTerm}
+                    onSearchChange={handleSearchChange}
+                />
+            );
+        };
+
+        render(<TestComponent />);
+
+        const inputElement = screen.getByPlaceholderText("Search tags...");
+
+        fireEvent.change(inputElement, { target: { value: "Clean Pixel" } });
+
+        expect(onSearchChangeMock).toHaveBeenCalledWith("Clean Pixel");
+    });
 });

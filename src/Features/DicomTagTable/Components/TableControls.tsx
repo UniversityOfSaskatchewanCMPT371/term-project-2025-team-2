@@ -3,9 +3,9 @@ import { GenButton } from "@components/utils/GenButton";
 import { AnonTag, TableControlsProps } from "../Types/DicomTypes";
 import { FormatData } from "@features/AutoAnonymize/Functions/AutoClean";
 import { useStore } from "@state/Store";
-import { TagDictionary } from "@dataFunctions/TagDictionary/dictionary";
 import { assert } from "@dataFunctions/assert";
 import logger from "@logger/Logger";
+import { TagDictionaryDB } from "@services/TagDictionaryDB";
 
 /**
  * Controls component for the DICOM table
@@ -32,7 +32,8 @@ export const TableControls: React.FC<TableControlsProps> = ({
     const setSidePanelVisible = useStore((state) => state.setSidePanelVisible);
     const tagsToAnon = useStore((state) => state.tagsToAnon);
 
-    const tagDictionary = new TagDictionary();
+    // Create instance of TagDictionaryDB
+    const tagDictionaryDB = new TagDictionaryDB();
 
     // breaks test, need to update test and remove add assert
     // assert(dicomData.length > 0, "dicomData should not be empty");
@@ -42,27 +43,36 @@ export const TableControls: React.FC<TableControlsProps> = ({
         logger.info("Auto Anonymizing tags");
 
         const newTagData: AnonTag[] = [];
-        dicomData.forEach((data) => {
+        const uniqueTags: { tagId: string; newValue: string }[] = [];
+
+        for (const data of dicomData) {
             const formattedData = FormatData(data, tagsToAnon);
 
-            formattedData.forEach(
-                (tag: { tagId: string; newValue: string }) => {
-                    if (
-                        !newTagData.some(
-                            (existingTag) => existingTag.tagId === tag.tagId
-                        )
-                    ) {
-                        newTagData.push({
-                            tagId: tag.tagId,
-                            tagName: tagDictionary.lookupTagName(tag.tagId),
-                            newValue: tag.newValue,
-                        });
-                    }
+            for (const tag of formattedData) {
+                if (
+                    !uniqueTags.some(
+                        (existingTag) => existingTag.tagId === tag.tagId
+                    )
+                ) {
+                    uniqueTags.push(tag);
                 }
-            );
-        });
+            }
+        }
+
+        for (const tag of uniqueTags) {
+            // Look up tag name from database
+            const tagInfo = await tagDictionaryDB.getTag(tag.tagId.slice(1));
+            const tagName = tagInfo ? tagInfo.name : "Unknown Tag";
+
+            newTagData.push({
+                tagId: tag.tagId,
+                tagName: tagName,
+                newValue: tag.newValue,
+            });
+        }
 
         logger.debug(`Anonymizing tags: ${newTagData}`);
+
         setTags(newTagData);
         setSidePanelVisible(true);
     };

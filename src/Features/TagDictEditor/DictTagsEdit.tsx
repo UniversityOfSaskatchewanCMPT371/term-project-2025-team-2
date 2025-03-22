@@ -1,8 +1,16 @@
 import { useStore } from "@state/Store";
 import logger from "@logger/Logger";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TagDictionaryTable } from "./TagDictionaryTable";
-import { TagDictionaryItem } from "../../Services/TagDictionaryDB";
+import {
+    TagDictionaryItem,
+    TagDictionaryDB,
+} from "../../Services/TagDictionaryDB";
+import {
+    TrashIcon,
+    ArrowDownTrayIcon,
+    ArrowUpTrayIcon,
+} from "@heroicons/react/24/outline";
 
 /**
  * Side panel for showing and editing tags to be anonymized
@@ -30,6 +38,9 @@ export default function DictTagsEdit() {
     );
     const resetTagDictionary = useStore((state) => state.resetTagDictionary);
 
+    const setLoadingMsg = useStore((state) => state.setLoadingMsg);
+    const setLoading = useStore((state) => state.setLoading);
+
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state) => state.setAlertMsg);
     const setAlertType = useStore((state) => state.setAlertType);
@@ -40,15 +51,27 @@ export default function DictTagsEdit() {
     const [showAddTag, setShowAddTag] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
+    // Reference to tag dictionary service for export functionality
+    const tagDictionaryServiceRef = useRef<TagDictionaryDB | null>(null);
+
     // Store pending changes before applying them to the database
     const [pendingChanges, setPendingChanges] = useState<
         Map<string, TagDictionaryItem>
     >(new Map());
 
+    // Add this to your existing state variables
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     // Load tag dictionary on component mount if not already loaded
     useEffect(() => {
         if (!isTagDictionaryLoaded) {
             loadTagDictionary();
+        }
+
+        // Initialize tag dictionary service for export
+        if (!tagDictionaryServiceRef.current) {
+            tagDictionaryServiceRef.current = new TagDictionaryDB();
+            tagDictionaryServiceRef.current.initDB();
         }
     }, [isTagDictionaryLoaded, loadTagDictionary]);
 
@@ -104,7 +127,7 @@ export default function DictTagsEdit() {
         const success = await addTagToDictionary({
             tagId,
             name: tagName,
-            vr: tagVR,
+            vr: tagVR.length > 0 ? tagVR : "SH",
         });
 
         if (success) {
@@ -112,6 +135,10 @@ export default function DictTagsEdit() {
             setTagName("");
             setTagVR("");
             setShowAddTag(false);
+        } else {
+            setAlertType("alert-error");
+            setAlertMsg("Failed to add tag to dictionary");
+            setShowAlert(true);
         }
     };
 
@@ -148,6 +175,114 @@ export default function DictTagsEdit() {
             setAlertType("alert-warning");
         }
         setShowAlert(true);
+    };
+
+    /**
+     * Export tag dictionary to a JSON file
+     * @description - Exports the current tag dictionary to a downloadable JSON file
+     * @precondition - Tag dictionary must be loaded and database initialized
+     * @postcondition - Tag dictionary is exported to a JSON file
+     */
+    const handleExportDictionary = async () => {
+        logger.info("Exporting tag dictionary");
+
+        // First save any pending changes
+        await handleUpdateValue();
+
+        // Ensure service is initialized
+        if (!tagDictionaryServiceRef.current) {
+            tagDictionaryServiceRef.current = new TagDictionaryDB();
+            await tagDictionaryServiceRef.current.initDB();
+        }
+
+        // Export the dictionary
+        const success =
+            await tagDictionaryServiceRef.current.exportTagDictionary();
+
+        // Show alert based on result
+        if (success) {
+            setAlertMsg("Tag dictionary exported successfully");
+            setAlertType("alert-success");
+        } else {
+            setAlertMsg("Failed to export tag dictionary");
+            setAlertType("alert-error");
+        }
+        setShowAlert(true);
+    };
+
+    /**
+     * Handle importing tag dictionary from a file
+     * @description - Reads and imports tags from a JSON file
+     * @precondition - File must be a valid JSON file with tag data
+     * @postcondition - Tags are imported and UI is updated
+     */
+    const handleImportDictionary = async () => {
+        // Trigger file input click
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    /**
+     * Process the selected import file
+     * @description - Reads the selected file and imports the tags
+     * @param e - The file input change event
+     * @precondition - A valid JSON file must be selected
+     * @postcondition - Tags are imported and UI is updated
+     */
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        setLoadingMsg("Importing tag dictionary...");
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        const file = files[0];
+        // Only accept JSON files
+        if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+            setAlertType("alert-error");
+            setAlertMsg("Please select a valid JSON file");
+            setLoading(false);
+            setShowAlert(true);
+            return;
+        }
+
+        try {
+            // Ensure service is initialized
+            if (!tagDictionaryServiceRef.current) {
+                tagDictionaryServiceRef.current = new TagDictionaryDB();
+                await tagDictionaryServiceRef.current.initDB();
+            }
+
+            // Import the dictionary
+            const result =
+                await tagDictionaryServiceRef.current.importTagDictionary(file);
+
+            // Clear the file input value for future imports
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+
+            // Show alert based on result
+            if (result.success) {
+                setAlertMsg(`Successfully imported ${result.count} tags`);
+                setAlertType("alert-success");
+                // Reload the tag dictionary to reflect changes
+                loadTagDictionary();
+            } else {
+                setAlertMsg("Failed to import tag dictionary");
+                setAlertType("alert-error");
+            }
+        } catch (error) {
+            logger.error("Error during tag dictionary import:", error);
+            setAlertMsg("An error occurred during import");
+            setAlertType("alert-error");
+        } finally {
+            setLoading(false);
+            setShowAlert(true);
+        }
     };
 
     return (
@@ -201,6 +336,53 @@ export default function DictTagsEdit() {
                 >
                     {showAddTag ? "Close Add Tag" : "Add Tag to Dictionary"}
                 </button>
+
+                {/* Dropdown menu for dictionary actions */}
+                <div className="dropdown dropdown-end mt-2 transition-all duration-200 hover:scale-105">
+                    <label
+                        tabIndex={0}
+                        className="cursor-pointer rounded-full bg-secondary px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                    >
+                        Dictionary Options
+                    </label>
+                    <ul
+                        tabIndex={0}
+                        className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
+                    >
+                        <li>
+                            <a
+                                onClick={handleExportDictionary}
+                                className="text-info"
+                            >
+                                <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
+                                Export Dictionary
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                onClick={handleImportDictionary}
+                                className="text-info"
+                            >
+                                <ArrowUpTrayIcon className="mr-2 inline-block h-5 w-5" />
+                                Import Dictionary
+                            </a>
+                        </li>
+                        <li className="mt-2 border-t border-base-300 pt-2">
+                            <a
+                                onClick={async () => {
+                                    await resetTagDictionary();
+                                    setShowAddTag(false);
+                                    setPendingChanges(new Map());
+                                }}
+                                className="text-error"
+                            >
+                                <TrashIcon className="mr-2 inline-block h-5 w-5" />
+                                Reset Dictionary
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <button
                     onClick={() => {
                         setShowDictEdit(false);
@@ -212,16 +394,16 @@ export default function DictTagsEdit() {
                 >
                     Cancel
                 </button>
-                <button
-                    onClick={async () => {
-                        await resetTagDictionary();
-                        setShowAddTag(false);
-                        setPendingChanges(new Map());
-                    }}
-                    className="rounded-full bg-error px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
-                >
-                    Reset Tags
-                </button>
+
+                {/* Hidden file input for import */}
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept=".json,application/json"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    data-testid="file-input"
+                />
             </div>
 
             {isTagDictionaryLoaded ? (
