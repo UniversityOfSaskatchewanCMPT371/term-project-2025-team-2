@@ -55,4 +55,4 @@ dev-dist/*.js
 # Jest coverage
 /coverage/
 coverage/
-
+coverage/*
