@@ -2,7 +2,7 @@ name: Generate Typedoc
 
 on:
   push:
-    branches: "fix/typedoc_gen"
+    branches: "main"
 
   workflow_dispatch:
 
