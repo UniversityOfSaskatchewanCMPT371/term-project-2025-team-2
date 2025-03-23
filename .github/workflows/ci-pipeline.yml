@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [ 'lts' ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -59,19 +59,6 @@ jobs:
       - name: Format with prettier
         run: npm run pretty
         continue-on-error: false
-
-      - name: Cache Playwright browsers
-        id: cacheStepPlaywright
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            playwright-browsers-${{ runner.os }}-
-
-      - name: Install Playwright Browsers
-        if: steps.cacheStepPlaywright.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
       
       - name: Run Unit Tests
         run: npm run test:unit
@@ -94,7 +81,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 'lts' 
 
       - name: Cache node modules
         id: cacheStepnode
