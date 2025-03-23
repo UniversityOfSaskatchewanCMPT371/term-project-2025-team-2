@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { SidePanel } from "../../../../src/Features/AutoAnonymize/Components/AutoConfirmPanel";
+import { SidePanel } from "@features/AutoAnonymize/Components/AutoConfirmPanel";
 import "@testing-library/jest-dom";
-import * as Store from "../../../../src/State/Store";
+import * as Store from "@state/Store";
 
 jest.mock("@state/Store");
 
