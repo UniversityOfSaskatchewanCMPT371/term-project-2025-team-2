@@ -54,6 +54,7 @@ export const SidePanel = () => {
 
     const handleAutoAnon = async () => {
         logger.debug("Auto Anonymizing tags");
+        await new Promise((resolve) => setTimeout(resolve, 0));
 
         await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
 
