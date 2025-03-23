@@ -1,0 +1,11 @@
+name: Generate Typedoc
+
+on:
+  push:
+    branches: "main"
+
+  workflow_dispatch:
+
+jobs:
+  generate_docs:
+    runs-on: ubuntu-latest
