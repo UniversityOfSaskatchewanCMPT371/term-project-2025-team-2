@@ -31,4 +31,13 @@ export default {
         "/tests/smokeTests/smokeTests.spec.ts",
         "/tests/playwright/regressionTests/autoEditing.spec.ts",
     ],
+
+    //Jest coverage settings
+    collectCoverage: true,
+    collectCoverageFrom: [
+        "src/**/*.{ts,tsx}", //Includes all source ts codes
+        "!src/**/*.d.ts", //Exclude type declarations
+    ],
+    coverageDirectory: "coverage",
+    coverageReporters: [ "json", "text" ],
 };
