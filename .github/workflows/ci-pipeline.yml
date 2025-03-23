@@ -70,10 +70,27 @@ jobs:
       - name: Build
         run: npm run build
   
+  #Builds Docker image in ubuntu for nginx
+  build_docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: |
+          docker build -f docker/dev/Dockerfile -t dicom-app .
+
+      #Run the container for testing
+      - name: Run Docker container
+        run: |
+          docker run -d -p 80:80 dicom-app
 
   smoke_test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_docker
     container:
       image: mcr.microsoft.com/playwright:v1.50.1-jammy    
       
@@ -106,20 +123,52 @@ jobs:
       - name: Run Smoke Test
         run: npm run test:smoke
 
-  #Builds Docker image in ubuntu for nginx
-  build_docker:
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  system_test:
     runs-on: ubuntu-latest
-    needs: build
-
+    needs: smoke_test
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.1-jammy 
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-      - name: Build docker image
-        run: |
-          docker build -f docker/dev/Dockerfile -t dicom-app .
+      - name: Cache node modules
+        id: cacheStepnode
+        uses: actions/cache@v4
+        with:
+          # npm cache files are stored with ~/.npm
+          path: |
+           ~/.npm
+           node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
-      #Run the container for testing
-      - name: Run Docker container
-        run: |
-          docker run -d -p 80:80 dicom-app
+      #Install dependencies (if no cache hit)
+      - name: Install dependencies
+        if: steps.cacheStepnode.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Set HOME environment variable
+        run: echo "HOME=/root" >> $GITHUB_ENV
+
+      - name: Run System Tests
+        run: xvfb-run npx playwright test tests/playwright/systemTests --headed --workers=1
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
