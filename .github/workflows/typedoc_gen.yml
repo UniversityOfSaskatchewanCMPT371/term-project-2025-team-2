@@ -1,0 +1,43 @@
+name: Generate Typedoc
+
+on:
+  push:
+    branches: "main"
+
+  workflow_dispatch:
+
+jobs:
+  generate_docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+  
+      - name: Cache node modules
+        id: cacheStepnode
+        uses: actions/cache@v4
+        with:
+            # npm cache files are stored with ~/.npm
+            path: |
+             ~/.npm
+             node_modules
+            key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-
+  
+      #Install dependencies (if no cache hit)
+      - name: Install dependencies
+        if: steps.cacheStepnode.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Generate documentation
+        run: npx typedoc --out docs/ --tsconfig tsconfig.app.json --entryPointStrategy expand ./src
+
+      - name: Upload Documentation as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/
