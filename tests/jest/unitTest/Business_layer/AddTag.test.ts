@@ -1,6 +1,6 @@
-import { tagUpdater } from "../../../../src/DataFunctions/DicomData/TagUpdater";
-import { DicomData } from "../../../../src/Features/DicomTagTable/Types/DicomTypes";
-import { parseDicomFile } from "../../../../src/DataFunctions/DicomData/DicomParserUtils";
+import { tagUpdater } from "@dataFunctions/DicomData/TagUpdater";
+import { DicomData } from "@features/DicomTagTable/Types/DicomTypes";
+import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 import dicomParser from "dicom-parser";
 
 function createFileObj(path: string, name: string): File | null {
