@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { SettingsModal } from '../../../../src/Components/Navigation/SettingsModal';
 import { useStore } from '../../../../src/State/Store';
@@ -45,5 +45,14 @@ describe('SettingsModal', () => {
         expect(screen.getByText('Download Option')).toBeInTheDocument();
         expect(screen.getByText('Editing Locked Tags')).toBeInTheDocument();
         expect(screen.getByText('Close')).toBeInTheDocument();
+    });
+
+    it('calls toggleModal when close button is clicked', () => {
+        render(<SettingsModal toggleModal={mockToggleModal} />);
+        
+        const closeButton = screen.getByText('Close');
+        fireEvent.click(closeButton);
+        
+        expect(mockToggleModal).toHaveBeenCalled();
     });
 });
