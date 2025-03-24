@@ -42,4 +42,11 @@ describe('HiddenTagsOption', () => {
         expect(mockSetShowHiddenTags).toHaveBeenCalledWith(false);
     });
 
+    it('displays correct tooltip content based on showHiddenTags state', () => {
+        const { rerender } = render(<HiddenTagsOption showHiddenTags={false} setShowHiddenTags={mockSetShowHiddenTags} />);
+        expect(screen.getByRole('checkbox')).toHaveAttribute('data-tooltip-content', 'Show Hidden Tags');
+
+        rerender(<HiddenTagsOption showHiddenTags={true} setShowHiddenTags={mockSetShowHiddenTags} />);
+        expect(screen.getByRole('checkbox')).toHaveAttribute('data-tooltip-content', 'Hide Hidden Tags');
+    });
 }); 
