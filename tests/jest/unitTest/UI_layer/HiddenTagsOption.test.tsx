@@ -23,4 +23,23 @@ describe('HiddenTagsOption', () => {
         expect(screen.getByText('Show Hidden Tags')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeChecked();
     });
+
+    it('calls setShowHiddenTags with true when checkbox is checked', () => {
+        render(<HiddenTagsOption showHiddenTags={false} setShowHiddenTags={mockSetShowHiddenTags} />);
+        
+        const checkbox = screen.getByRole('checkbox');
+        fireEvent.click(checkbox);
+        
+        expect(mockSetShowHiddenTags).toHaveBeenCalledWith(true);
+    });
+
+    it('calls setShowHiddenTags with false when checkbox is unchecked', () => {
+        render(<HiddenTagsOption showHiddenTags={true} setShowHiddenTags={mockSetShowHiddenTags} />);
+        
+        const checkbox = screen.getByRole('checkbox');
+        fireEvent.click(checkbox);
+        
+        expect(mockSetShowHiddenTags).toHaveBeenCalledWith(false);
+    });
+
 }); 
