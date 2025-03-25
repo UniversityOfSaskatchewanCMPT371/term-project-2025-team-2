@@ -72,4 +72,12 @@ describe('Sidebar', () => {
         expect(screen.getByTestId('mock-file-table')).toBeInTheDocument();
         expect(screen.getByTestId('mock-help-modal')).toBeInTheDocument();
     });
+
+    it('is hidden when not visible', () => {
+        const { container } = render(createElement(Sidebar, { isVisible: false }));
+        
+        const sidebar = container.firstChild as HTMLElement;
+        expect(sidebar).toHaveClass('translate-x-full');
+        expect(sidebar).not.toHaveClass('translate-x-0');
+    });
 });
