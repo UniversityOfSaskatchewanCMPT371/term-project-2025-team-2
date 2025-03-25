@@ -42,7 +42,6 @@ export async function parseDicomFiles(
     return results;
 }
 
-
 /**
  * Builds a folder structure from an array of File objects using webkitRelativePath
  *

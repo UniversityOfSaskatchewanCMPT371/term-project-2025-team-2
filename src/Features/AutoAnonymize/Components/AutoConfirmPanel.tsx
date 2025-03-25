@@ -24,11 +24,23 @@ export const SidePanel = () => {
     const tagsToAnon = useStore((state) => state.tagsToAnon);
     const setLoading = useStore((state) => state.setLoading);
     const setLoadingMsg = useStore((state) => state.setLoadingMsg);
+    const setNewTagValues = useStore((state) => state.setNewTagValues);
 
     const [reset, setReset] = useState<number>(0);
 
     const fileStructure = useStore((state) => state.fileStructure);
 
+    /**
+     * Updates a tag's value or removes it from the tags array
+     * @function
+     * @param {string} tagId - The ID of the tag to update or delete
+     * @param {string} newValue - The new value to set for the tag
+     * @param {boolean} deleteTag - Flag indicating if the tag should be deleted
+     * @precondition The tags state must be initialized as an array
+     * @postcondition If deleteTag is true, tag with matching tagId is removed from tags array
+     *                If tag exists, its value is updated; otherwise a new tag is added to the array
+     * @returns {void}
+     */
     const handleUpdateValue = (
         tagId: string,
         newValue: string,
@@ -52,8 +64,20 @@ export const SidePanel = () => {
         setTags(temp);
     };
 
+    /**
+     * Executes the auto-anonymization process on the loaded DICOM files
+     * @function
+     * @precondition Files must be loaded, tags to anonymize must be defined
+     * @postcondition Files are anonymized according to specified tags, UI state is reset,
+     *                side panel is closed, and all temporary data is cleared
+     * @returns {Promise<void>} A promise that resolves when anonymization is complete
+     */
     const handleAutoAnon = async () => {
         logger.debug("Auto Anonymizing tags");
+
+        setLoading(true);
+        setLoadingMsg("Anonymizing tags...");
+
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         await AutoAnon(dicomData, files, tags, tagsToAnon, fileStructure);
@@ -64,6 +88,41 @@ export const SidePanel = () => {
         setPII([]);
         setReset((prev) => prev++);
         setTags([]);
+    };
+
+    /**
+     * Displays the anonymized tags on the loaded files without actually applying changes
+     * @function
+     * @precondition Files must be loaded and tags to anonymize must be defined
+     * @postcondition Tags with their new values are shown on files via the store,
+     *                side panel is closed, and temporary states are reset
+     * @returns {Promise<void>} A promise that resolves when the preview is complete
+     */
+    const showUpdates = async () => {
+        logger.debug("SHow On Files - Auto Anonymize tags");
+
+        setLoading(true);
+        setLoadingMsg("Showing anonymized tags on files...");
+
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        files.forEach((file) => {
+            tags.forEach((tag) => {
+                const updatedTag = {
+                    fileName: file.name,
+                    tagId: tag.tagId,
+                    newValue: tag.newValue,
+                    add: false,
+                    delete: false,
+                };
+                setNewTagValues(updatedTag);
+            });
+        });
+
+        setLoading(false);
+        setSidePanelVisible(false);
+        setFoundPII(false);
+        setPII([]);
     };
 
     const regex = new RegExp(/^[A-Za-z]+(?: [A-Za-z]+)?$/);
@@ -85,6 +144,14 @@ export const SidePanel = () => {
     const setAlertMsg = useStore((state) => state.setAlertMsg);
     const setAlertType = useStore((state) => state.setAlertType);
 
+    /**
+     * Scans loaded DICOM files for potential personally identifiable information
+     * @function
+     * @precondition DICOM files must be loaded into the application
+     * @postcondition PII state is updated with found PII tags, alert is shown with results,
+     *                loading state is set to false when complete
+     * @returns {Promise<void>} A promise that resolves when PII scanning is complete
+     */
     const findPII = async () => {
         setLoadingMsg(`Finding PII, searching all ${files.length}`);
         setLoading(true);
@@ -187,13 +254,19 @@ export const SidePanel = () => {
             <div className="mb-4 flex justify-around">
                 <button
                     onClick={() => {
-                        setLoading(true);
-                        setLoadingMsg("Anonymizing tags...");
                         handleAutoAnon();
                     }}
                     className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
                 >
                     OK
+                </button>
+                <button
+                    onClick={() => {
+                        showUpdates();
+                    }}
+                    className="rounded-full bg-info px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
+                >
+                    Show
                 </button>
                 <button
                     onClick={() => {
