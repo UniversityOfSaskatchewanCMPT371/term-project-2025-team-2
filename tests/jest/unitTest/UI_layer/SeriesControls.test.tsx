@@ -83,4 +83,18 @@ describe('SeriesControls', () => {
         expect(screen.getByText('Save All Files')).toBeInTheDocument();
         expect(screen.getByText('Editing Individually')).toBeInTheDocument();
     });
+
+    it('renders with series mode active', () => {
+        (useStore as unknown as MockStore).mockImplementation((selector) => {
+            const state = {
+                series: true
+            };
+            return selector ? selector(state) : state;
+        });
+
+        render(createElement(SeriesControls));
+        
+        expect(screen.getByText('Apply Edits to All Files')).toBeInTheDocument();
+        expect(screen.getByText('Editing as Series')).toBeInTheDocument();
+    });
 }); 
