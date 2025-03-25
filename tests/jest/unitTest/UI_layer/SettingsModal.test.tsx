@@ -55,4 +55,13 @@ describe('SettingsModal', () => {
         
         expect(mockToggleModal).toHaveBeenCalled();
     });
+
+    it('calls toggleModal when clicking outside the modal', () => {
+        render(<SettingsModal toggleModal={mockToggleModal} />);
+        
+        const modalOverlay = screen.getByRole('dialog');
+        fireEvent.click(modalOverlay);
+        
+        expect(mockToggleModal).toHaveBeenCalled();
+    });
 });
