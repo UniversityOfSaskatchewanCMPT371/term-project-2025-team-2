@@ -64,4 +64,13 @@ describe('SettingsModal', () => {
         
         expect(mockToggleModal).toHaveBeenCalled();
     });
+
+    it('does not call toggleModal when clicking inside the modal', () => {
+        render(<SettingsModal toggleModal={mockToggleModal} />);
+        
+        const modalContent = screen.getByRole('dialog').firstChild;
+        fireEvent.click(modalContent as Element);
+        
+        expect(mockToggleModal).not.toHaveBeenCalled();
+    });
 });
