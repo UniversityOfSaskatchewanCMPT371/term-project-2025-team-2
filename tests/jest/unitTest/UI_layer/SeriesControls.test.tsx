@@ -97,4 +97,13 @@ describe('SeriesControls', () => {
         expect(screen.getByText('Apply Edits to All Files')).toBeInTheDocument();
         expect(screen.getByText('Editing as Series')).toBeInTheDocument();
     });
+
+    it('calls seriesToggle when series button is clicked', () => {
+        render(createElement(SeriesControls));
+        
+        const seriesButton = screen.getByText('Editing Individually');
+        fireEvent.click(seriesButton);
+        
+        expect(mockSeriesToggle).toHaveBeenCalled();
+    });
 }); 
