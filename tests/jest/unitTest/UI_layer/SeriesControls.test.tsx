@@ -106,4 +106,13 @@ describe('SeriesControls', () => {
         
         expect(mockSeriesToggle).toHaveBeenCalled();
     });
-}); 
+
+    it('handles save all files click, get loading feedback', async () => {
+        render(createElement(SeriesControls));
+        
+        const saveButton = screen.getByText('Save All Files');
+        fireEvent.click(saveButton);
+        
+        expect(mockSetLoading).toHaveBeenCalledWith(true);
+    });
+});
