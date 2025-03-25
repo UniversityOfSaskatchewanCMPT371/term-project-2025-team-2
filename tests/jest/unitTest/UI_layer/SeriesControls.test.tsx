@@ -81,7 +81,7 @@ describe('SeriesControls', () => {
         render(createElement(SeriesControls));
         
         expect(screen.getByText('Save All Files')).toBeInTheDocument();
-        expect(screen.getByText('Editing Individually')).toBeInTheDocument();
+        expect(screen.getByText('🔄 Editing Individually')).toBeInTheDocument();
     });
 
     it('renders with series mode active', () => {
@@ -95,13 +95,13 @@ describe('SeriesControls', () => {
         render(createElement(SeriesControls));
         
         expect(screen.getByText('Apply Edits to All Files')).toBeInTheDocument();
-        expect(screen.getByText('Editing as Series')).toBeInTheDocument();
+        expect(screen.getByText('✨ Editing as Series')).toBeInTheDocument();
     });
 
     it('calls seriesToggle when series button is clicked', () => {
         render(createElement(SeriesControls));
         
-        const seriesButton = screen.getByText('Editing Individually');
+        const seriesButton = screen.getByText('🔄 Editing Individually');
         fireEvent.click(seriesButton);
         
         expect(mockSeriesToggle).toHaveBeenCalled();
