@@ -1,4 +1,3 @@
-/** @jest-environment jsdom */
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { createElement } from 'react';
@@ -93,5 +92,14 @@ describe('Sidebar', () => {
         
         // settings modal should be visible now
         expect(screen.getByTestId('mock-settings-modal')).toBeInTheDocument();
+    });
+
+    it('applies correct CSS classes based on visibility', () => {
+        const { container, rerender } = render(createElement(Sidebar, { isVisible: true }));
+        const sidebar = container.firstChild as HTMLElement;
+        expect(sidebar).toHaveClass('translate-x-0');
+        
+        rerender(createElement(Sidebar, { isVisible: false }));
+        expect(sidebar).toHaveClass('translate-x-full');
     });
 });
