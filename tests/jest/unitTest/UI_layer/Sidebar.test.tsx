@@ -80,4 +80,18 @@ describe('Sidebar', () => {
         expect(sidebar).toHaveClass('translate-x-full');
         expect(sidebar).not.toHaveClass('translate-x-0');
     });
+
+    it('shows settings modal when toggleModal is called', () => {
+        render(createElement(Sidebar, { isVisible: true }));
+        
+        // settings modal should not be visible initially
+        expect(screen.queryByTestId('mock-settings-modal')).not.toBeInTheDocument();
+        
+        // simulate Header component calling toggleModal
+        const header = screen.getByTestId('mock-header');
+        fireEvent.click(header);
+        
+        // settings modal should be visible now
+        expect(screen.getByTestId('mock-settings-modal')).toBeInTheDocument();
+    });
 });
