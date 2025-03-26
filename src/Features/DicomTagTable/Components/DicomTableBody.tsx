@@ -24,6 +24,7 @@ export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
     onUpdateValue,
 }) => {
     const addTag = useStore((state) => state.addTag);
+    const newTagValues = useStore((state) => state.newTagValues);
 
     logger.debug("Rendering DicomTableBody component");
 
@@ -35,7 +36,7 @@ export const DicomTableBody: React.FC<DicomTableBodyProps> = ({
                 filteredRows.map((row, index) =>
                     row.hidden && !showHidden ? null : (
                         <DicomTableRow
-                            key={index + row.tagId}
+                            key={index + row.tagId + newTagValues.length}
                             row={row}
                             index={index}
                             onUpdateValue={onUpdateValue}

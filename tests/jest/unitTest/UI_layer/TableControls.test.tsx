@@ -14,16 +14,14 @@ jest.mock("@state/Store", () => {
 
 // Mock FormatData
 jest.mock("@features/AutoAnonymize/Functions/AutoClean", () => ({
-    FormatData: jest.fn(() => [
-        { tagId: "X00100010", newValue: "AnonName" }
-    ])
+    FormatData: jest.fn(() => [{ tagId: "X00100010", newValue: "AnonName" }]),
 }));
 
 // Mock TagDictionaryDB
 jest.mock("@services/TagDictionaryDB", () => ({
     TagDictionaryDB: jest.fn().mockImplementation(() => ({
-        getTag: jest.fn().mockResolvedValue({ name: "Mock Tag Name" })
-    }))
+        getTag: jest.fn().mockResolvedValue({ name: "Mock Tag Name" }),
+    })),
 }));
 
 describe("TableControls", () => {
@@ -39,9 +37,9 @@ describe("TableControls", () => {
             selector({
                 dicomData: [
                     {
-                        DicomDataSet: { elements: { "x00100010": {} } },
+                        DicomDataSet: { elements: { x00100010: {} } },
                         tags: {},
-                    }
+                    },
                 ],
                 setTags: mockSetTags,
                 tagsToAnon: [{ tagId: "X00100010", newValue: "AnonName" }],

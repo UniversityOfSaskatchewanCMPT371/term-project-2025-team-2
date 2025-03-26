@@ -8,18 +8,24 @@ const __dirname = path.dirname(__filename);
 
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
-test("Verify file upload and filename displayed correctly", async ({ page }) => {
+test("Verify file upload and filename displayed correctly", async ({
+    page,
+}) => {
     await page.goto(BASE_URL);
 
-    const dicomDir = path.resolve(__dirname, "../../../test-data/test_dicoms/gen_dicom_files/simple_files");
+    const dicomDir = path.resolve(
+        __dirname,
+        "../../../test-data/test_dicoms/gen_dicom_files/simple_files"
+    );
 
     if (!fs.existsSync(dicomDir)) {
         throw new Error(`Directory not found: ${dicomDir}`);
     }
 
-    const dicomFiles = fs.readdirSync(dicomDir)
-        .filter(file => file.endsWith(".dcm"))
-        .map(file => path.join(dicomDir, file));
+    const dicomFiles = fs
+        .readdirSync(dicomDir)
+        .filter((file) => file.endsWith(".dcm"))
+        .map((file) => path.join(dicomDir, file));
 
     if (dicomFiles.length === 0) {
         throw new Error(`No DICOM files found in ${dicomDir}`);
@@ -28,7 +34,10 @@ test("Verify file upload and filename displayed correctly", async ({ page }) => 
     const fileInput = page.locator('input[type="file"].hidden').first();
     await fileInput.setInputFiles(dicomFiles);
 
-    await page.waitForSelector("text=Edit Files", { state: "visible", timeout: 5000 });
+    await page.waitForSelector("text=Edit Files", {
+        state: "visible",
+        timeout: 5000,
+    });
 
     const noButton = page.locator("#no");
     await noButton.click();
@@ -41,6 +50,5 @@ test("Verify file upload and filename displayed correctly", async ({ page }) => 
         const fileRow = page.locator("tr", {
             has: page.locator("td").nth(1).filter({ hasText: filename }),
         });
-
     }
 });

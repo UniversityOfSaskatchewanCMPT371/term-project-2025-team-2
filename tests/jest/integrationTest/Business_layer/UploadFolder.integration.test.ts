@@ -15,9 +15,7 @@ import path from "path";
 import dicomParser from "dicom-parser";
 
 jest.mock("@dataFunctions/DicomData/DownloadFuncs.ts", () => ({
-    ...jest.requireActual(
-        "@dataFunctions/DicomData/DownloadFuncs.ts"
-    ),
+    ...jest.requireActual("@dataFunctions/DicomData/DownloadFuncs.ts"),
     createZipFromFiles: jest.fn(() => new Blob()),
     downloadDicomFile: jest.fn(),
 }));
@@ -272,5 +270,4 @@ describe("Upload Folder Integration Test", () => {
         expect(lastCallArg.name).toBe("updateDicoms.zip");
         expect(lastCallArg.content).toBeInstanceOf(Blob);
     });
-
 });

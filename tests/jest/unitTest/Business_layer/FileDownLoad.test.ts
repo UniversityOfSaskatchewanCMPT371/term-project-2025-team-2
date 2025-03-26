@@ -42,7 +42,9 @@ describe("Download Functions", () => {
 
         downloadDicomFile(fileData);
 
-        expect(global.URL.createObjectURL).toHaveBeenCalledWith(fileData.content);
+        expect(global.URL.createObjectURL).toHaveBeenCalledWith(
+            fileData.content
+        );
         expect(document.createElement).toHaveBeenCalledWith("a");
         expect(document.body.appendChild).toHaveBeenCalled();
         expect(document.body.removeChild).toHaveBeenCalled();
@@ -78,19 +80,29 @@ describe("Download Functions", () => {
         expect(zipBlob.type).toBe("application/zip");
 
         const mockZip = (JSZip as unknown as jest.Mock).mock.results[0].value;
-        expect(mockZip.file).toHaveBeenCalledWith("folder1/file1.txt", expect.any(Blob));
+        expect(mockZip.file).toHaveBeenCalledWith(
+            "folder1/file1.txt",
+            expect.any(Blob)
+        );
     });
 
     it("should create a zip file from files with explicit path", async () => {
         const files: FileData[] = [
-            { name: "file1.txt", content: new Blob(["content1"]), path: "custom/folder" },
+            {
+                name: "file1.txt",
+                content: new Blob(["content1"]),
+                path: "custom/folder",
+            },
         ];
 
         const zipBlob = await createZipFromFiles(files);
 
         expect(zipBlob).toBeInstanceOf(Blob);
         const mockZip = (JSZip as unknown as jest.Mock).mock.results[0].value;
-        expect(mockZip.file).toHaveBeenCalledWith("custom/folder/file1.txt", expect.any(Blob));
+        expect(mockZip.file).toHaveBeenCalledWith(
+            "custom/folder/file1.txt",
+            expect.any(Blob)
+        );
     });
 
     it("should handle empty file list in createZipFromFiles", async () => {
@@ -100,14 +112,20 @@ describe("Download Functions", () => {
     });
 
     it("should throw error if zip generation fails", async () => {
-        const originalJSZip = (JSZip as unknown as jest.Mock).mockImplementation(() => ({
+        const originalJSZip = (
+            JSZip as unknown as jest.Mock
+        ).mockImplementation(() => ({
             file: jest.fn(),
             generateAsync: jest.fn().mockRejectedValue(new Error("zip failed")),
         }));
 
-        const files: FileData[] = [{ name: "test.txt", content: new Blob(["x"]) }];
+        const files: FileData[] = [
+            { name: "test.txt", content: new Blob(["x"]) },
+        ];
 
-        await expect(createZipFromFiles(files)).rejects.toThrow("Failed to create ZIP");
+        await expect(createZipFromFiles(files)).rejects.toThrow(
+            "Failed to create ZIP"
+        );
 
         // Restore the original
         (JSZip as unknown as jest.Mock).mockImplementation(originalJSZip);

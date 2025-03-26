@@ -139,7 +139,7 @@ describe("HelpModal", () => {
         expect(form).toHaveAttribute("method", "dialog");
     });
 
-    it('should open Edit Tag Dictionary panel when that option is clicked', () => {
+    it("should open Edit Tag Dictionary panel when that option is clicked", () => {
         // Mock the setShowDictEdit function from the store
         const mockSetShowDictEdit = jest.fn();
         (useStore as unknown as jest.Mock).mockImplementation((selector) => {
@@ -155,7 +155,7 @@ describe("HelpModal", () => {
         fireEvent.click(advancedOptionsElement);
 
         // Click the Edit Tag Dictionary option
-        const editDictButton = screen.getByText('Edit Tag Dictionary');
+        const editDictButton = screen.getByText("Edit Tag Dictionary");
         fireEvent.click(editDictButton);
 
         // Rest of test remains the same
@@ -163,12 +163,13 @@ describe("HelpModal", () => {
         expect(mockSetShowDictEdit).toHaveBeenCalledWith(true);
     });
 
-    it('should open Auto-Anon Tags edit panel when that option is clicked', () => {
+    it("should open Auto-Anon Tags edit panel when that option is clicked", () => {
         // Mock the setAutoAnonTagsEditPanelVisible function from the store
         const mockSetAutoAnonTagsEditPanelVisible = jest.fn();
         (useStore as unknown as jest.Mock).mockImplementation((selector) => {
             return selector({
-                setAutoAnonTagsEditPanelVisible: mockSetAutoAnonTagsEditPanelVisible,
+                setAutoAnonTagsEditPanelVisible:
+                    mockSetAutoAnonTagsEditPanelVisible,
             });
         });
 
@@ -179,7 +180,7 @@ describe("HelpModal", () => {
         fireEvent.click(advancedOptionsElement);
 
         // Click the Edit Auto-Anon Tags option
-        const editAutoAnonButton = screen.getByText('Edit Auto-Anon Tags');
+        const editAutoAnonButton = screen.getByText("Edit Auto-Anon Tags");
         fireEvent.click(editAutoAnonButton);
 
         // Verify that the help modal was closed
@@ -189,41 +190,41 @@ describe("HelpModal", () => {
         expect(mockSetAutoAnonTagsEditPanelVisible).toHaveBeenCalledWith(true);
     });
 
-    it('should handle Clear All Saved Data with confirmation accepted', async () => {
+    it("should handle Clear All Saved Data with confirmation accepted", async () => {
         // Mock the window.confirm to return true
         const mockConfirm = jest.fn().mockReturnValue(true);
         window.confirm = mockConfirm;
-      
+
         // Mock store functions
         const mockSetAlertMsg = jest.fn();
         const mockSetAlertType = jest.fn();
         const mockSetShowAlert = jest.fn();
-        
+
         (useStore as unknown as jest.Mock).mockImplementation((selector) => {
-          return selector({
-            setAlertMsg: mockSetAlertMsg,
-            setAlertType: mockSetAlertType,
-            setShowAlert: mockSetShowAlert,
-          });
+            return selector({
+                setAlertMsg: mockSetAlertMsg,
+                setAlertType: mockSetAlertType,
+                setShowAlert: mockSetShowAlert,
+            });
         });
-      
+
         // Mock setTimeout
         jest.useFakeTimers();
-      
+
         render(<HelpModal />);
-      
+
         // Open the Advanced Options dropdown using text instead of role
         const advancedOptionsElement = screen.getByText(/Advanced Options/i);
         fireEvent.click(advancedOptionsElement);
-      
-        // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText('Clear All Saved Data');
-        fireEvent.click(clearDataButton);
-      
-        // Rest of the test remains the same...
-      });
 
-    it('should not clear data when confirmation is declined', () => {
+        // Click the Clear All Saved Data option
+        const clearDataButton = screen.getByText("Clear All Saved Data");
+        fireEvent.click(clearDataButton);
+
+        // Rest of the test remains the same...
+    });
+
+    it("should not clear data when confirmation is declined", () => {
         // Mock the window.confirm to return false
         const mockConfirm = jest.fn().mockReturnValue(false);
         window.confirm = mockConfirm;
@@ -231,23 +232,23 @@ describe("HelpModal", () => {
         render(<HelpModal />);
 
         // Open the Advanced Options dropdown using a more reliable selector
-        const advancedOptionsElement = screen.getByText('Advanced Options');
+        const advancedOptionsElement = screen.getByText("Advanced Options");
         fireEvent.click(advancedOptionsElement);
 
         // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText('Clear All Saved Data');
+        const clearDataButton = screen.getByText("Clear All Saved Data");
         fireEvent.click(clearDataButton);
 
         // Verify that confirmation was requested
         expect(mockConfirm).toHaveBeenCalledWith(
-            'This will clear all local application data. This action cannot be undone. Continue?'
+            "This will clear all local application data. This action cannot be undone. Continue?"
         );
 
         // expect(mockTagDictionaryInstance.deleteDatabase).not.toHaveBeenCalled();
         expect(window.localStorage.clear).not.toHaveBeenCalled();
     });
 
-    it('should handle errors when clearing data', async () => {
+    it("should handle errors when clearing data", async () => {
         // Mock the window.confirm to return true
         window.confirm = jest.fn().mockReturnValue(true);
 
@@ -255,7 +256,7 @@ describe("HelpModal", () => {
         const mockSetAlertMsg = jest.fn();
         const mockSetAlertType = jest.fn();
         const mockSetShowAlert = jest.fn();
-        
+
         (useStore as unknown as jest.Mock).mockImplementation((selector) => {
             return selector({
                 setAlertMsg: mockSetAlertMsg,
@@ -265,7 +266,9 @@ describe("HelpModal", () => {
         });
 
         // Make the deleteDatabase call fail
-        const mockDeleteDatabase = jest.fn().mockRejectedValue(new Error('Database deletion failed'));
+        const mockDeleteDatabase = jest
+            .fn()
+            .mockRejectedValue(new Error("Database deletion failed"));
         (TagDictionaryDB as jest.Mock).mockImplementation(() => ({
             deleteDatabase: mockDeleteDatabase,
         }));
@@ -273,18 +276,20 @@ describe("HelpModal", () => {
         render(<HelpModal />);
 
         // Open the Advanced Options dropdown using a more reliable selector
-        const advancedOptionsElement = screen.getByText('Advanced Options');
+        const advancedOptionsElement = screen.getByText("Advanced Options");
         fireEvent.click(advancedOptionsElement);
 
         // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText('Clear All Saved Data');
+        const clearDataButton = screen.getByText("Clear All Saved Data");
         fireEvent.click(clearDataButton);
 
         // Wait for the async operation to complete
         await waitFor(() => {
             // Verify error alert was shown
-            expect(mockSetAlertMsg).toHaveBeenCalledWith('Failed to clear data. Please try again.');
-            expect(mockSetAlertType).toHaveBeenCalledWith('alert-error');
+            expect(mockSetAlertMsg).toHaveBeenCalledWith(
+                "Failed to clear data. Please try again."
+            );
+            expect(mockSetAlertType).toHaveBeenCalledWith("alert-error");
             expect(mockSetShowAlert).toHaveBeenCalledWith(true);
         });
 
@@ -320,7 +325,7 @@ describe("HelpModal", () => {
     //     expect(dropdownMenu).toHaveAttribute('tabIndex', '0');
     // });
 
-    it('should render complete list of menu items in the dropdown', () => {
+    it("should render complete list of menu items in the dropdown", () => {
         const { container } = render(<HelpModal />);
 
         // Open the Advanced Options dropdown using text
@@ -328,69 +333,74 @@ describe("HelpModal", () => {
         fireEvent.click(advancedOptionsElement);
 
         // Instead of using roles, directly check for the presence of menu items by their text
-        expect(screen.getByText('Edit Tag Dictionary')).toBeInTheDocument();
-        expect(screen.getByText('Edit Auto-Anon Tags')).toBeInTheDocument();
-        expect(screen.getByText('Clear All Saved Data')).toBeInTheDocument();
-        
+        expect(screen.getByText("Edit Tag Dictionary")).toBeInTheDocument();
+        expect(screen.getByText("Edit Auto-Anon Tags")).toBeInTheDocument();
+        expect(screen.getByText("Clear All Saved Data")).toBeInTheDocument();
+
         // Optionally, verify there are exactly 3 items
         // Use container.querySelectorAll to find all the menu items by a more specific selector
-        const menuItems = container.querySelectorAll('.hover\\:bg-base-200'); // Escape the colon for class name
-        
+        const menuItems = container.querySelectorAll(".hover\\:bg-base-200"); // Escape the colon for class name
+
         // Filter for just the ones in the dropdown
-        const dropdownItems = Array.from(menuItems).filter(item => {
+        const dropdownItems = Array.from(menuItems).filter((item) => {
             return (
-                item.textContent?.includes('Edit Tag Dictionary') ||
-                item.textContent?.includes('Edit Auto-Anon Tags') ||
-                item.textContent?.includes('Clear All Saved Data')
+                item.textContent?.includes("Edit Tag Dictionary") ||
+                item.textContent?.includes("Edit Auto-Anon Tags") ||
+                item.textContent?.includes("Clear All Saved Data")
             );
         });
-        
+
         expect(dropdownItems.length).toBe(3);
     });
 
-    it('should apply the correct styles to menu items', () => {
+    it("should apply the correct styles to menu items", () => {
         render(<HelpModal />);
 
         // Find Advanced Options by text content directly
-        const advancedOptionsElement = screen.getByText('Advanced Options');
+        const advancedOptionsElement = screen.getByText("Advanced Options");
         expect(advancedOptionsElement).toBeInTheDocument();
 
         // Click to open the dropdown
         fireEvent.click(advancedOptionsElement);
 
         // Now check for menu items by their text
-        const editDictText = screen.getByText('Edit Tag Dictionary');
-        const editAutoAnonText = screen.getByText('Edit Auto-Anon Tags');
-        const clearDataText = screen.getByText('Clear All Saved Data');
-        
+        const editDictText = screen.getByText("Edit Tag Dictionary");
+        const editAutoAnonText = screen.getByText("Edit Auto-Anon Tags");
+        const clearDataText = screen.getByText("Clear All Saved Data");
+
         // Get the menu items (li elements that contain our text elements)
-        const editDictItem = editDictText.closest('li');
-        const editAutoAnonItem = editAutoAnonText.closest('li');
-        const clearDataItem = clearDataText.closest('li');
-        
+        const editDictItem = editDictText.closest("li");
+        const editAutoAnonItem = editAutoAnonText.closest("li");
+        const clearDataItem = clearDataText.closest("li");
+
         // Check that we found all list items
         expect(editDictItem).toBeInTheDocument();
         expect(editAutoAnonItem).toBeInTheDocument();
         expect(clearDataItem).toBeInTheDocument();
-        
+
         // Check regular menu items classes
-        [editDictItem, editAutoAnonItem].forEach(item => {
-            expect(item).toHaveClass('hover:bg-base-200', 'hover:text-primary');
+        [editDictItem, editAutoAnonItem].forEach((item) => {
+            expect(item).toHaveClass("hover:bg-base-200", "hover:text-primary");
         });
-        
+
         // Check danger menu item classes
-        expect(clearDataItem).toHaveClass('hover:bg-base-200', 'hover:text-error');
+        expect(clearDataItem).toHaveClass(
+            "hover:bg-base-200",
+            "hover:text-error"
+        );
     });
 
-    it('should correctly handle ChevronUpIcon display', () => {
+    it("should correctly handle ChevronUpIcon display", () => {
         render(<HelpModal />);
-        
+
         // Find the ChevronUpIcon with proper type assertion
-        const chevronIcon = document.querySelector('.ml-2.h-6.w-6') as HTMLElement;
+        const chevronIcon = document.querySelector(
+            ".ml-2.h-6.w-6"
+        ) as HTMLElement;
         expect(chevronIcon).toBeInTheDocument();
-        
+
         // Check it's inside the Advanced Options button
-        const advancedButton = screen.getByText('Advanced Options');
+        const advancedButton = screen.getByText("Advanced Options");
         expect(advancedButton.parentElement).toContainElement(chevronIcon);
     });
 });
