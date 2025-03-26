@@ -80,6 +80,13 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
         return zipBlob;
     } catch (error) {
         logger.error(`Failed to create ZIP: ${error}`);
+
+        useStore.getState().setAlertType("alert-error");
+        useStore
+            .getState()
+            .setAlertMsg("Error creating ZIP file. Please try again.");
+        useStore.getState().setShowAlert(true);
+
         throw new Error(`Failed to create ZIP: ${error}`);
     }
 }

@@ -18,7 +18,6 @@ import {
  */
 interface TagDictTableRowProps {
     tagId: string;
-    index: number;
     tagName: string;
     tagVR?: string;
     onUpdateValue: (
@@ -32,7 +31,6 @@ interface TagDictTableRowProps {
 
 export function TagDictTableRow({
     tagId,
-    index,
     tagName,
     tagVR = "",
     onUpdateValue,
@@ -76,9 +74,7 @@ export function TagDictTableRow({
         ? "bg-red-100 opacity-50 hover:bg-red-400 text-red-500"
         : pendingValue !== undefined && pendingValue !== tagName
           ? "bg-yellow-100 hover:bg-yellow-400 text-yellow-700"
-          : index % 2 === 0
-            ? "bg-base-100 hover:bg-primary"
-            : "bg-base-200 hover:bg-primary";
+          : "bg-base-100 hover:bg-blue-600";
 
     return (
         <tr className={rowClassName}>

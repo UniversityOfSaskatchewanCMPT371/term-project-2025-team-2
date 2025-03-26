@@ -13,6 +13,7 @@
 import dicomParser from "dicom-parser";
 import logger from "@logger/Logger";
 import { TableUpdateData, InsertTag } from "@dicom//Types/DicomTypes";
+import { useStore } from "@state/Store";
 
 //mset to turn on console logs for debugging
 const DEBUG = false;
@@ -146,6 +147,12 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
     if (valid) {
         return data;
     }
+
+    useStore.getState().setAlertType("alert-error");
+    useStore
+        .getState()
+        .setAlertMsg("Error updating DICOM tags. Please try again.");
+    useStore.getState().setShowAlert(true);
 
     throw new Error("File Update Failed");
 }

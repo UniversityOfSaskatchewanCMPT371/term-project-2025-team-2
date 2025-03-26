@@ -148,7 +148,15 @@ export const AutoAnon = async (
         downloadDicomFile({ name: "anonymized_dicoms.zip", content: zipFile });
     } catch (err) {
         logger.error("Auto anonymization failed:", err);
+        useStore.getState().setAlertType("alert-error");
+        useStore
+            .getState()
+            .setAlertMsg(
+                "Error auto anonymizing DICOM files. Please try again."
+            );
+        useStore.getState().setShowAlert(true);
     } finally {
+        useStore.getState().clearData();
         setLoading(false);
     }
 };

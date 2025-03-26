@@ -160,6 +160,15 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             await processEntries(acceptedFiles);
         } catch (error) {
             logger.error("Error processing dragged folder structure:", error);
+
+            useStore.getState().setAlertType("alert-error");
+            useStore
+                .getState()
+                .setAlertMsg(
+                    "Error processing dragged folder structure. Please try again."
+                );
+            useStore.getState().setShowAlert(true);
+
             processFiles(acceptedFiles);
         }
     };
@@ -224,9 +233,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             }
         } catch (error) {
             logger.error("Error opening file selector:", error);
-            alert(
-                "There was an error accessing the file system. Please try again."
-            );
+            useStore.getState().setAlertType("alert-error");
+            useStore
+                .getState()
+                .setAlertMsg("Error opening file selector. Please try again.");
+            useStore.getState().setShowAlert(true);
         }
     };
 

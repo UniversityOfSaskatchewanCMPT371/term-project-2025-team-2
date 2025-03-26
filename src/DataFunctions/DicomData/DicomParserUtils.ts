@@ -142,7 +142,6 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
     Object.keys(dataSet.elements).forEach((tag: string) => {
         const element = dataSet.elements[tag];
         const tagId = tag.toUpperCase();
-        // const tagName = tagDictionary.lookupTagName(tagId) || "Unknown Tag";
         const tagName = getTagName(tagId);
         let vr = element.vr;
         const vrTagDict = getTagVR(tagId);
@@ -190,6 +189,14 @@ export const extractDicomTags = (dataSet: dicomParser.DataSet): DicomData => {
         } catch (error) {
             logger.warn(`Error reading tag "${tagId}" with VR "${vr}":`, error);
             value = "Error reading value";
+
+            useStore.getState().setAlertType("alert-error");
+            useStore
+                .getState()
+                .setAlertMsg(
+                    "Error reading DICOM tag values. Some tags may not be displayed."
+                );
+            useStore.getState().setShowAlert(true);
         }
 
         if (element.items && element.items.length > 0) {
