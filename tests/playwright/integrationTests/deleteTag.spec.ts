@@ -34,7 +34,9 @@ test("Click delete tag button state check", async ({ page }) => {
 
         await deleteIcon.click();
 
-        const undoDeleteIcon = tagRow.locator('svg[aria-label="Undo Delete"]');
+        const undoDeleteIcon = tagRow.locator(
+            'svg[aria-label="Undo Delete Tag"]'
+        );
         await expect(undoDeleteIcon).toBeVisible();
     } catch (error) {
         console.error("Error verifying delete functionality:", error);

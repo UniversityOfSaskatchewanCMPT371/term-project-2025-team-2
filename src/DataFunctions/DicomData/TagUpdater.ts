@@ -81,45 +81,64 @@ export function tagUpdater(dicomData: dicomParser.DataSet, newTagData: any) {
     debug("filteredTags: " + JSON.stringify(filteredTags));
 
     filteredTags.forEach((tag: any) => {
-        const insertTag: InsertTag = {
-            tagId: tag.tagId,
-            newValue: tag.newValue,
-            vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
-            dataOffSet:
-                dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset || 0,
-            length: tag.newValue.length,
-            delete: tag.delete,
-            add: tag.add,
-        };
-        newTags.push(insertTag);
-        debug("insertTag: " + JSON.stringify(insertTag));
+        if (
+            dicomData.elements[tag.tagId.toLowerCase()] === undefined &&
+            !tag.add
+        ) {
+            logger.debug("Tag not in file: " + tag.tagId);
+            debug("Tag not in file: " + tag.tagId);
+            return;
+        }
+        try {
+            const insertTag: InsertTag = {
+                tagId: tag.tagId,
+                newValue: tag.newValue,
+                vr: dicomData.elements[tag.tagId.toLowerCase()]?.vr || "ST",
+                dataOffSet:
+                    dicomData.elements[tag.tagId.toLowerCase()]?.dataOffset ||
+                    0,
+                length: tag.newValue.length,
+                delete: tag.delete,
+                add: tag.add,
+            };
+            newTags.push(insertTag);
+            debug("insertTag: " + JSON.stringify(insertTag));
+        } catch (e) {
+            logger.error("Error parsing tag: " + e);
+            debug("Error parsing tag: " + e);
+        }
     });
 
     newTags.forEach((tag: InsertTag) => {
-        if (tag.delete) {
-            data = removeTag(dicomData, tag);
-        } else if (tag.add) {
-            data = addTag(dicomData, tag, implicitTags);
-        } else {
-            const tagIdByte = new Uint8Array(groupLen + elementLen);
-            const group = parseInt(tag.tagId.slice(1, 5), 16);
-            const element = parseInt(tag.tagId.slice(5), 16);
-            debug("Group: " + group + " Element: " + element);
+        try {
+            if (tag.delete) {
+                data = removeTag(dicomData, tag);
+            } else if (tag.add) {
+                data = addTag(dicomData, tag, implicitTags);
+            } else {
+                const tagIdByte = new Uint8Array(groupLen + elementLen);
+                const group = parseInt(tag.tagId.slice(1, 5), 16);
+                const element = parseInt(tag.tagId.slice(5), 16);
+                debug("Group: " + group + " Element: " + element);
 
-            tag.dataOffSet =
-                dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
+                tag.dataOffSet =
+                    dicomData.elements[tag.tagId.toLowerCase()].dataOffset;
 
-            tagIdByte.set(
-                new Uint8Array([group, group >> 8, element, element >> 8])
-            );
-            const newTag = createTag(tagIdByte, tag, true, implicitTags);
-            data = insertTag(dicomData, tag, newTag);
+                tagIdByte.set(
+                    new Uint8Array([group, group >> 8, element, element >> 8])
+                );
+                const newTag = createTag(tagIdByte, tag, true, implicitTags);
+                data = insertTag(dicomData, tag, newTag);
 
-            debug("newTag: " + newTag);
+                debug("newTag: " + newTag);
+            }
+
+            const newData = dicomParser.parseDicom(data);
+            dicomData = newData;
+        } catch (e) {
+            logger.error("Error updating tag: " + e);
+            debug("Error updating tag: " + e);
         }
-
-        const newData = dicomParser.parseDicom(data);
-        dicomData = newData;
     });
 
     const valid = verifyArrayBuffer(data);

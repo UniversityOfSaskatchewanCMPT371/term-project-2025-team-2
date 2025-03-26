@@ -106,16 +106,18 @@ export const SidePanel = () => {
 
         await new Promise((resolve) => setTimeout(resolve, 0));
 
-        files.forEach((file) => {
+        files.forEach((file, index) => {
             tags.forEach((tag) => {
-                const updatedTag = {
-                    fileName: file.name,
-                    tagId: tag.tagId,
-                    newValue: tag.newValue,
-                    add: false,
-                    delete: false,
-                };
-                setNewTagValues(updatedTag);
+                if (dicomData[index].tags[tag.tagId] !== undefined) {
+                    const updatedTag = {
+                        fileName: file.name,
+                        tagId: tag.tagId,
+                        newValue: tag.newValue,
+                        add: false,
+                        delete: false,
+                    };
+                    setNewTagValues(updatedTag);
+                }
             });
         });
 

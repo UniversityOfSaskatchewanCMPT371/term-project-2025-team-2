@@ -95,6 +95,7 @@ export interface TableRow {
     value: string | DicomTag[];
     hidden: boolean;
     updated: boolean;
+    delete?: boolean;
 }
 
 /**
@@ -111,6 +112,7 @@ export interface DicomTableRowProps {
         tagId: string;
         tagName: string;
         value: string | { [tags: string]: DicomTag };
+        delete?: boolean;
     };
     index: number;
     onUpdateValue: (
@@ -135,7 +137,7 @@ export interface TableUpdateData {
     fileName: string;
     tagId: string;
     newValue: string;
-    delete: boolean;
+    delete?: boolean;
     add: boolean;
 }
 
