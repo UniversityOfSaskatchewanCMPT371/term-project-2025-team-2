@@ -36,12 +36,11 @@ export default {
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**/*.{ts,tsx}", //Includes all source ts codes
-        "!src/**/*.d.ts",    //Exclude type declarations
-        "!src/main.tsx",    // Exclude Vite entry point
-        "!src/App.tsx",    // Exclude Vite root component
-        "!src/Hooks/**"
-
+        "!src/**/*.d.ts", //Exclude type declarations
+        "!src/main.tsx", // Exclude Vite entry point
+        "!src/App.tsx", // Exclude Vite root component
+        "!src/Hooks/**",
     ],
     coverageDirectory: "coverage",
-    coverageReporters: [ "json", "text" ],
+    coverageReporters: ["json", "text"],
 };

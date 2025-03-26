@@ -31,7 +31,9 @@ describe("EditOption Component", () => {
 
         render(<EditOption />);
 
-        const checkbox = screen.getByRole("checkbox", { name: /allow edit locked tags/i });
+        const checkbox = screen.getByRole("checkbox", {
+            name: /allow edit locked tags/i,
+        });
         expect(checkbox).not.toBeChecked();
 
         fireEvent.click(checkbox);
@@ -49,7 +51,9 @@ describe("EditOption Component", () => {
 
         render(<EditOption />);
 
-        const checkbox = screen.getByRole("checkbox", { name: /allow edit locked tags/i });
+        const checkbox = screen.getByRole("checkbox", {
+            name: /allow edit locked tags/i,
+        });
         expect(checkbox).toBeChecked();
 
         fireEvent.click(checkbox);
@@ -66,9 +70,17 @@ describe("EditOption Component", () => {
         );
 
         render(<EditOption />);
-        const checkbox = screen.getByRole("checkbox", { name: /allow edit locked tags/i });
+        const checkbox = screen.getByRole("checkbox", {
+            name: /allow edit locked tags/i,
+        });
 
-        expect(checkbox).toHaveAttribute("data-tooltip-id", "edit-option-button-tooltip");
-        expect(checkbox).toHaveAttribute("data-tooltip-content", "Dangerous - Edit Locked Tags");
+        expect(checkbox).toHaveAttribute(
+            "data-tooltip-id",
+            "edit-option-button-tooltip"
+        );
+        expect(checkbox).toHaveAttribute(
+            "data-tooltip-content",
+            "Dangerous - Edit Locked Tags"
+        );
     });
 });

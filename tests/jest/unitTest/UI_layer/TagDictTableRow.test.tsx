@@ -35,17 +35,12 @@ describe("TagDictTableRow", () => {
     });
 
     it("shows undo icon when isPendingDelete is true", () => {
-        render(
-            <TagDictTableRow
-                {...defaultProps}
-                isPendingDelete={true}
-            />
-        );
+        render(<TagDictTableRow {...defaultProps} isPendingDelete={true} />);
 
         // This check is safe and reliable
-        expect(screen.getByText((text) =>
-            text.includes("Pending deletion")
-        )).toBeInTheDocument();
+        expect(
+            screen.getByText((text) => text.includes("Pending deletion"))
+        ).toBeInTheDocument();
 
         // We will NOT try to find the SVG undo icon by role or label anymore
         // Instead, just simulate a click on the entire row area
