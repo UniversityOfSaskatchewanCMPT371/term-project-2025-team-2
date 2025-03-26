@@ -60,7 +60,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [edited, setEdited] = useState<boolean>(updated || false);
-    const [deleteTag, setDeleteTag] = useState<boolean>(false);
+    const [deleteTag, setDeleteTag] = useState<boolean>(row.delete || false);
 
     const hideTagNumber = useStore((state) => state.hideTagNumber);
     const allowEditLockedTags = useStore((state) => state.allowEditLockedTags);
@@ -87,14 +87,14 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
     };
 
     const toggleDelete = () => {
-        setDeleteTag((preValue) => !preValue);
-        const tempDeletetag = !deleteTag;
+        const newDeleteValue = !deleteTag;
+        setDeleteTag(newDeleteValue);
 
         logger.debug(
-            `Delete set to ${tempDeletetag}, tag with tagId: ${row.tagId}`
+            `Delete set to ${newDeleteValue}, tag with tagId: ${row.tagId}`
         );
 
-        onUpdateValue(row.tagId, newValue, tempDeletetag);
+        onUpdateValue(row.tagId, newValue, newDeleteValue);
     };
 
     logger.debug("Rendering DicomTableRow component");
@@ -106,7 +106,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                 className={`${
                     deleteTag &&
                     "bg-red-100 text-red-500 opacity-50 hover:bg-red-400"
-                } ${edited ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-400" : "hover:bg-blue-600"}`}
+                } ${edited && !deleteTag ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-400" : "hover:bg-blue-600"}`}
             >
                 {!hideTagNumber && (
                     <td
@@ -150,7 +150,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         onBlur={handleBlur}
                                         className="w-full rounded border border-primary p-1"
                                     />
-                                ) : edited ? (
+                                ) : edited && !deleteTag ? (
                                     <span className="text-yellow-700">
                                         {newValue}
                                         <span className="ml-2 text-xs italic">
@@ -230,7 +230,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                         data-tooltip-id={`${row.tagId}-undo-delete-button-tooltip`}
                                         data-tooltip-content="Undo Delete"
                                         data-tooltip-place="left"
-                                        aria-label="Undo Delete"
+                                        aria-label="Undo Delete Tag"
                                     />
                                     <Tooltip
                                         id={`${row.tagId}-undo-delete-button-tooltip`}

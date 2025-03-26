@@ -33,6 +33,14 @@ export const createRows = (
             )?.newValue
                 ? true
                 : false,
+            delete: newTableData.find(
+                (row: any) =>
+                    row.fileName === fileName &&
+                    row.tagId === tagId &&
+                    row.delete
+            )
+                ? true
+                : false,
         })
     );
 
@@ -44,6 +52,7 @@ export const createRows = (
                 value: tag.newValue,
                 hidden: false,
                 updated: false,
+                delete: false,
             });
         }
     });
