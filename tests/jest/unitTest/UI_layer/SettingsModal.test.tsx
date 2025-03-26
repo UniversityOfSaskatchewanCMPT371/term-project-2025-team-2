@@ -75,4 +75,29 @@ describe("SettingsModal", () => {
 
         expect(mockToggleModal).not.toHaveBeenCalled();
     });
+    it("shows the help modal when help icon is clicked and help_modal exists", () => {
+        // Create a mock dialog element and attach it to the document
+        const mockShowModal = jest.fn();
+        const mockDialog = document.createElement("dialog");
+        mockDialog.id = "help_modal";
+        (mockDialog as HTMLDialogElement).showModal = mockShowModal;
+        document.body.appendChild(mockDialog);
+    
+        render(<SettingsModal toggleModal={mockToggleModal} />);
+    
+        const helpButton = screen.getByLabelText("Help Button");
+        fireEvent.click(helpButton);
+    
+        expect(mockShowModal).toHaveBeenCalled();
+        document.body.removeChild(mockDialog); // clean up
+    });
+    
+    it("does not throw when help icon is clicked and help_modal does not exist", () => {
+        render(<SettingsModal toggleModal={mockToggleModal} />);
+    
+        const helpButton = screen.getByLabelText("Help Button");
+    
+        expect(() => fireEvent.click(helpButton)).not.toThrow();
+    });
+    
 });
