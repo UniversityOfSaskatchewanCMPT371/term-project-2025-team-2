@@ -3,7 +3,7 @@ import logger from "@logger/Logger";
 import { assert } from "../assert";
 import { DicomData, DicomTags } from "@dicom//Types/DicomTypes";
 import { useStore } from "@state/Store";
-import { standardDataElements } from "../TagDictionary/standardDataElements";
+import { standardDataElements } from "../../Services/standardDataElements";
 
 // List of tags to hide from the user interface
 const hiddenTags = ["X0025101B", "X00431029", "X0043102A", "X7FE00010"];
