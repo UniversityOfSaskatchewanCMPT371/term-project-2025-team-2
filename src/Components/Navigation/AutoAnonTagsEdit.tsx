@@ -3,7 +3,7 @@ import { DicomTableRow } from "@features/DicomTagTable/Components/DicomTableRow"
 import { useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import logger from "@logger/Logger";
-import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
+import { standardDataElements } from "@services/standardDataElements";
 
 /**
  * Side panel for showing and editing tags to be anonymized

@@ -1,4 +1,4 @@
-import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
+import { standardDataElements } from "@services/standardDataElements";
 import logger from "@logger/Logger";
 
 // Define the tag structure

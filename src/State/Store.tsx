@@ -8,7 +8,7 @@ import {
     DicomData,
     AnonTag,
 } from "../Features/DicomTagTable/Types/DicomTypes";
-import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
+import { standardDataElements } from "@services/standardDataElements";
 import {
     tagDictionaryDB,
     TagDictionaryItem,
