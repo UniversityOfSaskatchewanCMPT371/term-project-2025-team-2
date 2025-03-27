@@ -39,6 +39,7 @@ export default {
         "!src/**/*.d.ts", //Exclude type declarations
         "!src/main.tsx", // Exclude Vite entry point
         "!src/App.tsx", // Exclude Vite root component
+        "!src/Hooks/**",
     ],
     coverageDirectory: "coverage",
     coverageReporters: ["json", "text"],
