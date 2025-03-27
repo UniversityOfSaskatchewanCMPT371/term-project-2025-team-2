@@ -8,7 +8,11 @@ import { DicomTag } from "../../DicomTagTable/Types/DicomTypes";
 interface PIIResultsTableProps {
     PII: DicomTag[];
     reset: number;
-    onUpdateValue: (tagId: string, newValue: string, deleteTag: boolean) => void;
+    onUpdateValue: (
+        tagId: string,
+        newValue: string,
+        deleteTag: boolean
+    ) => void;
 }
 
 /**
@@ -19,10 +23,10 @@ interface PIIResultsTableProps {
  * @param props - The PIIResultsTableProps properties
  * @returns {JSX.Element | null} The rendered PII table or null if no PII is found
  */
-export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({ 
-    PII, 
-    reset, 
-    onUpdateValue 
+export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
+    PII,
+    reset,
+    onUpdateValue,
 }) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 4;
@@ -30,7 +34,7 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
     const [updated, setUpdated] = useState<Record<string, boolean>>({});
     const [newTagValue, setNewTagValue] = useState<Record<string, string>>({});
     const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
-    
+
     if (PII.length === 0) {
         return null;
     }
@@ -44,19 +48,18 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
         setUpdated((prev) => ({ ...prev, [tagId]: true }));
         setNewTagValue((prev) => ({ ...prev, [tagId]: newValue }));
         setIsDeleting((prev) => ({ ...prev, [tagId]: deleteTag }));
-    }
-        
-    
+    };
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentItems = PII.slice(startIndex, endIndex);
-    
+
     const handlePrevPage = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1));
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
     };
-    
+
     const handleNextPage = () => {
-        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     };
 
     return (
@@ -64,22 +67,22 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
             <div className="mb-5 ml-4 text-xl font-bold text-error">
                 Potential PII Found in File
             </div>
-            
+
             {PII.length > itemsPerPage && (
                 <div className="mx-4 mb-2 flex items-center justify-between">
-                    <button 
+                    <button
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
                         className="rounded-md bg-base-300 px-3 py-1 text-sm font-medium transition-colors hover:bg-base-200 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         Previous
                     </button>
-                    
+
                     <span className="text-sm">
                         Page {currentPage} of {totalPages} ({PII.length} items)
                     </span>
-                    
-                    <button 
+
+                    <button
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                         className="rounded-md bg-base-300 px-3 py-1 text-sm font-medium transition-colors hover:bg-base-200 disabled:cursor-not-allowed disabled:opacity-50"
@@ -88,7 +91,7 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
                     </button>
                 </div>
             )}
-            
+
             <table className="m-4 mb-10 w-[calc(100%-2rem)] border bg-base-100 text-lg text-base-content">
                 <thead>
                     <tr className="text-wrap bg-error">

@@ -186,7 +186,7 @@ export const SidePanel = () => {
                             setAlertType,
                             setPII,
                             setFoundPII,
-                            tagsToAnon
+                            tagsToAnon,
                         });
                     }}
                     className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-content shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:bg-base-300 disabled:hover:scale-100"
@@ -196,10 +196,10 @@ export const SidePanel = () => {
             </div>
 
             {foundPII && (
-                <PIIResultsTable 
-                    PII={PII} 
-                    reset={reset} 
-                    onUpdateValue={handleUpdateValue} 
+                <PIIResultsTable
+                    PII={PII}
+                    reset={reset}
+                    onUpdateValue={handleUpdateValue}
                 />
             )}
 

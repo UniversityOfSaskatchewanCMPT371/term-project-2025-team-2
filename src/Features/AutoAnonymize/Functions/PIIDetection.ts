@@ -57,7 +57,7 @@ export const findPII = async (
         setAlertType,
         setPII,
         setFoundPII,
-        tagsToAnon
+        tagsToAnon,
     } = options;
 
     setLoadingMsg(`Finding PII, searching all ${files.length}`);
@@ -94,12 +94,19 @@ export const findPII = async (
                     !NOT_PII.includes((tag.value as string).toUpperCase()) &&
                     !tagsToAnon.includes(tag.tagId) &&
                     tag.value.split(" ").length <= 2 &&
-                    (tag.value as string).toUpperCase() !== (tag.value as string)
+                    (tag.value as string).toUpperCase() !==
+                        (tag.value as string)
                 ) {
-                    if (!localPII.some((existingTag) => existingTag.tagId === tag.tagId)) {
+                    if (
+                        !localPII.some(
+                            (existingTag) => existingTag.tagId === tag.tagId
+                        )
+                    ) {
                         localPII.push(tag);
 
-                        logger.info(`Potential PII found: ${tag.tagId}, ${tag.value}`);
+                        logger.info(
+                            `Potential PII found: ${tag.tagId}, ${tag.value}`
+                        );
 
                         // if (localPII.length > 25) {
                         //     setAlertMsg("Max Amount of PII exceeded");
@@ -155,7 +162,6 @@ export const usePIIDetection = () => {
     const setShowAlert = useStore((state) => state.setShowAlert);
     const setAlertMsg = useStore((state) => state.setAlertMsg);
     const setAlertType = useStore((state) => state.setAlertType);
-    
 
     const [PII, setPII] = useState<DicomTag[]>([]);
     const [foundPII, setFoundPII] = useState(false);
@@ -169,7 +175,7 @@ export const usePIIDetection = () => {
             setAlertType,
             setPII,
             setFoundPII,
-            tagsToAnon
+            tagsToAnon,
         });
     };
 
@@ -178,6 +184,6 @@ export const usePIIDetection = () => {
         setPII,
         foundPII,
         setFoundPII,
-        findPII: findPIIWrapper
+        findPII: findPIIWrapper,
     };
 };
