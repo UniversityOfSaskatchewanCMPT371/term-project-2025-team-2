@@ -27,10 +27,25 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 4;
     const totalPages = Math.ceil(PII.length / itemsPerPage);
+    const [updated, setUpdated] = useState<Record<string, boolean>>({});
+    const [newTagValue, setNewTagValue] = useState<Record<string, string>>({});
+    const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
     
     if (PII.length === 0) {
         return null;
     }
+
+    const handleUpdate = (
+        tagId: string,
+        newValue: string,
+        deleteTag: boolean
+    ) => {
+        onUpdateValue(tagId, newValue, deleteTag);
+        setUpdated((prev) => ({ ...prev, [tagId]: true }));
+        setNewTagValue((prev) => ({ ...prev, [tagId]: newValue }));
+        setIsDeleting((prev) => ({ ...prev, [tagId]: deleteTag }));
+    }
+        
     
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -74,7 +89,7 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
                 </div>
             )}
             
-            <table className="m-4 mb-10 border bg-base-100 text-lg text-base-content">
+            <table className="m-4 mb-10 w-[calc(100%-2rem)] border bg-base-100 text-lg text-base-content">
                 <thead>
                     <tr className="text-wrap bg-error">
                         <th className="w-1/5 border px-4 py-2 text-primary-content">
@@ -95,11 +110,12 @@ export const PIIResultsTable: React.FC<PIIResultsTableProps> = ({
                             row={{
                                 tagId: tag.tagId,
                                 tagName: tag.tagName,
-                                value: tag.value as string,
+                                value: newTagValue[tag.tagId] || tag.value,
+                                delete: isDeleting[tag.tagId] || false,
                             }}
                             index={startIndex + index}
-                            onUpdateValue={onUpdateValue}
-                            updated={false}
+                            onUpdateValue={handleUpdate}
+                            updated={updated[tag.tagId]}
                         />
                     ))}
                 </tbody>

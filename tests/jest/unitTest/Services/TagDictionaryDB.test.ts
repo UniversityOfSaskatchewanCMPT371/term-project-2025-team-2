@@ -1,5 +1,5 @@
 import { TagDictionaryDB, TagDictionaryItem } from "@services/TagDictionaryDB";
-import { standardDataElements } from "@dataFunctions/TagDictionary/standardDataElements";
+import { standardDataElements } from "@services/standardDataElements";
 
 // Mock IndexedDB
 const mockIndexedDB = {
