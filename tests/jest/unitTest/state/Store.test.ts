@@ -37,7 +37,6 @@ beforeEach(() => {
         loading: false,
         showErrorModal: false,
         sidebarVisible: false,
-        showSeriesModal: false,
         series: false,
         seriesSwitchModel: false,
         downloadOption: isSafari
@@ -61,7 +60,6 @@ describe("Zustand Store", () => {
         expect(state.loading).toBe(false);
         expect(state.showErrorModal).toBe(false);
         expect(state.sidebarVisible).toBe(false);
-        expect(state.showSeriesModal).toBe(false);
         expect(state.series).toBe(false);
         expect(state.seriesSwitchModel).toBe(false);
         if (isSafari) {
@@ -107,12 +105,6 @@ describe("Zustand Store", () => {
         const { setSidebarVisible } = useStore.getState();
         setSidebarVisible(true);
         expect(useStore.getState().sidebarVisible).toBe(true);
-    });
-
-    test("setShowSeriesModal updates showSeriesModal state", () => {
-        const { setShowSeriesModal } = useStore.getState();
-        setShowSeriesModal(true);
-        expect(useStore.getState().showSeriesModal).toBe(true);
     });
 
     test("toggleSeries toggles series state", () => {

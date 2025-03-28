@@ -14,6 +14,8 @@ import { LoadingScreen } from "@components/utils/LoadingScreen";
 import { SidePanel } from "@auto/Components/AutoConfirmPanel";
 import { AlertHeader } from "@components/utils/alertHeader";
 
+import { useQuestionModalStore } from "@state/QuestionModalStore";
+
 import { useStore } from "@state/Store";
 import { DicomData } from "./Features/DicomTagTable/Types/DicomTypes";
 import { assert } from "./DataFunctions/assert";
@@ -22,6 +24,8 @@ const AutoAnonTagsEdit = lazy(
     () => import("@components/Navigation/AutoAnonTagsEdit")
 );
 const DictTagsEdit = lazy(() => import("@features/TagDictEditor/DictTagsEdit"));
+
+import { HelpModal } from "@components/utils/Modals/HelpModal";
 
 /**
  * @description Main App Function
@@ -52,11 +56,10 @@ export const App: React.FC = () => {
     const sidebarVisible = useStore((state) => state.sidebarVisible);
     const setSidebarVisible = useStore((state) => state.setSidebarVisible);
 
-    const showSeriesModal = useStore((state) => state.showSeriesModal);
-    const setShowSeiresModal = useStore((state) => state.setShowSeriesModal);
-
     const series = useStore((state) => state.series);
     const setSeries = useStore((state) => state.setSeries);
+
+    const openModal = useQuestionModalStore((state) => state.openModal);
 
     const seriesSwitchModel = useStore((state) => state.seriesSwitchModel);
     const setSeriesSwitchModel = useStore(
@@ -216,7 +219,16 @@ export const App: React.FC = () => {
         }
 
         if (newFiles.length > 1) {
-            setShowSeiresModal(true);
+            openModal({
+                title: "Edit Files",
+                text: "Multiple files have been uploaded. Do you want to edit as a series?",
+                onConfirm: () => {
+                    setSeries(true);
+                },
+                onCancel: () => {
+                    setSeries(false);
+                },
+            });
         }
 
         assert(newFiles.length === newDicomData.length);
@@ -290,16 +302,7 @@ export const App: React.FC = () => {
                     )}
                 </div>
 
-                {showSeriesModal ? (
-                    <QuestionModal
-                        setSeries={setSeries}
-                        setIsOpen={setShowSeiresModal}
-                        title={"Edit Files"}
-                        text={
-                            "Multiple files have been uploaded. Do you want to edit as a series?"
-                        }
-                    />
-                ) : null}
+                <QuestionModal />
 
                 <Modal
                     isOpen={seriesSwitchModel}
@@ -329,6 +332,7 @@ export const App: React.FC = () => {
                 <SidePanel />
                 <AutoAnonTagsEdit />
                 <DictTagsEdit />
+                <HelpModal />
             </div>
             <Footer />
 

@@ -113,15 +113,30 @@ export interface GenErrorPageProps {
 }
 
 /**
- * interface QuestionModalProps
- * @param setSeries - Function to set series
- * @param setIsOpen - Function to set modal open state
+ * interface QuestionModalState
+ * @param isOpen - Boolean to determine if modal is open
+ * @param title - Modal title
+ * @param text - Modal text
+ * @param onConfirm - Function to handle confirm
+ * @param onCancel - Function to handle cancel
+ * @param openModal - Function to open modal
+ * @param closeModal - Function to close modal
  */
-export interface QuestionModalProps {
-    setSeries: (value: boolean) => void;
-    setIsOpen: (value: boolean) => void;
+export interface QuestionModalState {
+    isOpen: boolean;
     title: string;
     text: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+
+    // Actions
+    openModal: (params: {
+        title: string;
+        text: string;
+        onConfirm: () => void;
+        onCancel?: () => void;
+    }) => void;
+    closeModal: () => void;
 }
 
 /**
