@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Header } from "../../../../src/Components/Navigation/Header";
+import { Header } from "@components/Navigation/Header";
 import "@testing-library/jest-dom";
 
 jest.mock("@logger/Logger", () => ({

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { EditOption } from "../../../../src/Components/utils/EditOption";
+import { EditOption } from "@components/utils/EditOption";
 import { useStore } from "@state/Store";
 import "@testing-library/jest-dom";
 
