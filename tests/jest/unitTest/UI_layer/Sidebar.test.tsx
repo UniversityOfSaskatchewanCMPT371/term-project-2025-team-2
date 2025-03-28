@@ -93,7 +93,6 @@ describe("Sidebar", () => {
         expect(screen.getByTestId("mock-header")).toBeInTheDocument();
         expect(screen.getByTestId("mock-series-controls")).toBeInTheDocument();
         expect(screen.getByTestId("mock-file-table")).toBeInTheDocument();
-        expect(screen.getByTestId("mock-help-modal")).toBeInTheDocument();
     });
 
     it("is hidden when not visible", () => {

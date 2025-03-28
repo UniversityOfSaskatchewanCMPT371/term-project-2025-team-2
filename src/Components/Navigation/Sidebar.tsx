@@ -4,7 +4,6 @@ import { FileTable } from "@features/FileHandling/Components/FileTable";
 import { Header } from "./Header";
 import { SeriesControls } from "./SeriesControls";
 import { SettingsModal } from "./SettingsModal";
-import { HelpModal } from "@utils/Modals/HelpModal";
 import logger from "@logger/Logger";
 import { useStore } from "@state/Store";
 
@@ -40,8 +39,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
             </div>
 
             {isModalOpen && <SettingsModal toggleModal={toggleModal} />}
-
-            <HelpModal />
         </div>
     );
 };

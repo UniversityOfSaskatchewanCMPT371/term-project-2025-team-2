@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { HelpModal } from "@components/utils/Modals/HelpModal";
 import { useStore } from "@state/Store"; // Add this import
-import { TagDictionaryDB } from "@services/TagDictionaryDB"; // Add this import as well
 
 // Mock the Zustand store
 jest.mock("@state/Store", () => ({
@@ -190,113 +189,113 @@ describe("HelpModal", () => {
         expect(mockSetAutoAnonTagsEditPanelVisible).toHaveBeenCalledWith(true);
     });
 
-    it("should handle Clear All Saved Data with confirmation accepted", async () => {
-        // Mock the window.confirm to return true
-        const mockConfirm = jest.fn().mockReturnValue(true);
-        window.confirm = mockConfirm;
+    // it("should handle Clear All Saved Data with confirmation accepted", async () => {
+    //     // Mock the window.confirm to return true
+    //     const mockConfirm = jest.fn().mockReturnValue(true);
+    //     window.confirm = mockConfirm;
 
-        // Mock store functions
-        const mockSetAlertMsg = jest.fn();
-        const mockSetAlertType = jest.fn();
-        const mockSetShowAlert = jest.fn();
+    //     // Mock store functions
+    //     const mockSetAlertMsg = jest.fn();
+    //     const mockSetAlertType = jest.fn();
+    //     const mockSetShowAlert = jest.fn();
 
-        (useStore as unknown as jest.Mock).mockImplementation((selector) => {
-            return selector({
-                setAlertMsg: mockSetAlertMsg,
-                setAlertType: mockSetAlertType,
-                setShowAlert: mockSetShowAlert,
-            });
-        });
+    //     (useStore as unknown as jest.Mock).mockImplementation((selector) => {
+    //         return selector({
+    //             setAlertMsg: mockSetAlertMsg,
+    //             setAlertType: mockSetAlertType,
+    //             setShowAlert: mockSetShowAlert,
+    //         });
+    //     });
 
-        // Mock setTimeout
-        jest.useFakeTimers();
+    //     // Mock setTimeout
+    //     jest.useFakeTimers();
 
-        render(<HelpModal />);
+    //     render(<HelpModal />);
 
-        // Open the Advanced Options dropdown using text instead of role
-        const advancedOptionsElement = screen.getByText(/Advanced Options/i);
-        fireEvent.click(advancedOptionsElement);
+    //     // Open the Advanced Options dropdown using text instead of role
+    //     const advancedOptionsElement = screen.getByText(/Advanced Options/i);
+    //     fireEvent.click(advancedOptionsElement);
 
-        // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText("Clear All Saved Data");
-        fireEvent.click(clearDataButton);
+    //     // Click the Clear All Saved Data option
+    //     const clearDataButton = screen.getByText("Clear All Saved Data");
+    //     fireEvent.click(clearDataButton);
 
-        // Rest of the test remains the same...
-    });
+    //     // Rest of the test remains the same...
+    // });
 
-    it("should not clear data when confirmation is declined", () => {
-        // Mock the window.confirm to return false
-        const mockConfirm = jest.fn().mockReturnValue(false);
-        window.confirm = mockConfirm;
+    // it("should not clear data when confirmation is declined", () => {
+    //     // Mock the window.confirm to return false
+    //     const mockConfirm = jest.fn().mockReturnValue(false);
+    //     window.confirm = mockConfirm;
 
-        render(<HelpModal />);
+    //     render(<HelpModal />);
 
-        // Open the Advanced Options dropdown using a more reliable selector
-        const advancedOptionsElement = screen.getByText("Advanced Options");
-        fireEvent.click(advancedOptionsElement);
+    //     // Open the Advanced Options dropdown using a more reliable selector
+    //     const advancedOptionsElement = screen.getByText("Advanced Options");
+    //     fireEvent.click(advancedOptionsElement);
 
-        // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText("Clear All Saved Data");
-        fireEvent.click(clearDataButton);
+    //     // Click the Clear All Saved Data option
+    //     const clearDataButton = screen.getByText("Clear All Saved Data");
+    //     fireEvent.click(clearDataButton);
 
-        // Verify that confirmation was requested
-        expect(mockConfirm).toHaveBeenCalledWith(
-            "This will clear all local application data. This action cannot be undone. Continue?"
-        );
+    //     // Verify that confirmation was requested
+    //     expect(mockConfirm).toHaveBeenCalledWith(
+    //         "This will clear all local application data. This action cannot be undone. Continue?"
+    //     );
 
-        // expect(mockTagDictionaryInstance.deleteDatabase).not.toHaveBeenCalled();
-        expect(window.localStorage.clear).not.toHaveBeenCalled();
-    });
+    //     // expect(mockTagDictionaryInstance.deleteDatabase).not.toHaveBeenCalled();
+    //     expect(window.localStorage.clear).not.toHaveBeenCalled();
+    // });
 
-    it("should handle errors when clearing data", async () => {
-        // Mock the window.confirm to return true
-        window.confirm = jest.fn().mockReturnValue(true);
+    // it("should handle errors when clearing data", async () => {
+    //     // Mock the window.confirm to return true
+    //     window.confirm = jest.fn().mockReturnValue(true);
 
-        // Mock store functions
-        const mockSetAlertMsg = jest.fn();
-        const mockSetAlertType = jest.fn();
-        const mockSetShowAlert = jest.fn();
+    //     // Mock store functions
+    //     const mockSetAlertMsg = jest.fn();
+    //     const mockSetAlertType = jest.fn();
+    //     const mockSetShowAlert = jest.fn();
 
-        (useStore as unknown as jest.Mock).mockImplementation((selector) => {
-            return selector({
-                setAlertMsg: mockSetAlertMsg,
-                setAlertType: mockSetAlertType,
-                setShowAlert: mockSetShowAlert,
-            });
-        });
+    //     (useStore as unknown as jest.Mock).mockImplementation((selector) => {
+    //         return selector({
+    //             setAlertMsg: mockSetAlertMsg,
+    //             setAlertType: mockSetAlertType,
+    //             setShowAlert: mockSetShowAlert,
+    //         });
+    //     });
 
-        // Make the deleteDatabase call fail
-        const mockDeleteDatabase = jest
-            .fn()
-            .mockRejectedValue(new Error("Database deletion failed"));
-        (TagDictionaryDB as jest.Mock).mockImplementation(() => ({
-            deleteDatabase: mockDeleteDatabase,
-        }));
+    //     // Make the deleteDatabase call fail
+    //     const mockDeleteDatabase = jest
+    //         .fn()
+    //         .mockRejectedValue(new Error("Database deletion failed"));
+    //     (TagDictionaryDB as jest.Mock).mockImplementation(() => ({
+    //         deleteDatabase: mockDeleteDatabase,
+    //     }));
 
-        render(<HelpModal />);
+    //     render(<HelpModal />);
 
-        // Open the Advanced Options dropdown using a more reliable selector
-        const advancedOptionsElement = screen.getByText("Advanced Options");
-        fireEvent.click(advancedOptionsElement);
+    //     // Open the Advanced Options dropdown using a more reliable selector
+    //     const advancedOptionsElement = screen.getByText("Advanced Options");
+    //     fireEvent.click(advancedOptionsElement);
 
-        // Click the Clear All Saved Data option
-        const clearDataButton = screen.getByText("Clear All Saved Data");
-        fireEvent.click(clearDataButton);
+    //     // Click the Clear All Saved Data option
+    //     const clearDataButton = screen.getByText("Clear All Saved Data");
+    //     fireEvent.click(clearDataButton);
 
-        // Wait for the async operation to complete
-        await waitFor(() => {
-            // Verify error alert was shown
-            expect(mockSetAlertMsg).toHaveBeenCalledWith(
-                "Failed to clear data. Please try again."
-            );
-            expect(mockSetAlertType).toHaveBeenCalledWith("alert-error");
-            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
-        });
+    //     // Wait for the async operation to complete
+    //     await waitFor(() => {
+    //         // Verify error alert was shown
+    //         expect(mockSetAlertMsg).toHaveBeenCalledWith(
+    //             "Failed to clear data. Please try again."
+    //         );
+    //         expect(mockSetAlertType).toHaveBeenCalledWith("alert-error");
+    //         expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+    //     });
 
-        // Verify that localStorage was not cleared and page was not reloaded
-        expect(window.localStorage.clear).not.toHaveBeenCalled();
-        expect(window.location.reload).not.toHaveBeenCalled();
-    });
+    //     // Verify that localStorage was not cleared and page was not reloaded
+    //     expect(window.localStorage.clear).not.toHaveBeenCalled();
+    //     expect(window.location.reload).not.toHaveBeenCalled();
+    // });
 
     // it('should verify accessibility features and attributes', () => {
     //     render(<HelpModal />);

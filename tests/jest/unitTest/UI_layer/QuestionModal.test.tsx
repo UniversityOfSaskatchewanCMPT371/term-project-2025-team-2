@@ -1,99 +1,79 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { QuestionModal } from "@components/utils/Modals/QuestionModal";
+import { useQuestionModalStore } from "@state/QuestionModalStore";
 import "@testing-library/jest-dom";
 
-describe("QuestionModal component", () => {
-    test("renders modal with correct title and text", () => {
-        render(
-            <QuestionModal
-                setSeries={jest.fn()}
-                setIsOpen={jest.fn()}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
-        );
+// Mock the Zustand store
+jest.mock("@state/QuestionModalStore", () => ({
+    useQuestionModalStore: jest.fn(),
+}));
 
-        expect(screen.getByText("Are you sure?")).toBeInTheDocument();
-        expect(screen.getByText("Do you want to proceed?")).toBeInTheDocument();
+describe("QuestionModal component", () => {
+    const mockOnConfirm = jest.fn();
+    const mockOnCancel = jest.fn();
+    const mockCloseModal = jest.fn();
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+
+        // Setup default mock implementation
+        (useQuestionModalStore as unknown as jest.Mock).mockImplementation(
+            () => ({
+                isOpen: true,
+                title: "Test Title",
+                text: "Test Text",
+                onConfirm: mockOnConfirm,
+                onCancel: mockOnCancel,
+                closeModal: mockCloseModal,
+            })
+        );
     });
 
-    test("calls setSeries(true) and setIsOpen(false) when 'Yes' button is clicked", () => {
-        const setSeriesMock = jest.fn();
-        const setIsOpenMock = jest.fn();
+    test("renders modal with correct title and text", () => {
+        render(<QuestionModal />);
 
-        render(
-            <QuestionModal
-                setSeries={setSeriesMock}
-                setIsOpen={setIsOpenMock}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
-        );
+        expect(screen.getByText("Test Title")).toBeInTheDocument();
+        expect(screen.getByText("Test Text")).toBeInTheDocument();
+    });
+
+    test("calls onConfirm and closeModal when 'Yes' button is clicked", () => {
+        render(<QuestionModal />);
 
         const yesButton = screen.getByText("Yes");
         fireEvent.click(yesButton);
 
-        expect(setSeriesMock).toHaveBeenCalledWith(true);
-        expect(setIsOpenMock).toHaveBeenCalledWith(false);
+        expect(mockOnConfirm).toHaveBeenCalledTimes(1);
+        expect(mockCloseModal).toHaveBeenCalledTimes(1);
     });
 
-    test("calls setSeries(false) and setIsOpen(false) when 'No' button is clicked", () => {
-        const setSeriesMock = jest.fn();
-        const setIsOpenMock = jest.fn();
-
-        render(
-            <QuestionModal
-                setSeries={setSeriesMock}
-                setIsOpen={setIsOpenMock}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
-        );
+    test("calls onCancel and closeModal when 'No' button is clicked", () => {
+        render(<QuestionModal />);
 
         const noButton = screen.getByText("No");
         fireEvent.click(noButton);
 
-        expect(setSeriesMock).toHaveBeenCalledWith(false);
-        expect(setIsOpenMock).toHaveBeenCalledWith(false);
+        expect(mockOnCancel).toHaveBeenCalledTimes(1);
+        expect(mockCloseModal).toHaveBeenCalledTimes(1);
     });
 
-    test("does not call setSeries or setIsOpen when clicking inside the modal", () => {
-        const setSeriesMock = jest.fn();
-        const setIsOpenMock = jest.fn();
-
-        render(
-            <QuestionModal
-                setSeries={setSeriesMock}
-                setIsOpen={setIsOpenMock}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
+    test("doesn't render when isOpen is false", () => {
+        (useQuestionModalStore as unknown as jest.Mock).mockImplementation(
+            () => ({
+                isOpen: false,
+                title: "Test Title",
+                text: "Test Text",
+                onConfirm: mockOnConfirm,
+                onCancel: mockOnCancel,
+                closeModal: mockCloseModal,
+            })
         );
 
-        const modalContent = screen.getByText("Are you sure?").closest("div");
-
-        if (modalContent) {
-            fireEvent.click(modalContent);
-
-            expect(setSeriesMock).not.toHaveBeenCalled();
-            expect(setIsOpenMock).not.toHaveBeenCalled();
-        } else {
-            throw new Error("Modal content not found");
-        }
+        const { container } = render(<QuestionModal />);
+        expect(container).toBeEmptyDOMElement();
     });
 
     test("modal buttons are enabled and clickable", () => {
-        const setSeriesMock = jest.fn();
-        const setIsOpenMock = jest.fn();
-
-        render(
-            <QuestionModal
-                setSeries={setSeriesMock}
-                setIsOpen={setIsOpenMock}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
-        );
+        render(<QuestionModal />);
 
         const yesButton = screen.getByText("Yes");
         const noButton = screen.getByText("No");
@@ -102,20 +82,16 @@ describe("QuestionModal component", () => {
         expect(noButton).not.toBeDisabled();
 
         fireEvent.click(yesButton);
-        expect(setSeriesMock).toHaveBeenCalledTimes(1);
+        expect(mockOnConfirm).toHaveBeenCalledTimes(1);
+        expect(mockCloseModal).toHaveBeenCalledTimes(1);
+
         fireEvent.click(noButton);
-        expect(setIsOpenMock).toHaveBeenCalledTimes(2);
+        expect(mockOnCancel).toHaveBeenCalledTimes(1);
+        expect(mockCloseModal).toHaveBeenCalledTimes(2);
     });
 
     test("modal has correct background and styling", () => {
-        const { container } = render(
-            <QuestionModal
-                setSeries={jest.fn()}
-                setIsOpen={jest.fn()}
-                title="Are you sure?"
-                text="Do you want to proceed?"
-            />
-        );
+        const { container } = render(<QuestionModal />);
 
         const modalBackground = container.querySelector(".fixed.inset-0");
         const modalContent = container.querySelector(".w-full.max-w-sm");
@@ -124,5 +100,23 @@ describe("QuestionModal component", () => {
         expect(modalBackground).toHaveClass("bg-opacity-50");
         expect(modalContent).toHaveClass("bg-white");
         expect(modalContent).toHaveClass("p-6");
+        expect(modalBackground).toHaveClass("z-[9999]");
     });
+
+    //   test("event propagation is stopped when clicking inside modal content", () => {
+    //     const { container } = render(<QuestionModal />);
+
+    //     const modalContent = container.querySelector(".w-full.max-w-sm");
+    //     if (modalContent) {
+    //       const mockStopPropagation = jest.fn();
+    //       fireEvent.click(modalContent, { stopPropagation: mockStopPropagation });
+
+    //       // This verifies the e.stopPropagation() was called
+    //       expect(mockStopPropagation).toHaveBeenCalled();
+
+    //       // Also verify the callbacks weren't called by this click
+    //       expect(mockOnConfirm).not.toHaveBeenCalled();
+    //       expect(mockOnCancel).not.toHaveBeenCalled();
+    //     }
+    //   });
 });

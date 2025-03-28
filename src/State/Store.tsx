@@ -143,9 +143,6 @@ type Store = {
     autoAnonTagsEditPanelVisible: boolean;
     setAutoAnonTagsEditPanelVisible: (visible: boolean) => void;
 
-    showSeriesModal: boolean;
-    setShowSeriesModal: (show: boolean) => void;
-
     series: boolean;
     setSeries: (series: boolean) => void;
     toggleSeries: () => void;
@@ -257,9 +254,6 @@ export const useStore = create<Store>((set) => ({
 
     sidePanelVisible: false,
     setSidePanelVisible: (visible) => set({ sidePanelVisible: visible }),
-
-    showSeriesModal: false,
-    setShowSeriesModal: (show) => set({ showSeriesModal: show }),
 
     hideTagNumber: false,
     setHideTagNumber: (hide) => set({ hideTagNumber: hide }),
