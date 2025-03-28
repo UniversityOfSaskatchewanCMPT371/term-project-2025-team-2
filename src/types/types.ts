@@ -140,18 +140,6 @@ export interface QuestionModalState {
 }
 
 /**
- * interface QuestionModalProps
- * @param setSeries - Function to set series
- * @param setIsOpen - Function to set modal open state
- */
-export interface QuestionModalProps {
-    setOption: (value: boolean) => void;
-    setIsOpen: (value: boolean) => void;
-    title: string;
-    text: string;
-}
-
-/**
  * Props for the Header component
  * @interface HeaderProps
  * @property {() => void} toggleModal - Function to toggle the settings modal
