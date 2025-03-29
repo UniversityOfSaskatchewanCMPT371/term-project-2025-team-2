@@ -51,9 +51,16 @@ export const updateAllFiles = async (
 
     if (series) {
         logger.info("Updating all files in series");
+        useStore.getState().setLoadingMsg("Updating all files");
+        useStore.getState().setLoading(true);
 
-        dicomData.forEach((dicom: DicomData, index: number) => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        for (let index = 0; index < dicomData.length; index++) {
+            const dicom = dicomData[index];
+
             setLoadingMsg(`Updating file ${index + 1} of ${dicomData.length}`);
+            await new Promise((resolve) => setTimeout(resolve, 0));
 
             const fileName = files[index].name;
             const fileEdits = getSingleFileTagEdits(
@@ -76,11 +83,20 @@ export const updateAllFiles = async (
             } else {
                 newFiles.push(file);
             }
-        });
+        };
     } else {
         logger.info("Updating single file");
+        useStore.getState().setLoadingMsg("Updating all files");
+        useStore.getState().setLoading(true);
 
-        dicomData.forEach((dicom, index) => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        for (let index = 0; index < dicomData.length; index++) {
+            const dicom = dicomData[index];
+
+            setLoadingMsg(`Updating file ${index + 1} of ${dicomData.length}`);
+            await new Promise((resolve) => setTimeout(resolve, 0));
+
             const fileName = files[index].name;
             const fileEdits = getSingleFileTagEdits(newTagValues, fileName);
             const isEdited = fileEdits && Object.keys(fileEdits).length > 0;
@@ -99,7 +115,7 @@ export const updateAllFiles = async (
             } else {
                 newFiles.push(file);
             }
-        });
+        };
     }
 
     if (downloadOption === "zip") {

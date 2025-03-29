@@ -16,7 +16,7 @@ import { useStore } from "@state/Store";
  * @param {boolean} props.isVisible - Flag indicating if the sidebar is visible, true/false
  * @returns {JSX.Element} Rendered Sidebar component
  */
-export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -42,3 +42,5 @@ export const Sidebar: React.FC<SidebarProps> = ({ isVisible }) => {
         </div>
     );
 };
+
+export default Sidebar;

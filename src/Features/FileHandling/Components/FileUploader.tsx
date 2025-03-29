@@ -27,7 +27,7 @@ interface DirectoryInputHTMLAttributes
  * @param onFileUpload - Function to handle file upload
  * @returns rendered FileUploader component
  */
-export const FileUploader: React.FC<FileUploaderProps> = ({
+const FileUploader: React.FC<FileUploaderProps> = ({
     onFileUpload,
     loading,
     clearData,
@@ -341,3 +341,5 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         </div>
     );
 };
+
+export default FileUploader;
