@@ -40,6 +40,7 @@ export default {
         "!src/main.tsx", // Exclude Vite entry point
         "!src/App.tsx", // Exclude Vite root component
         "!src/Hooks/**",
+        "!src/State/Store**" // Store component is just a collection
     ],
     coverageDirectory: "coverage",
     coverageReporters: ["json", "text"],
