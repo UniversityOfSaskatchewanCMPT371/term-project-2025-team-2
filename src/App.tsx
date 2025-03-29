@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef, lazy } from "react";
 import { Topbar } from "@components/Navigation/Topbar";
 const Sidebar = lazy(() => import("@components/Navigation/Sidebar"));
-const FileUploader = lazy(()=> import("./Features/FileHandling/Components/FileUploader"));
-const DicomTable = lazy(()=> import("./Features/DicomTagTable/Components/DicomTable"));
+const FileUploader = lazy(
+    () => import("./Features/FileHandling/Components/FileUploader")
+);
+const DicomTable = lazy(
+    () => import("./Features/DicomTagTable/Components/DicomTable")
+);
 
 import { FileNavigation } from "@components/Navigation/FileNavigation";
 import { FileHeader } from "./Features/FileHandling/Components/FileHeader";

@@ -83,7 +83,7 @@ export const updateAllFiles = async (
             } else {
                 newFiles.push(file);
             }
-        };
+        }
     } else {
         logger.info("Updating single file");
         useStore.getState().setLoadingMsg("Updating all files");
@@ -115,7 +115,7 @@ export const updateAllFiles = async (
             } else {
                 newFiles.push(file);
             }
-        };
+        }
     }
 
     if (downloadOption === "zip") {

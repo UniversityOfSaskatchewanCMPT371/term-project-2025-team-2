@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { DicomTable } from "@features/DicomTagTable/Components/DicomTable";
+import DicomTable from "@features/DicomTagTable/Components/DicomTable";
 import * as storeModule from "@state/Store";
 
 jest.mock("@state/Store", () => {

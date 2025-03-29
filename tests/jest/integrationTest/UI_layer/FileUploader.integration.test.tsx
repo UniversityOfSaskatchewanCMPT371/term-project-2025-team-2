@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { jest } from "@jest/globals";
 import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
-import { FileUploader } from "@features/FileHandling/Components/FileUploader";
+import FileUploader from "@features/FileHandling/Components/FileUploader";
 
 jest.mock("@dataFunctions/DicomData/DicomParserUtils", () => ({
     parseDicomFile: jest.fn(() =>

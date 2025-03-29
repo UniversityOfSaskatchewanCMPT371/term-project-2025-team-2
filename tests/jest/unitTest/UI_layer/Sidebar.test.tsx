@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { createElement } from "react";
-import { Sidebar } from "../../../../src/Components/Navigation/Sidebar";
+import Sidebar from "../../../../src/Components/Navigation/Sidebar";
 import { useStore } from "../../../../src/State/Store";
 
 // Mock the store

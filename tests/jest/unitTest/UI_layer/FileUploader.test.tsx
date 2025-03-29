@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { FileUploader } from "@features/FileHandling/Components/FileUploader";
+import FileUploader from "@features/FileHandling/Components/FileUploader";
 
 describe("FileUploader Component Unit Tests", () => {
     const mockToggleModal = jest.fn();
@@ -34,13 +34,13 @@ describe("FileUploader Component Unit Tests", () => {
                 toggleModal={mockToggleModal}
             />
         );
-    
+
         expect(
             screen.getByText(
                 "Drag and drop DICOM files or folders here, or click the buttons below to select"
             )
         ).toBeInTheDocument();
-    
+
         expect(
             screen.getByRole("button", { name: /select files/i })
         ).toBeInTheDocument();
@@ -54,10 +54,12 @@ describe("FileUploader Component Unit Tests", () => {
                 toggleModal={mockToggleModal}
             />
         );
-    
-        const selectFilesButton = screen.getByRole("button", { name: /select files/i });
+
+        const selectFilesButton = screen.getByRole("button", {
+            name: /select files/i,
+        });
         selectFilesButton.click(); // This won't crash or throw
-    
+
         expect(selectFilesButton).toBeInTheDocument();
     });
     test("clicking 'Select Folder' does not crash component", () => {
@@ -69,11 +71,12 @@ describe("FileUploader Component Unit Tests", () => {
                 toggleModal={mockToggleModal}
             />
         );
-    
-        const selectFolderButton = screen.getByRole("button", { name: /select folder/i });
+
+        const selectFolderButton = screen.getByRole("button", {
+            name: /select folder/i,
+        });
         selectFolderButton.click(); // Simulate folder open intent
-    
+
         expect(selectFolderButton).toBeInTheDocument();
     });
-            
 });

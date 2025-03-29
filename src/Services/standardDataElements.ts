@@ -7,7 +7,9 @@
  * @description - Standard DICOM data elements
  * @returns - Object containing standard DICOM data elements
  */
-export const standardDataElements: { [key: string]: { vr: string; name: string } } = {
+export const standardDataElements: {
+    [key: string]: { vr: string; name: string };
+} = {
     "00000000": { vr: "UL", name: "CommandGroupLength" },
     "00000001": { vr: "UL", name: "CommandLengthToEnd" },
     "00000002": { vr: "UI", name: "AffectedSOPClassUID" },
@@ -3217,7 +3219,10 @@ export const standardDataElements: { [key: string]: { vr: string; name: string }
     "21300080": { vr: "SQ", name: "PresentationLUTContentSequence" },
     "213000A0": { vr: "SQ", name: "ProposedStudySequence" },
     "213000C0": { vr: "SQ", name: "OriginalImageSequence" },
-    "22000001": { vr: "CS", name: "LabelUsingInformationExtractedFromInstances" },
+    "22000001": {
+        vr: "CS",
+        name: "LabelUsingInformationExtractedFromInstances",
+    },
     "22000002": { vr: "UT", name: "LabelText" },
     "22000003": { vr: "CS", name: "LabelStyleSelection" },
     "22000004": { vr: "LT", name: "MediaDisposition" },
@@ -4016,10 +4021,9 @@ export const standardDataElements: { [key: string]: { vr: string; name: string }
     "7Fxx0020": { vr: "OW", name: "VariableCoefficientsSDVN" },
     "7Fxx0030": { vr: "OW", name: "VariableCoefficientsSDHN" },
     "7Fxx0040": { vr: "OW", name: "VariableCoefficientsSDDN" },
-    "FFFAFFFA": { vr: "SQ", name: "DigitalSignaturesSequence" },
-    "FFFCFFFC": { vr: "OB", name: "DataSetTrailingPadding" },
-    "FFFEE000": { vr: "", name: "Item" },
-    "FFFEE00D": { vr: "", name: "ItemDelimitationItem" },
-    "FFFEE0DD": { vr: "", name: "SequenceDelimitationItem" },
+    FFFAFFFA: { vr: "SQ", name: "DigitalSignaturesSequence" },
+    FFFCFFFC: { vr: "OB", name: "DataSetTrailingPadding" },
+    FFFEE000: { vr: "", name: "Item" },
+    FFFEE00D: { vr: "", name: "ItemDelimitationItem" },
+    FFFEE0DD: { vr: "", name: "SequenceDelimitationItem" },
 };
-
