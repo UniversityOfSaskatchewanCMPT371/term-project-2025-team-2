@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef, lazy } from "react";
-import { Sidebar } from "@components/Navigation/Sidebar";
 import { Topbar } from "@components/Navigation/Topbar";
-import { FileUploader } from "./Features/FileHandling/Components/FileUploader";
-import { DicomTable } from "./Features/DicomTagTable/Components/DicomTable";
+const Sidebar = lazy(() => import("@components/Navigation/Sidebar"));
+const FileUploader = lazy(
+    () => import("./Features/FileHandling/Components/FileUploader")
+);
+const DicomTable = lazy(
+    () => import("./Features/DicomTagTable/Components/DicomTable")
+);
+
 import { FileNavigation } from "@components/Navigation/FileNavigation";
 import { FileHeader } from "./Features/FileHandling/Components/FileHeader";
 import { CustomFile as CustomFile } from "./Features/FileHandling/Types/FileTypes";
@@ -13,7 +18,6 @@ import logger from "./Logger/Logger";
 import { LoadingScreen } from "@components/utils/LoadingScreen";
 import { SidePanel } from "@auto/Components/AutoConfirmPanel";
 import { AlertHeader } from "@components/utils/alertHeader";
-
 import { useQuestionModalStore } from "@state/QuestionModalStore";
 
 import { useStore } from "@state/Store";

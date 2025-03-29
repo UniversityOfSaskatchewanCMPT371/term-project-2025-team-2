@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 
 const manifestForPlugIn: Partial<VitePWAOptions> = {
     registerType: "prompt",
@@ -101,10 +102,27 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
 // https://vite.dev/config/
 export default defineConfig({
     base: "./", // This is important for GitHub Pages
-    plugins: [react(), VitePWA(manifestForPlugIn)],
+    define: {
+        "process.env.NODE_ENV": JSON.stringify("production"),
+    },
+    plugins: [
+        react(),
+        VitePWA(manifestForPlugIn),
+        visualizer({
+            filename: "./stats.html",
+            open: true,
+        }),
+    ],
+    optimizeDeps: {
+        include: ["react", "react-dom"],
+    },
     server: {
         port: 5173,
         strictPort: true,
+    },
+    build: {
+        minify: true,
+        sourcemap: false, // for production builds
     },
     resolve: {
         alias: {

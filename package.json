@@ -14,8 +14,8 @@
     "coverage": "jest --coverage --silent",
     "test": "jest --silent",
     "test:smoke": "playwright test -c playwright.config.smoke.ts",
-    "test:unit":"jest tests/jest/unitTest --silent",
-    "test:integration":"jest tests/jest/integrationTest --silent",
+    "test:unit": "jest tests/jest/unitTest --silent",
+    "test:integration": "jest tests/jest/integrationTest --silent",
     "test:integration:playwright": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.integration.ts",
     "test:regression": "NODE_NO_WARNINGS=1 playwright test -c playwright.config.regression.ts",
     "playwright": "node -e \"const start = Date.now(); require('child_process').spawnSync('NODE_NO_WARNINGS=1 playwright test', {shell: true, stdio: 'inherit'}); console.log('Execution time:', ((Date.now() - start)/1000).toFixed(2), 'seconds');\"",
@@ -65,12 +65,14 @@
     "postcss": "^8.5.1",
     "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "rollup-plugin-visualizer": "^5.14.0",
     "tailwindcss": "^3.4.17",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typedoc": "^0.27.6",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0"
+    "vite": "^6.1.0",
+    "vite-plugin-checker": "^0.9.1"
   }
 }
