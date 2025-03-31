@@ -1,123 +1,82 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 
 export const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
+const DEBUG = process.env.DEBUG_TESTS === "true";
 
-const DEBUG = process.env.DEBUG_TESTS === "true" || false;
+const debug = (msg: string) => DEBUG && console.log(msg);
 
-const debug = (message: string) => {
-    if (DEBUG) {
-        console.log(message);
-    }
-};
-
-test("Edit tag value in auto list", async ({ page }) => {
+test("Edit tag value in auto-anon list", async ({ page }) => {
     try {
         await page.goto(BASE_URL);
+        await openAutoAnonEditor(page);
 
-        const sidebarToggleButton = page
-            .locator('button >> svg[data-slot="icon"]')
-            .first();
-        await sidebarToggleButton.waitFor();
-        await sidebarToggleButton.click();
+        await updateTagValue(page, "X0008", "New Value");
 
-        const settingsButton = page.locator("svg.size-6.cursor-pointer");
-        await settingsButton.click();
+        await clickOutside(page); 
 
-        const settingsSection = page.locator('div:has-text("Settings")');
+        await openAutoAnonEditor(page); 
 
-        const questionMarkIcon = settingsSection.locator(
-            "svg.mb-4.size-6.cursor-pointer.text-base-content\\/70"
-        );
-        await expect(questionMarkIcon).toBeVisible();
-        await expect(questionMarkIcon).toBeEnabled();
-
-        await questionMarkIcon.click();
-
-        const modalOrMenu = page.locator(".modal-box");
-        await expect(modalOrMenu).toBeVisible();
-
-        await page.waitForTimeout(1000);
-
-        const advancedMenu = page.getByRole("button", {
-            name: /Advanced/i,
-        });
-
-        await expect(advancedMenu).toBeVisible();
-        await advancedMenu.click();
-
-        const editButton = page
-            .locator("li")
-            .filter({ hasText: "Edit Auto-Anon Tags" });
-        await expect(editButton).toBeVisible({ timeout: 1000 });
-        await editButton.click();
-        await page.waitForTimeout(500);
-
-        const tagRow = page.locator("tr").filter({ hasText: "X0008" }).first();
-
-        const editTagButton = tagRow.locator("svg.h-6.w-6").first();
-        await expect(editTagButton).toBeVisible();
-        await editTagButton.click();
-
-        await page.waitForTimeout(500);
-
-        const tagInput = tagRow.locator("input").first();
-        await expect(tagInput).toBeVisible();
-        await tagInput.fill("New Value");
-
-        const saveButton = page
-            .getByRole("button", {
-                name: /Save/i,
-            })
-            .first();
-
-        await expect(saveButton).toBeEnabled();
-        await saveButton.click();
-
-        await page.waitForTimeout(500);
-
-        await page.mouse.click(
-            page.viewportSize().width / 2,
-            page.viewportSize().height / 2
-        );
-
-        await sidebarToggleButton.waitFor();
-        await sidebarToggleButton.click();
-
-        await settingsButton.click();
-
-        await expect(questionMarkIcon).toBeVisible();
-        await expect(questionMarkIcon).toBeEnabled();
-
-        await questionMarkIcon.click();
-
-        await expect(modalOrMenu).toBeVisible();
-
-        await page.waitForTimeout(1000);
-
-        const advancedMenu2 = page.getByRole("button", {
-            name: /Advanced/i,
-        });
-
-        await expect(advancedMenu2).toBeVisible();
-        await advancedMenu2.click();
-
-        const editButton2 = page
-            .locator("li")
-            .filter({ hasText: "Edit Auto-Anon Tags" });
-        await expect(editButton2).toBeVisible({ timeout: 1000 });
-        await editButton2.click();
-        await page.waitForTimeout(500);
-
-        await page.waitForTimeout(500);
-
-        const newTagRow = page
-            .locator("tr")
-            .filter({ hasText: "X0008" })
-            .first();
-
-        await expect(newTagRow.locator("td").nth(2)).toContainText("New Value");
-    } catch (error) {
-        console.error("Test failed:", error);
-        throw error;
+        await verifyTagValue(page, "X0008", "New Value");
+    } catch (err) {
+        console.error("Test failed:", err);
+        throw err;
     }
 });
+
+async function openAutoAnonEditor(page: Page) {
+    debug("Opening sidebar and settings...");
+    const sidebarToggle = page.locator('button >> svg[data-slot="icon"]').first();
+    await sidebarToggle.waitFor();
+    await sidebarToggle.click();
+
+    const settingsIcon = page.locator("svg.size-6.cursor-pointer");
+    await settingsIcon.click();
+
+    const helpIcon = page
+        .locator('div:has-text("Settings")')
+        .locator("svg.mb-4.size-6.cursor-pointer.text-base-content\\/70");
+
+    await expect(helpIcon).toBeVisible();
+    await helpIcon.click();
+
+    await expect(page.locator(".modal-box")).toBeVisible();
+
+    const advancedBtn = page.getByRole("button", { name: /Advanced/i });
+    await advancedBtn.click();
+
+    const editTags = page.locator("li").filter({ hasText: "Edit Auto-Anon Tags" });
+    await editTags.click();
+    debug("Auto-Anon tag editor opened");
+}
+
+async function updateTagValue(page: Page, tagCode: string, newValue: string) {
+    const tagRow = page.locator("tr").filter({ hasText: tagCode }).first();
+    const editBtn = tagRow.locator("svg.h-6.w-6").first();
+
+    await expect(editBtn).toBeVisible();
+    await editBtn.click();
+
+    const input = tagRow.locator("input").first();
+    await expect(input).toBeVisible();
+    await input.fill(""); // clear existing value
+    await input.fill(newValue);
+
+    const saveBtn = page.getByRole("button", { name: /Save/i }).first();
+    await expect(saveBtn).toBeEnabled();
+    await saveBtn.click();
+
+    debug(`Tag ${tagCode} updated to "${newValue}"`);
+}
+
+async function verifyTagValue(page: Page, tagCode: string, expectedValue: string) {
+    const tagRow = page.locator("tr").filter({ hasText: tagCode }).first();
+    const valueCell = tagRow.locator("td").nth(2);
+
+    await expect(valueCell).toContainText(expectedValue);
+    debug(`Verified tag ${tagCode} = "${expectedValue}"`);
+}
+
+async function clickOutside(page: Page) {
+    const vp = page.viewportSize() || { width: 1280, height: 720 };
+    await page.mouse.click(vp.width / 2, vp.height / 2);
+}
