@@ -12,9 +12,9 @@ test("Edit tag value in auto-anon list", async ({ page }) => {
 
         await updateTagValue(page, "X0008", "New Value");
 
-        await clickOutside(page); 
+        await clickOutside(page);
 
-        await openAutoAnonEditor(page); 
+        await openAutoAnonEditor(page);
 
         await verifyTagValue(page, "X0008", "New Value");
     } catch (err) {
@@ -25,7 +25,9 @@ test("Edit tag value in auto-anon list", async ({ page }) => {
 
 async function openAutoAnonEditor(page: Page) {
     debug("Opening sidebar and settings...");
-    const sidebarToggle = page.locator('button >> svg[data-slot="icon"]').first();
+    const sidebarToggle = page
+        .locator('button >> svg[data-slot="icon"]')
+        .first();
     await sidebarToggle.waitFor();
     await sidebarToggle.click();
 
@@ -44,7 +46,9 @@ async function openAutoAnonEditor(page: Page) {
     const advancedBtn = page.getByRole("button", { name: /Advanced/i });
     await advancedBtn.click();
 
-    const editTags = page.locator("li").filter({ hasText: "Edit Auto-Anon Tags" });
+    const editTags = page
+        .locator("li")
+        .filter({ hasText: "Edit Auto-Anon Tags" });
     await editTags.click();
     debug("Auto-Anon tag editor opened");
 }
@@ -68,7 +72,11 @@ async function updateTagValue(page: Page, tagCode: string, newValue: string) {
     debug(`Tag ${tagCode} updated to "${newValue}"`);
 }
 
-async function verifyTagValue(page: Page, tagCode: string, expectedValue: string) {
+async function verifyTagValue(
+    page: Page,
+    tagCode: string,
+    expectedValue: string
+) {
     const tagRow = page.locator("tr").filter({ hasText: tagCode }).first();
     const valueCell = tagRow.locator("td").nth(2);
 

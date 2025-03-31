@@ -31,7 +31,8 @@ beforeEach(() => {
             setAlertMsg: mockSetAlertMsg,
             setAlertType: mockSetAlertType,
             autoAnonTagsEditPanelVisible: true,
-            setAutoAnonTagsEditPanelVisible: mockSetAutoAnonTagsEditPanelVisible,
+            setAutoAnonTagsEditPanelVisible:
+                mockSetAutoAnonTagsEditPanelVisible,
         })
     );
 
@@ -66,46 +67,52 @@ describe("AutoAnonTagsEdit", () => {
         fireEvent.click(screen.getByTestId("CheckCircleIcon"));
 
         expect(mockSetAlertType).toHaveBeenCalledWith("alert-error");
-        expect(mockSetAlertMsg).toHaveBeenCalledWith("Tag ID has to be 8 numbers");
+        expect(mockSetAlertMsg).toHaveBeenCalledWith(
+            "Tag ID has to be 8 numbers"
+        );
         expect(mockSetShowAlert).toHaveBeenCalledWith(true);
     });
     it("validates empty tag value", () => {
         render(<AutoAnonTagsEdit />);
         fireEvent.click(screen.getByTestId("AutoAnonAddTag"));
-    
+
         fireEvent.change(screen.getByPlaceholderText("Tag ID"), {
             target: { value: "00100010" },
         });
-    
+
         // Simulate auto-filling tagName via filterTagName
         fireEvent.change(screen.getByPlaceholderText("Tag Value"), {
             target: { value: "" }, // explicitly empty
         });
-    
+
         fireEvent.click(screen.getByTestId("CheckCircleIcon"));
-    
-        expect(mockSetAlertMsg).toHaveBeenCalledWith("Tag Value can't be empty");
+
+        expect(mockSetAlertMsg).toHaveBeenCalledWith(
+            "Tag Value can't be empty"
+        );
         expect(mockSetAlertType).toHaveBeenCalledWith("alert-error");
         expect(mockSetShowAlert).toHaveBeenCalledWith(true);
     });
-    
+
     it("accepts 'Unknown' tag name for unknown tagId", () => {
         render(<AutoAnonTagsEdit />);
         fireEvent.click(screen.getByTestId("AutoAnonAddTag"));
-    
+
         fireEvent.change(screen.getByPlaceholderText("Tag ID"), {
             target: { value: "00000000" }, // unknown tagId
         });
-    
+
         fireEvent.change(screen.getByPlaceholderText("Tag Value"), {
             target: { value: "AnonValue" },
         });
-    
+
         fireEvent.click(screen.getByTestId("CheckCircleIcon"));
-    
-        expect(mockSetAlertMsg).not.toHaveBeenCalledWith("Tag Name can't be empty");
+
+        expect(mockSetAlertMsg).not.toHaveBeenCalledWith(
+            "Tag Name can't be empty"
+        );
     });
-    
+
     it("closes panel on Cancel", () => {
         render(<AutoAnonTagsEdit />);
         fireEvent.click(screen.getByText("Cancel"));

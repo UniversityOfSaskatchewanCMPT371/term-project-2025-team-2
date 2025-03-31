@@ -141,13 +141,17 @@ describe("SidePanel", () => {
         const table = screen.getByRole("table");
         const props = table.querySelectorAll("tr")[1]; // first tag row
         const rowComponent = props.querySelector("input");
-    
+
         if (rowComponent) {
             const handleUpdate = rowComponent.getAttribute("onupdatevalue");
             if (typeof handleUpdate === "function") {
                 // handleUpdate(tagIdToDelete, "new val", true);
                 expect(mockSetTags).toHaveBeenCalledWith([
-                    { tagId: "0010,0020", tagName: "PatientID", newValue: "12345" },
+                    {
+                        tagId: "0010,0020",
+                        tagName: "PatientID",
+                        newValue: "12345",
+                    },
                 ]);
             }
         }
@@ -172,12 +176,11 @@ describe("SidePanel", () => {
                 fileStructure: {},
             })
         );
-    
+
         const { container } = render(<SidePanel />);
         expect(container.firstChild).toHaveClass("translate-x-full");
     });
     it("renders PIIResultsTable when foundPII is true", () => {
-    
         (useStore as unknown as jest.Mock).mockImplementation((selector) =>
             selector({
                 setSidePanelVisible: mockSetSidePanelVisible,
@@ -197,9 +200,8 @@ describe("SidePanel", () => {
                 fileStructure: {},
             })
         );
-    
+
         const { container } = render(<SidePanel />);
         expect(container.innerHTML).not.toContain("PIIResultsTable"); // won't render unless setFoundPII = true
     });
-    
 });
