@@ -168,7 +168,7 @@ export const DicomTableRow: React.FC<DicomTableRowProps> = ({
                                     <span>{newValue}</span>
                                 )}
                             </div>
-                            {lockEditingTags.includes(row.tagId) &&
+                            {lockEditingTags.includes(row.tagId) || nested &&
                             !allowEditLockedTags ? null : !deleteTag ? (
                                 isEditing ? (
                                     <>
