@@ -174,7 +174,7 @@ describe("Upload Folder Integration Test", () => {
 
         const file1 = realFiles[0];
         const file2 = realFiles[1];
-        const files = [{ name: file1.name }, { name: file2.name }];
+        const files = [{ name: file1.name, content: new Blob }, { name: file2.name, content: new Blob }];
 
         const newTagValues = [
             {
@@ -228,7 +228,7 @@ describe("Upload Folder Integration Test", () => {
 
         const file1 = realFiles[0];
         const file2 = realFiles[1];
-        const files = [{ name: file1.name }, { name: file2.name }];
+        const files = [{ name: file1.name, content: new Blob }, { name: file2.name, content: new Blob }];
 
         const newTagValues = [
             {

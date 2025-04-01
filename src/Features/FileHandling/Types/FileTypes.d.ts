@@ -37,14 +37,21 @@ export interface FileNavigationProps {
 export interface FileData {
     name: string;
     content: Blob;
+    filePath?: string;
     path?: string;
+    metadata?: {
+        size?: number;
+        sizeFormatted?: string;
+        lastModified?: string;
+        creationDate?: string;
+    };
 }
 
 /**
  * interface FileUploaderProps
  */
 export interface FileUploaderProps {
-    onFileUpload: (files: CustomFile[], dicomData: any[]) => void;
+    onFileUpload: (files: FileData[], dicomData: any[]) => void;
     loading: (value: boolean) => void;
     clearData: () => void;
     toggleModal: () => void;
@@ -67,3 +74,14 @@ export interface FileHeaderProps {
 export interface CustomFile {
     name: string;
 }
+
+// Enhanced File type with metadata
+export interface EnhancedFile extends File {
+    metadata?: {
+        size: number;
+        lastModified: string;
+        sizeFormatted: string;
+    };
+}
+
+

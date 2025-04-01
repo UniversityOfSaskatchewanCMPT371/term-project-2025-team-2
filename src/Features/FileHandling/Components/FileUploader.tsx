@@ -101,8 +101,21 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             });
         });
 
+        // Enhance files with metadata before building the structure
+        const enhancedFiles = fileArray.map((file) => {
+            // Create a new object with file properties and additional metadata
+            return {
+                ...file,
+                metadata: {
+                    size: file.size,
+                    lastModified: new Date(file.lastModified).toISOString(),
+                    sizeFormatted: formatFileSize(file.size),
+                },
+            };
+        });
+
         const fileStructure =
-            existingFileStructure || buildFileStructure(fileArray);
+            existingFileStructure || buildFileStructure(enhancedFiles);
 
         logger.debug(
             existingFileStructure
@@ -112,8 +125,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
         setFileStructure(fileStructure);
 
+        // Continue with the existing code...
         parseDicomFiles(
-            fileArray,
+            fileArray, // Keep using original fileArray here as parseDicomFiles expects File objects
             parseDicomFile,
             toggleModal,
             (fileName) => {
@@ -134,12 +148,42 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                     (_, i) => dicomDataArray[i] !== null
                 );
 
-                onFileUpload(validFiles, validData);
+                const validFilesWithMetadata = validFiles.map(
+                    (file, index) => ({
+                        ...file,
+                        content: dicomDataArray[index]?.DicomDataSet,
+                        metadata: {
+                            size: file.size,
+                            lastModified: new Date(
+                                file.lastModified
+                            ).toISOString(),
+                            sizeFormatted: formatFileSize(file.size),
+                        },
+                        name: file.name,
+                        filePath: (file as any).webkitRelativePath || file.name,
+                    })
+                );
+                onFileUpload(validFilesWithMetadata, validData);
             })
             .finally(() => {
                 loading(false);
                 setLoadingMsg("");
             });
+    };
+
+    /**
+     * Formats file size into human-readable format
+     * @param bytes - File size in bytes
+     * @returns Human-readable file size string
+     */
+    const formatFileSize = (bytes: number): string => {
+        if (bytes === 0) return "0 Bytes";
+
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
     };
 
     /**

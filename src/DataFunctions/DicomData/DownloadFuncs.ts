@@ -25,12 +25,46 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
     try {
         const zip = new JSZip();
 
+        // Create a map to group files by their folder path
+        // Use a composite key of metadata for matching when available
         const folderMap = new Map<string, FileData[]>();
 
+        // Create a lookup map for files with the same name but different metadata
+        const fileSignatureMap = new Map<string, string>();
+
+        // First pass - analyze files and create signatures
         files.forEach((file) => {
+            const size = file.content?.size;
+            const lastModified = file.metadata?.lastModified;
+
+            // Create a unique signature for this file based on available metadata
+            let fileSignature = file.name;
+            if (size !== undefined) fileSignature += `-${size}`;
+            if (lastModified) fileSignature += `-${lastModified}`;
+
+            // Store the signature mapping
+            logger.debug("File signature: ", fileSignature);
+            fileSignatureMap.set(fileSignature, file.path || "");
+        });
+
+        // Second pass - organize files by folder using the signature lookups
+        files.forEach((file) => {
+            // Determine folder path based on metadata matching
             let folderPath = "";
 
-            if (file.path) {
+            // Try to find the folder path using the file signature
+            const size = file.content?.size;
+            const lastModified = file.metadata?.lastModified;
+            let fileSignature = file.name;
+            if (size !== undefined) fileSignature += `-${size}`;
+            if (lastModified) fileSignature += `-${lastModified}`;
+
+            // If we have a mapping for this signature, use it
+            if (fileSignatureMap.has(fileSignature)) {
+                folderPath = fileSignatureMap.get(fileSignature) || "";
+            }
+            // Otherwise fall back to the original logic
+            else if (file.path) {
                 folderPath = file.path;
             } else if (file.name.includes("/")) {
                 const parts = file.name.split("/");
@@ -38,16 +72,20 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
                 folderPath = parts.join("/");
             }
 
+            // Add to the folder mapping
             if (!folderMap.has(folderPath)) {
                 folderMap.set(folderPath, []);
             }
-
             folderMap.get(folderPath)?.push(file);
+
+            logger.debug(
+                `Adding file ${file.name} to folder ${folderPath || "root"}`
+            );
         });
 
         folderMap.forEach((folderFiles, folderPath) => {
             folderFiles.forEach((file) => {
-                setLoadingMsg(`Ziping file: ${file.name}`);
+                setLoadingMsg(`Zipping file: ${file.name}`);
                 let fileName = file.name;
                 if (file.name.includes("/")) {
                     fileName = file.name.split("/").pop() || file.name;
@@ -61,6 +99,7 @@ export async function createZipFromFiles(files: FileData[]): Promise<Blob> {
                     fullPath = normalizedPath + fileName;
                 }
 
+                logger.debug(`Adding to ZIP: ${fullPath}`);
                 zip.file(fullPath, file.content);
             });
         });

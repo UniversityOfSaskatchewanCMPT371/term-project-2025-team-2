@@ -1,7 +1,7 @@
 import { parseDicomFile } from "@dataFunctions/DicomData/DicomParserUtils";
 
 /**
- * Parses an array of DICOM files and returns structured results.
+ * Parses an array of DICOM files and returns structured results with metadata.
  *
  * @param fileArray - Array of File objects to parse
  * @param parseDicomFileFn - Function to parse individual DICOM files
@@ -25,10 +25,32 @@ export async function parseDicomFiles(
 
                     const path = (file as any).webkitRelativePath || file.name;
 
+                    // Format file size into human-readable format
+                    const formatFileSize = (bytes: number): string => {
+                        if (bytes === 0) return "0 Bytes";
+
+                        const k = 1024;
+                        const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+                        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+                        return (
+                            parseFloat((bytes / Math.pow(k, i)).toFixed(2)) +
+                            " " +
+                            sizes[i]
+                        );
+                    };
+
                     return {
                         ...data,
                         filePath: path,
                         fileName: file.name,
+                        fileMetadata: {
+                            size: file.size,
+                            sizeFormatted: formatFileSize(file.size),
+                            lastModified: new Date(
+                                file.lastModified
+                            ).toISOString(),
+                        },
                     };
                 })
                 .catch(() => {

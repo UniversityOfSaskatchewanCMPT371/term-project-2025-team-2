@@ -1,7 +1,7 @@
 import { useStore } from "@state/Store";
 import { isSafari } from "react-device-detect";
 
-const sampleFiles = [{ name: "file1.dcm" }];
+const sampleFiles = [{ name: "file1.dcm", content: new Blob }];
 
 const sampleTag1 = {
     fileName: "file1",

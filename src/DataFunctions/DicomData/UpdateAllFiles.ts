@@ -5,6 +5,7 @@ import { getSingleFileTagEdits } from "./TagUpdater";
 import logger from "@logger/Logger";
 import { DicomData, TableUpdateData } from "@dicom//Types/DicomTypes";
 import { useStore } from "@state/Store";
+import { FileData } from "@file/Types/FileTypes";
 
 /**
  * Update all files with new tag values
@@ -41,7 +42,7 @@ export const updateAllFiles = async (
     dicomData: DicomData[],
     series: boolean,
     newTagValues: TableUpdateData[],
-    files: { name: string }[],
+    files: FileData[],
     currentFileIndex: number,
     downloadOption: string,
     fileStructure: Record<string, File[]>,
@@ -75,8 +76,17 @@ export const updateAllFiles = async (
             const file = createFile(fileName, updatedFile, isEdited);
 
             // Set the correct file path information
-            const filePath = determineFilePath(fileName, fileStructure);
+            // const filePath = determineFilePath(fileName, fileStructure);
+            const filePath =
+                files[index].filePath ||
+                determineFilePath(fileName, fileStructure);
             file.path = filePath;
+
+            if (file.path.includes("/")) {
+                const parts = file.path.split("/");
+                parts.pop();
+                file.path = parts.join("/");
+            }
 
             if (downloadOption === "single") {
                 downloadDicomFile(file);
@@ -107,8 +117,17 @@ export const updateAllFiles = async (
             const file = createFile(fileName, updatedFile, isEdited);
 
             // Set the correct file path information
-            const filePath = determineFilePath(fileName, fileStructure);
+            // const filePath = determineFilePath(fileName, fileStructure);
+            const filePath =
+                files[index].filePath ||
+                determineFilePath(fileName, fileStructure);
             file.path = filePath;
+
+            if (file.path.includes("/")) {
+                const parts = file.path.split("/");
+                parts.pop();
+                file.path = parts.join("/");
+            }
 
             if (downloadOption === "single") {
                 downloadDicomFile(file);

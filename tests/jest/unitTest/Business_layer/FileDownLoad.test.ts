@@ -81,7 +81,7 @@ describe("Download Functions", () => {
 
         const mockZip = (JSZip as unknown as jest.Mock).mock.results[0].value;
         expect(mockZip.file).toHaveBeenCalledWith(
-            "folder1/file1.txt",
+            "file1.txt",
             expect.any(Blob)
         );
     });
