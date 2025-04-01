@@ -91,31 +91,31 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "url": "apple-touch-icon.png",
     "revision": "c84a151eb988fc8574c09a2eb4697489"
   }, {
-    "url": "assets/AutoAnonTagsEdit-C_IK8xpl.js",
+    "url": "assets/AutoAnonTagsEdit-awank9y_.js",
     "revision": null
   }, {
-    "url": "assets/CheckCircleIcon-BRzTZihK.js",
+    "url": "assets/CheckCircleIcon-D1tz1xpx.js",
     "revision": null
   }, {
-    "url": "assets/DicomParserUtils-DYd6ckIR.js",
+    "url": "assets/DicomParserUtils-BRKyR-75.js",
     "revision": null
   }, {
-    "url": "assets/DicomTable-DiVtEo6b.js",
+    "url": "assets/DicomTable-C_roNsNd.js",
     "revision": null
   }, {
-    "url": "assets/DictTagsEdit-CTSQckve.js",
+    "url": "assets/DictTagsEdit-BahJ0Sw3.js",
     "revision": null
   }, {
-    "url": "assets/FileUploader-DrFOVWM1.js",
-    "revision": null
-  }, {
-    "url": "assets/index-CDmeLagt.js",
+    "url": "assets/FileUploader-B4SAnLu8.js",
     "revision": null
   }, {
     "url": "assets/index-hiibqYi6.css",
     "revision": null
   }, {
-    "url": "assets/Sidebar-CaOjFvD5.js",
+    "url": "assets/index-xvrXNIK-.js",
+    "revision": null
+  }, {
+    "url": "assets/Sidebar-DS6-0qI_.js",
     "revision": null
   }, {
     "url": "assets/workbox-window.prod.es5-B9K5rw8f.js",
@@ -128,7 +128,7 @@ define(['./workbox-3c498241'], (function (workbox) { 'use strict';
     "revision": "22479316f56895e8dd84af4c1619e1b2"
   }, {
     "url": "index.html",
-    "revision": "6553d1cf6f2b15b52990d40a9f38da91"
+    "revision": "097cfc194948dcbfc5adc492f4d3a9d7"
   }, {
     "url": "maskable_icon.png",
     "revision": "ae68a3429b51f884211cebf8011bc4eb"
