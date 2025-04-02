@@ -21,7 +21,7 @@ updates:
     labels:
       - "actions"
     commit-message:
-      prefix: "chore(actions):
+      prefix: "chore(actions):"
     versioning-strategy: "auto"
 
   #Enable dependabot for docker
@@ -32,7 +32,7 @@ updates:
     labels:
       - "docker"
     commit-message:
-      prefix: "chore(docker):
+      prefix: "chore(docker):"
     allow:
       - dependency-type: "direct"
     versioning-strategy: "auto"
