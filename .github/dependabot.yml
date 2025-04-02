@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     labels: 
       - "dependencies"
     commit-message:
@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule: 
-      interval: "weekly"
+      interval: "daily"
     labels:
       - "actions"
     commit-message:
@@ -28,7 +28,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/docker/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     labels:
       - "docker"
     commit-message:
