@@ -23,3 +23,16 @@ updates:
     commit-message:
       prefix: "chore(actions):
     versioning-strategy: "auto"
+
+  #Enable dependabot for docker
+  - package-ecosystem: "docker"
+    directory: "/docker/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "docker"
+    commit-message:
+      prefix: "chore(docker):
+    allow:
+      - dependency-type: "direct"
+    versioning-strategy: "auto"
