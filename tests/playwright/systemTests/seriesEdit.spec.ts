@@ -149,9 +149,8 @@ test("Edit tag in series", async ({ page }) => {
         if (!dicomFile) {
             throw new Error("No DICOM file found in the extracted zip");
         }
-        const file = dicomFile[0]
-        console.log(`File to upload: ${file}`);
-        await fileInput.setInputFiles(file);
+        
+        await fileInput.setInputFiles(dicomFile);
 
         await page.waitForSelector("text=Edit Files", {
             state: "visible",

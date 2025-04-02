@@ -86,6 +86,8 @@ export const updateAllFiles = async (
                 const parts = file.path.split("/");
                 parts.pop();
                 file.path = parts.join("/");
+            } else {
+                file.path = "";
             }
 
             if (downloadOption === "single") {
@@ -127,6 +129,8 @@ export const updateAllFiles = async (
                 const parts = file.path.split("/");
                 parts.pop();
                 file.path = parts.join("/");
+            } else {
+                file.path = "";
             }
 
             if (downloadOption === "single") {
