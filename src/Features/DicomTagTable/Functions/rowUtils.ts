@@ -1,5 +1,6 @@
 import logger from "@logger/Logger";
 import { TableUpdateData } from "../Types/DicomTypes";
+import { getTagName } from "@dataFunctions/DicomData/DicomParserUtils";
 
 /**
  * createRows function
@@ -48,7 +49,7 @@ export const createRows = (
         if (tag.add && tag.fileName === fileName) {
             data.push({
                 tagId: tag.tagId,
-                tagName: "name",
+                tagName: getTagName(tag.tagId) || "Unknown",
                 value: tag.newValue,
                 hidden: false,
                 updated: false,
