@@ -149,7 +149,7 @@ test("Edit tag in series", async ({ page }) => {
         if (!dicomFile) {
             throw new Error("No DICOM file found in the extracted zip");
         }
-
+        
         await fileInput.setInputFiles(dicomFile);
 
         await page.waitForSelector("text=Edit Files", {

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { isSafari } from "react-device-detect";
 import { TagsAnon } from "@auto/Functions/TagsAnon";
 import logger from "@logger/Logger";
-import { CustomFile } from "@file/Types/FileTypes";
+import { FileData } from "@file/Types/FileTypes";
 import {
     TableUpdateData,
     DicomData,
@@ -115,8 +115,8 @@ import {
  * @property {() => Promise<boolean>} resetTagDictionary - Reset the tag dictionary to defaults
  */
 type Store = {
-    files: CustomFile[];
-    setFiles: (files: CustomFile[]) => void;
+    files: FileData[];
+    setFiles: (files: FileData[]) => void;
 
     dicomData: DicomData[];
     setDicomData: (dicomData: DicomData[]) => void;
@@ -230,7 +230,7 @@ type Store = {
  * @returns {Store} The initialized Zustand store with all state and actions
  */
 export const useStore = create<Store>((set) => ({
-    files: [] as CustomFile[],
+    files: [] as FileData[],
     setFiles: (files) => set({ files }),
 
     dicomData: [] as DicomData[],

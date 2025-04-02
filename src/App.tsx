@@ -10,7 +10,7 @@ const DicomTable = lazy(
 
 import { FileNavigation } from "@components/Navigation/FileNavigation";
 import { FileHeader } from "./Features/FileHandling/Components/FileHeader";
-import { CustomFile as CustomFile } from "./Features/FileHandling/Types/FileTypes";
+import { FileData } from "./Features/FileHandling/Types/FileTypes";
 import { Footer } from "@components/Navigation/Footer";
 import { QuestionModal } from "./Components/utils/Modals/QuestionModal";
 import { Modal } from "@components/utils/Modals/Modal";
@@ -202,7 +202,7 @@ export const App: React.FC = () => {
 
     // File handling
     const handleFileUpload = (
-        newFiles: CustomFile[],
+        newFiles: FileData[],
         newDicomData: DicomData[]
     ) => {
         logger.info("App: File upload started");

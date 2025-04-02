@@ -35,7 +35,7 @@ jest.mock("@dataFunctions/DicomData/TagUpdater", () => ({
 
 describe("updateAllFiles", () => {
     let dicomData: { DicomDataSet: string; tags: {} }[];
-    let files: { name: string }[];
+    let files: { name: string, content: Blob }[];
     let currentFileIndex: number;
     let newTagValues: TableUpdateData[];
 
@@ -44,7 +44,7 @@ describe("updateAllFiles", () => {
             { DicomDataSet: "dicom1", tags: {} },
             { DicomDataSet: "dicom2", tags: {} },
         ];
-        files = [{ name: "file1.dcm" }, { name: "file2.dcm" }];
+        files = [{ name: "file1.dcm", content: new Blob }, { name: "file2.dcm", content: new Blob }];
         currentFileIndex = 0;
         newTagValues = [
             {
