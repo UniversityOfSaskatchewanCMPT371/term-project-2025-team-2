@@ -1,0 +1,101 @@
+diff --git a/src/Services/standardDataElements.ts b/src/Services/standardDataElements.ts
+index e56e12e6..e162beff 100755
+--- a/src/Services/standardDataElements.ts
++++ b/src/Services/standardDataElements.ts
+@@ -14,7 +14,7 @@ export const standardDataElements: {
+     "00000001": { vr: "UL", name: "CommandLengthToEnd" },
+     "00000002": { vr: "UI", name: "AffectedSOPClassUID" },
+     "00000003": { vr: "UI", name: "RequestedSOPClassUID" },
+-    "00000010": { vr: "SH", name: "CommandRecognitionCode" },
++    "00000010": { vr: "SH", name: "CommandRecognitionCode" },       // Here is SH
+     "00000100": { vr: "US", name: "CommandField" },
+     "00000110": { vr: "US", name: "MessageID" },
+     "00000120": { vr: "US", name: "MessageIDBeingRespondedTo" },
+@@ -41,13 +41,13 @@ export const standardDataElements: {
+     "00001023": { vr: "US", name: "NumberOfWarningSuboperations" },
+     "00001030": { vr: "AE", name: "MoveOriginatorApplicationEntityTitle" },
+     "00001031": { vr: "US", name: "MoveOriginatorMessageID" },
+-    "00004000": { vr: "LT", name: "DialogReceiver" },
++    "00004000": { vr: "LT", name: "DialogReceiver" },                   // Here is LT
+     "00004010": { vr: "LT", name: "TerminalType" },
+     "00005010": { vr: "SH", name: "MessageSetID" },
+     "00005020": { vr: "SH", name: "EndMessageID" },
+     "00005110": { vr: "LT", name: "DisplayFormat" },
+     "00005120": { vr: "LT", name: "PagePositionID" },
+-    "00005130": { vr: "CS", name: "TextFormatID" },
++    "00005130": { vr: "CS", name: "TextFormatID" },                     // Here is CS
+     "00005140": { vr: "CS", name: "NormalReverse" },
+     "00005150": { vr: "CS", name: "AddGrayScale" },
+     "00005160": { vr: "CS", name: "Borders" },
+@@ -64,7 +64,7 @@ export const standardDataElements: {
+     "00020012": { vr: "UI", name: "ImplementationClassUID" },
+     "00020013": { vr: "SH", name: "ImplementationVersionName" },
+     "00020016": { vr: "AE", name: "SourceApplicationEntityTitle" },
+-    "00020100": { vr: "UI", name: "PrivateInformationCreatorUID" },
++    "00020100": { vr: "UI", name: "PrivateInformationCreatorUID" },             // Here is UI
+     "00020102": { vr: "OB", name: "PrivateInformation" },
+     "00041130": { vr: "CS", name: "FileSetID" },
+     "00041141": { vr: "CS", name: "FileSetDescriptorFileID" },
+@@ -102,8 +102,8 @@ export const standardDataElements: {
+     "00080006": { vr: "SQ", name: "LanguageCodeSequence" },
+     "00080008": { vr: "CS", name: "ImageType" },
+     "00080010": { vr: "SH", name: "RecognitionCode" },
+-    "00080012": { vr: "DA", name: "InstanceCreationDate" },
+-    "00080013": { vr: "TM", name: "InstanceCreationTime" },
++    "00080012": { vr: "DA", name: "InstanceCreationDate" },                 // Here is DA
++    "00080013": { vr: "TM", name: "InstanceCreationTime" },                 // Here is TM
+     "00080014": { vr: "UI", name: "InstanceCreatorUID" },
+     "00080016": { vr: "UI", name: "SOPClassUID" },
+     "00080018": { vr: "UI", name: "SOPInstanceUID" },
+@@ -115,7 +115,7 @@ export const standardDataElements: {
+     "00080023": { vr: "DA", name: "ContentDate" },
+     "00080024": { vr: "DA", name: "OverlayDate" },
+     "00080025": { vr: "DA", name: "CurveDate" },
+-    "0008002A": { vr: "DT", name: "AcquisitionDateTime" },
++    "0008002A": { vr: "DT", name: "AcquisitionDateTime" },                  // Here is DT
+     "00080030": { vr: "TM", name: "StudyTime" },
+     "00080031": { vr: "TM", name: "SeriesTime" },
+     "00080032": { vr: "TM", name: "AcquisitionTime" },
+@@ -138,9 +138,9 @@ export const standardDataElements: {
+     "00080068": { vr: "CS", name: "PresentationIntentType" },
+     "00080070": { vr: "LO", name: "Manufacturer" },
+     "00080080": { vr: "LO", name: "InstitutionName" },
+-    "00080081": { vr: "ST", name: "InstitutionAddress" },
++    "00080081": { vr: "ST", name: "InstitutionAddress" },               // Here is ST
+     "00080082": { vr: "SQ", name: "InstitutionCodeSequence" },
+-    "00080090": { vr: "PN", name: "ReferringPhysicianName" },
++    "00080090": { vr: "PN", name: "ReferringPhysicianName" },           // Here is PN
+     "00080092": { vr: "ST", name: "ReferringPhysicianAddress" },
+     "00080094": { vr: "SH", name: "ReferringPhysicianTelephoneNumbers" },
+     "00080096": { vr: "SQ", name: "ReferringPhysicianIdentificationSequence" },
+@@ -222,7 +222,7 @@ export const standardDataElements: {
+     "00082112": { vr: "SQ", name: "SourceImageSequence" },
+     "00082120": { vr: "SH", name: "StageName" },
+     "00082122": { vr: "IS", name: "StageNumber" },
+-    "00082124": { vr: "IS", name: "NumberOfStages" },
++    "00082124": { vr: "IS", name: "NumberOfStages" },               // Here is IS
+     "00082127": { vr: "SH", name: "ViewName" },
+     "00082128": { vr: "IS", name: "ViewNumber" },
+     "00082129": { vr: "IS", name: "NumberOfEventTimers" },
+@@ -313,10 +313,10 @@ export const standardDataElements: {
+     "00101002": { vr: "SQ", name: "OtherPatientIDsSequence" },
+     "00101005": { vr: "PN", name: "PatientBirthName" },
+     "00101010": { vr: "AS", name: "PatientAge" },
+-    "00101020": { vr: "DS", name: "PatientSize" },
++    "00101020": { vr: "DS", name: "PatientSize" },                  // Here is DS
+     "00101021": { vr: "SQ", name: "PatientSizeCodeSequence" },
+     "00101030": { vr: "DS", name: "PatientWeight" },
+-    "00101040": { vr: "LO", name: "PatientAddress" },
++    "00101040": { vr: "LO", name: "PatientAddress" },               // Here is LO
+     "00101050": { vr: "LO", name: "InsurancePlanIdentification" },
+     "00101060": { vr: "PN", name: "PatientMotherBirthName" },
+     "00101080": { vr: "LO", name: "MilitaryRank" },
+@@ -1989,7 +1989,7 @@ export const standardDataElements: {
+     "00400020": { vr: "CS", name: "ScheduledProcedureStepStatus" },
+     "00400026": { vr: "SQ", name: "OrderPlacerIdentifierSequence" },
+     "00400027": { vr: "SQ", name: "OrderFillerIdentifierSequence" },
+-    "00400031": { vr: "UT", name: "LocalNamespaceEntityID" },
++    "00400031": { vr: "UT", name: "LocalNamespaceEntityID" },               // Here is UT
+     "00400032": { vr: "UT", name: "UniversalEntityID" },
+     "00400033": { vr: "CS", name: "UniversalEntityIDType" },
+     "00400035": { vr: "CS", name: "IdentifierTypeCode" },
