@@ -1,12 +1,13 @@
 {
   "name": "DICOM Tag Editor",
   "short_name": "DICOM Editor",
+  "description": "A Progressive Web App for viewing and editing DICOM files",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f0e7db",
+  "theme_color": "#171717",
   "lang": "en",
   "scope": "./",
-  "description": "A Progressive Web App for viewing and editing DICOM files",
   "icons": [
     {
       "src": "./android-chrome-192x192.png",
@@ -33,6 +34,5 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#171717",
   "orientation": "portrait"
 }
