@@ -2,7 +2,7 @@ name: Regression Tests
 
 on:
   workflow_run:
-    workflows: [ "CI" ]
+    workflows: [ "System Test" ]
     types: 
     - completed
 
