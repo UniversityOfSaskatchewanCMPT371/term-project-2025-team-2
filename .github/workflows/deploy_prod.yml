@@ -28,7 +28,7 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
       - name: Deploy to VM
         run: |
-          ssh -A -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} << 'EOF'
+          ssh -A -v -o StrictHostKeyChecking=no -T ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} << 'EOF'
             export DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
             export DOCKERHUB_PASSWORD="${{ secrets.DOCKERHUB_PASSWORD }}"
             bash ~/run_deployment.sh
