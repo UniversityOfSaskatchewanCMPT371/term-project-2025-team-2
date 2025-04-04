@@ -28,11 +28,8 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
       - name: Deploy to VM
         run: |
-          ssh -A -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} "
-            ssh -A -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TEAM2_SSH_HOST }} '
-              echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin &&
-              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest &&
-              docker-compose down &&
-              docker-compose up -d
-            '
-          "
+          ssh -A -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} << 'EOF'
+            export DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
+            export DOCKERHUB_PASSWORD="${{ secrets.DOCKERHUB_PASSWORD }}"
+            bash ~/run_deployment.sh
+          EOF
