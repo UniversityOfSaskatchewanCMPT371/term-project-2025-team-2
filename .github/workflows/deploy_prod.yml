@@ -1,0 +1,37 @@
+name: Deploy to VM
+
+on:
+  push:
+    branches: "fix/deployment"
+  workflow_run:
+    workflows: [ "CI" ]
+    types: 
+    - completed
+  
+  workflow_dispatch:
+
+jobs:
+  deploy_vm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Log in to Dockerhub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Build, tag, and push to dockerhub
+        run: |
+          docker build -f docker/prod/Dockerfile -t dicom-app .
+          docker tag dicom-app ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
+      - name: Deploy to VM
+        run: |
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} "
+            ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TEAM2_SSH_HOST }} '
+              echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin &&
+              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest &&
+              docker compose up -d
+            '
+          "
