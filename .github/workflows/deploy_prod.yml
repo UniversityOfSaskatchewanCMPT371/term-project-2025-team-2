@@ -1,0 +1,33 @@
+name: Deploy to VM
+
+on:
+  workflow_run:
+    workflows: [ "Regression Tests" ]
+    types: 
+    - completed
+  
+  workflow_dispatch:
+
+jobs:
+  deploy_vm:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Log in to Dockerhub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Build, then tag, and push to dockerhub
+        run: |
+          docker build -f docker/prod/Dockerfile -t dicom-app .
+          docker tag dicom-app ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
+      - name: Deploy to VM
+        run: |
+          ssh -A -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.TUX_HOST }} << 'EOF'
+            bash ~/run_deployment.sh
+          EOF
+
