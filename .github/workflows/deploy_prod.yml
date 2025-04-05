@@ -21,7 +21,7 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
       - name: Log in to Dockerhub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-      - name: Build, tag, and push to dockerhub
+      - name: Build, then tag, and push to dockerhub
         run: |
           docker build -f docker/prod/Dockerfile -t dicom-app .
           docker tag dicom-app ${{ secrets.DOCKER_HUB_USERNAME }}/dicom-app:latest
